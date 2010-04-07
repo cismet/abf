@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="ABF">
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJarsAction.instance"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.instance"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-DeployJarAction.instance"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.instance"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-wizard-NewJarWizardAction.instance"/>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <folder name="Edit">
+            <attr name="SeparatorAfterProjectsSearch.instance/de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow/de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-separatorAfter.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployJarAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-separatorAfter.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJarsAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow/de-cismet-cids-librarysupport-project-nodes-separatorAfter.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.instance"/>
+            </file>
+            <file name="de-cismet-cids-librarysupport-project-nodes-separatorAfter.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-separatorAfter.instance/org-netbeans-modules-editor-MainMenuAction$StartMacroRecordingAction.instance" boolvalue="true"/>
+        </folder>
+        <folder name="File">
+            <attr name="org-netbeans-modules-openfile-OpenFileAction.instance/de-cismet-cids-librarysupport-project-nodes-liblocal-separatorBefore.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-liblocal-separatorBefore.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+            </file>
+            <attr name="org-netbeans-modules-project-ui-NewFile.shadow/de-cismet-cids-librarysupport-project-nodes-actions-NewJarAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-NewJarAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-wizard-NewJarWizardAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-NewJarAction.shadow/SeparatorNew.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-NewJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-NewPackageAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-NewPackageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-NewPackageAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-NewPackageAction.shadow/SeparatorNew.instance" boolvalue="true"/>
+        </folder>
+    </folder>
+    <folder name="Shortcuts">
+        <file name="DO-D.shadow">
+            <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployJarAction.instance"/>
+        </file>
+        <file name="DO-N.shadow">
+            <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-wizard-NewJarWizardAction.instance"/>
+        </file>
+        <file name="DOS-D.shadow">
+            <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJarsAction.instance"/>
+        </file>
+        <file name="DSM-D.shadow">
+            <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.instance"/>
+        </file>
+    </folder>
+    <folder name="Toolbars">
+        <folder name="ABF">
+            <attr name="de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.shadow/de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-NewJarAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow/de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-NewJarAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-wizard-NewJarWizardAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-NewJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployJarAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-DeployJarAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-librarysupport-project-nodes-actions-DeployChangedJarsAction.shadow/de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJars.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-DeployAllJarsAction.instance"/>
+            </file>
+            <file name="de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-librarysupport-project-nodes-actions-RebuildFromJarAction.instance"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>

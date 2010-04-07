@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="ABF">
+            <file name="de-cismet-cids-abf-domainserver-ConnectAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-RefreshAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-catalog-NewCatalogNodeAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-EditCidsClassWizardAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-sync-SyncAction.instance"/>
+        </folder>
+        <folder name="Diagram">
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddClassToCurrentDiagramAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddClassWithRelationsToCurrentDiagramAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance"/>
+        </folder>
+        <file name="Repository_hidden"/>
+        <folder name="Usermanagement">
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance"/>
+        </folder>
+        <folder name="Window">
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ClassDiagramAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-sync-SyncingSqlTopComponentAction.instance"/>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <attr name="CVS/Tools" boolvalue="false"/>
+        <file name="CVS_hidden"/>
+        <folder name="File">
+            <file name="de-cismet-cids-abf-domainserver-separatorBefore.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-separatorBefore.instance/de-cismet-cids-abf-domainserver-ConnectAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-separatorBefore.instance/de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-separatorBefore.instance/de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-separatorAfter.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-separatorAfter.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-separatorAfter.instance/de-cismet-cids-abf-domainserver-ConnectAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-ConnectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-ConnectAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-ConnectAction.shadow/SeparatorOpen.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-catalog-separatorAfter.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-catalog-separatorAfter.instance/org-netbeans-modules-project-ui-NewProject.shadow" boolvalue="true"/>
+        </folder>
+        <attr name="File/Edit" boolvalue="true"/>
+        <folder name="Edit">
+            <attr name="org-netbeans-modules-editor-MainMenuAction$StopMacroRecordingAction.instance/de-cismet-cids-abf-domainserver-project-users-separatorBefore.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-separatorBefore.instance/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-separatorBefore.instance/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+        </folder>
+        <attr name="Edit/Tools" boolvalue="true"/>
+        <attr name="Edit/Diagramm" boolvalue="false"/>
+        <folder name="Diagramm">
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassToCurrentDiagramAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow" boolvalue="false"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassWithRelationsToCurrentDiagramAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow" boolvalue="false"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow" boolvalue="false"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow" boolvalue="true"/>
+        </folder>
+        <attr name="Diagramm/Tools" boolvalue="false"/>
+        <folder name="Tools">
+            <file name="de-cismet-cids-abf-domainserver-DeleteLockAction-separatorAfter.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="1050"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-DeleteLockAction-separatorBefore.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="900"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-DeleteLockAction.instance"/>
+                <attr name="position" intvalue="1000"/>
+            </file>
+            <file name="DerbyDatabaseAction.instance_hidden"/>
+            <file name="JavaPlatformsCustomizerAction.instance_hidden"/>
+            <file name="LibrariesCustomizerAction.instance_hidden"/>
+            <file name="PaletteManager_hidden"/>
+            <file name="Separator1.instance_hidden"/>
+            <file name="Separator2.instance_hidden"/>
+            <file name="ServerManagerAction.instance_hidden"/>
+            <file name="javadoc-Search-Doc-Action.instance_hidden"/>
+            <file name="org-netbeans-modules-apisupport-project-ui-platform-NbPlatformCustomizerAction.instance_hidden"/>
+            <file name="org-netbeans-modules-favorites-templates-TemplatesAction.instance_hidden"/>
+            <file name="org-openide-actions-ToolsAction.instance_hidden"/>
+        </folder>
+        <attr name="Tools/Usermanagement" boolvalue="true"/>
+        <folder name="Usermanagement">
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" url="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow" boolvalue="false"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow" url="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance" boolvalue="false"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction_1.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction_1.instance/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.instance"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance" url="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction_2.instance"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance" url="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction_2.instance"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance" url="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance" boolvalue="false"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction_1.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction_1.instance/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow" boolvalue="true"/>
+        </folder>
+        <attr name="View/Window" boolvalue="true"/>
+        <folder name="Window">
+        </folder>
+        <attr name="Window/Help" boolvalue="true"/>
+        <folder name="Help">
+            <file name="netbeans-kb.url_hidden"/>
+            <file name="org-netbeans-modules-j2ee-blueprints-ShowBluePrintsAction.instance_hidden"/>
+            <file name="org-netbeans-modules-javadoc-search-IndexOverviewAction.instance_hidden"/>
+            <file name="quick-start.url_hidden"/>
+            <file name="shortcuts.xml_hidden"/>
+            <file name="using-netbeans.url_hidden"/>
+            <file name="utilities-sep-2.instance_hidden"/>
+            <file name="utilities-sep-3.instance_hidden"/>
+            <file name="utilities-sep-5.instance_hidden"/>
+        </folder>
+        <file name="BuildProject_hidden"/>
+        <file name="GoTo_hidden"/>
+        <file name="Refactoring_hidden"/>
+        <file name="RunProject_hidden"/>
+        <file name="Source_hidden"/>
+        <attr name="Usermanagement/Diagramm" boolvalue="true"/>
+        <attr name="Diagramm/CVS" boolvalue="true"/>
+    </folder>
+    <folder name="Services">
+        <folder name="AutoupdateType">
+        </folder>
+    </folder>
+    <folder name="Shortcuts">
+    </folder>
+    <folder name="Toolbars">
+         <folder name="Diagramm">
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassToCurrentDiagramAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassWithRelationsToCurrentDiagramAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow" boolvalue="false"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow" boolvalue="false"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow" boolvalue="true"/>
+        </folder>
+        <folder name="ABF">
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-ShowInNewDiagram.shadow/de-cismet-cids-abf-domainserver-ConnectAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.shadow/de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow/de-cismet-cids-abf-domainserver-ConnectAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-ConnectAction.shadow" url="de-cismet-cids-abf-domainserver-ConnectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-ConnectAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-ConnectAction.shadow/de-cismet-cids-abf-domainserver-projecttypes-registry-messaging-SendMessageAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-projecttypes-registry-messaging-SendMessageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-domainserver-projecttypes-registry-messaging-SendMessageAction.instance"/>
+            </file>
+        </folder>
+        <file name="Build_hidden"/>
+        <file name="Debug_hidden"/>
+        <folder name="Usermanagement">
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUsergroupAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow" boolvalue="false"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance" boolvalue="false"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.instance"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance" url="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance" url="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance" boolvalue="false"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction_1.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction_1.instance/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance" url="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction_2.instance"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow" boolvalue="true"/>
+            <attr name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow/de-cismet-cids-abf-domainserver-ConnectAction.shadow" boolvalue="true"/>
+        </folder>
+
+    </folder>
+    <folder name="Windows2">
+        <folder name="Components">
+            <file name="ClassDiagramTopComponent.settings" url="ClassDiagramTopComponentSettings.xml"/>
+            <file name="SyncingSqlTopComponent.settings" url="SyncingSqlTopComponentSettings.xml"/>
+        </folder>
+        <folder name="Modes">
+            <folder name="editor">
+                <file name="ClassDiagramTopComponent.wstcref" url="ClassDiagramTopComponentWstcref.xml"/>
+                <file name="SyncingSqlTopComponent.wstcref" url="SyncingSqlTopComponentWstcref.xml"/>
+            </folder>
+            <folder name="navigator">
+                <attr name="navigatorTC.wstcref/properties.wstcref" boolvalue="true"/>
+                <file name="navigatorTC.wstcref" url="navigatorTCWstcref.xml"/>
+                <file name="properties.wstcref" url="propertiesWstcref_1.xml"/>
+            </folder>
+            <folder name="properties">
+                <file name="properties.wstcref" url="propertiesWstcref.xml"/>
+                <file name="properties.wstcref_hidden"/>
+            </folder>
+        </folder>
+    </folder>
+    <folder name="Navigator">
+            <folder name="Panels">
+                <folder name="cismet">
+                    <folder name="satellite-wiring">
+                        <file name="de-cismet-cids-abf-domainserver-projecttypes-domainserver-nodes-classmanagement-graph-SatelliteNavigationPanel.instance"/>
+                    </folder>
+                </folder>
+            </folder>
+        </folder>
+</filesystem>

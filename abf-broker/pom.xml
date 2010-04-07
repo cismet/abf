@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>abf</artifactId>
+        <groupId>de.cismet.cids.abf</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>de.cismet.cids.abf</groupId>
+    <artifactId>abf-broker</artifactId>
+    <packaging>nbm</packaging>
+
+    <name>ABF Broker</name>
+    <description>DESCRIPTION PENDING !!!</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.cismet.cids.abf</groupId>
+            <artifactId>abf-utilities</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-projectuiapi</artifactId>
+        </dependency>
+        <!--
+            those have to be declared explicitely due to "insufficient"
+            transitive dependency mechanism for nbms.
+        -->
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-filesystems</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-loaders</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-nodes</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-projectapi</artifactId>
+        </dependency>
+        <!-- END of nbm-required declaration -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <cluster>${branding.token}</cluster>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

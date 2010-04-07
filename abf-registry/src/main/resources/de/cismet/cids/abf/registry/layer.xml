@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.0//EN" "http://www.netbeans.org/dtds/filesystem-1_0.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="ABF">
+            <file name="de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.instance"/>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <folder name="Tools">
+            <file name="de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.shadow/de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-separatorAfter.instance" boolvalue="true"/>
+        </folder>
+    </folder>
+    <folder name="Toolbars">
+        <folder name="ABF">
+            <attr name="de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.shadow" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-abfcore-projecttypes-registry-messaging-SendMessageAction.instance"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>

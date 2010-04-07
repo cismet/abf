@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Localizing-Bundle: de/cismet/cids/abf/client/Bundle.properties
+OpenIDE-Module-Layer: de/cismet/cids/abf/client/layer.xml
