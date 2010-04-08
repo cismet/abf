@@ -16,32 +16,7 @@
     <description>The ABF Branding module provides the branding for the application</description>
 
     <build>
-        <resources>
-            <!-- default resources -->
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-            <!-- filter the branding resources -->
-            <resource>
-                <directory>src/main/nbm-branding</directory>
-                <targetPath>nbm-branding</targetPath>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/nbm</directory>
-                <targetPath>nbm</targetPath>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <!--
-                    remove version specification as soon as parent defines an
-                    appropriate version
-                -->
-                <version>2.4.1</version>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
@@ -54,9 +29,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <brandingSources>target/classes/nbm-branding</brandingSources>
-                </configuration>
             </plugin>
         </plugins>
     </build>
