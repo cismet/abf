@@ -57,9 +57,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
-                <configuration>
-                    <cluster>${branding.token}</cluster>
-                </configuration>
             </plugin>
         </plugins>
     </build>
