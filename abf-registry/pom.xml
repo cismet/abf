@@ -67,18 +67,6 @@
     </dependencies>
 
     <build>
-        <resources>
-            <!-- default resources -->
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-            <!-- important files resources -->
-            <resource>
-                <directory>src/main/nbm</directory>
-                <targetPath>nbm</targetPath>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

@@ -1,54 +1,32 @@
-/*
- * RegistryProjectNode.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * thorsten.hell@cismet.de
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on 4. Dezember 2006, 13:59
- *
- */
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.registry;
 
 import de.cismet.cids.abf.registry.messaging.MessagingNode;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.nodes.ConnectAction;
+
 import java.awt.Image;
+
 import java.text.MessageFormat;
+
+import java.util.ArrayList;
+
 import javax.swing.Action;
+
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
+
 import org.openide.actions.FileSystemAction;
 import org.openide.filesystems.FileUtil;
-import org.openide.loaders.DataObjectNotFoundException;
-import org.openide.nodes.FilterNode;
+import org.openide.loaders.DataFolder;
+import org.openide.loaders.DataObject;
+import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
@@ -58,106 +36,162 @@ import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 
 /**
+ * DOCUMENT ME!
  *
- * @author thorsten.hell@cismet.de
- * @author martin.scholl@cismet.de
+ * @author   thorsten.hell@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  $Revision$, $Date$
  */
-public class RegistryProjectNode extends FilterNode implements
-        ConnectionListener
-{
+public class RegistryProjectNode extends AbstractNode implements ConnectionListener {
+
+    //~ Instance fields --------------------------------------------------------
+
     private final transient String htmlTemplate;
     private final transient RegistryProject project;
     private final transient Image icon;
 
-    public RegistryProjectNode(final Node node, final RegistryProject project)
-            throws
-            DataObjectNotFoundException
-    {
-        super(node, new Children(node), new ProxyLookup(new Lookup[]
-                {
-                    Lookups.singleton(project), node.getLookup()
-                }));
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new RegistryProjectNode object.
+     *
+     * @param  project  DOCUMENT ME!
+     */
+    public RegistryProjectNode(final RegistryProject project) {
+        super(
+            new RegistryProjectChildren(project),
+            new ProxyLookup(new Lookup[] { Lookups.singleton(project) }));
         this.project = project;
         icon = ImageUtilities.loadImage(RegistryProject.IMAGE_FOLDER + "registry.png"); // NOI18N
-        htmlTemplate = "<font color='!textText'>" // NOI18N
-                + project.getProjectDirectory().getName()
-                + "</font><font color='!controlShadow'> " // NOI18N
-                + "[cidsRegistry] {0}</font>"; // NOI18N
+        htmlTemplate = "<font color='!textText'>"                                       // NOI18N
+            + project.getProjectDirectory().getName()
+            + "</font><font color='!controlShadow'> "                                   // NOI18N
+            + "[cidsRegistry] {0}</font>";                                              // NOI18N
         project.addConnectionListener(this);
-        getChildren().add(new Node[] {new MessagingNode(project)});
     }
 
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    public Image getIcon(final int type)
-    {
+    public Image getIcon(final int type) {
         return icon;
     }
 
     @Override
-    public Image getOpenedIcon(final int type)
-    {
+    public Image getOpenedIcon(final int type) {
         return getIcon(type);
     }
 
     @Override
-    public String getHtmlDisplayName()
-    {
-        if(project.isConnectionInProgress())
-        {
-            if(project.isConnected())
-            {
-                return MessageFormat.format(htmlTemplate,
+    public String getHtmlDisplayName() {
+        if (project.isConnectionInProgress()) {
+            if (project.isConnected()) {
+                return MessageFormat.format(
+                        htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
-                        RegistryProjectNode.class, "Dsc_disconnect")); // NOI18N
-            }else
-            {
-                return MessageFormat.format(htmlTemplate,
+                            RegistryProjectNode.class,
+                            "Dsc_disconnect"));   // NOI18N
+            } else {
+                return MessageFormat.format(
+                        htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
-                        RegistryProjectNode.class, "Dsc_connect")); // NOI18N
+                            RegistryProjectNode.class,
+                            "Dsc_connect"));      // NOI18N
             }
-        }else
-        {
-            if(project.isConnected())
-            {
-                return MessageFormat.format(htmlTemplate,
+        } else {
+            if (project.isConnected()) {
+                return MessageFormat.format(
+                        htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
-                        RegistryProjectNode.class, "Dsc_connected")); // NOI18N
-            }else
-            {
-                return MessageFormat.format(htmlTemplate,
+                            RegistryProjectNode.class,
+                            "Dsc_connected"));    // NOI18N
+            } else {
+                return MessageFormat.format(
+                        htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
-                        RegistryProjectNode.class, "Dsc_disconnected"));//NOI18N
+                            RegistryProjectNode.class,
+                            "Dsc_disconnected")); // NOI18N
             }
         }
     }
 
     @Override
-    public Action[] getActions(final boolean b)
-    {
-        return new Action[]
-                {
-                    CallableSystemAction.get(ConnectAction.class),
-                    CommonProjectActions.customizeProjectAction(),
-                    SystemAction.get(FileSystemAction.class), null,
-                    CommonProjectActions.closeProjectAction()
-                };
+    public Action[] getActions(final boolean b) {
+        return new Action[] {
+                CallableSystemAction.get(ConnectAction.class),
+                CommonProjectActions.customizeProjectAction(),
+                SystemAction.get(FileSystemAction.class),
+                null,
+                CommonProjectActions.closeProjectAction()
+            };
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected)
-    {
+    public void connectionStatusChanged(final boolean isConnected) {
         fireDisplayNameChange(null, null);
     }
 
     @Override
-    public void connectionStatusIndeterminate()
-    {
+    public void connectionStatusIndeterminate() {
         setDisplayName(project.getProjectDirectory().getName() + " ..."); // NOI18N
     }
 
     @Override
-    public String getShortDescription()
-    {
+    public String getShortDescription() {
         return FileUtil.toFile(project.getProjectDirectory()).getAbsolutePath();
+    }
+}
+
+/**
+ * DOCUMENT ME!
+ *
+ * @version  $Revision$, $Date$
+ */
+final class RegistryProjectChildren extends Children.Keys {
+
+    //~ Instance fields --------------------------------------------------------
+
+    private final transient RegistryProject project;
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new RegistryProjectChildren object.
+     *
+     * @param  project  DOCUMENT ME!
+     */
+    public RegistryProjectChildren(final RegistryProject project) {
+        this.project = project;
+    }
+
+    //~ Methods ----------------------------------------------------------------
+
+    @Override
+    protected void addNotify() {
+        final ArrayList<Node> keys = new ArrayList<Node>();
+        for (final DataObject data : DataFolder.findFolder(project.getProjectDirectory()).getChildren()) {
+            if ("properties".equalsIgnoreCase(data.getPrimaryFile().getExt())) { // NOI18N
+                keys.add(data.getNodeDelegate());
+            }
+        }
+        final Node messaging = new MessagingNode(project);
+        keys.add(messaging);
+        setKeys(keys);
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   key  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    @Override
+    protected Node[] createNodes(final Object key) {
+        if (key instanceof Node) {
+            return new Node[] { (Node)key };
+        } else {
+            return new Node[] {};
+        }
     }
 }
