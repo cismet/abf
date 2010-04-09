@@ -87,7 +87,7 @@ public final class DeployJarAction extends NodeAction
     @Override
     protected String iconResource()
     {
-        return LibrarySupportProject.class + "einpflegenSingle_24.gif";// NOI18N
+        return LibrarySupportProject.IMAGE_FOLDER + "einpflegenSingle_24.gif";// NOI18N
     }
     
     @Override

@@ -77,7 +77,7 @@ public final class DeployChangedJarsAction extends NodeAction
     @Override
     protected String iconResource()
     {
-        return LibrarySupportProject.class + "einpflegenChanged_24.png";//NOI18N
+        return LibrarySupportProject.IMAGE_FOLDER + "einpflegenChanged_24.png";//NOI18N
     }
 
     @Override
