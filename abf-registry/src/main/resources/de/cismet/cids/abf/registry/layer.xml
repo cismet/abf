@@ -8,12 +8,10 @@
     </folder>
     <folder name="Menu">
         <folder name="ABF">
-            <folder name="Messaging">
-                <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow">
-                    <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
-                </file>
-                <attr name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow/de-cismet-cids-abf-registry-messaging-separatorAfter.instance" boolvalue="true"/>
-            </folder>
+            <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
+            </file>
+            <attr name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow/de-cismet-cids-abf-registry-messaging-separatorAfter.instance" boolvalue="true"/>
         </folder>
     </folder>
     <folder name="Toolbars">
@@ -22,6 +20,7 @@
             <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
             </file>
+            <attr name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow/de-cismet-cids-abf-registry-messaging-separatorAfter.instance" boolvalue="true"/>
         </folder>
     </folder>
 </filesystem>
