@@ -194,7 +194,7 @@ public final class ImportClassesAction extends CookieAction
     @Override
     protected int mode()
     {
-        return CookieAction.MODE_EXACTLY_ONE;
+        return CookieAction.MODE_ALL;
     }
 
     @Override
@@ -208,7 +208,6 @@ public final class ImportClassesAction extends CookieAction
     {
         return new Class[]
         {
-            ClassManagementContextCookie.class,
             DomainserverContext.class
         };
     }
@@ -232,13 +231,25 @@ public final class ImportClassesAction extends CookieAction
     }
 
     @Override
-    protected boolean enable(final org.openide.nodes.Node[] node)
+    protected boolean enable(final org.openide.nodes.Node[] nodes)
     {
-        if(!super.enable(node))
+        if(!super.enable(nodes))
         {
             return false;
         }
-        return node[0].getCookie(DomainserverContext.class).getDomainserverProject().isConnected();
+
+        final DomainserverProject firstProject = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
+        for(int i = 0; i < nodes.length; ++i)
+        {
+            final DomainserverProject project = nodes[i].getCookie(DomainserverContext.class).getDomainserverProject();
+            // ensure that any selected node is in the same domainserver project
+            if(!project.equals(firstProject))
+            {
+                return false;
+            }
+        }
+
+        return firstProject.isConnected();
     }
 
     private boolean importClasses(final Backend backend, final File in,
@@ -507,10 +518,5 @@ public final class ImportClassesAction extends CookieAction
             out.print(PROCESS + preIndent + classname + " bereits im System vorhanden oder schon erzeugt");
         }
         return cidsClass;
-    }
-
-    private Icon createIcon()
-    {
-        return null;
     }
 }

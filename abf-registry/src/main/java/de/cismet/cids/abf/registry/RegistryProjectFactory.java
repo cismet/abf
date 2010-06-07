@@ -12,8 +12,6 @@ import java.io.IOException;
 
 import java.util.Properties;
 
-import org.apache.log4j.xml.DOMConfigurator;
-
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ProjectFactory;
 import org.netbeans.spi.project.ProjectState;
@@ -34,10 +32,6 @@ public class RegistryProjectFactory implements ProjectFactory {
 
     public static final String PROJECT_DIR = "cidsRegistry";            // NOI18N
     public static final String PROJECT_PROPFILE = "project.properties"; // NOI18N
-
-    static {
-        DOMConfigurator.configure(RegistryProjectFactory.class.getResource("log4j.xml")); // NOI18N
-    }
 
     //~ Methods ----------------------------------------------------------------
 

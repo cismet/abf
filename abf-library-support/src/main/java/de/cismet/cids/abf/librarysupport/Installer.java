@@ -22,7 +22,6 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ui.OpenProjects;
@@ -48,11 +47,6 @@ public final class Installer extends ModuleInstall {
     private static final transient Logger LOG = Logger.getLogger(Installer.class);
 
     //~ Methods ----------------------------------------------------------------
-
-    @Override
-    public void restored() {
-        DOMConfigurator.configure(getClass().getResource("log4j.xml"));
-    }
 
     @Override
     public boolean closing() {

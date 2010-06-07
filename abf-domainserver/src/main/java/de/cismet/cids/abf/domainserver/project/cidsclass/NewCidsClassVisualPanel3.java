@@ -51,7 +51,9 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SortOrder;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -85,6 +87,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel
         final JXTable classAttrTable = (JXTable)tblClassAttr;
         classAttrTable.setAutoStartEditOnKeyStroke(true);
         classAttrTable.setTerminateEditOnFocusLost(true);
+        classAttrTable.setDefaultEditor(String.class, new DefaultCellEditor(new JTextField()));
         classAttrTable.getDefaultEditor(String.class).addCellEditorListener(new
                 CellEditorListener()
         {

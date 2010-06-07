@@ -38,6 +38,7 @@
  */
 package de.cismet.cids.abf.domainserver.project.sync;
 
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import org.openide.nodes.Node;
 import org.openide.util.HelpCtx;
@@ -56,15 +57,7 @@ public final class SyncAction extends CallableSystemAction
     @Override
     public void performAction()
     {
-        final Node[] na = TopComponent.getRegistry().getActivatedNodes();
-        if(na != null && na.length == 1)
-        {
-            final Node n = (Node)na[0].getLookup().lookup(SyncManagement.class);
-            if(n instanceof SyncManagement)
-            {
-                ((SyncManagement)n).executeStatements();
-            }
-        }
+        TopComponent.getRegistry().getActivatedNodes()[0].getLookup().lookup(SyncManagement.class).executeStatements();
     }
 
     @Override
@@ -77,7 +70,7 @@ public final class SyncAction extends CallableSystemAction
     protected void initialize()
     {
         super.initialize();
-        putValue("noIconInMenu", Boolean.TRUE);
+        putValue("noIconInMenu", Boolean.TRUE); // NOI18N
     }
 
     @Override
@@ -90,5 +83,22 @@ public final class SyncAction extends CallableSystemAction
     protected boolean asynchronous()
     {
         return false;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        if(!super.isEnabled())
+            return false;
+
+        final Node[] na = TopComponent.getRegistry().getActivatedNodes();
+        if(na == null || na.length != 1)
+            return false;
+
+        final DomainserverProject project = na[0].getLookup().lookup(DomainserverProject.class);
+        if(project == null || !project.isConnected())
+            return false;
+
+        return na[0].getLookup().lookup(SyncManagement.class) != null;
     }
 }

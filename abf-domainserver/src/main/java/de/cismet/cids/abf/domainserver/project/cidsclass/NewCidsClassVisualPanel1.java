@@ -75,6 +75,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -83,6 +84,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SortOrder;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -136,8 +138,8 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         };
         ((JXTable)tblAttr).setAutoStartEditOnKeyStroke(true);
         ((JXTable)tblAttr).setTerminateEditOnFocusLost(true);
-        tblAttr.getDefaultEditor(String.class).addCellEditorListener(new
-                CellEditorListener()
+        tblAttr.setDefaultEditor(String.class, new DefaultCellEditor(new JTextField()));
+        tblAttr.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener()
         {
             @Override
             public void editingCanceled(final ChangeEvent e)

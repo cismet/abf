@@ -1,5 +1,6 @@
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.ViewManagement;
 import org.openide.util.NbBundle;
 
@@ -19,7 +20,7 @@ public final class CreateDiagramFromClassWithRelationsAction extends DiagramActi
     }
     
     protected String iconResource() {
-        return "de/cismet/cids/abf/abfcore/projecttypes/domainserver/nodes/classmanagement/actions/NewClassDiagramWithRelations.png";
+        return DomainserverProject.IMAGE_FOLDER + "new_class_diagram_with_relations.png";
     }
     
     

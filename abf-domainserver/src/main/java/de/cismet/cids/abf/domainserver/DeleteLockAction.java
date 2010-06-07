@@ -68,9 +68,6 @@ public final class DeleteLockAction extends NodeAction
     private static final String DELETE_LOCK_STMT = 
             "DELETE FROM cs_locks WHERE id = "; // NOI18N
     
-    private static final String ICON_RESOURCE = 
-            "de/cismet/cids/abf/abfcore/unlock.png"; // NOI18N
-
     @Override
     protected void performAction(final Node[] activatedNodes)
     {
@@ -167,7 +164,7 @@ public final class DeleteLockAction extends NodeAction
     @Override
     protected String iconResource()
     {
-        return ICON_RESOURCE;
+        return DomainserverProject.IMAGE_FOLDER + "unlock.png"; // NOI18N
     }
 
     @Override

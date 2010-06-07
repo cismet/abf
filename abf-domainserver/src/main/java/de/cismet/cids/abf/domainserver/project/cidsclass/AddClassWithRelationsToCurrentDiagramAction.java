@@ -38,6 +38,7 @@
  */
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import java.beans.PropertyChangeEvent;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
@@ -68,7 +69,7 @@ public final class AddClassWithRelationsToCurrentDiagramAction extends
 
     protected String iconResource()
     {
-        return "de/cismet/cids/abf/abfcore/projecttypes/domainserver/nodes/classmanagement/actions/AddClassDiagramWithRelations.png";
+        return DomainserverProject.IMAGE_FOLDER + "add_class_diagram_with_relations.png";
     }
 
     public void propertyChange(PropertyChangeEvent evt)

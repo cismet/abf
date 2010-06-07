@@ -34,7 +34,6 @@ import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
@@ -63,10 +62,6 @@ public final class CidsJavaTemplateWizardIterator implements WizardDescriptor.In
 
     private static final transient Logger LOG = Logger.getLogger(CidsJavaTemplateWizardIterator.class);
 
-    static {
-        DOMConfigurator.configure(CidsJavaTemplateWizardIterator.class.getResource("log4j.xml"));
-    }
-
     //~ Instance fields --------------------------------------------------------
 
     private transient int index;
@@ -90,7 +85,9 @@ public final class CidsJavaTemplateWizardIterator implements WizardDescriptor.In
      * @return  DOCUMENT ME!
      */
     private WizardDescriptor.Panel[] createPanels() {
-        LOG.debug("createpanels");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("createpanels");
+        }
         return new WizardDescriptor.Panel[] { new CidsJavaTemplateWizardPanel(), };
     }
 

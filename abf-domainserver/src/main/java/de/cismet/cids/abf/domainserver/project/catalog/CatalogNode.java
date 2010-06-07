@@ -69,7 +69,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -95,7 +94,6 @@ import org.openide.nodes.NodeTransfer;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
-import org.openide.util.RequestProcessor;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.datatransfer.PasteType;
 import org.openide.windows.WindowManager;
@@ -1334,8 +1332,6 @@ final class CatalogNodeChildren extends Children.Keys
     
     private final transient CatNode catNode;
     private final transient DomainserverProject project;
-    private final transient RequestProcessor.Task builderTask;
-    private final transient ChildrenBuilder builder;
     private final transient CatalogManagement catalogManagement;
     
     public CatalogNodeChildren(final CatNode node, final DomainserverProject 
@@ -1343,9 +1339,6 @@ final class CatalogNodeChildren extends Children.Keys
     {
         this.project = project;
         this.catNode = node;
-        builder = new ChildrenBuilder();
-        builderTask = new RequestProcessor("childrenBuilder") // NOI18N
-                .create(builder, true);
         catalogManagement = project.getLookup().lookup(CatalogManagement.class);
     }
 
@@ -1377,27 +1370,13 @@ final class CatalogNodeChildren extends Children.Keys
     @Override
     protected void addNotify()
     {
-        if(builder.available())
-        {
-            setKeys(builder.getResult());
-            
-        }else
-        {
-            if(builderTask.isFinished())
-            {
-                builderTask.schedule(0);
-                if(getNodesCount() == 0)
-                {
-                    setKeys(new Object[] {new LoadingNode()});
-                }
-            }
-        }
+        final Thread builder = new Thread(new ChildrenBuilder());
+        setKeys(new Object[] {new LoadingNode()});
+        builder.start();
     }
     
     final class ChildrenBuilder implements Runnable
     {
-        private transient volatile List<CatNode> children;
-        
         @Override
         public void run()
         {
@@ -1407,13 +1386,12 @@ final class CatalogNodeChildren extends Children.Keys
                         getCidsDataObjectBackend().getNodeChildren(
                         catNode);
                 Collections.sort(l, new Comparators.CatNodes());
-                children = l;
                 EventQueue.invokeLater(new Runnable() {
 
                     @Override
                     public void run()
                     {
-                        addNotify();
+                        setKeys(l);
                     }
                 });
             }catch(final ObjectNotFoundException ex)
@@ -1442,28 +1420,15 @@ final class CatalogNodeChildren extends Children.Keys
                             ex);
                 }
                 LOG.error("data inconsistency", ex); // NOI18N
-                children = Arrays.asList(node);
                 EventQueue.invokeLater(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        addNotify();
+                        setKeys(new Object[] {node});
                     }
                 });
             }
-        }
-        
-        List<CatNode> getResult()
-        {
-            final List<CatNode> ret = children;
-            children = null;
-            return ret;
-        }
-        
-        boolean available()
-        {
-            return children != null;
         }
     }
 }

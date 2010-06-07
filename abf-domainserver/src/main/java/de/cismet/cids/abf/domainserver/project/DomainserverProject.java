@@ -80,8 +80,12 @@ import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.ActionProvider;
 import org.netbeans.spi.project.ProjectState;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
+import org.openide.filesystems.FileAttributeEvent;
+import org.openide.filesystems.FileChangeListener;
+import org.openide.filesystems.FileEvent;
 import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileRenameEvent;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
@@ -173,6 +177,49 @@ public final class DomainserverProject implements Project, Connectable
         connectionInProgress = false;
         final FileObject fob = getProjectDirectory().getFileObject(
                 RUNTIME_PROPS);
+        fob.addFileChangeListener(new FileChangeListener() {
+
+            public void fileFolderCreated(final FileEvent fe)
+            {
+                // do nothing
+            }
+
+            public void fileDataCreated(final FileEvent fe)
+            {
+                // do nothing
+            }
+
+            public void fileChanged(final FileEvent fe)
+            {
+                runtimeProps = new Properties();
+                try
+                {
+                    runtimeProps.load(fob.getInputStream());
+                    initPolicies();
+                }catch(final Exception e)
+                {
+                    LOG.error("could not load runtime properties");
+                    ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
+                    DomainserverProject.class,
+                    "Err_runtimePropsNotLoaded"), e); // NOI18N
+                }
+            }
+
+            public void fileDeleted(final FileEvent fe)
+            {
+                // do nothing
+            }
+
+            public void fileRenamed(final FileRenameEvent fe)
+            {
+                // do nothing
+            }
+
+            public void fileAttributeChanged(final FileAttributeEvent fe)
+            {
+                // do nothing
+            }
+        });
         runtimeProps = new Properties();
         try
         {
@@ -307,14 +354,14 @@ public final class DomainserverProject implements Project, Connectable
     void addLookup(final Lookup lookup)
     {
         // TODO: investigate: while why did we do that
-        if(lookup == null)
+        if(lookup != null)
         {
-            return;
-        }
-        lkp = new ProxyLookup(new Lookup[] 
+
+        lkp = new ProxyLookup(new Lookup[]
         {
             getLookup(), lookup
         });
+        }
     }
     
     private Properties getProperties()
@@ -645,8 +692,7 @@ public final class DomainserverProject implements Project, Connectable
         }
         if(con == null)
         {
-            throw new IllegalStateException(
-                    "connection must not be null"); // NOI18N
+            throw new IllegalStateException("connection must not be null"); // NOI18N
         }
         Statement stmt = null;
         try

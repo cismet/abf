@@ -320,27 +320,27 @@ public final class ExportClassesAction extends CookieAction
     @Override
     protected boolean enable(final org.openide.nodes.Node[] nodes)
     {
-        final boolean enable = super.enable(nodes);
-        if(!enable)
+        if(!super.enable(nodes))
         {
             return false;
         }
-        DomainserverProject lastProject = nodes[0].getCookie(
-                    DomainserverContext.class).getDomainserverProject();
-        for(int i = 1; i < nodes.length; ++i)
+
+        final DomainserverProject firstProject = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
+        // we iterate from the first because it shall be checked for cccc's, too
+        for(int i = 0; i < nodes.length; ++i)
         {
             final DomainserverProject project = nodes[i].getCookie(
                     DomainserverContext.class).getDomainserverProject();
+            // really investigate the enable strategy of coockeaction -.-
+            final CidsClassContextCookie cccc = nodes[i].getCookie(CidsClassContextCookie.class);
             // ensure that any class is in the same domainserver project
-            if(project.equals(lastProject))
-            {
-                lastProject = project;
-            }else
+            if(!project.equals(firstProject) || cccc == null)
             {
                 return false;
             }
         }
-        return lastProject.isConnected();
+
+        return firstProject.isConnected();
     }
 
     private void exportClasses(final List<CidsClass> classes, final File out,

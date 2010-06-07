@@ -9,6 +9,7 @@ package de.cismet.cids.abf.domainserver.project.nodes;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.cidsclass.CheckRightsAction;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CidsClassNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.ClassManagementContextCookie;
 import de.cismet.cids.abf.domainserver.project.cidsclass.ImportClassesAction;
@@ -132,6 +133,8 @@ public class ClassManagement extends ProjectNode implements Refreshable,
         return new Action[]
                 {
                     CallableSystemAction.get(NewCidsClassWizardAction.class),
+                    null,
+                    CallableSystemAction.get(CheckRightsAction.class),
                     null,
                     CallableSystemAction.get(ImportClassesAction.class)
                 };

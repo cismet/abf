@@ -2,25 +2,38 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.0//EN" "http://www.netbeans.org/dtds/filesystem-1_0.dtd">
 <filesystem>
     <folder name="Actions">
-        <folder name="ABF">
-            <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
+        <folder name="Usermanagement">
+            <file name="de-cismet-cids-abf-registry-messaging-separatorBefore.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="999"/>
+            </file>
+            <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.instance">
+                <attr name="position" intvalue="1000"/>
+                </file>
         </folder>
     </folder>
     <folder name="Menu">
-        <folder name="ABF">
-            <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
+        <folder name="Usermanagement.instance">
+            <file name="de-cismet-cids-abf-registry-messaging-separatorBefore.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-registry-messaging-separatorBefore.instance"/>
+                <attr name="position" intvalue="999"/>
             </file>
-            <attr name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow/de-cismet-cids-abf-registry-messaging-separatorAfter.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
+                <attr name="position" intvalue="1000"/>
+            </file>
         </folder>
     </folder>
     <folder name="Toolbars">
-        <folder name="ABF">
-            <attr name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow" boolvalue="true"/>
-            <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/ABF/de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
+        <folder name="Usermanagement">
+            <file name="de-cismet-cids-abf-registry-messaging-separatorBefore.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-registry-messaging-separatorBefore.instance"/>
+                <attr name="position" intvalue="999"/>
             </file>
-            <attr name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow/de-cismet-cids-abf-registry-messaging-separatorAfter.instance" boolvalue="true"/>
+            <file name="de-cismet-cids-abf-registry-messaging-SendMessageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-registry-messaging-SendMessageAction.instance"/>
+                <attr name="position" intvalue="1000"/>
+            </file>
         </folder>
     </folder>
 </filesystem>

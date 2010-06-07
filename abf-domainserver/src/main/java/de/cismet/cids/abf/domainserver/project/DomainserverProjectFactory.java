@@ -1,104 +1,76 @@
-/*
- * DomainserverProjectFactory.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * thorsten.hell@cismet.de
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on 29. September 2006, 10:25
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project;
 
 import java.io.IOException;
+
 import java.util.Properties;
+
 import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
+
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ProjectFactory;
 import org.netbeans.spi.project.ProjectState;
+
 import org.openide.filesystems.FileObject;
 
 /**
+ * DOCUMENT ME!
  *
- * @author thorsten.hell@cismet.de
- * @author martin.scholl@cismet.de
+ * @author   thorsten.hell@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  $Revision$, $Date$
  */
-public final class DomainserverProjectFactory implements ProjectFactory
-{
+public final class DomainserverProjectFactory implements ProjectFactory {
+
+    //~ Static fields/initializers ---------------------------------------------
+
     private static final transient Logger LOG = Logger.getLogger(DomainserverProjectFactory.class);
-    
-    public static final String PROJECT_DIR = "cidsDomainServer"; // NOI18N
-    public static final String PROJECT_PROPFILE = "project.properties";// NOI18N
-    
-    public DomainserverProjectFactory()
-    {
-        if(LOG.isDebugEnabled())
-        {
+
+    public static final String PROJECT_DIR = "cidsDomainServer";        // NOI18N
+    public static final String PROJECT_PROPFILE = "project.properties"; // NOI18N
+
+    static {
+        DOMConfigurator.configure(DomainserverProjectFactory.class.getResource("log4j.xml")); // NOI18N
+    }
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new DomainserverProjectFactory object.
+     */
+    public DomainserverProjectFactory() {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("new DomainserverProjectFactory created"); // NOI18N
         }
     }
-    
+
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    public Project loadProject(final FileObject dir, final ProjectState state) 
-            throws 
-            IOException
-    {
+    public Project loadProject(final FileObject dir, final ProjectState state) throws IOException {
         return isProject(dir) ? new DomainserverProject(dir, state) : null;
     }
-    
+
     @Override
-    public void saveProject(final Project project) throws 
-            IOException, 
-            ClassCastException
-    {
-        final Properties properties = project.getLookup()
-                .lookup(Properties.class);
-        final FileObject fob = project.getProjectDirectory().getFileObject(
-                    PROJECT_DIR
-                    + "/" // NOI18N
-                    + PROJECT_PROPFILE);
-        properties.store(fob.getOutputStream(),
-                "Cids Domainserver Project Properties"); // NOI18N
+    public void saveProject(final Project project) throws IOException, ClassCastException {
+        final Properties properties = project.getLookup().lookup(Properties.class);
+        final FileObject fob = project.getProjectDirectory().getFileObject(PROJECT_DIR + "/" + PROJECT_PROPFILE); // NOI18N
+        properties.store(fob.getOutputStream(), "Cids Domainserver Project Properties");                          // NOI18N
     }
-    
+
     @Override
-    public boolean isProject(final FileObject projectDirectory)
-    {
-        if(LOG.isDebugEnabled())
-        {
-            LOG.debug("isProject: " // NOI18N
-                    + projectDirectory.getPath()
-                    + " :: " // NOI18N
-                    + projectDirectory.getFileObject(PROJECT_DIR) != null);
+    public boolean isProject(final FileObject projectDirectory) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(
+                "isProject: " + projectDirectory.getPath() + " :: " // NOI18N
+                + (projectDirectory.getFileObject(PROJECT_DIR) != null));
         }
         return projectDirectory.getFileObject(PROJECT_DIR) != null;
     }

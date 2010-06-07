@@ -127,7 +127,7 @@ public final class NewUsergroupWizardAction extends CookieAction
     @Override
     public String iconResource()
     {
-        return "add_group.png";
+        return DomainserverProject.IMAGE_FOLDER + "add_group.png";
     }
     
     @Override

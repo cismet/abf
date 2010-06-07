@@ -297,7 +297,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         }
         final Set<CidsClass> all = new HashSet<CidsClass>();
         for (final CidsClassNode ccn : cidsClassNodes) {
-            all.addAll(getAllRelationClasses(ccn.getCidsClass()));
+            all.addAll(getAllRelationClasses(ccn.getCidsClass(), new HashSet<CidsClass>()));
         }
         final Vector<CidsClassNode> v = new Vector<CidsClassNode>();
         for (final CidsClass cc : all) {
@@ -316,7 +316,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         if (LOG.isDebugEnabled()) {
             LOG.debug("adding class with relation: " + c.getName());
         }
-        final Set<CidsClass> all = getAllRelationClasses(c);
+        final Set<CidsClass> all = getAllRelationClasses(c, new HashSet<CidsClass>());
         final Vector<CidsClassNode> v = new Vector<CidsClassNode>();
         for (CidsClass cc : all) {
             v.add(new CidsClassNode(cc, project));
@@ -1083,24 +1083,22 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @return  DOCUMENT ME!
      */
-    public Set<CidsClass> getAllRelationClasses(final CidsClass cidsClass) {
+    public Set<CidsClass> getAllRelationClasses(final CidsClass cidsClass, final Set<CidsClass> relationClasses) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("retrieving all relation classes for cidsclass: "
-                + cidsClass);
+            LOG.debug("retrieving all relation classes for cidsclass: " + cidsClass);
         }
-        final HashSet<CidsClass> classes = new HashSet<CidsClass>();
-        classes.add(cidsClass);
+        relationClasses.add(cidsClass);
         for (final Attribute attr : cidsClass.getAttributes()) {
             if (attr.isForeignKey()) {
                 final CidsClass foreignClass = project.getCidsDataObjectBackend()
                             .getEntity(CidsClass.class, attr.getForeignKeyClass());
-                if ((foreignClass != null) && !(classes.contains(foreignClass))) {
-                    final Set sub = getAllRelationClasses(foreignClass);
-                    classes.addAll(sub);
+                if ((foreignClass != null) && !(relationClasses.contains(foreignClass))) {
+                    final Set sub = getAllRelationClasses(foreignClass, relationClasses);
+                    relationClasses.addAll(sub);
                 }
             }
         }
-        return classes;
+        return relationClasses;
     }
 
     /**

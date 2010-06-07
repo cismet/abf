@@ -49,13 +49,13 @@ import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 import de.cismet.diff.container.PSQLStatement;
 import de.cismet.diff.container.PSQLStatementGroup;
+import de.cismet.diff.db.DatabaseConnection;
 import de.cismet.diff.exception.ScriptGeneratorException;
 import de.cismet.diff.exception.TableLoaderException;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
@@ -72,7 +72,6 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
-import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
@@ -417,14 +416,6 @@ public class SyncManagement extends ProjectNode implements
                 getTopComponent().setEnabled(false);
                 Connection connection = null;
                 final Properties runtime = project.getRuntimeProps();
-                final String dbURL = 
-                        runtime.getProperty("connection.url"); // NOI18N
-                final String user = 
-                        runtime.getProperty("connection.username"); // NOI18N
-                final String pass = 
-                        runtime.getProperty("connection.password"); // NOI18N
-                final String driver = 
-                        runtime.getProperty("connection.driver_class");// NOI18N
                 try
                 {
                     final PSQLStatementGroup[] statementGroups;
@@ -435,8 +426,7 @@ public class SyncManagement extends ProjectNode implements
                     {
                         statementGroups = statementGroupsNotPedantic;
                     }
-                    Class.forName(driver).newInstance();
-                    connection = DriverManager.getConnection(dbURL, user, pass);
+                    connection = DatabaseConnection.getConnection(runtime);
                     io.getOut().println(org.openide.util.NbBundle.getMessage(
                             SyncManagement.class, "Dsc_syncingDB")); // NOI18N
                     io.getOut().println(org.openide.util.NbBundle.getMessage(

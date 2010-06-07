@@ -1016,7 +1016,8 @@ public final class CidsClassNode extends ProjectNode implements
         {
             CallableSystemAction.get(RefreshAction.class), null,
             CallableSystemAction.get(EditCidsClassWizardAction.class),
-            CallableSystemAction.get(EditRightsWizardAction.class), null,
+            CallableSystemAction.get(EditRightsWizardAction.class),
+            CallableSystemAction.get(CheckRightsAction.class), null,
             CallableSystemAction.get(
                     AddClassWithRelationsToCurrentDiagramAction.class),
             CallableSystemAction.get(AddClassToCurrentDiagramAction.class),null,

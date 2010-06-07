@@ -42,8 +42,8 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.jpa.entity.catalog.CatNode;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
-import de.cismet.cids.jpa.entity.common.CommonEntity;
 import de.cismet.cids.jpa.entity.common.Domain;
+import de.cismet.cids.jpa.entity.common.PermissionAwareEntity;
 import de.cismet.cids.jpa.entity.permission.Permission;
 import de.cismet.cids.jpa.entity.permission.Policy;
 import de.cismet.cids.jpa.entity.user.UserGroup;
@@ -85,14 +85,14 @@ public final class Renderers
                 UnifiedCellRenderer.class);
 
         private final transient ImageIcon groupIcon = new ImageIcon(
-                ImageUtilities.loadImage(DomainserverProject.class
+                ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "group.png")); // NOI18N
         private final transient ImageIcon remotegroupIcon = new ImageIcon(
-                ImageUtilities.loadImage(DomainserverProject.class
+                ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "remotegroup.png")); // NOI18N
         
         private final transient PermissionResolver resolver;
-        private final transient CommonEntity entity;
+        private final transient PermissionAwareEntity entity;
 
         public UnifiedCellRenderer()
         {
@@ -100,7 +100,7 @@ public final class Renderers
         };
 
         public UnifiedCellRenderer(final DomainserverProject project, final
-                CommonEntity entity)
+                PermissionAwareEntity entity)
         {
             if(LOG.isDebugEnabled())
             {
@@ -164,7 +164,7 @@ public final class Renderers
                 }else if(value instanceof UserGroup)
                 {
                     final UserGroup ug = (UserGroup)value;
-                    final StringBuffer name = new StringBuffer(ug.getName());
+                    final StringBuilder name = new StringBuilder(ug.getName());
                     Icon icon = groupIcon;
                     if(!"local".equalsIgnoreCase( // NOI18N
                             ug.getDomain().getName()))
@@ -295,7 +295,7 @@ public final class Renderers
             final JLabel l = (JLabel)LIST_R.getListCellRendererComponent(list,
                     value, index, isSelected, cellHasFocus);
             final UserGroup ug = ((UserGroup)value);
-            final StringBuffer name = new StringBuffer(ug.getName());
+            final StringBuilder name = new StringBuilder(ug.getName());
             Icon icon = groupIcon;
             if(ProjectUtils.isRemoteGroup(ug, project))
             {

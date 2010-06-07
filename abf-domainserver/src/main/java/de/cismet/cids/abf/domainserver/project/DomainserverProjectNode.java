@@ -56,6 +56,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.text.MessageFormat;
 import javax.swing.Action;
+import org.apache.log4j.Logger;
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObjectNotFoundException;
@@ -76,10 +77,10 @@ public final class DomainserverProjectNode extends FilterNode implements
         ConnectionListener,
         DomainserverContext
 {
+    private static final transient Logger LOG = Logger.getLogger(DomainserverProjectNode.class);
+
     private static final String NODE_NAME_PATTERN =
-            "<font color='!textText'>{0}</font>" // NOI18N
-            + "<font color='!controlShadow'> " // NOI18N
-            + "[cidsDomainserver] {1}</font>"; // NOI18N
+            "<font color=''!textText''>{0}</font><font color=''!controlShadow''> [cidsDomainserver] {1}</font>"; // NOI18N
 
     private final transient DomainserverProject project;
     private final transient Image domainserverImage;
@@ -123,17 +124,17 @@ public final class DomainserverProjectNode extends FilterNode implements
             })
         }));
         getChildren().add(new Node[]
-        {
-            userManagement,
-            classManagement,
-            viewManagement,
-            catManagement,
-            typeManagement,
-            javaClassManagement,
-            iconManagement,
-            queryManagement,
-            syncManagement
-        });
+                {
+                    userManagement,
+                    classManagement,
+                    viewManagement,
+                    catManagement,
+                    typeManagement,
+                    javaClassManagement,
+                    iconManagement,
+                    queryManagement,
+                    syncManagement
+                });
         domainserverImage = ImageUtilities.loadImage(
                 DomainserverProject.IMAGE_FOLDER
                 + "domainserver.png"); // NOI18N
