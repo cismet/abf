@@ -39,9 +39,9 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/central/de/cismet/cids/abf</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/central/de/cismet/cids/abf</developerConnection>
-        <url>http://repositories:8082/central/browse/de/cismet/cids/abf</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk</url>
     </scm>
 
     <properties>
