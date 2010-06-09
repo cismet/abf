@@ -76,12 +76,12 @@
             <dependency>
                 <groupId>de.cismet.cids</groupId>
                 <artifactId>data-objects</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>2.1</version>
             </dependency>
             <dependency>
                 <groupId>de.cismet.cids</groupId>
                 <artifactId>cids-server</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.netbeans.api</groupId>
