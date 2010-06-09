@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>abf-update-center</artifactId>
+    <version>3.0-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Update Center</name>
