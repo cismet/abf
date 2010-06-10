@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="Domainserver">
+            <attr name="position" intvalue="100"/>
+            <file name="de-cismet-cids-abf-domainserver-ConnectAction.instance">
+                <attr name="position" intvalue="100"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.instance">
+                <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-RefreshAction.instance">
+                <attr name="position" intvalue="650"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.instance">
+                <attr name="position" intvalue="500"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.instance">
+                <attr name="position" intvalue="600"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-separatorAfter.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="300"/>
+            </file>
+        </folder>
+        <folder name="Diagram">
+            <attr name="position" intvalue="400"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddClassToCurrentDiagramAction.instance">
+                <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddClassWithRelationsToCurrentDiagramAction.instance">
+                <attr name="position" intvalue="300"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.instance">
+                <attr name="position" intvalue="100"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance">
+                <attr name="position" intvalue="150"/>
+            </file>
+        </folder>
+        <file name="Repository_hidden"/>
+        <folder name="Usermanagement">
+            <attr name="position" intvalue="300"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance">
+                <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.instance">
+                <attr name="position" intvalue="400"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.instance">
+                <attr name="position" intvalue="600"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance">
+                <attr name="position" intvalue="150"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance">
+                <attr name="position" intvalue="100"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance">
+                <attr name="position" intvalue="500"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-separatorAfter.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-separatorAfter.instance"/>
+                <attr name="position" intvalue="450"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <folder name="Domainserver.instance">
+            <attr name="position" intvalue="100"/>
+            <attr name="SystemFileSystem.localizingBundle" stringvalue="de.cismet.cids.abf.domainserver.Bundle"/>
+            <file name="de-cismet-cids-abf-domainserver-ConnectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-ConnectAction.instance"/>
+                <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-DeleteLockAction.instance"/>
+                <attr name="position" intvalue="300"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-RefreshAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-RefreshAction.instance"/>
+                <attr name="position" intvalue="500"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.instance"/>
+                <attr name="position" intvalue="375"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.instance"/>
+                <attr name="position" intvalue="387"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-separatorAfter2.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-separatorAfter.instance"/>
+                <attr name="position" intvalue="350"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-separatorAfter.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-separatorAfter.instance"/>
+                <attr name="position" intvalue="400"/>
+            </file>
+        </folder>
+        <file name="CVS_hidden"/>
+        <folder name="Diagram.instance">
+            <attr name="position" intvalue="400"/>
+            <attr name="SystemFileSystem.localizingBundle" stringvalue="de.cismet.cids.abf.domainserver.Bundle"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassToCurrentDiagramAction.instance"/>
+                <attr name="position" intvalue="400"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassWithRelationsToCurrentDiagramAction.instance"/>
+                <attr name="position" intvalue="300"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.instance"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance"/>
+                <attr name="position" intvalue="100"/>
+            </file>
+            </folder>
+        <folder name="Usermanagement.instance">
+            <attr name="position" intvalue="300"/>
+            <attr name="SystemFileSystem.localizingBundle" stringvalue="de.cismet.cids.abf.domainserver.Bundle"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.instance"/>
+                <attr name="position" intvalue="400"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance"/>
+                <attr name="position" intvalue="300"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.instance"/>
+                <attr name="position" intvalue="600"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance"/>
+                <attr name="position" intvalue="100"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance"/>
+                <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance"/>
+                <attr name="position" intvalue="500"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-separatorAfter.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-separatorAfter.instance"/>
+                <attr name="position" intvalue="450"/>
+            </file>
+        </folder>
+        <file name="BuildProject_hidden"/>
+        <file name="GoTo_hidden"/>
+        <file name="Refactoring_hidden"/>
+        <file name="RunProject_hidden"/>
+        <file name="Source_hidden"/>
+    </folder>
+    <folder name="Toolbars">
+        <folder name="Diagram">
+            <attr name="position" intvalue="400"/>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassToCurrentDiagramAction.instance"/>
+                <attr name="position" intvalue="300"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddWithRelationsToCurrentDiagram.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-AddClassWithRelationsToCurrentDiagramAction.instance"/>
+                <attr name="position" intvalue="400"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassAction.instance"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance"/>
+                <attr name="position" intvalue="100"/>
+            </file>
+            </folder>
+        <folder name="Domainserver">
+            <attr name="position" intvalue="100"/>
+            <file name="de-cismet-cids-abf-domainserver-ConnectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-ConnectAction.instance"/>
+                <attr name="position" intvalue="100"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-DeleteLockAction.instance"/>
+                <attr name="position" intvalue="150"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-RefreshAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-RefreshAction.instance"/>
+                <attr name="position" intvalue="287"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-cidsclass-ExportClassesAction.instance"/>
+                <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.instance"/>
+                <attr name="position" intvalue="250"/>
+            </file>
+            </folder>
+        <file name="Build_hidden"/>
+        <file name="Debug_hidden"/>
+        <folder name="Usermanagement">
+            <attr name="position" intvalue="300"/>
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUsergroupAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-DeleteUsergroupAction.instance"/>
+                <attr name="position" intvalue="300"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance"/>
+                <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.instance"/>
+                <attr name="position" intvalue="600"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance"/>
+                <attr name="position" intvalue="50"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance"/>
+                <attr name="position" intvalue="400"/>
+            </file>
+        </folder>
+
+    </folder>
+    <folder name="Windows2">
+        <folder name="Components">
+            <file name="ClassDiagramTopComponent.settings" url="ClassDiagramTopComponentSettings.xml"/>
+            <file name="SyncingSqlTopComponent.settings" url="SyncingSqlTopComponentSettings.xml"/>
+        </folder>
+        <folder name="Modes">
+            <folder name="editor">
+                <file name="ClassDiagramTopComponent.wstcref" url="ClassDiagramTopComponentWstcref.xml"/>
+                <file name="SyncingSqlTopComponent.wstcref" url="SyncingSqlTopComponentWstcref.xml"/>
+            </folder>
+            <folder name="navigator">
+                <attr name="navigatorTC.wstcref/properties.wstcref" boolvalue="true"/>
+                <file name="navigatorTC.wstcref" url="navigatorTCWstcref.xml"/>
+                <file name="properties.wstcref" url="propertiesWstcref_1.xml"/>
+            </folder>
+            <folder name="properties">
+                <file name="properties.wstcref" url="propertiesWstcref.xml"/>
+                <file name="properties.wstcref_hidden"/>
+            </folder>
+        </folder>
+    </folder>
+    <folder name="Navigator">
+        <folder name="Panels">
+            <folder name="cismet">
+                <folder name="satellite-wiring">
+                    <file name="de-cismet-cids-abf-domainserver-project-cidsclass-graph-SatelliteNavigationPanel.instance"/>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+</filesystem>
