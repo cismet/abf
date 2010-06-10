@@ -1,25 +1,24 @@
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>3.0-RC1</version>
     </parent>
 
     <artifactId>abf-branding</artifactId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.0-RC1</version>
     <packaging>nbm</packaging>
 
     <name>ABF Branding</name>
     <description>The ABF Branding module provides the branding for the application</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-branding/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/trunk/abf/abf-branding/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-branding/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0-RC1</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/tags/abf-3.0-RC1</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.0-RC1</url>
     </scm>
 
     <build>
