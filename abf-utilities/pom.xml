@@ -16,9 +16,9 @@
     <description>Utility module for cids ABF</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-utilities/trunk/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-utilities/trunk/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/abf-utilities/trunk/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-utilities/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-utilities/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-utilities/</url>
     </scm>
     
     <dependencies>

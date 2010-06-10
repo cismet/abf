@@ -16,9 +16,9 @@
     <description>A NetBeans Java project template to create Java projects with library support of a cidsDistribution</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-cids-java-template/trunk/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-cids-java-template/trunk/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/abf-cids-java-template/trunk/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-cids-java-template/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-cids-java-template/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-cids-java-template/</url>
     </scm>
 
     <dependencies>

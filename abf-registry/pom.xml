@@ -16,9 +16,9 @@
     <description>Registry project to communicate with cids users</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-registry/trunk/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-registry/trunk/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/abf-registry/trunk/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-registry/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-registry/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-registry/</url>
     </scm>
     
     <dependencies>

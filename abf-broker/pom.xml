@@ -16,9 +16,9 @@
     <description>DESCRIPTION PENDING !!!</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-broker/trunk/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-broker/trunk/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/abf-broker/trunk/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-broker/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-broker/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-broker/</url>
     </scm>
 
     <dependencies>

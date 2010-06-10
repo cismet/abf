@@ -16,9 +16,9 @@
     <description>Helps users to administer the libraries of their cids Distribution</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-library-support/trunk/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-library-support/trunk/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/abf-library-support/trunk/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-library-support/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-library-support/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-library-support/</url>
     </scm>
 
     <dependencies>

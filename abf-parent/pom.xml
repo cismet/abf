@@ -26,22 +26,22 @@
     </developers>
 
     <modules>
-        <module>../../abf-app/trunk</module>
-        <module>../../abf-branding/trunk</module>
-        <module>../../abf-update-center/trunk</module>
-        <module>../../abf-utilities/trunk</module>
-        <module>../../abf-library-support/trunk</module>
-        <module>../../abf-cids-java-template/trunk</module>
-        <module>../../abf-registry/trunk</module>
-        <module>../../abf-broker/trunk</module>
-        <module>../../abf-client/trunk</module>
-        <module>../../abf-domainserver/trunk</module>
+        <module>../abf-app</module>
+        <module>../abf-branding</module>
+        <module>../abf-update-center</module>
+        <module>../abf-utilities</module>
+        <module>../abf-library-support</module>
+        <module>../abf-cids-java-template</module>
+        <module>../abf-registry</module>
+        <module>../abf-broker</module>
+        <module>../abf-client</module>
+        <module>../abf-domainserver</module>
     </modules>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-parent/trunk/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/abf-parent/trunk/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/abf-parent/trunk/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-parent/</url>
     </scm>
 
     <properties>
