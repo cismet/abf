@@ -5,20 +5,20 @@
     <parent>
         <artifactId>abf</artifactId>
         <groupId>de.cismet.cids.abf</groupId>
-        <version>3.0-RC1</version>
+        <version>3.0-RC2-SNAPSHOT</version>
     </parent>
 
     <artifactId>abf-update-center</artifactId>
-    <version>3.0-RC1</version>
+    <version>3.0-RC2-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Update Center</name>
     <description>Update center for cids ABF</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0-RC1/abf-update-center</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0-RC1/abf-update-center</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.0-RC1/abf-update-center</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-update-center/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-update-center/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-update-center/</url>
     </scm>
     
     <build>
