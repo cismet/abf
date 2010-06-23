@@ -25,13 +25,13 @@
         <!-- START: ENABLED CLUSTERS -->
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
-            <artifactId>platform11</artifactId>
+            <artifactId>platform</artifactId>
             <version>${netbeans.version}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
-            <artifactId>ide12</artifactId>
+            <artifactId>ide</artifactId>
             <version>${netbeans.version}</version>
             <type>pom</type>
         </dependency>
@@ -43,19 +43,19 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
-            <artifactId>nb6.8</artifactId>
+            <artifactId>nb</artifactId>
             <version>${netbeans.version}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
-            <artifactId>apisupport1</artifactId>
+            <artifactId>apisupport</artifactId>
             <version>${netbeans.version}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
-            <artifactId>java3</artifactId>
+            <artifactId>java</artifactId>
             <version>${netbeans.version}</version>
             <type>pom</type>
         </dependency>
