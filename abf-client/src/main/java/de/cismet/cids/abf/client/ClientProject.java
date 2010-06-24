@@ -86,7 +86,7 @@ public class ClientProject implements Project {
                 result = projectDir.createFolder(WEBINTERFACE_DIR);
             } catch (final IOException ioe) {
                 ErrorUtils.showErrorMessage(
-                    org.openide.util.NbBundle.getMessage(ClientProject.class, "Err_couldNotCreateWebFolder"), // NOI18N
+                    org.openide.util.NbBundle.getMessage(ClientProject.class, "ClientProject.getWebinterfaceFolder(boolean).ErrorUtils.message"), // NOI18N
                     ioe);
             }
         }
@@ -126,7 +126,7 @@ public class ClientProject implements Project {
                 properties.load(fob.getInputStream());
             } catch (final IOException e) {
                 ErrorUtils.showErrorMessage(
-                    org.openide.util.NbBundle.getMessage(ClientProject.class, "Err_loadingProjectProps"), // NOI18N
+                    org.openide.util.NbBundle.getMessage(ClientProject.class, "ClientProject.loadProperties().ErrorUtils.message"), // NOI18N
                     e);
             }
         }
