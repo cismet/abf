@@ -97,7 +97,7 @@ public final class CidsJavaTemplateWizardIterator implements WizardDescriptor.In
      * @return  DOCUMENT ME!
      */
     private String[] createSteps() {
-        return new String[] { NbBundle.getMessage(CidsJavaTemplateWizardIterator.class, "LBL_CreateProjectStep") }; // NOI18N
+        return new String[] { NbBundle.getMessage(CidsJavaTemplateWizardIterator.class, "CidsJavaTemplateWizardPanel.component.name") }; // NOI18N
     }
 
     @Override
@@ -171,7 +171,7 @@ public final class CidsJavaTemplateWizardIterator implements WizardDescriptor.In
     public String name() {
         return org.openide.util.NbBundle.getMessage(
                 CidsJavaTemplateWizardIterator.class,
-                "Dsc_nOfm", // NOI18N
+                "CidsJavaTemplateWizardIterator.name().returnvalue", // NOI18N
                 new Object[] { Integer.valueOf(index + 1), Integer.valueOf(panels.length) });
     }
 

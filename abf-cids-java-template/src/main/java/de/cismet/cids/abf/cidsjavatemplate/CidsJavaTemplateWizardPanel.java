@@ -53,7 +53,7 @@ public final class CidsJavaTemplateWizardPanel implements WizardDescriptor.Panel
     public Component getComponent() {
         if (component == null) {
             component = new CidsJavaTemplatePanelVisual(this);
-            component.setName(NbBundle.getMessage(CidsJavaTemplateWizardPanel.class, "LBL_CreateProjectStep")); // NOI18N
+            component.setName(NbBundle.getMessage(CidsJavaTemplateWizardPanel.class, "CidsJavaTemplateWizardPanel.component.name")); // NOI18N
         }
         return component;
     }

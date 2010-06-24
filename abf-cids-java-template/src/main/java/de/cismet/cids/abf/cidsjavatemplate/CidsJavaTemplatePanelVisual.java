@@ -93,12 +93,12 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
     private void initComponents() {
 
         lblProjectName.setLabelFor(txtProjectName);
-        org.openide.awt.Mnemonics.setLocalizedText(lblProjectName, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "lbl_projectName")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblProjectName, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.lblProjectName.text")); // NOI18N
 
         lblDistLocation.setLabelFor(txtDistLocation);
-        org.openide.awt.Mnemonics.setLocalizedText(lblDistLocation, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "lbl_distLocation")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDistLocation, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.lblDistLocation.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(btnBrowse, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "Btn_browse")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(btnBrowse, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.btnBrowse.text")); // NOI18N
         btnBrowse.setActionCommand("BROWSE");
         btnBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,7 +107,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
         });
 
         lblProjectFolder.setLabelFor(txtProjectFolder);
-        org.openide.awt.Mnemonics.setLocalizedText(lblProjectFolder, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "lbl_projectFolder")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblProjectFolder, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.lblProjectFolder.text")); // NOI18N
 
         txtProjectFolder.setEditable(false);
 
@@ -159,7 +159,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
         final JFileChooser chooser = new JFileChooser();
         FileUtil.preventFileChooserSymlinkTraversal(chooser, null);
         chooser.setDialogTitle(
-            org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "Dsc_chooseDist")); // NOI18N
+            org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.btnBrowseActionPerformed(ActionEvent).chooser.dialogTitle")); // NOI18N
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         final String path = this.txtDistLocation.getText();
         if (path.length() > 0) {
@@ -196,7 +196,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "Dsc_projectNameNotValid"));       // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidDirectoryNameProperty"));       // NOI18N
             return false;                              // Display name not specified
         }
         final File f = FileUtil.normalizeFile(new File(txtDistLocation.getText()).getAbsoluteFile());
@@ -205,7 +205,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "Dsc_projectFolderPathNotValid")); // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidProjectFolderProperty")); // NOI18N
             return false;
         }
         final File destFolder = FileUtil.normalizeFile(new File(txtProjectFolder.getText()).getAbsoluteFile());
@@ -218,7 +218,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "Dsc_projectFolderUncreateable")); // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.projectFolderUncreatableProperty")); // NOI18N
             return false;
         }
         if (FileUtil.toFileObject(projLoc) == null) {
@@ -226,7 +226,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "Dsc_projectFolderPathNotValid")); // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidProjectFolderProperty")); // NOI18N
             return false;
         }
 
@@ -237,7 +237,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "Dsc_projectFolderExistsAndNotEmpty"));                    // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.projectFolderExistsNonEmptyProperty"));                    // NOI18N
             return false;
         }
         wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, ""); // NOI18N
