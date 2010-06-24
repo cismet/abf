@@ -83,12 +83,12 @@ public class ErrorPanel extends javax.swing.JPanel {
      * DOCUMENT ME!
      */
     private void init() {
-        tbpErrorMessage.setTitleAt(0, org.openide.util.NbBundle.getMessage(ErrorPanel.class, "Dsc_message")); // NOI18N
-        tbpErrorMessage.setTitleAt(1, org.openide.util.NbBundle.getMessage(ErrorPanel.class, "Dsc_error"));   // NOI18N
+        tbpErrorMessage.setTitleAt(0, org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.tbpErrorMessage.titleAt0")); // NOI18N
+        tbpErrorMessage.setTitleAt(1, org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.tbpErrorMessage.titleAt1"));   // NOI18N
         txaMessage.setEditable(false);
         txaMessage.setLineWrap(true);
         txaMessage.setText(message);
-        lblLink.setText(org.openide.util.NbBundle.getMessage(ErrorPanel.class, "Lbl_reportError"));           // NOI18N
+        lblLink.setText(org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.lblLink.text"));           // NOI18N
         lblLink.addMouseListener(new LinkAdapter());
         final StringBuffer stacktrace = new StringBuffer();
         for (final StackTraceElement ste : error.getStackTrace()) {
@@ -117,7 +117,7 @@ public class ErrorPanel extends javax.swing.JPanel {
                     if (e.isPopupTrigger()) {
                         final JPopupMenu popup = new JPopupMenu();
                         final JMenuItem item = new JMenuItem(
-                                org.openide.util.NbBundle.getMessage(ErrorPanel.class, "Dsc_copyText")); // NOI18N
+                                org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.lblError.MouseAdapter.maybePopup(MouseEvent).item.text")); // NOI18N
                         item.addActionListener(
                             new ActionListener() {
 
@@ -236,7 +236,7 @@ public class ErrorPanel extends javax.swing.JPanel {
         // TODO: use Desktop API when switching to Java 1.6
         @Override
         public void mouseClicked(final MouseEvent me) {
-            final String url = org.openide.util.NbBundle.getMessage(ErrorPanel.class, "Url_cismetBugtracker"); // NOI18N
+            final String url = org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.LinkAdapter.mouseClicked(MouseEvent).url"); // NOI18N
             final String osName = System.getProperty("os.name");                                               // NOI18N
             try {
                 if (Desktop.isDesktopSupported()) {

@@ -91,7 +91,7 @@ public class LoadingNode extends AbstractNode {
      */
     public LoadingNode() {
         super(Children.LEAF);
-        setDisplayName(org.openide.util.NbBundle.getMessage(LoadingNode.class, "Dsc_pleaseWait")); // NOI18N
+        setDisplayName(org.openide.util.NbBundle.getMessage(LoadingNode.class, "LoadingNode.displayName")); // NOI18N
         counter = 1;
         final Thread t = new Thread(
                 new Runnable() {

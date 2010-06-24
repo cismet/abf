@@ -44,7 +44,7 @@ public final class ErrorUtils {
      * @param  t        DOCUMENT ME!
      */
     public static void showErrorMessage(final String message, final Throwable t) {
-        showErrorMessage(message, org.openide.util.NbBundle.getMessage(ErrorUtils.class, "Dsc_unexpectedError"), t); // NOI18N
+        showErrorMessage(message, org.openide.util.NbBundle.getMessage(ErrorUtils.class, "ErrorUtils.showErrorMessage(String,Throwable).defaultmessage"), t); // NOI18N
     }
 
     /**
