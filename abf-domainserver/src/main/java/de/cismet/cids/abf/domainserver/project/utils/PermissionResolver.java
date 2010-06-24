@@ -63,46 +63,46 @@ public final class PermissionResolver {
     static {
         PERM_STRING_READ = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_permStringRead");             // NOI18N
+                "PermissionResolver.PERM_STRING_READ");             // NOI18N
         PERM_STRING_WRITE = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_permStringWrite");            // NOI18N
+                "PermissionResolver.PERM_STRING_WRITE");            // NOI18N
         PERM_STRING_NOT = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_permStringNot");              // NOI18N
+                "PermissionResolver.PERM_STRING_NOT");              // NOI18N
         INH_STRING_CLASS_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_inhStringClassPolicy");       // NOI18N
+                "PermissionResolver.INH_STRING_CLASS_POLICY");       // NOI18N
         INH_STRING_NODE_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_inhStringNodePolicy");        // NOI18N
+                "PermissionResolver.INH_STRING_NODE_POLICY");        // NOI18N
         INH_STRING_SERVER_ATTR_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_inhStringServerAttrPolicy");  // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_ATTR_POLICY");  // NOI18N
         INH_STRING_SERVER_CLASS_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_inhStringServerClassPolicy"); // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_CLASS_POLICY"); // NOI18N
         INH_STRING_SERVER_NODE_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_inhStringServerNodePolicy");  // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_NODE_POLICY");  // NOI18N
         INH_STRING_SERVER_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_inhStringServerPolicy");      // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_POLICY");      // NOI18N
         USE_STRING_ATTR_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_useStringAttrPolicy");        // NOI18N
+                "PermissionResolver.USE_STRING_ATTR_POLICY");        // NOI18N
         USE_STRING_CLASS_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_useStringClassPolicy");       // NOI18N
+                "PermissionResolver.USE_STRING_CLASS_POLICY");       // NOI18N
         USE_STRING_NODE_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_useStringNodePolicy");        // NOI18N
+                "PermissionResolver.USE_STRING_NODE_POLICY");        // NOI18N
         PERM_STRING_DERIVED_FROM_CLASS = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_rightsDerivedFromClass");     // NOI18N
+                "PermissionResolver.PERM_STRING_DERIVED_FROM_CLASS");     // NOI18N
         PERM_STRING_UNSUPPORTED_PERMISSION = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver_unsupported_perm");           // NOI18N
+                "PermissionResolver.PERM_STRING_UNSUPPORTED_PERMISSION");           // NOI18N
         MAP = new Hashtable<DomainserverProject, PermissionResolver>();
     }
 

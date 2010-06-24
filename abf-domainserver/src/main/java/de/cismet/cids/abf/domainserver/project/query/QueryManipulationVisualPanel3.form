@@ -123,7 +123,7 @@
     <Component class="javax.swing.JLabel" name="lblRight">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Lbl_right" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel3.lblRight.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -143,7 +143,7 @@
     <Component class="javax.swing.JLabel" name="lblGroups">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Lbl_groups" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel3.lblGroups.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -231,7 +231,7 @@
     <Component class="javax.swing.JLabel" name="lblStmt">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Lbl_stmt" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel3.lblStmt.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -266,7 +266,7 @@
     <Component class="javax.swing.JLabel" name="lblRights">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="lbl_rights" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel3.lblRights.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>

@@ -80,7 +80,7 @@ public final class NewJavaClassWizardAction extends NodeAction
         // .getName()
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                NewJavaClassWizardAction.class, "Dsc_newJavaclass")); // NOI18N
+                NewJavaClassWizardAction.class, "NewJavaClassWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         final Dialog dialog;
 //        try
 //        {
@@ -189,7 +189,7 @@ public final class NewJavaClassWizardAction extends NodeAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewJavaClassWizardAction.class, "Dsc_newJavaclass"); // NOI18N
+                NewJavaClassWizardAction.class, "NewJavaClassWizardAction.getName().returnvalue"); // NOI18N
     }
     
     @Override

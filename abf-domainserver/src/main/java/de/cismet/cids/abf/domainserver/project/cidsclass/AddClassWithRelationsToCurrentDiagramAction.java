@@ -64,7 +64,8 @@ public final class AddClassWithRelationsToCurrentDiagramAction extends
 
     public String getName()
     {
-        return NbBundle.getMessage(AddClassWithRelationsToCurrentDiagramAction.class, "CTL_AddWithRelationsToCurrentDiagram");
+        return NbBundle.getMessage(AddClassWithRelationsToCurrentDiagramAction.class,
+                "AddClassWithRelationsToCurrentDiagramAction.getName().returnvalue");
     }
 
     protected String iconResource()

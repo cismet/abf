@@ -213,23 +213,23 @@ public final class Renderers
             if(type.equals(JavaClass.Type.TO_STRING.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_toStringClass")); // NOI18N
+                        Renderers.class, "Renderers.JavaClassTypeRenderer.getListCellRendererComponent().toStringClass")); // NOI18N
             }else if(type.equals(JavaClass.Type.RENDERER.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_renderer")); // NOI18N
+                        Renderers.class, "Renderers.JavaClassTypeRenderer.getListCellRendererComponent().renderer")); // NOI18N
             }else if(type.equals(JavaClass.Type.SIMPLE_EDITOR.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_simpleEditor")); // NOI18N
+                        Renderers.class, "Renderers.JavaClassTypeRenderer.getListCellRendererComponent().simpleEditor")); // NOI18N
             }else if(type.equals(JavaClass.Type.COMPLEX_EDITOR.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_complexEditor")); // NOI18N
+                        Renderers.class, "Renderers.JavaClassTypeRenderer.getListCellRendererComponent().complexEditor")); // NOI18N
             }else if(type.equals(JavaClass.Type.UNKNOWN.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_unknownClass")); // NOI18N
+                        Renderers.class, "Renderers.JavaClassTypeRenderer.getListCellRendererComponent().unknownClass")); // NOI18N
             }
             return l;
         }
@@ -252,19 +252,19 @@ public final class Renderers
             if(type.equals(CatNode.Type.CLASS.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_classNode")); // NOI18N
+                        Renderers.class, "Renderers.NodeTypeRenderer.getListCellRendererComponent().classNode")); // NOI18N
             }else if(type.equals(CatNode.Type.OBJECT.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_objectNode")); // NOI18N
+                        Renderers.class, "Renderers.NodeTypeRenderer.getListCellRendererComponent().objectNode")); // NOI18N
             }else if(type.equals(CatNode.Type.ORG.getType()))
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_organisationalNode")); // NOI18N
+                        Renderers.class, "Renderers.NodeTypeRenderer.getListCellRendererComponent().organisationalNode")); // NOI18N
             }else
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_unknownType")); // NOI18N
+                        Renderers.class, "Renderers.NodeTypeRenderer.getListCellRendererComponent().unknownType")); // NOI18N
             }
             return l;
         }
@@ -329,7 +329,7 @@ public final class Renderers
             if(i == null)
             {
                 l.setText(org.openide.util.NbBundle.getMessage(
-                        Renderers.class, "Dsc_noIcon")); // NOI18N
+                        Renderers.class, "Renderers.IconCellRenderer.getListCellRendererComponent().noIcon")); // NOI18N
                 l.setIcon(null);
             }else 
             {

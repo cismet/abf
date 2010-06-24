@@ -109,7 +109,7 @@ public final class NewUsergroupVisualPanel2 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewUsergroupVisualPanel2.class, "Dsc_addUser"); // NOI18N
+                NewUsergroupVisualPanel2.class, "NewUsergroupVisualPanel2.getName().returnvalue"); // NOI18N
     }
     
     private void addUserNodes(final Node[] nodeArray)

@@ -201,7 +201,7 @@ public final class DomainserverProject implements Project, Connectable
                     LOG.error("could not load runtime properties");
                     ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     DomainserverProject.class,
-                    "Err_runtimePropsNotLoaded"), e); // NOI18N
+                    "DomainserverProject.fileChanged(FileEvent).FileChangeListener.ErrorUtils.runtimePropsNotLoadedError"), e); // NOI18N
                 }
             }
 
@@ -229,7 +229,7 @@ public final class DomainserverProject implements Project, Connectable
             LOG.error("could not load runtime properties"); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     DomainserverProject.class, 
-                    "Err_runtimePropsNotLoaded"), e); // NOI18N
+                    "DomainserverProject.DomainserverProject().ErrorUtils.runtimePropsNotLoadedError"), e); // NOI18N
         }
     }
 
@@ -254,7 +254,7 @@ public final class DomainserverProject implements Project, Connectable
                 sb.append("<li>") // NOI18N
                         .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class,
-                            "Dsc_serverPolicy")) // NOI18N
+                            "DomainserverProject.initPolicy().serverPolicy")) // NOI18N
                         .append("</li>"); // NOI18N
                 runtimeProps.put(PROP_POLICY_SERVER, DEFAULT_POLICY_SERVER);
                 serverPolicy = DEFAULT_POLICY_SERVER;
@@ -264,7 +264,7 @@ public final class DomainserverProject implements Project, Connectable
                 sb.append("<li>") // NOI18N
                         .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class, 
-                            "Dsc_attributePolicy")) // NOI18N
+                            "DomainserverProject.initPolicy().attributePolicy")) // NOI18N
                         .append("</li>"); // NOI18N
                 runtimeProps.put(PROP_POLICY_ATTR, DEFAULT_POLICY_ATTR);
                 attrPolicy = DEFAULT_POLICY_ATTR;
@@ -274,7 +274,7 @@ public final class DomainserverProject implements Project, Connectable
                 sb.append("<li>") // NOI18N
                         .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class, 
-                            "Dsc_classNodePolicy")) // NOI18N
+                            "DomainserverProject.initPolicy().classNodePolicy")) // NOI18N
                         .append("</li>"); // NOI18N
                 runtimeProps.put(PROP_POLICY_CLASS_NODE,
                         DEFAULT_POLICY_CLASS_NODE);
@@ -285,7 +285,7 @@ public final class DomainserverProject implements Project, Connectable
                 sb.append("<li>") // NOI18N
                         .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class, 
-                            "Dsc_orgNodePolicy")) // NOI18N
+                            "DomainserverProject.initPolicy().orgNodePolicy")) // NOI18N
                         .append("</li>"); // NOI18N
                 runtimeProps.put(PROP_POLICY_ORG_NODE, DEFAULT_POLICY_ORG_NODE);
                 orgNodePolicy = DEFAULT_POLICY_ORG_NODE;
@@ -295,11 +295,11 @@ public final class DomainserverProject implements Project, Connectable
                     WindowManager.getDefault().getMainWindow(),
                     org.openide.util.NbBundle.getMessage(
                         DomainserverProject.class, 
-                        "Dsc_missingPropertiesQuestion", // NOI18N
+                        "DomainserverProject.initPolicy().JOptionPane.message", // NOI18N
                         sb.toString()),
                     org.openide.util.NbBundle.getMessage(
                         DomainserverProject.class, 
-                        "Dsc_missingProperties"), // NOI18N
+                        "DomainserverProject.initPolicy().JOptionPane.title"), // NOI18N
                     JOptionPane.INFORMATION_MESSAGE);
             storeRuntimeProperties();
         }
@@ -326,7 +326,7 @@ public final class DomainserverProject implements Project, Connectable
                 ErrorUtils.showErrorMessage(
                         org.openide.util.NbBundle.getMessage(
                         DomainserverProject.class, 
-                        "Err_unknownError"), ioe); // NOI18N
+                        "DomainserverProject.getWebinterfaceFolder().ErrorUtils.unknownErrorMessage"), ioe); // NOI18N
             }
         }
         return result;
@@ -387,7 +387,7 @@ public final class DomainserverProject implements Project, Connectable
                     ErrorUtils.showErrorMessage(
                             org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class,
-                            "Err_unknownError"), ex); // NOI18N
+                            "DomainserverProject.getProperties().ErrorUtils.unknownErrorMessage"), ex); // NOI18N
                 }
             }
         }
@@ -474,7 +474,7 @@ public final class DomainserverProject implements Project, Connectable
             {
                 ErrorUtils.showErrorMessage(org.openide.util.NbBundle
                         .getMessage(DomainserverProject.class, 
-                        "Err_loadingRuntimeProps"), e); // NOI18N
+                        "DomainserverProject.storeRuntimeProperties().ErrorUtils.loadingRuntimeProps"), e); // NOI18N
             }finally
             {
                 if(lock != null)// && lock.isValid())
@@ -507,7 +507,7 @@ public final class DomainserverProject implements Project, Connectable
             LOG.error("could not locate runtime.properties file"); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     DomainserverProject.class, 
-                    "Err_runtimePropsUnfindable"), null); // NOI18N
+                    "DomainserverProject.storeRuntimeProperties().ErrorUtils.runtimePropsUnfindable"), null); // NOI18N
         }
     }
     
@@ -557,7 +557,7 @@ public final class DomainserverProject implements Project, Connectable
                             ErrorUtils.showErrorMessage(
                                     org.openide.util.NbBundle.getMessage(
                                     DomainserverProject.class, 
-                                    "Err_unknownError"), e); // NOI18N
+                                    "DomainserverProject.setConnected().ErrorUtils.unknownErrorMessage"), e); // NOI18N
                         }
                         if(LOG.isDebugEnabled())
                         {
@@ -598,10 +598,10 @@ public final class DomainserverProject implements Project, Connectable
                     {
                         ErrorUtils.showErrorMessage(org.openide.util.NbBundle
                                 .getMessage(DomainserverProject.class, 
-                                "Err_connectToDB"), // NOI18N
+                                "DomainserverProject.setConnected().ErrorUtils.connectToDB"), // NOI18N
                                 org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class, 
-                                "Err_connectionError"), e); // NOI18N
+                                "DomainserverProject.setConnected().ErrorUtils.connectionError"), e); // NOI18N
                         fireConnectionStatusChanged(isConnected());
                         connectionInProgress = false;
                     }
@@ -623,7 +623,7 @@ public final class DomainserverProject implements Project, Connectable
                 LOG.error("could not close backend", e); // NOI18N
                 ErrorUtils.showErrorMessage(org.openide.util.NbBundle
                         .getMessage(DomainserverProject.class,
-                        "Err_closeDBConnection"), e); // NOI18N
+                        "DomainserverProject.setConnected().ErrorUtils.closeDBConnection"), e); // NOI18N
             }
             diffAccessor.freeResources();
             diffAccessor = null;
@@ -657,7 +657,7 @@ public final class DomainserverProject implements Project, Connectable
         {
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     DomainserverProject.class, 
-                    "Err_runtimePropsReload"), e); // NOI18N
+                    "DomainserverProject.acquireLock().ErrorUtils.runtimePropsReload"), e); // NOI18N
             return false;
         }
         Connection con = null;
@@ -681,10 +681,10 @@ public final class DomainserverProject implements Project, Connectable
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class, 
-                                "Err_noDBConnectionPossibleHTML"), // NOI18N
+                                "DomainserverProject.acquireLock().ErrorUtils.noDBConnectionPossibleHTML"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class, 
-                                "Err_dbUnreachable"), // NOI18N
+                                "DomainserverProject.acquireLock().ErrorUtils.dbUnreachable"), // NOI18N
                             JOptionPane.WARNING_MESSAGE);
                 }
             });// </editor-fold>
@@ -717,10 +717,10 @@ public final class DomainserverProject implements Project, Connectable
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class, 
-                                "Err_dbUnlockableHTML"), // NOI18N
+                                "DomainserverProject.acquireLock().ErrorUtils.dbUnlockableHTML"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class, 
-                                "Err_tableUnlockable"), // NOI18N
+                                "DomainserverProject.acquireLock().ErrorUtils.tableUnlockable"), // NOI18N
                             JOptionPane.WARNING_MESSAGE);
                 }
             });
@@ -782,12 +782,12 @@ public final class DomainserverProject implements Project, Connectable
                                 WindowManager.getDefault().getMainWindow(),
                                 org.openide.util.NbBundle.getMessage(
                                     DomainserverProject.class, 
-                                    "Dsc_alreadyLocked", // NOI18N
+                                    "DomainserverProject.acquireLock().ErrorUtils.alreadyLocked", // NOI18N
                                     who,
                                     date.toString()),
                                 org.openide.util.NbBundle.getMessage(
                                     DomainserverProject.class, 
-                                    "Dsc_lockPresent"), // NOI18N
+                                    "DomainserverProject.acquireLock().ErrorUtils.lockPresent"), // NOI18N
                                 JOptionPane.WARNING_MESSAGE);
                     }
                 });
@@ -832,10 +832,10 @@ public final class DomainserverProject implements Project, Connectable
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class,
-                                "Dsc_unlockableHTML"), // NOI18N
+                                "DomainserverProject.acquireLock().ErrorUtils.unlockableHTML"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class,
-                                "Dsc_lockNotSet"), // NOI18N
+                                "DomainserverProject.acquireLock().ErrorUtils.lockNotSet"), // NOI18N
                             JOptionPane.WARNING_MESSAGE);
                 }
             });
@@ -902,11 +902,11 @@ public final class DomainserverProject implements Project, Connectable
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class,
-                                "Dsc_lockNotDeletableHTML", // NOI18N
+                                "DomainserverProject.releaseLock().ErrorUtils.lockNotDeletableHTMLL", // NOI18N
                                 lockNonce),
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class,
-                                "Dsc_errorDuringLockDeletion"), // NOI18N
+                                "DomainserverProject.releaseLock().ErrorUtils.errorDuringLockDeletion"), // NOI18N
                             JOptionPane.WARNING_MESSAGE);
                 }
             });
@@ -1057,14 +1057,14 @@ public final class DomainserverProject implements Project, Connectable
             handle = ProgressHandleFactory.createHandle(
                     org.openide.util.NbBundle.getMessage(
                         DomainserverProject.class,
-                        "Dsc_disconnectFromDomainserver", // NOI18N
+                        "DomainserverProject.fireConnectionStatusIndeterminate().handle.disconnectFromDomainserver", // NOI18N
                         getProjectDirectory().getName()));
         }else
         {
             handle = ProgressHandleFactory.createHandle(
                     org.openide.util.NbBundle.getMessage(
                         DomainserverProject.class,
-                        "Dsc_connectToDomainserver", // NOI18N
+                        "DomainserverProject.fireConnectionStatusIndeterminate().handle.connectToDomainserver", // NOI18N
                         getProjectDirectory().getName()));
         }
         handle.start();

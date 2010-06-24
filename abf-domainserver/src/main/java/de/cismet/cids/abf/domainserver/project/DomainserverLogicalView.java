@@ -183,7 +183,7 @@ public final class DomainserverLogicalView implements LogicalViewProvider
         {
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     DomainserverLogicalView.class, 
-                    "Err_unknownError"), // NOI18N
+                    "DomainserverLogicalView.createLogicalView().ErrorUtils.unknownErrorMessage"), // NOI18N
                     donfe);
             //Fallback - the directory couldn't be created -
             //read-only filesystem or something evil happened

@@ -89,7 +89,7 @@ public final class JavaClassPropertyEditor extends PropertyEditorSupport
     static
     {
         NO_JAVA_CLASS = org.openide.util.NbBundle.getMessage(
-                JavaClassPropertyEditor.class, "Dsc_noClassBrackets"); // NOI18N
+                JavaClassPropertyEditor.class, "JavaClassPropertyEditor.NO_JAVA_CLASS"); // NOI18N
     }
 
     /**
@@ -233,7 +233,7 @@ public final class JavaClassPropertyEditor extends PropertyEditorSupport
                     {
                         l.setText(org.openide.util.NbBundle.getMessage(
                                 JavaClassPropertyEditor.class, 
-                                "Dsc_noClass")); // NOI18N
+                                "JavaClassPropertyEditor.Inplace.cellRendererComponent.label.default")); // NOI18N
                         l.setIcon(null);
                     }else
                     {

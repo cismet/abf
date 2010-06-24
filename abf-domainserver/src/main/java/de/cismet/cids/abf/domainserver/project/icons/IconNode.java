@@ -136,9 +136,9 @@ public final class IconNode extends ProjectNode
                     JOptionPane.showMessageDialog(
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
-                                IconNode.class, "Err_iconNotDeletable"),//NOI18N
+                                IconNode.class, "IconNode.destroy().JOptionPane.iconNotDeletable.message"),//NOI18N
                             org.openide.util.NbBundle.getMessage(
-                                IconNode.class, "Dsc_referencePresent"),//NOI18N
+                                IconNode.class, "IconNode.destroy().JOptionPane.iconNotDeletable.title"),//NOI18N
                             JOptionPane.INFORMATION_MESSAGE);
                 }
             });
@@ -162,25 +162,25 @@ public final class IconNode extends ProjectNode
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set main = Sheet.createPropertiesSet();
         main.setName(org.openide.util.NbBundle.getMessage(
-                IconNode.class, "Dsc_properties")); // NOI18N
+                IconNode.class, "IconNode.createSheet().main.name")); // NOI18N
         main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                IconNode.class, "Dsc_properties")); // NOI18N
+                IconNode.class, "IconNode.createSheet().main.displayName")); // NOI18N
         try
         {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
             final Property idProp = new PropertySupport.Reflection(icon, 
                     Integer.class, "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    IconNode.class, "Dsc_id"));  // NOI18N
+                    IconNode.class, "IconNode.createSheet().idProp.name"));  // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
             final Property nameProp = new PropertySupport(
                     "name", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        IconNode.class, "Dsc_description"), // NOI18N
+                        IconNode.class, "IconNode.createSheet().nameProp.description"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        IconNode.class, "Dsc_descriptionOfIcon"), // NOI18N
+                        IconNode.class, "IconNode.createSheet().nameProp.descriptionOfIcon"), // NOI18N
                     true,
                     true)
             {
@@ -217,9 +217,9 @@ public final class IconNode extends ProjectNode
                     "path", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        IconNode.class, "Dsc_filename"), // NOI18N
+                        IconNode.class, "IconNode.createSheet().pathProp.filename"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        IconNode.class, "Dsc_filenameOfIcon"), // NOI18N
+                        IconNode.class, "IconNode.createSheet().pathProp.filenameOfIcon"), // NOI18N
                     true,
                     true)
             {

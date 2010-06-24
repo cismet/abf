@@ -42,8 +42,8 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Alle Gruppen">
-              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="Scp_allGroups" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            <TitledBorder title="All groups">
+              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="ChangeGroupBelongingVisualPanel1.jScrollPane1.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -67,8 +67,8 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Mitglied von">
-              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="Scp_memberOf" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            <TitledBorder title="Member of">
+              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="ChangeGroupBelongingVisualPanel1.jScrollPane2.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>

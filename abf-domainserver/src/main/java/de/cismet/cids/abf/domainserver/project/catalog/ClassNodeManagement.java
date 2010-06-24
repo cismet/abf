@@ -78,7 +78,7 @@ public final class ClassNodeManagement extends ProjectNode implements
         super(Children.LEAF, project);
         defaultImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "tutorials.png"); // NOI18N
-        setDisplayName(org.openide.util.NbBundle.getMessage(ClassNodeManagement.class, "Dsc_classNodes"));
+        setDisplayName(org.openide.util.NbBundle.getMessage(ClassNodeManagement.class, "ClassNodeManagement.displayName"));
         project.addConnectionListener(this);
     }
 
@@ -182,7 +182,7 @@ public final class ClassNodeManagement extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     ClassNodeManagement.class, 
-                                    "Err_loadingClassNodes"), ex); // NOI18N
+                                    "ClassNodeManagement.addNotify().ErrorUtils.loadingClassNodes.message"), ex); // NOI18N
                     }
                 }
             }, getClass().getSimpleName() + "::addNotifyRunner"); // NOI18N

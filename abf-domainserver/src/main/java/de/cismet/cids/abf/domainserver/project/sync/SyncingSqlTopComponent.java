@@ -70,7 +70,7 @@ public final class SyncingSqlTopComponent extends TopComponent
         initComponents();
         final String name = project.getProjectDirectory().getName();
         setName(org.openide.util.NbBundle.getMessage(
-                SyncingSqlTopComponent.class, "Dsc_syncSQL", name)); // NOI18N
+                SyncingSqlTopComponent.class, "SyncingSqlTopComponent.name", name)); // NOI18N
         setIcon(ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "classes.png", true)); // NOI18N
         preferredComponentId = name;

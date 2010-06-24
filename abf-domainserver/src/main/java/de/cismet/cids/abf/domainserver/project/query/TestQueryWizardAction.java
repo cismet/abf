@@ -70,6 +70,6 @@ public final class TestQueryWizardAction extends ModifyQueryWizardAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                TestQueryWizardAction.class, "Dsc_testQuery"); // NOI18N
+                TestQueryWizardAction.class, "TestQueryWizardAction.getName().returnvalue"); // NOI18N
     }
 }

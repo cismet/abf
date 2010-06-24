@@ -91,17 +91,17 @@ public class SyncManagement extends ProjectNode implements
             SyncManagement.class);
 
     private static final String SYNC_STATUS_CHECK = NbBundle.getMessage(
-            SyncManagement.class, "SyncManagement_syncStatusCheck"); // NOI18N
+            SyncManagement.class, "SyncManagement.SYNC_STATUS_CHECK"); // NOI18N
     private static final String SYNC_STATUS_ERROR = NbBundle.getMessage(
-            SyncManagement.class, "SyncManagement_syncStatusError"); // NOI18N
+            SyncManagement.class, "SyncManagement.SYNC_STATUS_ERROR"); // NOI18N
     private static final String SYNC = NbBundle.getMessage(SyncManagement.class,
-            "SyncManagement_sync"); // NOI18N
+            "SyncManagement.SYNC"); // NOI18N
     private static final String PROPERTIES = NbBundle.getMessage(SyncManagement.
-            class, "SyncManagement_properties"); // NOI18N
+            class, "SyncManagement.PROPERTIES"); // NOI18N
     private static final String PEDANTIC = NbBundle.getMessage(SyncManagement.
-            class, "SyncManagement_pedantic"); // NOI18N
+            class, "SyncManagement.PEDANTIC"); // NOI18N
     private static final String PEDANTIC_DETAIL = NbBundle.getMessage(
-            SyncManagement.class, "SyncManagement_pedanticDetail"); // NOI18N
+            SyncManagement.class, "SyncManagement.PEDANTIC_DETAIL"); // NOI18N
 
     private final transient Image noChangesNeededImage;
     private final transient Image inProgressImage;
@@ -279,7 +279,7 @@ public class SyncManagement extends ProjectNode implements
                     {
                         ErrorUtils.showErrorMessage(NbBundle.getMessage(
                                 SyncManagement.class, 
-                                "SyncManagement_unknownError"), e); // NOI18N
+                                "SyncManagement.ErrorUtils.unknownError"), e); // NOI18N
                     }
                 }
 
@@ -289,7 +289,7 @@ public class SyncManagement extends ProjectNode implements
         }catch(final Exception ex)
         {
             ErrorUtils.showErrorMessage(NbBundle.getMessage(SyncManagement.
-                    class, "SyncManagement_unknownError"), ex); // NOI18N
+                    class, "SyncManagement.ErrorUtils.unknownError"), ex); // NOI18N
         }
         return sheet;
     }
@@ -372,12 +372,12 @@ public class SyncManagement extends ProjectNode implements
                             ErrorUtils.showErrorMessage(
                                     org.openide.util.NbBundle.getMessage(
                                     SyncManagement.class, 
-                                    "Err_metaInfoInconsistency"), tle);// NOI18N
+                                    "SyncManagement.refresh().EntityNotFoundException.ErrorUtils.message"), tle);// NOI18N
                         }else
                         {    ErrorUtils.showErrorMessage(
                                      org.openide.util.NbBundle.getMessage(
                                      SyncManagement.class, 
-                                     "Err_loadingMetaInfo"), // NOI18N
+                                     "SyncManagement.refresh().TableLoaderException.ErrorUtils.message"), // NOI18N
                                     (cause == null) ? tle : cause);
                         }
                     }catch(final Exception e)
@@ -387,7 +387,7 @@ public class SyncManagement extends ProjectNode implements
                         errorMessage = e.toString();
                         ErrorUtils.showErrorMessage(org.openide.util.NbBundle
                                 .getMessage(SyncManagement.class, 
-                                "Err_syncGeneric"), e); // NOI18N
+                                "SyncManagement.refresh().Exception.ErrorUtils.message"), e); // NOI18N
                     }finally
                     {
                         inProgress = false;
@@ -428,9 +428,9 @@ public class SyncManagement extends ProjectNode implements
                     }
                     connection = DatabaseConnection.getConnection(runtime);
                     io.getOut().println(org.openide.util.NbBundle.getMessage(
-                            SyncManagement.class, "Dsc_syncingDB")); // NOI18N
+                            SyncManagement.class, "SyncManagement.executeStatements().out.syncingDB")); // NOI18N
                     io.getOut().println(org.openide.util.NbBundle.getMessage(
-                            SyncManagement.class, "Dsc_connectedToDB"));//NOI18N
+                            SyncManagement.class, "SyncManagement.executeStatements().out.connectedToDB"));//NOI18N
                     for(final PSQLStatementGroup g : statementGroups)
                     {
                         connection.setAutoCommit(!g.isTransaction());
@@ -453,14 +453,14 @@ public class SyncManagement extends ProjectNode implements
                                 io.getOut().println(
                                         org.openide.util.NbBundle.getMessage(
                                         SyncManagement.class, 
-                                        "Dsc_stmtSuccessful", // NOI18N
+                                        "SyncManagement.executeStatements().out.stmtSuccessful", // NOI18N
                                         currentStatement));
                                 io.getOut().flush();
                             }catch(final SQLException e)
                             {
                                 io.getErr().println(org.openide.util.NbBundle
                                         .getMessage(SyncManagement.class, 
-                                        "Dsc_stmtErroneous", // NOI18N
+                                        "SyncManagement.executeStatements().out.stmtErroneous", // NOI18N
                                         currentStatement));
                                 LOG.error("Error at: " // NOI18N
                                         + currentStatement, e);
@@ -483,11 +483,11 @@ public class SyncManagement extends ProjectNode implements
                         }
                     }
                     io.getOut().println(org.openide.util.NbBundle.getMessage(
-                            SyncManagement.class, "Dsc_syncDone")); // NOI18N
+                            SyncManagement.class, "SyncManagement.executeStatements().out.syncDone")); // NOI18N
                 }catch(final Exception e)
                 {
                     io.getErr().println(org.openide.util.NbBundle.getMessage(
-                            SyncManagement.class, "Err_abort", // NOI18N
+                            SyncManagement.class, "SyncManagement.executeStatements().out.abort", // NOI18N
                             e.getMessage()));
                     e.printStackTrace(io.getErr());
                     io.getErr().flush();
@@ -523,7 +523,7 @@ public class SyncManagement extends ProjectNode implements
         }
         final StringBuffer s = new StringBuffer(50);
         s.append(org.openide.util.NbBundle.getMessage(SyncManagement.class, 
-                "Dsc_stmtCount", stmtGroups.length));
+                "SyncManagement.getSqlScriptFromGroups().stmtCount", stmtGroups.length));
         for(final PSQLStatementGroup g : stmtGroups)
         {
             final PSQLStatement[] sa = g.getPSQLStatements();
@@ -531,7 +531,7 @@ public class SyncManagement extends ProjectNode implements
             if(g.getWarning() != null && g.getWarning().trim().length() != 0)
             {
                 s.append(org.openide.util.NbBundle.getMessage(
-                        SyncManagement.class, "Dsc_warning")) // NOI18N
+                        SyncManagement.class, "SyncManagement.getSqlScriptFromGroups().warning")) // NOI18N
                         .append(g.getWarning());
             }
             if(g.getDescription() != null &&
@@ -545,7 +545,7 @@ public class SyncManagement extends ProjectNode implements
                         p.getWarning().trim().length() != 0)
                 {
                     s.append(org.openide.util.NbBundle.getMessage(
-                            SyncManagement.class, "Dsc_warning"))
+                            SyncManagement.class, "SyncManagement.getSqlScriptFromGroups().warning"))
                             .append(p.getWarning());
                 }
                 if(p.getDescription() != null &&

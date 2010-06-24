@@ -54,7 +54,7 @@ public class NewQueryWizardAction extends QueryManipulationWizardAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewQueryWizardAction.class, "Dsc_newQuery"); // NOI18N
+                NewQueryWizardAction.class, "NewQueryWizardAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

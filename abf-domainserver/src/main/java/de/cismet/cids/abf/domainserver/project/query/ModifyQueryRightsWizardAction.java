@@ -71,6 +71,6 @@ public final class ModifyQueryRightsWizardAction extends ModifyQueryWizardAction
     {
         return org.openide.util.NbBundle.getMessage(
                 ModifyQueryRightsWizardAction.class, 
-                "Dsc_changeQueryRights"); // NOI18N
+                "ModifyQueryRightsWizardAction.getName().returnvalue"); // NOI18N
     }
 }

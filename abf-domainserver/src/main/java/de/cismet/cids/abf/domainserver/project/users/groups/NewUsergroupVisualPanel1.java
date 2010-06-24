@@ -92,7 +92,7 @@ public final class NewUsergroupVisualPanel1 extends JPanel
     @Override
     public String getName()
     {
-        return org.openide.util.NbBundle.getMessage(NewUsergroupVisualPanel1.class, "Dsc_createNewUsergroup");
+        return org.openide.util.NbBundle.getMessage(NewUsergroupVisualPanel1.class, "NewUsergroupVisualPanel1.getName().returnvalue");
     }
     
     UserGroup getUserGroup()
@@ -137,19 +137,19 @@ public final class NewUsergroupVisualPanel1 extends JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblName, "Name:");
+        org.openide.awt.Mnemonics.setLocalizedText(lblName, org.openide.util.NbBundle.getMessage(NewUsergroupVisualPanel1.class, "NewUsergroupVisualPanel1.lblName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, "Beschreibung:");
+        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(NewUsergroupVisualPanel1.class, "NewUsergroupVisualPanel1.lblDesc.text")); // NOI18N
 
         txtDescription.setColumns(20);
         txtDescription.setRows(5);
         jScrollPane1.setViewportView(txtDescription);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblGoal, org.openide.util.NbBundle.getMessage(NewUsergroupVisualPanel1.class, "Lbl_goal")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblGoal, org.openide.util.NbBundle.getMessage(NewUsergroupVisualPanel1.class, "NewUsergroupVisualPanel1.lblGoal.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(lblDomainserverName, " ");
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDomain, "Domain:");
+        org.openide.awt.Mnemonics.setLocalizedText(lblDomain, org.openide.util.NbBundle.getMessage(NewUsergroupVisualPanel1.class, "NewUsergroupVisualPanel1.lblDomain.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -164,16 +164,16 @@ public final class NewUsergroupVisualPanel1 extends JPanel
                             .add(lblDomain))
                         .add(79, 79, 79)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(cboDomain, 0, 268, Short.MAX_VALUE)
-                            .add(lblDomainserverName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)))
+                            .add(cboDomain, 0, 270, Short.MAX_VALUE)
+                            .add(lblDomainserverName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(lblName)
                             .add(lblDesc))
                         .add(50, 50, 50)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, txtName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))))
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, txtName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

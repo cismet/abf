@@ -52,7 +52,7 @@ public final class EditCidsClassWizardAction extends NewCidsClassWizardAction
     public String getName()
     {
         return NbBundle.getMessage(EditCidsClassWizardAction.class, 
-                "CTL_EditCidsClassWizardAction"); // NOI18N
+                "EditCidsClassWizardAction.getName().returnvalue"); // NOI18N
     }
     
     @Override

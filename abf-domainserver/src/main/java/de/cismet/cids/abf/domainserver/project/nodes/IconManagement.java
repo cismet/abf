@@ -78,7 +78,7 @@ public final class IconManagement extends ProjectNode implements
                 + "icons.png"); // NOI18N
         project.addConnectionListener(this);
         getCookieSet().add(this);
-        setDisplayName(org.openide.util.NbBundle.getMessage(IconManagement.class, "Dsc_icons"));
+        setDisplayName(org.openide.util.NbBundle.getMessage(IconManagement.class, "IconManagement.IconManagement(DomainserverProject).displayName"));
     }
     
     @Override
@@ -192,7 +192,7 @@ final class IconManagementChildren extends Children.Keys
                     LOG.error("could not load icons", ex); // NOI18N
                     ErrorUtils.showErrorMessage(org.openide.util.NbBundle.
                             getMessage(IconManagementChildren.class, 
-                            "Err_loadingIcons"), ex); // NOI18N
+                            "IconManagement.addNotify().ErrorUtils.message"), ex); // NOI18N
                 }finally
                 {
                     if(loadingNode != null)

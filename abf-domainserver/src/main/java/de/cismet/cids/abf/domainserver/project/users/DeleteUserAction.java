@@ -43,7 +43,7 @@ public final class DeleteUserAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(DeleteUserAction.class, "CTL_DeleteUserAction"); // NOI18N
+        return NbBundle.getMessage(DeleteUserAction.class, "DeleteUserAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -78,8 +78,8 @@ public final class DeleteUserAction extends CookieAction {
     protected void performAction(final Node[] node) {
         final int answer = JOptionPane.showConfirmDialog(
                 WindowManager.getDefault().getMainWindow(),
-                org.openide.util.NbBundle.getMessage(DeleteUserAction.class, "Dsc_reallyDeleteUserQuestion"), // NOI18N
-                org.openide.util.NbBundle.getMessage(DeleteUserAction.class, "Dsc_deleteUser"), // NOI18N
+                org.openide.util.NbBundle.getMessage(DeleteUserAction.class, "DeleteUserAction.performAction(Node[]).JOptionPane.message"), // NOI18N
+                org.openide.util.NbBundle.getMessage(DeleteUserAction.class, "DeleteUserAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {

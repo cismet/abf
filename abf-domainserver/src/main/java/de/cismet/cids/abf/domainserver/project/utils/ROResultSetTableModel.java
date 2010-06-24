@@ -95,7 +95,7 @@ public final class ROResultSetTableModel extends AbstractTableModel
             {
                 final List rowData = new ArrayList(columns);
                 rowData.add(org.openide.util.NbBundle.getMessage(
-                        ROResultSetTableModel.class, "Dsc_tableEmpty"));//NOI18N
+                        ROResultSetTableModel.class, "ROResultSetTableModel.setNewResultSet(ResultSet).tableEmpty"));//NOI18N
                 for(int i = 2; i <= columns; i++)
                 {
                     rowData.add(" "); // NOI18N
@@ -108,7 +108,7 @@ public final class ROResultSetTableModel extends AbstractTableModel
             LOG.error("could not retrieve table data", ex); // NOI18N
             setErrorState(org.openide.util.NbBundle.getMessage(
                     ROResultSetTableModel.class,
-                    "Err_coultNotRetrieveTableDataColon"), ex); // NOI18N
+                    "ROResultSetTableModel.setNewResultSet(ResultSet).ErrorState.coultNotRetrieveTableDataColon"), ex); // NOI18N
         }
     }
     
@@ -127,7 +127,7 @@ public final class ROResultSetTableModel extends AbstractTableModel
     protected void setErrorState(final String message, final Throwable t)
     {
         setSingleColumn(org.openide.util.NbBundle.getMessage(
-                ROResultSetTableModel.class, "Dsc_error"), // NOI18N
+                ROResultSetTableModel.class, "ROResultSetTableModel.setErrorState(String,Throwable).defaultMessage"), // NOI18N
                 message + "\n" + t); // NOI18N
     }
     

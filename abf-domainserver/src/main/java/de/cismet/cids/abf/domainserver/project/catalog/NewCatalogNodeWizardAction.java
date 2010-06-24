@@ -130,7 +130,7 @@ public class NewCatalogNodeWizardAction extends CookieAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewCatalogNodeWizardAction.class, "Dsc_createNewNode");// NOI18N
+                NewCatalogNodeWizardAction.class, "NewCatalogNodeWizardAction.getName().returnvalue");// NOI18N
     }
     
     @Override
@@ -161,7 +161,7 @@ public class NewCatalogNodeWizardAction extends CookieAction
     {
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                NewCatalogNodeWizardAction.class, "Dsc_addNode")); // NOI18N
+                NewCatalogNodeWizardAction.class, "NewCatalogNodeWizardAction.performAction(Node[],CatNode).wizard.title")); // NOI18N
         performAction(nodes, node, wizard);
     }
 
@@ -252,7 +252,7 @@ public class NewCatalogNodeWizardAction extends CookieAction
                 ErrorUtils.showErrorMessage(
                         org.openide.util.NbBundle.getMessage(
                             NewCatalogNodeWizardAction.class,
-                            "Err_nodeSave"), ex); // NOI18N
+                            "NewCatalogNodeWizardAction.performAction(Node[],CatNode).ErrorUtils.nodeSave.message"), ex); // NOI18N
             }finally
             {
                 nodes[0].getCookie(Refreshable.class).refresh();

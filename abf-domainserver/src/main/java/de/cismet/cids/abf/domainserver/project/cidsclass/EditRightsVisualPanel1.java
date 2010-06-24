@@ -125,11 +125,11 @@ public final class EditRightsVisualPanel1 extends JPanel
         VARIOUS_POLICIES = new Policy();
         VARIOUS_POLICIES.setName(org.openide.util.NbBundle.getMessage(
                 EditRightsVisualPanel1.class,
-                "Dsc_variousPoliciesBrackets")); // NOI18N
+                "EditRightsVisualPanel1.VARIOUS_POLICIES.name")); // NOI18N
         VARIOUS_PERMS = new Permission();
         VARIOUS_PERMS.setKey(org.openide.util.NbBundle.getMessage(
                 EditRightsVisualPanel1.class,
-                "Dsc_variousRightsBrackets")); // NOI18N
+                "EditRightsVisualPanel1.VARIOUS_PERMS.name")); // NOI18N
     }
 
     /** Creates new form EditRightsVisualPanel1 */
@@ -143,9 +143,9 @@ public final class EditRightsVisualPanel1 extends JPanel
         tblRightsSelListener = new RightsTableSelectionListener();
         tblRightsColumnIdentifiers = new ArrayList(2);
         tblRightsColumnIdentifiers.add(org.openide.util.NbBundle.getMessage(
-                EditRightsVisualPanel1.class, "Dsc_group")); // NOI18N
+                EditRightsVisualPanel1.class, "EditRightsVisualPanel1.EditRightsVisualPanel1(EditRightsWizardPanel1).tblRightsColumnIdentifiers.element1")); // NOI18N
         tblRightsColumnIdentifiers.add(org.openide.util.NbBundle.getMessage(
-                EditRightsVisualPanel1.class, "Dsc_right")); // NOI18N
+                EditRightsVisualPanel1.class, "EditRightsVisualPanel1.EditRightsVisualPanel1(EditRightsWizardPanel1).tblRightsColumnIdentifiers.element2")); // NOI18N
         unmarkedRightRows = new ArrayList();
         initComponents();
     }
@@ -171,11 +171,11 @@ public final class EditRightsVisualPanel1 extends JPanel
         final String[] columns = new String []
         {
             org.openide.util.NbBundle.getMessage(
-                    EditRightsVisualPanel1.class, "Dsc_class"), // NOI18N
+                    EditRightsVisualPanel1.class, "EditRightsVisualPanel1.initClasstable().column1.name"), // NOI18N
             org.openide.util.NbBundle.getMessage(
-                    EditRightsVisualPanel1.class, "Dsc_classPolicy"), // NOI18N
+                    EditRightsVisualPanel1.class, "EditRightsVisualPanel1.initClasstable().column2.name"), // NOI18N
             org.openide.util.NbBundle.getMessage(
-                    EditRightsVisualPanel1.class, "Dsc_attrPolicy") // NOI18N
+                    EditRightsVisualPanel1.class, "EditRightsVisualPanel1.initClasstable().column3.name") // NOI18N
         };
         for(int i = 0; i < classes.length; ++i)
         {
@@ -783,7 +783,7 @@ public final class EditRightsVisualPanel1 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                EditRightsVisualPanel1.class, "Dsc_assignRights"); // NOI18N
+                EditRightsVisualPanel1.class, "EditRightsVisualPanel1.getName().returnvalue"); // NOI18N
     }
 
     /** This method is called from within the constructor to

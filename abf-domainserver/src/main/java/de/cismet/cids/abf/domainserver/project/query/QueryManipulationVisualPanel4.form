@@ -27,8 +27,8 @@
                       <Component id="jScrollPane1" min="-2" pref="512" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnExecute" pref="98" max="32767" attributes="1"/>
-                          <Component id="btnCancel" alignment="0" pref="98" max="32767" attributes="1"/>
+                          <Component id="btnExecute" pref="101" max="32767" attributes="1"/>
+                          <Component id="btnCancel" alignment="0" pref="101" max="32767" attributes="1"/>
                       </Group>
                   </Group>
                   <Component id="lblResult" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -70,7 +70,7 @@
     <Component class="javax.swing.JLabel" name="lblStmt">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Lbl_stmt" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel4.lblStmt.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -128,7 +128,7 @@
     <Component class="javax.swing.JLabel" name="lblParam">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Lbl_param" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel4.lblParam.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -138,7 +138,7 @@
     <Component class="javax.swing.JLabel" name="lblResult">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Lbl_result" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel4.lblResult.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -148,7 +148,7 @@
     <Component class="javax.swing.JButton" name="btnExecute">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Btn_execute" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel4.btnExecute.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>
@@ -161,7 +161,7 @@
     <Component class="javax.swing.JButton" name="btnCancel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="Btn_cancel" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/query/Bundle.properties" key="QueryManipulationVisualPanel4.btnCancel.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>

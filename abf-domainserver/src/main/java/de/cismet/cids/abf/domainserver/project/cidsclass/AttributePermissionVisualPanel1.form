@@ -27,7 +27,7 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="scpPermissions" min="-2" pref="266" max="-2" attributes="0"/>
-                      <EmptySpace pref="32" max="32767" attributes="0"/>
+                      <EmptySpace pref="36" max="32767" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="254" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -89,8 +89,8 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Rechte">
-              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Brd_rights" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            <TitledBorder title="Rights">
+              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="AttributePermissionVisualPanel1.scpPermission.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>
@@ -116,7 +116,7 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Lbl_right" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="AttributePermissionVisualPanel1.jlabel1.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -132,8 +132,8 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Gruppen">
-              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Brd_groups" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            <TitledBorder title="Groups">
+              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="AttributePermissionVisualPanel1.jScrollPane1.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>

@@ -173,12 +173,12 @@ public class URLEditorPanel extends javax.swing.JPanel implements
     {
         final int selRow = tblURLs.getSelectedRow();
         final String s = org.openide.util.NbBundle.getMessage(
-                URLEditorPanel.class, "Dsc_chosenURL"); // NOI18N
+                URLEditorPanel.class, "URLEditorPanel.valueChanged(ListSelectionEvent).s"); // NOI18N
         if(selRow < 0)
         {
             selectedURL = null;
             lblSelectedURL.setText(s + org.openide.util.NbBundle.getMessage(
-                    URLEditorPanel.class, "Dsc_noneBrackets")); // NOI18N
+                    URLEditorPanel.class, "URLEditorPanel.lblSelectedURL.text.noneBrackets")); // NOI18N
         }else
         {
             selectedURL = tModel.getURL(selRow);
@@ -186,7 +186,7 @@ public class URLEditorPanel extends javax.swing.JPanel implements
             if(id == null)
             {
                 lblSelectedURL.setText(s + org.openide.util.NbBundle.getMessage(
-                        URLEditorPanel.class, "Dsc_newURLBrackets"));// NOI18N
+                        URLEditorPanel.class, "URLEditorPanel.lblSelectedURL.text.newURLBrackets"));// NOI18N
                 selectedURL = null;
             }else
             {
@@ -250,7 +250,7 @@ public class URLEditorPanel extends javax.swing.JPanel implements
                 panel.putClientProperty(
                         WizardDescriptor.PROP_CONTENT_DATA,
                         org.openide.util.NbBundle.getMessage(
-                            URLEditorPanel.class, "Dsc_chooseURL")); // NOI18N
+                            URLEditorPanel.class, "URLEditorPanel.showURLEditorDialog(Backend).WizardPanel.panel.PROP_CONTENT_DATA")); // NOI18N
                 // Turn on subtitle creation on each step
                 panel.putClientProperty(
                         WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.FALSE);
@@ -340,7 +340,7 @@ public class URLEditorPanel extends javax.swing.JPanel implements
     {
         valueChanged(null);
         lblStatus.setText(org.openide.util.NbBundle.getMessage(
-                URLEditorPanel.class, "lblLines") // NOI18N
+                URLEditorPanel.class, "URLEditorPanel.updateTableStatus().lblStatus.text") // NOI18N
                 + tModel.getRowCount());
         cmdSave.setEnabled(saveEnable());
     }
@@ -380,9 +380,9 @@ public class URLEditorPanel extends javax.swing.JPanel implements
         final int answer = JOptionPane.showConfirmDialog(
                 findParent(this),
                 org.openide.util.NbBundle.getMessage(
-                    URLEditorPanel.class, "Dsc_saveChangesQuestion"), // NOI18N
+                    URLEditorPanel.class, "URLEditorPanel.saveEdit().JOptionPane.message"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    URLEditorPanel.class, "Dsc_saveChanges"), // NOI18N
+                    URLEditorPanel.class, "URLEditorPanel.saveEdit().JOptionPane.title"), // NOI18N
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         return JOptionPane.YES_OPTION == answer;
@@ -619,7 +619,7 @@ public class URLEditorPanel extends javax.swing.JPanel implements
                         {
                             cmdSearch.setText(org.openide.util.NbBundle
                                     .getMessage(URLEditorPanel.class,
-                                    "Btn_loading")); // NOI18N
+                                    "URLEditorPanel.cmdSearchActionPerformed(ActionEvent).cmdSearch.loading")); // NOI18N
                             cmdSearch.setEnabled(false);
                         }
                     });
@@ -632,7 +632,7 @@ public class URLEditorPanel extends javax.swing.JPanel implements
                         {
                             cmdSearch.setText(org.openide.util.NbBundle
                                     .getMessage(URLEditorPanel.class,
-                                    "Btn_search")); // NOI18N
+                                    "URLEditorPanel.cmdSearchActionPerformed(ActionEvent).cmdSearch.search")); // NOI18N
                             cmdSearch.setEnabled(true);
                         }
                     });
@@ -713,9 +713,9 @@ public class URLEditorPanel extends javax.swing.JPanel implements
             final int answer = JOptionPane.showConfirmDialog(
                     findParent(this),
                     org.openide.util.NbBundle.getMessage(
-                    URLEditorPanel.class, "Dsc_autoSaveQuestionHTML"), // NOI18N
+                    URLEditorPanel.class, "URLEditorPanel.chkAutosaveActionPerformed(ActionEvent).JOptionPane.message"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                    URLEditorPanel.class, "Dsc_confirmAutoSave"), // NOI18N
+                    URLEditorPanel.class, "URLEditorPanel.chkAutosaveActionPerformed(ActionEvent).JOptionPane.title"), // NOI18N
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE);
             if(JOptionPane.NO_OPTION == answer)
@@ -872,19 +872,19 @@ public class URLEditorPanel extends javax.swing.JPanel implements
             {
                 case 0:
                     return org.openide.util.NbBundle.getMessage(
-                            URLEditorPanel.class, "Dsc_urlId"); // NOI18N
+                            URLEditorPanel.class, "URLEditorPanel.getColumnName(int).case0"); // NOI18N
                 case 1:
                     return org.openide.util.NbBundle.getMessage(
-                            URLEditorPanel.class, "Dsc_protocol"); // NOI18N
+                            URLEditorPanel.class, "URLEditorPanel.getColumnName(int).case1"); // NOI18N
                 case 2:
                     return org.openide.util.NbBundle.getMessage(
-                            URLEditorPanel.class, "Dsc_server"); // NOI18N
+                            URLEditorPanel.class, "URLEditorPanel.getColumnName(int).case2"); // NOI18N
                 case 3:
                     return org.openide.util.NbBundle.getMessage(
-                            URLEditorPanel.class, "Dsc_path"); // NOI18N
+                            URLEditorPanel.class, "URLEditorPanel.getColumnName(int).case3"); // NOI18N
                 case 4:
                     return org.openide.util.NbBundle.getMessage(
-                            URLEditorPanel.class, "Dsc_object"); // NOI18N
+                            URLEditorPanel.class, "URLEditorPanel.getColumnName(int).case4"); // NOI18N
                 default:
                     throw new IllegalArgumentException(
                             "unknown column: " + columnIndex); // NOI18N

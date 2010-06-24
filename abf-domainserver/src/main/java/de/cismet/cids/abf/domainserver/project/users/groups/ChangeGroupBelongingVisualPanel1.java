@@ -109,7 +109,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel
     {
         return org.openide.util.NbBundle.getMessage(
                 ChangeGroupBelongingVisualPanel1.class, 
-                "Dsc_assignGroupBelongings"); // NOI18N
+                "ChangeGroupBelongingVisualPanel1.getName().returnvalue"); // NOI18N
     }
     
     List<UserGroup> getTouchedGroups()
@@ -321,10 +321,10 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ChangeGroupBelongingVisualPanel1.class, "Scp_allGroups"))); // NOI18N
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ChangeGroupBelongingVisualPanel1.class, "ChangeGroupBelongingVisualPanel1.jScrollPane1.border.title"))); // NOI18N
         jScrollPane1.setViewportView(lstAllGroups);
 
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ChangeGroupBelongingVisualPanel1.class, "Scp_memberOf"))); // NOI18N
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ChangeGroupBelongingVisualPanel1.class, "ChangeGroupBelongingVisualPanel1.jScrollPane2.border.title"))); // NOI18N
         jScrollPane2.setViewportView(lstGroupMembership);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);

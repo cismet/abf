@@ -91,7 +91,7 @@ public final class NewUserVisualPanel1 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewUserVisualPanel1.class, "Dsc_createNewUser"); // NOI18N
+                NewUserVisualPanel1.class, "NewUserVisualPanel1.getName().returnvalue"); // NOI18N
     }
     
     private final class DocumentListenerImpl implements DocumentListener
@@ -124,15 +124,14 @@ public final class NewUserVisualPanel1 extends JPanel
     private void initComponents() {
 
         chkAdmin.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkAdmin.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "Lbl_domainserver")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "NewUserVisualPanel1.jLabel2.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "Lbl_login")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "NewUserVisualPanel1.jLabel3.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "Lbl_password")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "NewUserVisualPanel1.jLabel4.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "Lbl_admin")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel5, org.openide.util.NbBundle.getMessage(NewUserVisualPanel1.class, "NewUserVisualPanel1.jLabel5.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

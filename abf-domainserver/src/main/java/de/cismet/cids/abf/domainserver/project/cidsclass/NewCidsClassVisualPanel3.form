@@ -42,8 +42,8 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Klassenattribute">
-              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Dsc_classAttrs" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+            <TitledBorder title="Class attributes">
+              <ResourceString PropertyName="titleX" bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="NewCidsClassVisualPanel3.scpClassAttr.border.title" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
             </TitledBorder>
           </Border>
         </Property>

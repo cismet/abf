@@ -122,13 +122,13 @@ public final class QueryManipulationVisualPanel1 extends JPanel implements
         oldTokens.add(TOKEN_INIT);
         final DefaultTableModel dtm = (DefaultTableModel)tblParam.getModel();
         final String columnParam = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel1.class, "Dsc_param"); // NOI18N
+                QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.init().columnParam"); // NOI18N
         final String columnParamName = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel1.class, "Dsc_paramName"); // NOI18N
+                QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.init().columnParamName"); // NOI18N
         final String columnDesc = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel1.class, "Dsc_description");//NOI18N
+                QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.init().columnDesc");//NOI18N
         final String columnResult = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel1.class, "Dsc_isResult"); // NOI18N
+                QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.init().columnResult"); // NOI18N
         dtm.setColumnIdentifiers(new Object[]
         {
             columnParam, columnParamName, columnDesc, columnResult
@@ -196,7 +196,7 @@ public final class QueryManipulationVisualPanel1 extends JPanel implements
     {
         txtName.setText(org.openide.util.NbBundle.getMessage(
                 QueryManipulationVisualPanel1.class,
-                "Dsc_newQueryOneWord")); // NOI18N
+                "QueryManipulationVisualPanel1.initDefaults().txtName")); // NOI18N
         edpStatement.setText(org.openide.util.NbBundle.getMessage(
                 QueryManipulationVisualPanel1.class,
                 "Dsc_insertQueryHere")); // NOI18N
@@ -236,7 +236,7 @@ public final class QueryManipulationVisualPanel1 extends JPanel implements
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel1.class, "Dsc_nameAndStmt");//NOI18N
+                QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.getName().returnvalue");//NOI18N
     }
     
     public String getQueryName()
@@ -467,7 +467,7 @@ public final class QueryManipulationVisualPanel1 extends JPanel implements
             final DefaultTableModel tModel =
                     (DefaultTableModel)tblParam.getModel();
             final String param = org.openide.util.NbBundle.getMessage(
-                    QueryManipulationVisualPanel1.class, "Dsc_param") // NOI18N
+                    QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.modifyTable(int,boolean).param") // NOI18N
                     + " "; // NOI18N
             int i;
             if(add)
@@ -532,11 +532,11 @@ public final class QueryManipulationVisualPanel1 extends JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblName, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel1.class, "Lbl_name")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblName, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.lblName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblStatement, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel1.class, "Lbl_stmt")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblStatement, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.lblStatement.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblParam, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel1.class, "Lbl_param")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblParam, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel1.class, "QueryManipulationVisualPanel1.lblParam.text")); // NOI18N
 
         jScrollPane3.setAutoscrolls(true);
         jScrollPane3.setFocusCycleRoot(true);
@@ -569,14 +569,14 @@ public final class QueryManipulationVisualPanel1 extends JPanel implements
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                         .add(lblName)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(txtName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, lblStatement)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, lblParam)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

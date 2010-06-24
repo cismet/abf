@@ -109,15 +109,15 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
             dtm.removeRow(0);
         }
         final String columnParam = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel4.class, "Dsc_param"); // NOI18N
+                QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.init().columnParam"); // NOI18N
         final String columnParamName = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel4.class, "Dsc_paramName"); // NOI18N
+                QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.init().columnParamName"); // NOI18N
         final String columnDesc = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel4.class, "Dsc_description");//NOI18N
+                QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.init().columnDesc");//NOI18N
         final String columnIsResult = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel4.class, "Dsc_isResult"); // NOI18N
+                QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.init().columnIsResult"); // NOI18N
         final String columnParamValue = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel4.class, "Dsc_paramValue");// NOI18N
+                QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.init().columnParamValue");// NOI18N
         dtm.setColumnIdentifiers(new Object[]
         {
             columnParam,
@@ -211,10 +211,10 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
         resultModel.setSingleColumn(
                 org.openide.util.NbBundle.getMessage(
                     QueryManipulationVisualPanel4.class,
-                    "Dsc_result"), // NOI18N
+                    "QueryManipulationVisualPanel4.resultModel.columnName"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
                     QueryManipulationVisualPanel4.class,
-                    "Dsc_performQueryBrackets")); // NOI18N
+                    "QueryManipulationVisualPanel4.resultModel.content")); // NOI18N
         checkExecutionAbility();
         btnCancel.setEnabled(false);
         tblParam.requestFocusInWindow();
@@ -238,7 +238,7 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel4.class, "Dsc_testStmt"); // NOI18N
+                QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.getName().returnvalue"); // NOI18N
     }
    
     @Override
@@ -273,12 +273,12 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
         resultModel.setSingleColumn(
                 org.openide.util.NbBundle.getMessage(
                     QueryManipulationVisualPanel4.class,
-                    "Dsc_inProgress"), // NOI18N
+                    "QueryManipulationVisualPanel4.setSingleProgressColumn().resultModel.columnName"), // NOI18N
                 ""); // NOI18N
         progressHandle = ProgressHandleFactory.createHandle(
                 org.openide.util.NbBundle.getMessage(
                     QueryManipulationVisualPanel4.class,
-                    "Dsc_requestingData")); // NOI18N
+                    "QueryManipulationVisualPanel4.setSingleProgressColumn().progressHandle.message")); // NOI18N
     }
     
     @Override
@@ -332,10 +332,10 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
                 resultModel.setSingleColumn(
                         org.openide.util.NbBundle.getMessage(
                             QueryManipulationVisualPanel4.class,
-                            "Err_error"), // NOI18N
+                            "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().SQLException.resultModel.columnName"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
                             QueryManipulationVisualPanel4.class,
-                            "Err_noConToDB") + ex); // NOI18N
+                            "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().SQLException.resultModel.content") + ex); // NOI18N
                 return;
             }catch(final ClassNotFoundException ex)
             {
@@ -347,10 +347,10 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
                 resultModel.setSingleColumn(
                         org.openide.util.NbBundle.getMessage(
                             QueryManipulationVisualPanel4.class,
-                            "Err_error"), // NOI18N
+                            "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().ClassNotFoundException.resultModel.columnName"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
                             QueryManipulationVisualPanel4.class,
-                            "Err_jdbcUnloadable") + ex); // NOI18N
+                            "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().ClassNotFoundException.resultModel.content") + ex); // NOI18N
                 return;
             }
             if(con == null)
@@ -391,10 +391,10 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
                     resultModel.setSingleColumn(
                             org.openide.util.NbBundle.getMessage(
                                 QueryManipulationVisualPanel4.class,
-                                "Err_error"), // NOI18N
+                                "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().SQLException.resultModel.columnName.execution"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 QueryManipulationVisualPanel4.class,
-                                "Err_duringStmtExecution") + ex); // NOI18N
+                                "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().SQLException.resultModel.content.execution") + ex); // NOI18N
                     return;
                 }finally
                 {
@@ -435,10 +435,10 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
                     resultModel.setSingleColumn(
                             org.openide.util.NbBundle.getMessage(
                                 QueryManipulationVisualPanel4.class, 
-                                "Dsc_result"), // NOI18N
+                                "QueryManipulationVisualPanel4.resultModel.columnName"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 QueryManipulationVisualPanel4.class, 
-                                "Dsc_stmtDeliveredResult") + result); // NOI18N
+                                "QueryManipulationVisualPanel4.resultModel.content.stmtDeliveredResult") + result); // NOI18N
                 }catch(final SQLException ex)
                 {
                     if(Thread.interrupted())
@@ -447,15 +447,15 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
                     }
                     tblResult.getColumn(org.openide.util.NbBundle.getMessage(
                             QueryManipulationVisualPanel4.class, 
-                            "Dsc_inProgress")).setCellRenderer(null); // NOI18N
+                            "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().tblResult.columnName")).setCellRenderer(null); // NOI18N
                     LOG.error("error during query execution", ex); // NOI18N
                     resultModel.setSingleColumn(
                             org.openide.util.NbBundle.getMessage(
                                 QueryManipulationVisualPanel4.class, 
-                                "Err_error"), // NOI18N
+                                "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().SQLException.resultModel.columnName.execution2"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 QueryManipulationVisualPanel4.class, 
-                                "Err_duringStmtExecution") + ex); // NOI18N
+                                "QueryManipulationVisualPanel4.ExecStatementRunnable.exec().SQLException.resultModel.content.execution2") + ex); // NOI18N
                     return;
                 }finally
                 {
@@ -499,7 +499,7 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblStmt, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "Lbl_stmt")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblStmt, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.lblStmt.text")); // NOI18N
 
         tblParam.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -551,18 +551,18 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
         });
         jScrollPane2.setViewportView(tblResult);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblParam, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "Lbl_param")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblParam, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.lblParam.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblResult, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "Lbl_result")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblResult, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.lblResult.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(btnExecute, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "Btn_execute")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(btnExecute, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.btnExecute.text")); // NOI18N
         btnExecute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExecuteActionPerformed(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(btnCancel, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "Btn_cancel")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(btnCancel, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.btnCancel.text")); // NOI18N
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -586,8 +586,8 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
                         .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 512, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(btnExecute, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)
-                            .add(btnCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 98, Short.MAX_VALUE)))
+                            .add(btnExecute, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                            .add(btnCancel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)))
                     .add(lblResult))
                 .addContainerGap())
         );
@@ -621,10 +621,10 @@ public final class QueryManipulationVisualPanel4 extends JPanel implements
         btnCancel.setEnabled(false);
         cancel();
         resultModel.setSingleColumn(org.openide.util.NbBundle.getMessage(
-                    QueryManipulationVisualPanel4.class, "Dsc_cancel"),// NOI18N
+                    QueryManipulationVisualPanel4.class, "QueryManipulationVisualPanel4.btnCancelActionPerformed(ActionEvent).resultModel.columnName"),// NOI18N
                 org.openide.util.NbBundle.getMessage(
                     QueryManipulationVisualPanel4.class, 
-                    "Dsc_userCancelProcess")); // NOI18N
+                    "QueryManipulationVisualPanel4.btnCancelActionPerformed(ActionEvent).resultModel.content")); // NOI18N
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnExecuteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnExecuteActionPerformed

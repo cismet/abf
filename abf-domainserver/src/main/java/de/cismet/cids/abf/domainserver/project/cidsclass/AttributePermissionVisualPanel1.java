@@ -121,7 +121,7 @@ public final class AttributePermissionVisualPanel1 extends JPanel
     @Override
     public String getName()
     {
-        return org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "Dsc_attrRight");
+        return org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "AttributePermissionVisualPanel1.getName().returnvalue");
     }
     
     class DropAwareJXTable extends JXTable implements DropTargetListener
@@ -323,11 +323,11 @@ public final class AttributePermissionVisualPanel1 extends JPanel
                 case GROUP:
                     return org.openide.util.NbBundle.getMessage(
                             AttributePermissionVisualPanel1.class, 
-                            "Dsc_group"); // NOI18N
+                            "AttributePermissionVisualPanel1.getColumnName(int).groupColumn"); // NOI18N
                 case PERMISSION:
                     return org.openide.util.NbBundle.getMessage(
                             AttributePermissionVisualPanel1.class, 
-                            "Dsc_right"); // NOI18N
+                            "AttributePermissionVisualPanel1.getColumnName(int).permissionColumn"); // NOI18N
                 default:
                     return ""; // NOI18N
             }
@@ -390,13 +390,13 @@ public final class AttributePermissionVisualPanel1 extends JPanel
         });
         jToolBar1.add(cmdRemove);
 
-        scpPermissions.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "Brd_rights"))); // NOI18N
+        scpPermissions.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "AttributePermissionVisualPanel1.scpPermission.border.title"))); // NOI18N
         scpPermissions.setPreferredSize(new java.awt.Dimension(130, 296));
         scpPermissions.setViewportView(tblPermissions);
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "Lbl_right")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "AttributePermissionVisualPanel1.jlabel1.text")); // NOI18N
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "Brd_groups"))); // NOI18N
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(AttributePermissionVisualPanel1.class, "AttributePermissionVisualPanel1.jScrollPane1.border.title"))); // NOI18N
         jScrollPane1.setViewportView(lstUserGroups);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -414,7 +414,7 @@ public final class AttributePermissionVisualPanel1 extends JPanel
                         .add(cboPermissionSelector, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 210, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(scpPermissions, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 266, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 32, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 36, Short.MAX_VALUE)
                         .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 254, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );

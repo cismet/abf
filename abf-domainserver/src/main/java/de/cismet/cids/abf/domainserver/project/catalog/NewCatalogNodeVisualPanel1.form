@@ -23,7 +23,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblNodeName" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="txtNodeName" pref="595" max="32767" attributes="0"/>
+                      <Component id="txtNodeName" pref="598" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -34,7 +34,7 @@
                           </Group>
                           <Component id="lblNodeType" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="100" max="32767" attributes="0"/>
+                      <EmptySpace pref="106" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="txtObject" alignment="0" max="32767" attributes="0"/>
                           <Component id="lblObject" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -114,7 +114,7 @@
     <Component class="javax.swing.JLabel" name="lblNodeName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_nodeName" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.lblNodeName.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -129,7 +129,7 @@
     <Component class="javax.swing.JLabel" name="lblDesc">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_desc" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.lblDesc.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -144,7 +144,7 @@
     <Component class="javax.swing.JLabel" name="lblClass">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_class" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.lblClass.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -159,7 +159,7 @@
     <Component class="javax.swing.JLabel" name="lblObject">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_objectId" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.lblObject.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -169,7 +169,7 @@
     <Component class="javax.swing.JLabel" name="lblNodeType">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_nodeType" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.lblNodeType.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -214,7 +214,7 @@
     <Component class="javax.swing.JLabel" name="lblDynChild">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_dynChildren" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.lblDynChild" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -224,13 +224,10 @@
     <Component class="javax.swing.JCheckBox" name="cboSqlSort">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_sqlSort" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.cboSqlSort.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
         <Property name="horizontalTextPosition" type="int" value="2"/>
         <Property name="iconTextGap" type="int" value="15"/>
-        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[0, 0, 0, 0]"/>
-        </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="146"/>
@@ -244,7 +241,7 @@
     <Component class="javax.swing.JLabel" name="lblDomain">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="Lbl_link" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/catalog/Bundle.properties" key="NewCatalogNodeVisualPanel1.lblDomain.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>

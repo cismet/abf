@@ -194,16 +194,16 @@ public final class CidsAttributeNode extends ProjectNode implements
             final Property idProp = new PropertySupport.Reflection(
                     cidsAttribute, Integer.class, "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "Dsc_id")); // NOI18N
+                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
             final Property nameProp = new PropertySupport(
                     "name", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_attrName"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().nameProp.attrName"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_nameOfAttr"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().nameProp.nameOfAttr"), // NOI18N
                     true,
                     true)
             {
@@ -237,7 +237,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeAttrName"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().nameProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -246,9 +246,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "fieldname", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_fieldName"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().fieldnameProp.fieldName"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_fieldNameOfAttr"),//NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().fieldnameProp.fieldNameOfAttr"),//NOI18N
                     true,
                     true)
             {
@@ -283,7 +283,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class, 
-                                    "Err_storeFieldName"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().fieldnameProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -292,10 +292,10 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "defaultValue", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_defaultValue"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().defaultValueProp.defaultValue"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsAttributeNode.class, 
-                        "Dsc_defaultValueOfAttr"), // NOI18N
+                        "CidsAttributeNode.createSheet().defaultValueProp.defaultValueOfAttr"), // NOI18N
                     true,
                     true)
             {
@@ -330,7 +330,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeDefaultValue"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().defaultValueProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
                 
@@ -345,9 +345,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "pos", // NOI18N
                     Integer.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_position"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().posProp.position"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_positionOfAttr"),// NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().posProp.positionOfAttr"),// NOI18N
                     true,
                     true)
             {
@@ -379,7 +379,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storePositionAttr"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().posProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -388,9 +388,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "substitute", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_replace"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().substituteProp.replace"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_replaceOfAttr"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().substituteProp.replaceOfAttr"), // NOI18N
                     true,
                     true)
             {
@@ -422,7 +422,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeReplacement"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().substituteProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
                 
@@ -437,9 +437,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "optional", // NOI18N
                     Boolean.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_optional"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().optionalProp.optional"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_optionalTooltip"),//NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().optionalProp.optionalTooltip"),//NOI18N
                     true,
                     true)
             {
@@ -473,7 +473,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeOptional"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().optionalProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -482,9 +482,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "visible", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_visible"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().visibleProp.visible"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_visibleTooltip"),// NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().visibleProp.visibleTooltip"),// NOI18N
                     true,
                     true)
             {
@@ -517,7 +517,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeVisibility"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().visibleProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -526,9 +526,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "indexed", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_indexed"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().indexedProp.indexed"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_indexedTooltip"),// NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().indexedProp.indexedTooltip"),// NOI18N
                     true,
                     true)
             {
@@ -562,7 +562,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeIndexed"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().indexedProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -571,9 +571,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "description", // NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_description"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().descriptionProp.description"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_descOfAttr"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().descriptionProp.descOfAttr"), // NOI18N
                     true,
                     true)
             {
@@ -606,7 +606,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class, 
-                                    "Err_storeDesc"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().descriptionProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -618,9 +618,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "toString", // NOI18N
                     JavaClass.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_toString"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().toStringProp.toString"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_toStringOfAttr"),// NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().toStringProp.toStringOfAttr"),// NOI18N
                     true,
                     true)
             {
@@ -652,7 +652,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                 CidsAttributeNode.class,
-                                "Err_storeCidsclass"), e); // NOI18N
+                                "CidsAttributeNode.createSheet().toStringProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
                 
@@ -741,10 +741,10 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "editor", // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_editor"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().editorProp.editor"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsAttributeNode.class, 
-                        "Dsc_editorClassOfAttr"), // NOI18N
+                        "CidsAttributeNode.createSheet().editorProp.editorClassOfAttr"), // NOI18N
                     true,
                     true)
             {
@@ -779,7 +779,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeEditor"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().editorProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
                 
@@ -797,10 +797,10 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "complexeditor", // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_complexEditor"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().complexEditorProp.complexEditor"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsAttributeNode.class,
-                        "Dsc_complexEditorOfAttr"), // NOI18N
+                        "CidsAttributeNode.createSheet().complexEditorProp.complexEditorOfAttr"), // NOI18N
                     true,
                     true)
             {
@@ -836,7 +836,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class, 
-                                    "Err_storeComplexEditorAttr"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().complexEditorProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
                 
@@ -853,9 +853,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "type", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_type"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().typeProp.type"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_typeOfAttr"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().typeProp.typeOfAttr"), // NOI18N
                     true,
                     false)
             {
@@ -881,10 +881,10 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "foreignKeyReferencesTo", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_foreignKeyTable"),//NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.foreignKeyTable"),//NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsAttributeNode.class, 
-                        "Dsc_foreignKeyTableOfAttr"), // NOI18N
+                        "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.foreignKeyTableOfAttr"), // NOI18N
                     true,
                     false)
             {
@@ -920,9 +920,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "arraykey", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_arraykey"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayKeyProp.arraykey"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_arrayKeyOfAttr"),// NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayKeyProp.arrayKeyOfAttr"),// NOI18N
                     true,
                     true)
             {
@@ -953,7 +953,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class, 
-                                    "Err_storeArrayKeyAttr"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().arrayKeyProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -962,10 +962,10 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "foreignkey", // NOI18N
                     Boolean.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_foreignKey"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().foreignKeyProp.foreignKey"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsAttributeNode.class, 
-                        "Dsc_attrIsForeignKey"), // NOI18N
+                        "CidsAttributeNode.createSheet().foreignKeyProp.attrIsForeignKey"), // NOI18N
                     true,
                     true)
             {
@@ -996,7 +996,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "Err_storeForeignKey"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().foreignKeyProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -1005,9 +1005,9 @@ public final class CidsAttributeNode extends ProjectNode implements
                     "array", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_array"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayProp.array"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "Dsc_attrIsArray"), // NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayProp.attrIsArray"), // NOI18N
                     true,
                     true)
             {
@@ -1038,7 +1038,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class, 
-                                    "Err_storeArray"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().arrayProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
                     }
                 }
             };// </editor-fold>
@@ -1097,13 +1097,13 @@ public final class CidsAttributeNode extends ProjectNode implements
             classes.setName("java"); // NOI18N
             rightAttributes.setName("rights"); // NOI18N
             main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "Dsc_properties")); // NOI18N
+                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().main.displayName")); // NOI18N
             relations.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "Dsc_relationship")); // NOI18N
+                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().relations.displayName")); // NOI18N
             classes.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "Dsc_java")); // NOI18N
+                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().classes.displayName")); // NOI18N
             rightAttributes.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "Dsc_rights")); // NOI18N
+                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().rightAttributes.displayName")); // NOI18N
             main.put(idProp);
             main.put(nameProp);
             main.put(fieldnameProp);
@@ -1135,7 +1135,7 @@ public final class CidsAttributeNode extends ProjectNode implements
         {
             LOG.error("could not create property sheet", ex); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "Err_createSheet"), ex); // NOI18N
+                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().ErrorUtils.message"), ex); // NOI18N
         }
         return sheet;
     }
@@ -1184,7 +1184,7 @@ public final class CidsAttributeNode extends ProjectNode implements
         {
             LOG.error("error during deletion", e); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "Err_deleteAttr"), e); // NOI18N
+                    CidsAttributeNode.class, "CidsAttributeNode.destroy().ErrorUtils.message"), e); // NOI18N
         }
         project.getLookup().lookup(ClassManagement.class).refresh();
         project.getLookup().lookup(SyncManagement.class).refresh();

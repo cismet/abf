@@ -429,7 +429,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel1.class, "Dsc_defineClass"); // NOI18N
+                NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.getName().returnvalue"); // NOI18N
     }
     
     private void retrieveAndSortTypes()
@@ -541,7 +541,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
 
         setLayout(new java.awt.BorderLayout());
 
-        panCenter.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Brd_attributes"))); // NOI18N
+        panCenter.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.panCenter.border.title"))); // NOI18N
         panCenter.setLayout(new java.awt.BorderLayout());
 
         panAttr.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -581,7 +581,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         org.openide.awt.Mnemonics.setLocalizedText(lblSpace1, "          ");
         jToolBar1.add(lblSpace1);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblAttrPolicy, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_attrPolicy")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblAttrPolicy, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblAttrPolicy.text")); // NOI18N
         jToolBar1.add(lblAttrPolicy);
         jToolBar1.add(cboAttrPolicy);
 
@@ -592,7 +592,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         panTypes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panTypes.setLayout(new java.awt.BorderLayout());
 
-        scpTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Brd_types"))); // NOI18N
+        scpTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.scpTypes.border.title"))); // NOI18N
 
         scpTypes.setViewportView(lstTypes);
 
@@ -600,12 +600,12 @@ public final class NewCidsClassVisualPanel1 extends JPanel
 
         jToolBar2.setFloatable(false);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblSortAndFilter, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_sortAndFilter")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblSortAndFilter, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblSortAndFilter.text")); // NOI18N
         jToolBar2.add(lblSortAndFilter);
 
         togOnlyUserTypes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/datatype.png"))); // NOI18N
         togOnlyUserTypes.setSelected(true);
-        togOnlyUserTypes.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Tog_userdefinedTypes")); // NOI18N
+        togOnlyUserTypes.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togOnlyUserTypes.tooltip")); // NOI18N
         togOnlyUserTypes.setFocusPainted(false);
         togOnlyUserTypes.setPreferredSize(new java.awt.Dimension(50, 25));
         togOnlyUserTypes.addActionListener(new java.awt.event.ActionListener() {
@@ -617,7 +617,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
 
         togOnlyDbTypes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/db_types.png"))); // NOI18N
         togOnlyDbTypes.setSelected(true);
-        togOnlyDbTypes.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Tog_dbTypes")); // NOI18N
+        togOnlyDbTypes.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togOnlyDbTypes.tooltip")); // NOI18N
         togOnlyDbTypes.setFocusPainted(false);
         togOnlyDbTypes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -628,7 +628,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
 
         grpTypeSort.add(togSortedAlpha);
         togSortedAlpha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/sort_alph.png"))); // NOI18N
-        togSortedAlpha.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Tog_abcSort")); // NOI18N
+        togSortedAlpha.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togSortedAlpha.tooltip")); // NOI18N
         togSortedAlpha.setFocusPainted(false);
         togSortedAlpha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -640,7 +640,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         grpTypeSort.add(togSortedLinks);
         togSortedLinks.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/sort_links.png"))); // NOI18N
         togSortedLinks.setSelected(true);
-        togSortedLinks.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Tog_commonUsageSort")); // NOI18N
+        togSortedLinks.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togSortedLinks.tooltip")); // NOI18N
         togSortedLinks.setFocusPainted(false);
         togSortedLinks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -650,7 +650,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         jToolBar2.add(togSortedLinks);
 
         togArrayTables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/array.png"))); // NOI18N
-        togArrayTables.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Tog_arrayTables")); // NOI18N
+        togArrayTables.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togArrayTables.tooltip")); // NOI18N
         togArrayTables.setFocusPainted(false);
         togArrayTables.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -667,15 +667,14 @@ public final class NewCidsClassVisualPanel1 extends JPanel
 
         panhead.setLayout(new java.awt.GridBagLayout());
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblClassName, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_classname")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblClassName, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblClassName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblTableName, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_tablename")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblTableName, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblTableName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_description")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblDesc.text")); // NOI18N
 
         chkSync.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(chkSync, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Chk_synchronise")); // NOI18N
-        chkSync.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        org.openide.awt.Mnemonics.setLocalizedText(chkSync, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.chkSync.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout panClass1Layout = new org.jdesktop.layout.GroupLayout(panClass1);
         panClass1.setLayout(panClass1Layout);
@@ -690,7 +689,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, panClass1Layout.createSequentialGroup()
-                        .add(txtTablename, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                        .add(txtTablename, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(chkSync))
                     .add(txtDescription, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
@@ -720,11 +719,11 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         panhead.add(panClass1, gridBagConstraints);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblClassIcon, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_classIcon")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblClassIcon, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblClassIcon.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblObjectIcon, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_objectIcon")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblObjectIcon, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblObjectIcon.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPrimKey, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Lbl_FieldnamePrimkey")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPrimKey, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblPrimKey.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout panClass2Layout = new org.jdesktop.layout.GroupLayout(panClass2);
         panClass2.setLayout(panClass2Layout);
@@ -789,12 +788,10 @@ public final class NewCidsClassVisualPanel1 extends JPanel
 
         panClass3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkType, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "ChkDefineAsType")); // NOI18N
-        chkType.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        org.openide.awt.Mnemonics.setLocalizedText(chkType, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.chkType.text")); // NOI18N
         panClass3.add(chkType);
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkIndexed, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "Chk_addToIndex")); // NOI18N
-        chkIndexed.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        org.openide.awt.Mnemonics.setLocalizedText(chkIndexed, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.chkIndexed.text")); // NOI18N
         panClass3.add(chkIndexed);
 
         add(panClass3, java.awt.BorderLayout.PAGE_END);
@@ -1032,7 +1029,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
                                 this,
                                 org.openide.util.NbBundle.getMessage(
                                     NewCidsClassVisualPanel1.class, 
-                                    "Dsc_provideParameter"), // NOI18N
+                                    "NewCidsClassVisualPanel1.DropAwareJXTable.drop().JOptionPane.message"), // NOI18N
                                 t.getName() + "(???)", // NOI18N
                                 JOptionPane.QUESTION_MESSAGE);
                         try

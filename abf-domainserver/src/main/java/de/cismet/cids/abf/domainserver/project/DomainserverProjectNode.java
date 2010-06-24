@@ -166,23 +166,23 @@ public final class DomainserverProjectNode extends FilterNode implements
             {
                 status = org.openide.util.NbBundle.getMessage(
                         DomainserverProjectNode.class, 
-                        "Dsc_disconnect"); // NOI18N
+                        "DomainserverProjectNode.getHtmlDisplayName().status.disconnect"); // NOI18N
             }else
             {
                 status = org.openide.util.NbBundle.getMessage(
-                        DomainserverProjectNode.class, "Dsc_connect"); // NOI18N
+                        DomainserverProjectNode.class, "DomainserverProjectNode.getHtmlDisplayName().status.connect"); // NOI18N
             }
         }else
         {
             if(project.isConnected())
             {
                 status = org.openide.util.NbBundle.getMessage(
-                        DomainserverProjectNode.class, "Dsc_connected");//NOI18N
+                        DomainserverProjectNode.class, "DomainserverProjectNode.getHtmlDisplayName().status.connected");//NOI18N
             }else
             {
                 status = org.openide.util.NbBundle.getMessage(
                         DomainserverProjectNode.class, 
-                        "Dsc_disconnected");// NOI18N
+                        "DomainserverProjectNode.getHtmlDisplayName().status.disconnected");// NOI18N
             }
         }
         return MessageFormat.format(NODE_NAME_PATTERN, getName(), status);

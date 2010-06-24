@@ -132,7 +132,7 @@ public final class ImportClassesAction extends CookieAction
             {
                 return org.openide.util.NbBundle.getMessage(
                         ImportClassesAction.class,
-                        "Dsc_xmlFileFilechooser"); // NOI18N
+                        "ImportClassesAction.getDescription().returnvalue"); // NOI18N
             }
         });
         int ret = chooser.showOpenDialog(
@@ -144,9 +144,9 @@ public final class ImportClassesAction extends CookieAction
                     WindowManager.getDefault().getMainWindow(),
                     org.openide.util.NbBundle.getMessage(
                         ImportClassesAction.class,
-                        "Wrn_noReadRightForFile"), // NOI18N
+                        "ImportClassesAction.performAction(Node[]).JOptionPane.message"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        ImportClassesAction.class, "Err_error"), // NOI18N
+                        ImportClassesAction.class, "ImportClassesAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                     JOptionPane.WARNING_MESSAGE);
             ret = chooser.showOpenDialog(
                 WindowManager.getDefault().getMainWindow());
@@ -155,7 +155,7 @@ public final class ImportClassesAction extends CookieAction
         {
             final File in = chooser.getSelectedFile();
             final String name = org.openide.util.NbBundle.getMessage(
-                    ImportClassesAction.class, "Dsc_classImport") // NOI18N
+                    ImportClassesAction.class, "ImportClassesAction.performAction(Node[]).name") // NOI18N
                     + "[" // NOI18N
                     + project.getProjectDirectory().getName()
                     + "]"; // NOI18N
@@ -200,7 +200,7 @@ public final class ImportClassesAction extends CookieAction
     @Override
     public String getName()
     {
-        return NbBundle.getMessage(ImportClassesAction.class, "CTL_ImportClassesAction"); // NOI18N
+        return NbBundle.getMessage(ImportClassesAction.class, "ImportClassesAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -256,7 +256,7 @@ public final class ImportClassesAction extends CookieAction
             final InputOutput io, final ProgressHandle handle)
     {
         io.getOut().println(org.openide.util.NbBundle.getMessage(
-                ImportClassesAction.class, "Dsc_beginImportCapitals"));// NOI18N
+                ImportClassesAction.class, "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).beginImportCapitals"));// NOI18N
         io.getOut().println();
         BufferedInputStream bis = null;
         Document doc = null;
@@ -264,7 +264,7 @@ public final class ImportClassesAction extends CookieAction
         {
             io.getOut().println(org.openide.util.NbBundle.getMessage(
                     ImportClassesAction.class,
-                    "Dsc_readingBrackets") + in.getName()); // NOI18N
+                    "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).readingBrackets") + in.getName()); // NOI18N
             bis = new BufferedInputStream(new FileInputStream(in));
             final InputSource is = new InputSource(bis);
             doc  = XMLUtil.parse(is, false, true, null, new EntityResolver()
@@ -289,13 +289,13 @@ public final class ImportClassesAction extends CookieAction
             io.getErr().println();
             io.getErr().println(org.openide.util.NbBundle.getMessage(
                     ImportClassesAction.class,
-                    "Err_readingInputFile") // NOI18N
+                    "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).readingInputFileError") // NOI18N
                     + e.getMessage());
             e.printStackTrace(io.getErr());
             io.getErr().println();
             io.getErr().println(org.openide.util.NbBundle.getMessage(
                     ImportClassesAction.class,
-                    "Err_importUnsuccessfulCapitals")); // NOI18N
+                    "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).importUnsuccessfulCapitalsError")); // NOI18N
             return false;
         }finally
         {
@@ -314,7 +314,7 @@ public final class ImportClassesAction extends CookieAction
         {
             io.getOut().println(org.openide.util.NbBundle.getMessage(
                     ImportClassesAction.class,
-                    "Dsc_validatingBrackets") + in.getName()); // NOI18N
+                    "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).validatingBrackets") + in.getName()); // NOI18N
             final SchemaFactory f = SchemaFactory.newInstance(
                     XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
             final Schema schema = f.newSchema(this.getClass().getResource(EXPORT_SCHEMA));
@@ -325,19 +325,19 @@ public final class ImportClassesAction extends CookieAction
             io.getErr().println();
             io.getErr().println(org.openide.util.NbBundle.getMessage(
                     ImportClassesAction.class,
-                    "Err_validatingInputFile") // NOI18N
+                    "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).validatingInputFileError") // NOI18N
                     + e.getMessage());
             e.printStackTrace(io.getErr());
             io.getErr().println();
             io.getErr().println(NbBundle.getMessage(
                     ImportClassesAction.class,
-                    "Err_importUnsuccessfulCapitals")); // NOI18N
+                    "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).importUnsuccessfulCapitalsError")); // NOI18N
             return false;
         }
         final NodeList classlist = doc.getElementsByTagNameNS(NAMESPACE, CS_CLASS);
         final List<CidsClass> classes = new ArrayList<CidsClass>(classlist.getLength());
         final Map<Integer, ? extends CommonEntity> refcache = new Hashtable<Integer, CommonEntity>();
-        io.getOut().println(NbBundle.getMessage(ImportClassesAction.class, "Dsc_createCacheBrackets")); // NOI18N
+        io.getOut().println(NbBundle.getMessage(ImportClassesAction.class, "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).createCacheBrackets")); // NOI18N
         final Map<Class<? extends CommonEntity>, List<? extends CommonEntity>> typecache = getTypeCache(backend);
         EventQueue.invokeLater(new Runnable()
         {

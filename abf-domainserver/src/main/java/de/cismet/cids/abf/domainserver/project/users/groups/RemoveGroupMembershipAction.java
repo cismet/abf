@@ -47,7 +47,7 @@ public final class RemoveGroupMembershipAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(RemoveGroupMembershipAction.class, "CTL_RemoveGroupMembershipAction"); // NOI18N
+        return NbBundle.getMessage(RemoveGroupMembershipAction.class, "RemoveGroupMembershipAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -82,8 +82,8 @@ public final class RemoveGroupMembershipAction extends CookieAction {
     protected void performAction(final Node[] nodes) {
         final int answer = JOptionPane.showConfirmDialog(
                 WindowManager.getDefault().getMainWindow(),
-                NbBundle.getMessage(RemoveGroupMembershipAction.class, "Dsc_reallyDeleteUserFromGroup"),
-                NbBundle.getMessage(RemoveGroupMembershipAction.class, "Dsc_removeFromUsergroup"),
+                NbBundle.getMessage(RemoveGroupMembershipAction.class, "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.message"),
+                NbBundle.getMessage(RemoveGroupMembershipAction.class, "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.title"),
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {

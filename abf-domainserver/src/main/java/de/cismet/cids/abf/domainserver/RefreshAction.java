@@ -34,7 +34,7 @@ public final class RefreshAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(RefreshAction.class, "CTL_RefreshAction"); // NOI18N
+        return NbBundle.getMessage(RefreshAction.class, "RefreshAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

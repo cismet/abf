@@ -38,7 +38,8 @@ public final class CreateDiagramFromClassAction extends DiagramAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(CreateDiagramFromClassAction.class, "CTL_CreateDiagramFromClassAction");
+        return NbBundle.getMessage(CreateDiagramFromClassAction.class,
+                "CreateDiagramFromClassAction.getName().returnvalue");
     }
 
     @Override

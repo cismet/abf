@@ -91,7 +91,7 @@ public final class QueriesNode extends ProjectNode implements
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "search.png"); // NOI18N
         setName(org.openide.util.NbBundle.getMessage(
-                QueriesNode.class, "Dsc_queries")); // NOI18N
+                QueriesNode.class, "QueriesNode.QueriesNode(DomainserverProject).name")); // NOI18N
     }
     
     @Override
@@ -180,7 +180,7 @@ public final class QueriesNode extends ProjectNode implements
                         ProgressHandle handle = ProgressHandleFactory.
                                     createHandle(org.openide.util.NbBundle
                                     .getMessage(QueriesNode.class,
-                                        "Dsc_examineDB")); // NOI18N
+                                        "QueriesNode.createNodes(Object).run().handle.message")); // NOI18N
                         try
                         {
                             handle.start();
@@ -208,7 +208,7 @@ public final class QueriesNode extends ProjectNode implements
                                     panel,
                                     org.openide.util.NbBundle.getMessage(
                                         QueriesNode.class, 
-                                        "Dsc_dbInconsistency"), // NOI18N
+                                        "QueriesNode.createNodes(Object).run().DialogDescriptor.message"), // NOI18N
                                     false,
                                     DialogDescriptor.WARNING_MESSAGE,
                                     null, 
@@ -262,7 +262,7 @@ public final class QueriesNode extends ProjectNode implements
                         {
                             org.openide.util.NbBundle.getMessage(
                                     QueriesNode.class,
-                                    "Dsc_dbInconsistency") // NOI18N
+                                    "QueriesNode.addNotify().run().dbInconsistencyKey") // NOI18N
                         });
                         currentQueries = null;
                         return;

@@ -39,9 +39,9 @@ public final class ConnectAction extends CookieAction {
     public String getName() {
         final Connectable c = getConnectable();
         if ((c != null) && c.isConnected()) {
-            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "Dsc_disconnect"); // NOI18N
+            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "ConnectAction.getName().returnvalue.disconnect"); // NOI18N
         } else {
-            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "Dsc_connect");    // NOI18N
+            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "ConnectAction.getName().returnvalue.connect");    // NOI18N
         }
     }
 

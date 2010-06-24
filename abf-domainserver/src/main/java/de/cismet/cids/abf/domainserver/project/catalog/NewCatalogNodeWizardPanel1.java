@@ -112,7 +112,7 @@ public final class NewCatalogNodeWizardPanel1 extends Observable implements
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewCatalogNodeWizardPanel1.class, 
-                        "Dsc_nodeNameNotValid")); // NOI18N
+                        "NewCatalogNodeWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.nodeNameNotValid")); // NOI18N
             return false;
         }
         return true;

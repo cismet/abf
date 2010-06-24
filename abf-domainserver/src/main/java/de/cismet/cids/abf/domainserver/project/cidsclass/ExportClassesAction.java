@@ -183,9 +183,9 @@ public final class ExportClassesAction extends CookieAction
     static
     {
         PROCESS = org.openide.util.NbBundle.getMessage(
-                ExportClassesAction.class, "Dsc_processingBrackets"); // NOI18N
+                ExportClassesAction.class, "ExportClassesAction.PROCESS"); // NOI18N
         CREATE = org.openide.util.NbBundle.getMessage(
-                ExportClassesAction.class, "Dsc_creatingBrackets"); // NOI18N
+                ExportClassesAction.class, "ExportClassesAction.CREATE"); // NOI18N
     }
 
     @Override
@@ -224,7 +224,7 @@ public final class ExportClassesAction extends CookieAction
             {
                 return org.openide.util.NbBundle.getMessage(
                         ExportClassesAction.class,
-                        "Dsc_xmlFileFilechooser"); // NOI18N
+                        "ExportClassesAction.getDescription().returnvalue"); // NOI18N
             }
         });
         chooser.setSelectedFile(new File("export.xml")); // NOI18N
@@ -237,9 +237,9 @@ public final class ExportClassesAction extends CookieAction
                     WindowManager.getDefault().getMainWindow(), 
                     org.openide.util.NbBundle.getMessage(
                         ExportClassesAction.class,
-                        "Wrn_noWriteRightForFile"), // NOI18N
+                        "ExportClassesAction.performAction(Node[]).JOptionPane.message"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        ExportClassesAction.class, "Err_error"), // NOI18N
+                        ExportClassesAction.class, "ExportClassesAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                     JOptionPane.WARNING_MESSAGE);
             ret = chooser.showSaveDialog(
                 WindowManager.getDefault().getMainWindow());
@@ -257,7 +257,7 @@ public final class ExportClassesAction extends CookieAction
                 classes.add(cookie.getCidsClass());
             }
             final String name = org.openide.util.NbBundle.getMessage(
-                    ExportClassesAction.class, "Dsc_classExport") // NOI18N
+                    ExportClassesAction.class, "ExportClassesAction.performAction(Node[]).name") // NOI18N
                     + "[" // NOI18N
                     + project.getProjectDirectory().getName()
                     + "]"; // NOI18N
@@ -285,7 +285,7 @@ public final class ExportClassesAction extends CookieAction
     public String getName()
     {
         return NbBundle.getMessage(ExportClassesAction.class,
-                "CTL_ExportClassesAction"); // NOI18N
+                "ExportClassesAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -363,7 +363,7 @@ public final class ExportClassesAction extends CookieAction
         {
             io.getOut().println(org.openide.util.NbBundle.getMessage(
                     ExportClassesAction.class,
-                    "Dsc_beginExportCapitals")); // NOI18N
+                    "ExportClassesAction.exportClasses(List<CidsClass>,File,InputOutput,ProgressHandle).beginExportCapitals")); // NOI18N
             io.getOut().println();
             final Runnable run = new Runnable()
             {
@@ -381,12 +381,12 @@ public final class ExportClassesAction extends CookieAction
             }
             io.getOut().println(org.openide.util.NbBundle.getMessage(
                     ExportClassesAction.class,
-                    "Dsc_writingBrackets") + out.getName()); // NOI18N
+                    "ExportClassesAction.exportClasses(List<CidsClass>,File,InputOutput,ProgressHandle).writingBrackets") + out.getName()); // NOI18N
             bos = new BufferedOutputStream(new FileOutputStream(out));
             XMLUtil.write(doc, bos, ENCODING);
             io.getOut().println(org.openide.util.NbBundle.getMessage(
                     ExportClassesAction.class,
-                    "Dsc_validatingBrackets") + out.getName()); // NOI18N
+                    "ExportClassesAction.exportClasses(List<CidsClass>,File,InputOutput,ProgressHandle).validatingBrackets") + out.getName()); // NOI18N
             bis = new BufferedInputStream(new FileInputStream(out));
             final InputSource is = new InputSource(bis);
             final Document in  = XMLUtil.parse(
@@ -410,20 +410,20 @@ public final class ExportClassesAction extends CookieAction
             io.getOut().println();
             io.getOut().println(org.openide.util.NbBundle.getMessage(
                     ExportClassesAction.class, 
-                    "Dsc_exportSuccessful_Capitals")); // NOI18N
+                    "ExportClassesAction.exportClasses(List<CidsClass>,File,InputOutput,ProgressHandle).exportSuccessful_Capitals")); // NOI18N
         }catch(final Exception ex)
         {
             LOG.error("error while creating export file", ex); // NOI18N
             io.getErr().println();
             io.getErr().println(org.openide.util.NbBundle.getMessage(
                     ExportClassesAction.class, 
-                    "Err_duringExportCapitals") // NOI18N
+                    "ExportClassesAction.exportClasses(List<CidsClass>,File,InputOutput,ProgressHandle).duringExportCapitalsError") // NOI18N
                     + ex.getMessage());
             ex.printStackTrace(io.getErr());
             io.getErr().println();
             io.getErr().println(org.openide.util.NbBundle.getMessage(
                     ExportClassesAction.class, 
-                    "Err_exportUnsuccessfulCapitals")); // NOI18N
+                    "ExportClassesAction.exportClasses(List<CidsClass>,File,InputOutput,ProgressHandle).exportUnsuccessfulCapitals")); // NOI18N
         }finally
         {
             if(bos != null)

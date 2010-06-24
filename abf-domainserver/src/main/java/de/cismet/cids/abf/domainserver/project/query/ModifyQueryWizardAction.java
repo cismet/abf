@@ -52,7 +52,7 @@ public class ModifyQueryWizardAction extends QueryManipulationWizardAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                ModifyQueryWizardAction.class, "Dsc_changeQuery"); // NOI18N
+                ModifyQueryWizardAction.class, "ModifyQueryWizardAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

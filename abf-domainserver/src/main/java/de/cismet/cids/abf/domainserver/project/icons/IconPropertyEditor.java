@@ -86,7 +86,7 @@ public final class IconPropertyEditor extends PropertyEditorSupport implements
         this.project = project;
         renderer = new JLabel();
         renderer.setText(org.openide.util.NbBundle.getMessage(
-                IconPropertyEditor.class, "Dsc_noIconChosen")); // NOI18N
+                IconPropertyEditor.class, "IconPropertyEditor.renderer.text.noIconChosen")); // NOI18N
         renderer.setIcon(null);
     }
     
@@ -118,7 +118,7 @@ public final class IconPropertyEditor extends PropertyEditorSupport implements
         }else
         {
             renderer.setText(org.openide.util.NbBundle.getMessage(
-                    IconPropertyEditor.class, "Dsc_noIconChosen")); // NOI18N
+                    IconPropertyEditor.class, "IconPropertyEditor.renderer.text.noIconChosen")); // NOI18N
             renderer.setIcon(null);
         }
         super.setValue(value);

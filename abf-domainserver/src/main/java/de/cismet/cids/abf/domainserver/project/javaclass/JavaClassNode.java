@@ -219,21 +219,21 @@ public final class JavaClassNode extends ProjectNode
         {
             tooltip = org.openide.util.NbBundle.getMessage(
                     JavaClassNode.class,
-                    "Dsc_classPresentCorrectInterface"); // NOI18N
+                    "JavaClassNode.getShortDescription().tooltip.classPresentCorrectInterface"); // NOI18N
         }else if(htmlColor.equals(ORANGE_HEX))
         {
             tooltip = org.openide.util.NbBundle.getMessage(
                     JavaClassNode.class,
-                    "Dsc_classPresentWrongInterface"); // NOI18N
+                    "JavaClassNode.getShortDescription().tooltip.classPresentWrongInterface"); // NOI18N
         }else if(htmlColor.equals(RED_HEX))
         {
             tooltip = org.openide.util.NbBundle.getMessage(
-                    JavaClassNode.class, "Dsc_classNotPresent"); // NOI18N
+                    JavaClassNode.class, "JavaClassNode.getShortDescription().tooltip.classNotPresent"); // NOI18N
         }else if(htmlColor.equals(BLACK_HEX))
         {
             tooltip = org.openide.util.NbBundle.getMessage(
                     JavaClassNode.class,
-                    "Dsc_classNotCheckableCanWorkAnyway"); // NOI18N
+                    "JavaClassNode.getShortDescription().tooltip.classNotCheckableCanWorkAnyway"); // NOI18N
         }else
         {
             tooltip = super.getShortDescription();
@@ -253,25 +253,25 @@ public final class JavaClassNode extends ProjectNode
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set main = Sheet.createPropertiesSet();
         main.setName(org.openide.util.NbBundle.getMessage(
-                JavaClassNode.class, "Dsc_properties")); // NOI18N
+                JavaClassNode.class, "JavaClassNode.createSheet().main.name")); // NOI18N
         main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                JavaClassNode.class, "Dsc_properties")); // NOI18N
+                JavaClassNode.class, "JavaClassNode.createSheet().main.displayName")); // NOI18N
         try
         {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Id ">
             final Property idProp = new PropertySupport.Reflection(javaClass, 
                     Integer.class, "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    JavaClassNode.class, "Dsc_id")); // NOI18N
+                    JavaClassNode.class, "JavaClassNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Qualifier ">
             final Property qualifierProp = new PropertySupport(
                     "qualifier", // NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "Dsc_classname"), // NOI18N
+                        JavaClassNode.class, "JavaClassNode.createSheet().qualifierProp.classname"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "Dsc_nameOfClass"), // NOI18N
+                        JavaClassNode.class, "JavaClassNode.createSheet().qualifierProp.nameOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -309,9 +309,9 @@ public final class JavaClassNode extends ProjectNode
                     "type", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "Dsc_type"), // NOI18N
+                        JavaClassNode.class, "JavaClassNode.createSheet().typeProp.type"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "Dsc_typeOfClass"), // NOI18N
+                        JavaClassNode.class, "JavaClassNode.createSheet().typeProp.typeOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -328,28 +328,28 @@ public final class JavaClassNode extends ProjectNode
                     {
                         return org.openide.util.NbBundle.getMessage(
                                 JavaClassNode.class,
-                                "Dsc_toStringClass"); // NOI18N
+                                "JavaClassNode.createSheet().typeProp.getValue().toStringClass"); // NOI18N
                     }else if(type.equals(JavaClass.Type.RENDERER.getType()))
                     {
                         return org.openide.util.NbBundle.getMessage(
-                                JavaClassNode.class, "Dsc_renderer"); // NOI18N
+                                JavaClassNode.class, "JavaClassNode.createSheet().typeProp.getValue().renderer"); // NOI18N
                     }else if(type.equals(
                             JavaClass.Type.SIMPLE_EDITOR.getType()))
                     {
                         return org.openide.util.NbBundle.getMessage(
                                 JavaClassNode.class,
-                                "Dsc_simpleEditor"); // NOI18N
+                                "JavaClassNode.createSheet().typeProp.getValue().simpleEditor"); // NOI18N
                     }else if(type.equals(
                             JavaClass.Type.COMPLEX_EDITOR.getType()))
                     {
                         return org.openide.util.NbBundle.getMessage(
                                 JavaClassNode.class,
-                                "Dsc_complexEditor"); // NOI18N
+                                "JavaClassNode.createSheet().typeProp.getValue().complexEditor"); // NOI18N
                     }else if(type.equals(JavaClass.Type.UNKNOWN.getType()))
                     {
                         return org.openide.util.NbBundle.getMessage(
                                 JavaClassNode.class,
-                                "Dsc_unknownClass"); // NOI18N
+                                "JavaClassNode.createSheet().typeProp.getValue().unknownClass"); // NOI18N
                     }
                     return type;
                 }
@@ -387,9 +387,9 @@ public final class JavaClassNode extends ProjectNode
                     "notice", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "Dsc_notice"), // NOI18N
+                        JavaClassNode.class, "JavaClassNode.createSheet().noticeProp.notice"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "Dsc_notice"), // NOI18N
+                        JavaClassNode.class, "JavaClassNode.createSheet().noticeProp.notice"), // NOI18N
                     true,
                     true)
             {
@@ -400,7 +400,7 @@ public final class JavaClassNode extends ProjectNode
                 {
                     return (javaClass.getNotice() == null) ?
                         org.openide.util.NbBundle.getMessage(
-                            JavaClassNode.class, "Dsc_noNotice") : // NOI18N
+                            JavaClassNode.class, "JavaClassNode.createSheet().noticeProp.getValue().noNotice") : // NOI18N
                         javaClass.getNotice();
                 }
                 

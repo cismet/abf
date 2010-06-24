@@ -180,16 +180,16 @@ public final class CidsClassNode extends ProjectNode implements
                     "getId", // NOI18N
                     null);
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    CidsClassNode.class, "Dsc_id")); // NOI18N
+                    CidsClassNode.class, "CidsClassNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
             final Property nameProp = new PropertySupport(
                     "name", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_classname"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().nameProp.classname"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_nameOfClass"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().nameProp.nameOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -228,9 +228,9 @@ public final class CidsClassNode extends ProjectNode implements
                     "tablename", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_tablename"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().tablenameProp.tablename"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_nameOfTable"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().tablenameProp.nameOfTable"), // NOI18N
                     true,
                     true)
             {
@@ -270,10 +270,10 @@ public final class CidsClassNode extends ProjectNode implements
                     "primaryKeyField", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_fieldnameOfPrimKEy"),// NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().primaryKeyFieldProp.fieldnameOfPrimKEy"),// NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsClassNode.class,
-                        "Dsc_fieldnameOfPrimKeyOfTable"), // NOI18N
+                        "CidsClassNode.createSheet().primaryKeyFieldProp.fieldnameOfPrimKeyOfTable"), // NOI18N
                     true,
                     true)
             {
@@ -313,9 +313,9 @@ public final class CidsClassNode extends ProjectNode implements
                     "indexed", // NOI18N
                     Boolean.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_inSearchIndex"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().indexedProp.inSearchIndex"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_addedToSearchIndex"),// NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().indexedProp.addedToSearchIndex"),// NOI18N
                     true,
                     true)
             {
@@ -354,9 +354,9 @@ public final class CidsClassNode extends ProjectNode implements
                     "arrayLink", // NOI18N
                     Boolean.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_arrayclass"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().arraylinkProp.arrayclass"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_classIsArrayclass"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().arraylinkProp.classIsArrayclass"), // NOI18N
                     true,
                     true)
             {
@@ -395,9 +395,9 @@ public final class CidsClassNode extends ProjectNode implements
                     "description", // NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_description"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().descriptionProp.description"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_descriptionOfClass"),// NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().descriptionProp.descriptionOfClass"),// NOI18N
                     true,
                     true)
             {
@@ -436,10 +436,10 @@ public final class CidsClassNode extends ProjectNode implements
                     "classPolicy", // NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_classPolicy"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().policyProp.classPolicy"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsClassNode.class,
-                        "Dsc_basicPolicyOnClassLevel"), // NOI18N
+                        "CidsClassNode.createSheet().policyProp.basicPolicyOnClassLevel"), // NOI18N
                     true,
                     true)
             {
@@ -496,7 +496,7 @@ public final class CidsClassNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsClassNode.class,
-                                    "Err_changeRights"), // NOI18N
+                                    "CidsClassNode.createSheet().policyProp.setValue(Object).ErrorUtils.message"), // NOI18N
                                 ex);
                         cidsClass.setPolicy(oldPolicy);
                     }
@@ -518,10 +518,10 @@ public final class CidsClassNode extends ProjectNode implements
                     "attrPolicy", // NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_attrPolicy"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().attrPolicyProp.attrPolicy"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsClassNode.class,
-                        "Dsc_basicPolicyForRightEval"), // NOI18N
+                        "CidsClassNode.createSheet().attrPolicyProp.basicPolicyForRightEval"), // NOI18N
                     true,
                     true)
             {
@@ -584,7 +584,7 @@ public final class CidsClassNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsClassNode.class,
-                                    "Err_changeRights"), // NOI18N
+                                    "CidsClassNode.createSheet().attrPolicyProp.setValue(Object).ErrorUtils.message"), // NOI18N
                                 ex);
                         cidsClass.setAttributePolicy(oldPolicy);
                     }
@@ -607,9 +607,9 @@ public final class CidsClassNode extends ProjectNode implements
                     "classIcon", // NOI18N
                     Icon.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_classIcon"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().classIconProp.classIcon"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_iconOfClass"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().classIconProp.iconOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -655,9 +655,9 @@ public final class CidsClassNode extends ProjectNode implements
                     "objectIcon", // NOI18N
                     Icon.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_objectIcon"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().objectIconProp.objectIcon"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_iconOfClass"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().objectIconProp.iconOfClassiconOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -703,10 +703,10 @@ public final class CidsClassNode extends ProjectNode implements
                     "toString", // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_toString"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().toStringProp.toString"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsClassNode.class,
-                        "Dsc_toStringClassOfClass"), // NOI18N
+                        "CidsClassNode.createSheet().toStringProp.toStringClassOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -731,10 +731,10 @@ public final class CidsClassNode extends ProjectNode implements
                                 WindowManager.getDefault().getMainWindow(), 
                                 org.openide.util.NbBundle.getMessage(
                                     CidsClassNode.class,
-                                    "Dsc_reallyRemJavaclassQuestion"), // NOI18N
+                                    "CidsClassNode.setValue(Object).JOptionPane.message"), // NOI18N
                                 org.openide.util.NbBundle.getMessage(
                                     CidsClassNode.class,
-                                    "Dsc_setJavaClassToNull"), // NOI18N
+                                    "CidsClassNode.setValue(Object).JOptionPane.title"), // NOI18N
                                 JOptionPane.YES_NO_OPTION,
                                 JOptionPane.QUESTION_MESSAGE);
                         if(answer == JOptionPane.NO_OPTION)
@@ -770,9 +770,9 @@ public final class CidsClassNode extends ProjectNode implements
                     "editor", // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_editor"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().editorProp.editor"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_editorClassOfClass"),// NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().editorProp.editorClassOfClass"),// NOI18N
                     true,
                     true)
             {
@@ -818,10 +818,10 @@ public final class CidsClassNode extends ProjectNode implements
                     "rendererProp", // NOI18N
                     JavaClass.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "Dsc_renderer"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().rendererProp.renderer"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsClassNode.class,
-                        "Dsc_rendererClassOfClass"), // NOI18N
+                        "CidsClassNode.createSheet().rendererProp.rendererClassOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -870,7 +870,7 @@ public final class CidsClassNode extends ProjectNode implements
                         String.class,
                         classAttr.getAttrKey(),
                         org.openide.util.NbBundle.getMessage(
-                            CidsClassNode.class, "Dsc_classAttr") // NOI18N
+                            CidsClassNode.class, "CidsClassNode.createSheet().classAttrProp.classAttr") // NOI18N
                             + classAttr.getAttrKey(),
                         true,
                         true)
@@ -961,15 +961,15 @@ public final class CidsClassNode extends ProjectNode implements
             classAttributes.setName("classattributes"); // NOI18N
             rightAttributes.setName("rights"); // NOI18N
             main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsClassNode.class, "Dsc_properties")); // NOI18N
+                    CidsClassNode.class, "CidsClassNode.createSheet().main.displayName")); // NOI18N
             icons.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsClassNode.class, "Dsc_icons")); // NOI18N
+                    CidsClassNode.class, "CidsClassNode.createSheet().icons.displayName")); // NOI18N
             classes.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsClassNode.class, "Dsc_java")); // NOI18N
+                    CidsClassNode.class, "CidsClassNode.createSheet().classes.displayName")); // NOI18N
             classAttributes.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsClassNode.class, "Dsc_classAttrs")); // NOI18N
+                    CidsClassNode.class, "CidsClassNode.createSheet().classAttributes.displayName")); // NOI18N
             rightAttributes.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsClassNode.class, "Dsc_rights")); // NOI18N
+                    CidsClassNode.class, "CidsClassNode.createSheet().rightAttributes.displayName")); // NOI18N
             main.put(idProp);
             main.put(nameProp);
             main.put(tablenameProp);
@@ -1051,10 +1051,10 @@ public final class CidsClassNode extends ProjectNode implements
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 CidsClassNode.class, 
-                                "Dsc_typeStillReferencedUndeletable"), // NOI18N
+                                "CidsClassNode.destroy().JOptionPane.message"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 CidsClassNode.class, 
-                                "Dsc_referencePresent"), // NOI18N
+                                "CidsClassNode.destroy().JOptionPane.title"), // NOI18N
                             JOptionPane.INFORMATION_MESSAGE);
                 }
             });

@@ -120,16 +120,16 @@ public final class UserNode extends ProjectNode implements
             final Property idProp = new PropertySupport.Reflection(user, 
                     Integer.class, "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    UserNode.class, "Dsc_id")); // NOI18N
+                    UserNode.class, "UserNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: PasswordChange ">
             final Property pwchangeProp=new PropertySupport(
                     "lastPWChange", // NOI18N
                     Date.class, 
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_lastPWChange"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().pwchangeProp.lastPWChange"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_timestampLastPWChange"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().pwchangeProp.timestampLastPWChange"), // NOI18N
                     true,
                     false)
             {
@@ -155,9 +155,9 @@ public final class UserNode extends ProjectNode implements
                     "name", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_name"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().nameProp.name"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_userLogin"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().nameProp.userLogin"), // NOI18N
                     true,
                     true)
             {
@@ -195,9 +195,9 @@ public final class UserNode extends ProjectNode implements
                     "password", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_password"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().passProp.password"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_passwordOfUser"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().passProp.passwordOfUser"), // NOI18N
                     true,
                     true)
             {
@@ -237,9 +237,9 @@ public final class UserNode extends ProjectNode implements
                     "admin", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_admin"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().adminProp.admin"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_isUserAdmin"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().adminProp.isUserAdmin"), // NOI18N
                     true,
                     true)
             {
@@ -277,10 +277,10 @@ public final class UserNode extends ProjectNode implements
                     "groupsInfo", // NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        UserNode.class, "Dsc_usergroups"), // NOI18N
+                        UserNode.class, "UserNode.createSheet().groupsInfo.usergroups"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         UserNode.class, 
-                        "Dsc_userIsMemberOfTheseGroups"), // NOI18N
+                        "UserNode.createSheet().groupsInfo.userIsMemberOfTheseGroups"), // NOI18N
                     true,
                     false)
             {
@@ -294,7 +294,7 @@ public final class UserNode extends ProjectNode implements
                     {
                         return org.openide.util.NbBundle.getMessage(
                                 UserNode.class, 
-                                "Dsc_userNotAssignedToAnyGroup"); // NOI18N
+                                "UserNode.createSheet().groupsInfo.getValue().userNotAssignedToAnyGroup"); // NOI18N
                     }else
                     {
                         return set.toString();
@@ -312,7 +312,7 @@ public final class UserNode extends ProjectNode implements
             };// </editor-fold>
             setAdditionalInfo.setName("zusatz"); // NOI18N
             setAdditionalInfo.setDisplayName(org.openide.util.NbBundle
-                    .getMessage(UserNode.class, "Dsc_additionalInfo"));// NOI18N
+                    .getMessage(UserNode.class, "UserNode.createSheet().additionalInfo.displayName"));// NOI18N
             set.put(nameProp);
             set.put(passProp);
             set.put(pwchangeProp);

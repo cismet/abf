@@ -60,7 +60,7 @@ public class ModifyNodeRightsWizardAction extends NewCatalogNodeWizardAction
         it.nextPanel();
         final WizardDescriptor wizard = new WizardDescriptor(it);
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                ModifyNodeRightsWizardAction.class, "Dsc_editNode")); // NOI18N
+                ModifyNodeRightsWizardAction.class, "ModifyNodeRightsWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         performAction(nodes, node, wizard);
     }
 
@@ -68,7 +68,7 @@ public class ModifyNodeRightsWizardAction extends NewCatalogNodeWizardAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                ModifyNodeRightsWizardAction.class, "Dsc_changeRights");//NOI18N
+                ModifyNodeRightsWizardAction.class, "ModifyNodeRightsWizardAction.getName().returnvalue");//NOI18N
     }
     
     @Override

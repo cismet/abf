@@ -83,7 +83,7 @@ public final class UserManagement extends ProjectNode implements
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "usermanagement.png"); // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(
-                UserManagement.class, "Dsc_usermanagement")); // NOI18N
+                UserManagement.class, "UserManagement.UserManagement(DomainserverProject).displayName")); // NOI18N
     }
     
     @Override
@@ -203,7 +203,7 @@ public final class UserManagement extends ProjectNode implements
                         Collections.sort(ugs, new Comparators.UserGroups());
                         final List groupsAndMore = new ArrayList();
                         groupsAndMore.add(org.openide.util.NbBundle.getMessage(
-                                UserManagement.class, "Dsc_allUsers"));// NOI18N
+                                UserManagement.class, "UserManagement.UserGroupChildren.addNotify().allUsers"));// NOI18N
                         groupsAndMore.addAll(ugs);
                         EventQueue.invokeLater(new Runnable()
                         {

@@ -89,7 +89,7 @@ public final class NewIconAction extends CookieAction
                         WindowManager.getDefault().getMainWindow(),
                         org.openide.util.NbBundle.getMessage(
                             NewIconAction.class,
-                            "Dsc_giveIconFilename")); // NOI18N
+                            "NewIconAction.performAction(Node[]).JOptionPane.giveIconFilename.message")); // NOI18N
                 if(icn == null)
                 {
                     return;
@@ -110,9 +110,9 @@ public final class NewIconAction extends CookieAction
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 NewIconAction.class, 
-                                "Err_givenFilenameInvalid"), // NOI18N
+                                "NewIconAction.performAction(Node[]).JOptionPane.givenFilenameInvalid.message"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
-                                NewIconAction.class, "Err_invalidName"),//NOI18N
+                                NewIconAction.class, "NewIconAction.performAction(Node[]).JOptionPane.givenFilenameInvalid.title"),//NOI18N
                             JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -127,7 +127,7 @@ public final class NewIconAction extends CookieAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewIconAction.class, "Dsc_newIcon"); // NOI18N
+                NewIconAction.class, "NewIconAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

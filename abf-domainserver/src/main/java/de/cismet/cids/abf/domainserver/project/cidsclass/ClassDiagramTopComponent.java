@@ -170,9 +170,9 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                 }));
         try {
             setName(NbBundle.getMessage(ClassDiagramTopComponent.class,
-                    "CTL_ClassDiagramTopComponent"));
+                    "ClassDiagramTopComponent.name"));
             setToolTipText(NbBundle.getMessage(ClassDiagramTopComponent.class,
-                    "HINT_ClassDiagramTopComponent"));
+                    "ClassDiagramTopComponent.tooltip"));
             setIcon(Utilities.loadImage(ICON_PATH, true));
             if (LOG.isDebugEnabled()) {
                 LOG.debug("trying to create view from scene");
@@ -983,7 +983,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         this.project = project;
         setViewName(getFreeViewname(project, "Neues Thema"));
         setToolTipText(NbBundle.getMessage(ClassDiagramTopComponent.class,
-                "HINT_ClassDiagramTopComponent"));
+                "ClassDiagramTopComponent.tooltip"));
         explorerManager.setRootContext(project.getDomainserverProjectNode());
     }
 
@@ -1038,7 +1038,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             }
             setName(
                 NbBundle.getMessage(ClassDiagramTopComponent.class,
-                    "CTL_ClassDiagramTopComponent") + " [" + viewName + "@"
+                    "ClassDiagramTopComponent.name") + " [" + viewName + "@"
                 + project.getDomainserverProjectNode().getName() + "]");
         } catch (final Exception e) {
             LOG.error("could not set viewname: " + viewName + " :: forced = "

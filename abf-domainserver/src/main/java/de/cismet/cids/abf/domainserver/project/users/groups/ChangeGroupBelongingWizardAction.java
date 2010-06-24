@@ -101,7 +101,7 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(ChangeGroupBelongingWizardAction.class, "Dsc_addToOtherUserGroups"); // NOI18N
+        return NbBundle.getMessage(ChangeGroupBelongingWizardAction.class, "ChangeGroupBelongingWizardAction.getName()returnvalue"); // NOI18N
     }
 
     @Override
@@ -140,7 +140,7 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wizard.setTitleFormat(new MessageFormat("{0}"));                                                     // NOI18N
-        wizard.setTitle(NbBundle.getMessage(ChangeGroupBelongingWizardAction.class, "Dsc_groupMembership")); // NOI18N
+        wizard.setTitle(NbBundle.getMessage(ChangeGroupBelongingWizardAction.class, "ChangeGroupBelongingWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         wizard.putProperty(USER_PROP, user);
         wizard.putProperty(PROJECT_PROP, project);
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);

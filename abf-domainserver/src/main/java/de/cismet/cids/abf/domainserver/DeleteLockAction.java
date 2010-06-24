@@ -76,22 +76,22 @@ public final class DeleteLockAction extends NodeAction
         final int answer = JOptionPane.showOptionDialog(
                 WindowManager.getDefault().getMainWindow(), 
                 org.openide.util.NbBundle.getMessage(
-                    DeleteLockAction.class, "Dsc_deleteLockQuestion"), // NOI18N
+                    DeleteLockAction.class, "DeleteLockAction.performAction(Node[]).JOptionPane.message"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    DeleteLockAction.class, "Dsc_ConfirmLockDeletion"),// NOI18N
+                    DeleteLockAction.class, "DeleteLockAction.performAction(Node[]).JOptionPane.title"),// NOI18N
                 JOptionPane.YES_NO_OPTION, 
                 JOptionPane.WARNING_MESSAGE,
                 null,
                 new Object[] 
                     {
                         org.openide.util.NbBundle.getMessage(
-                                DeleteLockAction.class, "Dsc_yes"), // NOI18N
+                                DeleteLockAction.class, "DeleteLockAction.performAction(Node[]).JOptionPane.yesOption"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
                                 DeleteLockAction.class,
-                                "Dsc_noCapitalised") // NOI18N
+                                "DeleteLockAction.performAction(Node[]).JOptionPane.noOption=NO") // NOI18N
                     },
                 org.openide.util.NbBundle.getMessage(
-                    DeleteLockAction.class, "Dsc_noCapitalised")); // NOI18N
+                    DeleteLockAction.class, "DeleteLockAction.performAction(Node[]).JOptionPane.noOption=NO")); // NOI18N
         if(answer != JOptionPane.YES_OPTION)
         {
             return;
@@ -113,10 +113,10 @@ public final class DeleteLockAction extends NodeAction
             LOG.error("could not remove lock", e); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     DeleteLockAction.class, 
-                    "Err_atLeastOneLockUndeleteable"), // NOI18N
+                    "DeleteLockAction.performAction(Node[]).ErrorUtils.atLeastOneLockUndeleteableError.message"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                     DeleteLockAction.class, 
-                    "Err_lockDeletion"), e); // NOI18N
+                    "DeleteLockAction.performAction(Node[]).ErrorUtils.atLeastOneLockUndeleteableError.title"), e); // NOI18N
         }finally
         {
             try            
@@ -146,7 +146,7 @@ public final class DeleteLockAction extends NodeAction
     public String getName()
     {
         return NbBundle.getMessage(DeleteLockAction.class, 
-                "CTL_DeleteLockAction"); // NOI18N
+                "DeleteLockAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

@@ -107,7 +107,7 @@ public final class QueryManipulationVisualPanel2 extends JPanel implements
     {
         return org.openide.util.NbBundle.getMessage(
                 QueryManipulationVisualPanel2.class, 
-                "Dsc_additionalProperties"); // NOI18N
+                "QueryManipulationVisualPanel2.getName().returnvalue"); // NOI18N
     }
     
     public Query getQuery()
@@ -141,43 +141,36 @@ public final class QueryManipulationVisualPanel2 extends JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblStatement, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "Lbl_stmt")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblStatement, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.lblStatement.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "Lbl_description")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.lblDesc.text")); // NOI18N
 
         descArea.setColumns(20);
         descArea.setRows(5);
         jScrollPane2.setViewportView(descArea);
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkResult, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "Chk_isResult")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chkResult, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.chkResult.text")); // NOI18N
         chkResult.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkResult.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkUpdate, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "Chk_isUpdate")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chkUpdate, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.chkUpdate.text")); // NOI18N
         chkUpdate.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkUpdate.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkUnion, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "chk_isUnion")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chkUnion, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.chkUnion.text")); // NOI18N
         chkUnion.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkUnion.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkRoot, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "chk_isRoot")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chkRoot, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.chkRoot.text")); // NOI18N
         chkRoot.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkRoot.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkBatch, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "chk_isBatch")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chkBatch, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.chkBatch.text")); // NOI18N
         chkBatch.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkBatch.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkConjunction, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "chk_isConjunction")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chkConjunction, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.chkConjunction.text")); // NOI18N
         chkConjunction.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkConjunction.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkSearch, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "chk_isSearch")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chkSearch, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.chkSearch.text")); // NOI18N
         chkSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkSearch.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblTheStmt, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "Lbl_theStmt")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblTheStmt, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel2.class, "QueryManipulationVisualPanel2.lblTheStmt.text")); // NOI18N
 
         jScrollPane1.setViewportView(edpStmt);
 

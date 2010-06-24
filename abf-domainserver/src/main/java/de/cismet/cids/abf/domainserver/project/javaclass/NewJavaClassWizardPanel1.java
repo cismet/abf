@@ -57,7 +57,7 @@ public final class NewJavaClassWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewJavaClassWizardPanel1.class,
-                        "Err_classAlreadyPresent")); // NOI18N
+                        "NewJavaClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.classAlreadyPresent")); // NOI18N
             return false;
         }catch(final NoResultException nre)
         {

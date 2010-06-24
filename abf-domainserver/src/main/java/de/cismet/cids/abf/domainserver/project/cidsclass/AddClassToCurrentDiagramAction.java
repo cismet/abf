@@ -63,7 +63,7 @@ public final class AddClassToCurrentDiagramAction extends DiagramAction
     public String getName()
     {
         return NbBundle.getMessage(AddClassToCurrentDiagramAction.class, 
-                "CTL_AddToCurrentDiagram"); // NOI18N
+                "AddClassToCurrentDiagramAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

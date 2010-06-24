@@ -131,7 +131,7 @@ public abstract class QueryManipulationWizardAction extends NodeAction
         //{0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                QueryManipulationWizardAction.class, "Dsc_query")); // NOI18N
+                QueryManipulationWizardAction.class, "QueryManipulationWizardAction.performAction(Node[],WizardDescriptor).wizard.title")); // NOI18N
         wizard.putProperty(BACKEND_PROPERTY, b);
         wizard.putProperty(PROJECT_PROPERTIES_PROPERTY, context.
                 getDomainserverProject().getRuntimeProps());

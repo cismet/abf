@@ -81,10 +81,12 @@ public class IndexActionDialog extends javax.swing.JDialog implements
         currentState = new ProgressState("", 0); // NOI18N
         final String noOfClassesString = org.openide.util.NbBundle.getMessage(
                 IndexActionDialog.class,
-                noOfClasses == 1 ? "Dsc_class" : "Dsc_classes"); // NOI18N
+                noOfClasses == 1 ?
+                    "IndexActionDialog.IndexActionDialog(Frame,boolean,int,Cancelable).noOfClassesString.oneClass" :
+                    "IndexActionDialog.IndexActionDialog(Frame,boolean,int,Cancelable).noOfClassesString.multClasses"); // NOI18N
         statusString = org.openide.util.NbBundle.getMessage(
                 IndexActionDialog.class,
-                "Dsc_overallStatus", // NOI18N
+                "IndexActionDialog.IndexActionDialog(Frame,boolean,int,Cancelable).statusString", // NOI18N
                 new Object[]
                     {
                         "{0}", // NOI18N

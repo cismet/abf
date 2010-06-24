@@ -109,7 +109,7 @@ public final class QueryManipulationWizardPanel1 extends Observable implements
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         QueryManipulationWizardPanel1.class, 
-                        "Dsc_invalidQueryName")); // NOI18N
+                        "QueryManipulationWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.invalidQueryName")); // NOI18N
             return false;
         }
         final Backend backend = (Backend)wizard.getProperty(
@@ -123,7 +123,7 @@ public final class QueryManipulationWizardPanel1 extends Observable implements
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                             QueryManipulationWizardPanel1.class, 
-                            "Dsc_queryAlreadyPresent")); // NOI18N
+                            "QueryManipulationWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.queryAlreadyPresent")); // NOI18N
             }
             return false;
         }catch(final NoResultException nre)

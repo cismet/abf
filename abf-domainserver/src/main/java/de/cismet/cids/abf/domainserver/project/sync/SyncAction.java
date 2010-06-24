@@ -63,7 +63,7 @@ public final class SyncAction extends CallableSystemAction
     @Override
     public String getName()
     {
-        return NbBundle.getMessage(SyncAction.class, "CTL_SyncAction");// NOI18N
+        return NbBundle.getMessage(SyncAction.class, "SyncAction.getName().returnvalue");// NOI18N
     }
 
     @Override

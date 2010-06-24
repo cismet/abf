@@ -112,16 +112,16 @@ public final class TypeNode extends ProjectNode
             final Property idProp = new PropertySupport.Reflection(type, 
                     Integer.class, "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    TypeNode.class, "Dsc_id")); // NOI18N
+                    TypeNode.class, "TypeNode.createSheet().idProp.id")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
             final Property nameProp = new PropertySupport(
                     "name", // NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_name"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().nameProp.name"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_nameOfType"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().nameProp.nameOfType"), // NOI18N
                     true,
                     true)
             {
@@ -157,16 +157,16 @@ public final class TypeNode extends ProjectNode
             final Property complexProp = new PropertySupport.Reflection(type, 
                     Boolean.class, "isComplexType", null); // NOI18N
             complexProp.setName(org.openide.util.NbBundle.getMessage(
-                    TypeNode.class, "Dsc_complexType")); // NOI18N
+                    TypeNode.class, "TypeNode.createSheet().complexProp.complexType")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Class ">
             final Property classProp = new PropertySupport(
                     "class", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_class"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().classProp.class"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_classOfType"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().classProp.classOfType"), // NOI18N
                     true,
                     false)
             {
@@ -182,7 +182,7 @@ public final class TypeNode extends ProjectNode
                     {
                         return org.openide.util.NbBundle.getMessage(
                                 TypeNode.class,
-                                "Err_erroneousAssignment"); // NOI18N
+                                "TypeNode.createSheet().classProp.getValue().erroneousAssignment"); // NOI18N
                     }
                 }
                 
@@ -199,9 +199,9 @@ public final class TypeNode extends ProjectNode
             final Property descriptionProp = new PropertySupport(
                     "description", String.class, // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_description"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().descriptionProp.description"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_descriptionOfType"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().descriptionProp.descriptionOfType"), // NOI18N
                     true,
                     true)
             {
@@ -242,9 +242,9 @@ public final class TypeNode extends ProjectNode
                     "editor", // NOI18N
                     JavaClass.class, 
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_editor"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().editorProp.editor"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_editorClassOfType"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().editorProp.editorClassOfType"), // NOI18N
                     true,
                     true)
             {
@@ -288,9 +288,9 @@ public final class TypeNode extends ProjectNode
                     "rendererProp",  // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_renderer"),  // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().rendererProp.renderer"),  // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        TypeNode.class, "Dsc_rendererClassOfType"), // NOI18N
+                        TypeNode.class, "TypeNode.createSheet().rendererProp.rendererClassOfType"), // NOI18N
                     true,
                     true)
             {
@@ -329,9 +329,9 @@ public final class TypeNode extends ProjectNode
             };// </editor-fold>
             // </editor-fold>
             main.setName(org.openide.util.NbBundle.getMessage(
-                    TypeNode.class, "Dsc_properties")); // NOI18N
+                    TypeNode.class, "TypeNode.createSheet().main.name")); // NOI18N
             main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    TypeNode.class, "Dsc_properties")); // NOI18N
+                    TypeNode.class, "TypeNode.createSheet().main.displayName")); // NOI18N
             main.put(idProp);
             main.put(nameProp);
             main.put(descriptionProp);

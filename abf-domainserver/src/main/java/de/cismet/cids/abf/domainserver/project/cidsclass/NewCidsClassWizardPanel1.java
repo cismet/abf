@@ -112,7 +112,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassWizardPanel1.class,
-                        "Dsc_classW/ONameNotValid")); // NOI18N
+                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.nameNotValid")); // NOI18N
             return false;
         }
         if(!highValidator.isValid(ccName))
@@ -120,7 +120,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassWizardPanel1.class,
-                        "Dsc_classNameInvalid")); // NOI18N
+                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.classNameInvalid")); // NOI18N
             return false;
         }
         if(ctName == null || "".equals(ctName.trim())) // NOI18N
@@ -128,7 +128,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassWizardPanel1.class,
-                        "Dsc_tableW/ONameNotValid")); // NOI18N
+                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.tableW/ONameNotValid")); // NOI18N
             return false;
         }
         if(!highValidator.isValid(ctName))
@@ -136,7 +136,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassWizardPanel1.class,
-                        "Dsc_tableNameNotValid")); // NOI18N
+                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.tableNameNotValid")); // NOI18N
             return false;
         }
         for(final Attribute a : cc.getAttributes())
@@ -147,7 +147,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                             NewCidsClassWizardPanel1.class,
-                            "Dsc_attrW/OFieldnameInvalid")); // NOI18N
+                            "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.attrW/OFieldnameInvalid")); // NOI18N
                 return false;
             }
             if(!highValidator.isValid(name))
@@ -155,7 +155,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                             NewCidsClassWizardPanel1.class,
-                            "Dsc_attrFieldnameNotValid", name)); // NOI18N
+                            "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.attrFieldnameNotValid", name)); // NOI18N
                 return false;
             }
             if(names.contains(name))
@@ -163,7 +163,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                             NewCidsClassWizardPanel1.class,
-                            "Dsc_duplAttrFieldNamesInvalid")); // NOI18N
+                            "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.duplAttrFieldNamesInvalid")); // NOI18N
                 return false;
             }
             names.add(name);

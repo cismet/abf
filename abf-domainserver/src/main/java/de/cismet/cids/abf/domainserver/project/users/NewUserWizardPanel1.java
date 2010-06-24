@@ -94,14 +94,14 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel
         {
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
-                    NewUserWizardPanel1.class, "Dsc_invalidLogin")); // NOI18N
+                    NewUserWizardPanel1.class, "NewUserWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.invalidLogin")); // NOI18N
             return false;
         }
         if(!validator.isValid(user.getPassword()))
         {
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
-                    NewUserWizardPanel1.class, "Dsc_invalidPassword"));// NOI18N
+                    NewUserWizardPanel1.class, "NewUserWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.invalidPassword"));// NOI18N
             return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);

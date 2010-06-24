@@ -97,7 +97,7 @@ public final class NewUserWizardAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(NewUserWizardAction.class, "Dsc_newUser"); // NOI18N
+        return NbBundle.getMessage(NewUserWizardAction.class, "NewUserWizardAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -132,7 +132,7 @@ public final class NewUserWizardAction extends CookieAction {
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wizard.setTitleFormat(new MessageFormat("{0}"));                                      // NOI18N
-        wizard.setTitle(NbBundle.getMessage(NewUserWizardAction.class, "Dsc_createNewUser")); // NOI18N
+        wizard.setTitle(NbBundle.getMessage(NewUserWizardAction.class, "NewUserWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         wizard.putProperty(PROJECT_PROP, cookie.getDomainserverProject());
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);

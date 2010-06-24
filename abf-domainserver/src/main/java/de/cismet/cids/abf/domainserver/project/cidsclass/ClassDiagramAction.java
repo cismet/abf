@@ -15,7 +15,7 @@ public class ClassDiagramAction extends AbstractAction
     public ClassDiagramAction()
     {
         super(NbBundle.getMessage(ClassDiagramAction.class,
-                "CTL_ClassDiagramAction"));
+                "ClassDiagramAction.name"));
         putValue(SMALL_ICON, new ImageIcon(Utilities.loadImage(
                 ClassDiagramTopComponent.ICON_PATH, true)));
     }

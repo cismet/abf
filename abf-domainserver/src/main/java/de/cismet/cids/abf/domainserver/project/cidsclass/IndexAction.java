@@ -107,7 +107,7 @@ public final class IndexAction extends CookieAction implements Cancelable
                     LOG.error("could not index class", ex); // NOI18N
                     LOG.error("next ex", ex.getNextException()); // NOI18N
                     dialog.setError(org.openide.util.NbBundle.getMessage(
-                            IndexAction.class, "Err_duringIndexing"),// NOI18N
+                            IndexAction.class, "IndexAction.performAction(Node[]).dialog.error"),// NOI18N
                             ex);
                 }
             }
@@ -134,7 +134,7 @@ public final class IndexAction extends CookieAction implements Cancelable
     public String getName()
     {
         return NbBundle.getMessage(
-                IndexAction.class, "CTL_IndexAction"); // NOI18N
+                IndexAction.class, "IndexAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

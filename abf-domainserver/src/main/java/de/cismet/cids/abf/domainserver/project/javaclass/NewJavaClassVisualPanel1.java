@@ -219,7 +219,7 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewJavaClassVisualPanel1.class, "Dsc_chooseJavaclass");// NOI18N
+                NewJavaClassVisualPanel1.class, "NewJavaClassVisualPanel1.getName().returnvalue");// NOI18N
     }
     
     JavaClass getJavaClass()
@@ -241,11 +241,11 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
         txtClass.setText(""); // NOI18N
         txtClass.getDocument().addDocumentListener(docL);
         tpaClass.setTitleAt(0, org.openide.util.NbBundle.getMessage(
-                NewJavaClassVisualPanel1.class, "Dsc_inputFoundIn")); // NOI18N
+                NewJavaClassVisualPanel1.class, "NewJavaClassVisualPanel1.tpaClass.titleAt0")); // NOI18N
         tpaClass.setTitleAt(1, org.openide.util.NbBundle.getMessage(
-                NewJavaClassVisualPanel1.class, "Dsc_properties")); // NOI18N
+                NewJavaClassVisualPanel1.class, "NewJavaClassVisualPanel1.tpaClass.titleAt1")); // NOI18N
         tpaClass.setTitleAt(2, org.openide.util.NbBundle.getMessage(
-                NewJavaClassVisualPanel1.class, "Dsc_usableIn")); // NOI18N
+                NewJavaClassVisualPanel1.class, "NewJavaClassVisualPanel1.tpaClass.titleAt2")); // NOI18N
         tpaClass.setSelectedIndex(0);
         cboType.removeAllItems();
         final Field[] fields = JavaClass.Type.class.getFields();
@@ -309,10 +309,10 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 NewJavaClassVisualPanel1.class,
-                                "Err_noStarterFolder"), // NOI18N
+                                "NewJavaClassVisualPanel1.loadManifests().JOptionPane.noStarterFolder.message"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 NewJavaClassVisualPanel1.class,
-                                "Err_missingStarter"), // NOI18N
+                                "NewJavaClassVisualPanel1.loadManifests().JOptionPane.noStarterFolder.title"), // NOI18N
                             JOptionPane.ERROR_MESSAGE);
                 }
             });
@@ -579,24 +579,24 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblChosenClass.setText(org.openide.util.NbBundle.getMessage(NewJavaClassVisualPanel1.class, "Lbl_chosenClass")); // NOI18N
+        lblChosenClass.setText(org.openide.util.NbBundle.getMessage(NewJavaClassVisualPanel1.class, "NewJavaClassVisualPanel1.lblChosenClass.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(scpBeanTreeView, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+            .add(scpBeanTreeView, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, scpBeanTreeView, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, scpBeanTreeView, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
         );
 
         tpaClass.addTab("tab1", jPanel1);
 
-        lblType.setText(org.openide.util.NbBundle.getMessage(NewJavaClassVisualPanel1.class, "Lbl_classType")); // NOI18N
+        lblType.setText(org.openide.util.NbBundle.getMessage(NewJavaClassVisualPanel1.class, "NewJavaClassVisualPanel1.lblType.text")); // NOI18N
 
-        lblNotice.setText(org.openide.util.NbBundle.getMessage(NewJavaClassVisualPanel1.class, "Lbl_notice")); // NOI18N
+        lblNotice.setText(org.openide.util.NbBundle.getMessage(NewJavaClassVisualPanel1.class, "NewJavaClassVisualPanel1.lblNotice.text")); // NOI18N
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -612,11 +612,11 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
             .add(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
                     .add(jPanel2Layout.createSequentialGroup()
                         .add(lblType)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(cboType, 0, 500, Short.MAX_VALUE))
+                        .add(cboType, 0, 506, Short.MAX_VALUE))
                     .add(lblNotice))
                 .addContainerGap())
         );
@@ -630,7 +630,7 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
                 .add(19, 19, 19)
                 .add(lblNotice)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -642,11 +642,11 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 653, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
         );
 
         tpaClass.addTab("tab3", jPanel3);
@@ -662,7 +662,7 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements
                     .add(layout.createSequentialGroup()
                         .add(lblChosenClass)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(txtClass, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)))
+                        .add(txtClass, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

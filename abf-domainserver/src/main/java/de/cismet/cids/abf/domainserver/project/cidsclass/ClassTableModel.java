@@ -77,7 +77,7 @@ public final class ClassTableModel extends AbstractTableModel
             primaryKey.setName("id"); // NOI18N
             primaryKey.setFieldName("ID"); // NOI18N
             primaryKey.setDescription(org.openide.util.NbBundle.getMessage(
-                    ClassTableModel.class, "Dsc_primaryKey")); // NOI18N
+                    ClassTableModel.class, "ClassTableModel.ClassTableModel(DomainserverProject,CidsClass).primaryKey.description")); // NOI18N
             primaryKey.setIndexed(Boolean.FALSE);
             primaryKey.setOptional(Boolean.FALSE);
             try
@@ -186,25 +186,25 @@ public final class ClassTableModel extends AbstractTableModel
         {
             case POS:
                 return org.openide.util.NbBundle.getMessage(
-                        ClassTableModel.class, "Dsc_positionAbbrev"); // NOI18N
+                        ClassTableModel.class, "ClassTableModel.getColumnName(int).posColumn"); // NOI18N
             case NAME:
                 return org.openide.util.NbBundle.getMessage(
-                        ClassTableModel.class, "Dsc_name"); // NOI18N
+                        ClassTableModel.class, "ClassTableModel.getColumnName(int).nameColumn"); // NOI18N
             case FIELD_NAME:
                 return org.openide.util.NbBundle.getMessage(
-                        ClassTableModel.class, "Dsc_fieldname"); // NOI18N
+                        ClassTableModel.class, "ClassTableModel.getColumnName(int).fieldnameColumn"); // NOI18N
             case TYPE:
                 return org.openide.util.NbBundle.getMessage(
-                        ClassTableModel.class, "Dsc_type"); // NOI18N
+                        ClassTableModel.class, "ClassTableModel.getColumnName(int).typeColumn"); // NOI18N
             case DEFAULTVALUE:
                 return org.openide.util.NbBundle.getMessage(
-                        ClassTableModel.class, "Dsc_defaultValue"); // NOI18N
+                        ClassTableModel.class, "ClassTableModel.getColumnName(int).defaultValueColumn"); // NOI18N
             case INDEXED:
                 return org.openide.util.NbBundle.getMessage(
-                        ClassTableModel.class, "Dsc_indexed"); // NOI18N
+                        ClassTableModel.class, "ClassTableModel.getColumnName(int).indexedColumn"); // NOI18N
             case OPTIONAL:
                 return org.openide.util.NbBundle.getMessage(
-                        ClassTableModel.class, "Dsc_optional"); // NOI18N
+                        ClassTableModel.class, "ClassTableModel.getColumnName(int).optionalColumn"); // NOI18N
             default:
                 break;
         }

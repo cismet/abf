@@ -236,10 +236,10 @@ public class CatalogNode extends ProjectNode implements
                     ErrorUtils.showErrorMessage(
                             org.openide.util.NbBundle.getMessage(
                                 CatalogNode.class,
-                                "Err_nodeDeletionProbablyAlreadyDel"), // NOI18N
+                                "CatalogNode.destroy.ErrorUtils.nodeDeletionProbablyAlreadyDel.message"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 CatalogNode.class,
-                                "Err_duringDeletion"), nre); // NOI18N
+                                "CatalogNode.destroy.ErrorUtils.nodeDeletionProbablyAlreadyDel.title"), nre); // NOI18N
                 }
             }else
             {
@@ -252,7 +252,7 @@ public class CatalogNode extends ProjectNode implements
         {
             LOG.error("could not destroy node", e); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "Err_duringNodeDeletion"), e); // NOI18N
+                    CatalogNode.class, "CatalogNode.destroy.ErrorUtils.duringNodeDeletion.message"), e); // NOI18N
         }
     }
 
@@ -341,16 +341,16 @@ public class CatalogNode extends ProjectNode implements
             final Property idProp = new PropertySupport.Reflection(catNode, 
                     Integer.class, "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "Dsc_id")); // NOI18N
+                    CatalogNode.class, "CatalogNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeName ">
             final Property nameProp = new PropertySupport(
                     "nodeName", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_nodeName"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().nameProp.name"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_nameOfNode"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().nameProp.nameOfNode"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -381,7 +381,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringNameChange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().nameProp.setValue(Object).ErrorUtils.duringNameChange.message"), ex); // NOI18N
                         catNode.setName(oldName);
                     }
                 }
@@ -391,9 +391,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeUrl", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_desc"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().urlProp.name"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_urlDescribingTheNode"),// NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().urlProp.urlDescribingTheNode"),// NOI18N
                     true,
                     mayWrite)
             {
@@ -432,7 +432,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringURLchange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().urlProp.setValue(Object).ErrorUtils.duringURLchange.message"), ex); // NOI18N
                         catNode.setUrl(oldURL);
                     }
                 }
@@ -452,9 +452,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeType", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_nodeType"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_typeOfNode"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.typeOfNode"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -469,19 +469,19 @@ public class CatalogNode extends ProjectNode implements
                     if(type.equals(CatNode.Type.CLASS.getType()))
                     {
                         return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "Dsc_classNode"); // NOI18N
+                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.classNode"); // NOI18N
                     }else if(type.equals(CatNode.Type.OBJECT.getType()))
                     {
                         return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "Dsc_objectNode"); // NOI18N
+                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.objectNode"); // NOI18N
                     }else if(type.equals(CatNode.Type.ORG.getType()))
                     {
                         return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "Dsc_orgNode"); // NOI18N
+                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.orgNode"); // NOI18N
                     }else
                     {
                         return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "Dsc_unknownType"); // NOI18N
+                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.unknownType"); // NOI18N
                     }
                 }
 
@@ -504,7 +504,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringTypeChange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().nodeTypeProp.setValue(Object).ErrorUtils.duringTypeChange.message"), ex); // NOI18N
                         catNode.setNodeType(oldType);
                     }
                 }
@@ -524,9 +524,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeIsRoot", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_rootNode"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().rootProp.rootNode"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_isNodeRootNode"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().rootProp.isNodeRootNode"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -560,7 +560,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringRootFlagChange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().rootProp.setValue(Object).ErrorUtils.duringRootFlagChange.message"), ex); // NOI18N
                         catNode.setIsRoot(oldIsRoot);
                     }
                 }
@@ -570,9 +570,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodePolicy",// NOI18N
                     String.class, 
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_policy"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().policyProp.policy"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_policyTooltip"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().policyProp.policyTooltip"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -627,7 +627,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringRightsChange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().policyProp.setValue(Object).ErrorUtils.duringRightsChange.message"), ex); // NOI18N
                         catNode.setPolicy(oldPolicy);
                     }
                 }
@@ -648,10 +648,10 @@ public class CatalogNode extends ProjectNode implements
                     "nodeDerivePerm", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_deriveRightsFromClass"),//NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().derivePermProp.deriveRightsFromClass"),//NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CatalogNode.class,
-                        "Dsc_deriveRightsFromClassTooltip"), // NOI18N
+                        "CatalogNode.createSheet().derivePermProp.deriveRightsFromClassTooltip"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -681,10 +681,10 @@ public class CatalogNode extends ProjectNode implements
                                 WindowManager.getDefault().getMainWindow(),
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Dsc_cidsclassNotSetChangeQuest"), // NOI18N
+                                    "CatalogNode.createSheet().derivePermProp.setValue(Object).JOptionPane.message"), // NOI18N
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Dsc_confirmChanges"), // NOI18N
+                                    "CatalogNode.createSheet().derivePermProp.setValue(Object).JOptionPane.title"), // NOI18N
                                 JOptionPane.OK_CANCEL_OPTION,
                                 JOptionPane.WARNING_MESSAGE);
                         if(answer == JOptionPane.CANCEL_OPTION)
@@ -703,7 +703,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_deriveFromClassFlagChange"), // NOI18N
+                                    "CatalogNode.createSheet().derivePermProp.setValue(Object).ErrorUtils.deriveFromClassFlagChange.message"), // NOI18N
                                 ex);
                         catNode.setDerivePermFromClass(oldDerive);
                     }
@@ -714,9 +714,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeIcon", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_icon"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().iconProp.icon"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_iconTooltip"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().iconProp.iconTooltip"), // NOI18N
                     true,
                     true)
             {
@@ -728,7 +728,7 @@ public class CatalogNode extends ProjectNode implements
                     final String icon = catNode.getIcon();
                     return icon == null ? org.openide.util.NbBundle.getMessage(
                             CatalogNode.class,
-                            "Dsc_notIconBrackets") : icon; // NOI18N
+                            "CatalogNode.createSheet().iconProp.getValue().returnvalue.notIconBrackets") : icon; // NOI18N
                 }
 
                 @Override
@@ -744,7 +744,7 @@ public class CatalogNode extends ProjectNode implements
                         if(NULL.equals(icon) || "".equals(icon) // NOI18N
                                 || org.openide.util.NbBundle.getMessage(
                                         CatalogNode.class,
-                                        "Dsc_notIconBrackets")
+                                        "CatalogNode.createSheet().iconProp.getValue().returnvalue.notIconBrackets")
                                    .equals(icon)) // NOI18N
                         {
                             catNode.setIcon(null);
@@ -761,7 +761,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringIconChange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().iconProp.setValue(Object).ErrorUtils.duringIconChange.message"), ex); // NOI18N
                         catNode.setIcon(oldIcon);
                     }
                 }
@@ -771,9 +771,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeIconFactory", // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_iconFactory"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().factoryProp.iconFactory"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_iconFactoryTooltip"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().factoryProp.iconFactoryTooltip"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -800,10 +800,10 @@ public class CatalogNode extends ProjectNode implements
                                 WindowManager.getDefault().getMainWindow(),
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Dsc_reallyRemAssignedJCQuestion"),// NOI18N
+                                    "CatalogNode.createSheet().factoryProp.setValue(Object).JOptionPane.message"),// NOI18N
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Dsc_setJCtoNull"), // NOI18N
+                                    "CatalogNode.createSheet().factoryProp.setValue(Object).JOptionPane.title"), // NOI18N
                                 JOptionPane.YES_NO_OPTION,
                                 JOptionPane.QUESTION_MESSAGE);
                         if(answer == JOptionPane.NO_OPTION)
@@ -823,7 +823,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringIconFactoryChange"), e);// NOI18N
+                                    "CatalogNode.createSheet().factoryProp.setValue(Object).ErrorUtils.duringIconFactoryChange.message"), e);// NOI18N
                         catNode.setIconFactory(old);
                     }
                 }
@@ -865,7 +865,7 @@ public class CatalogNode extends ProjectNode implements
                             {
                                 return org.openide.util.NbBundle.getMessage(
                                         CatalogNode.class,
-                                        "Dsc_valueNotSetBrackets"); // NOI18N
+                                        "CatalogNode.createSheet().factoryProp.getValue().returnvalue.valueNotSetBrackets"); // NOI18N
                             }
                             return entry.getValue();
                         }
@@ -877,9 +877,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeClass", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_linkedClass"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().classProp.linkedClass"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_linkedClassTooltip"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().classProp.linkedClassTooltip"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -918,7 +918,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringClassChange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().classProp.setValue(Object).ErrorUtils.duringClassChange.message"), ex); // NOI18N
                         catNode.setCidsClass(oldClass);
                     }
                 }
@@ -946,7 +946,7 @@ public class CatalogNode extends ProjectNode implements
                             String.class,
                             perm.getUserGroup().getName(),
                             org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "Dsc_aUsergroup"), // NOI18N
+                                CatalogNode.class, "CatalogNode.createSheet().rightProp.aUsergroup"), // NOI18N
                             true,
                             false)
                     {
@@ -981,9 +981,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeDynaChildrenSQL", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_sqlQuery"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQL.sqlQuery"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_sqlQueryTooltip"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQL.sqlQueryTooltip"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -1024,7 +1024,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringDynChildrenChange"), ex);//NOI18N
+                                    "CatalogNode.createSheet().dynaChildrenSQL.setValue(Object).ErrorUtils.duringDynChildrenChange.message"), ex);//NOI18N
                         catNode.setDynamicChildren(oldSql);
                     }
                 }
@@ -1044,9 +1044,9 @@ public class CatalogNode extends ProjectNode implements
                     "nodeDynaChildrenSQLSort", // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_sqlSort"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQLSort.sqlSort"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "Dsc_sqlSortTooltip"), // NOI18N
+                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQLSort.sqlSortTooltip"), // NOI18N
                     true,
                     mayWrite)
             {
@@ -1080,7 +1080,7 @@ public class CatalogNode extends ProjectNode implements
                         ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "Err_duringSqlSortChange"), ex); // NOI18N
+                                    "CatalogNode.createSheet().dynaChildrenSQL.setValue(Object).ErrorUtils.duringSqlSortChange.message"), ex); // NOI18N
                         catNode.setSqlSort(oldSqlSort);
                     }
                 }
@@ -1096,15 +1096,15 @@ public class CatalogNode extends ProjectNode implements
             rights.setName("nodeRights"); // NOI18N
             dynaChildren.setName("nodeDynaChildrenProps"); // NOI18N
             main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "Dsc_properties")); // NOI18N
+                    CatalogNode.class, "CatalogNode.createSheet().main.displayName")); // NOI18N
             clazz.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "Dsc_cidsclass")); // NOI18N
+                    CatalogNode.class, "CatalogNode.createSheet().clazz.displayName")); // NOI18N
             object.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "Dsc_object")); // NOI18N
+                    CatalogNode.class, "CatalogNode.createSheet().object.displayName")); // NOI18N
             rights.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "Dsc_rights")); // NOI18N
+                    CatalogNode.class, "CatalogNode.createSheet().rights.displayName")); // NOI18N
             dynaChildren.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "Dsc_dynChildren")); // NOI18N
+                    CatalogNode.class, "CatalogNode.createSheet().dynaChildren.displayName")); // NOI18N
             main.put(idProp);
             main.put(nameProp);
             main.put(urlProp);
@@ -1137,7 +1137,7 @@ public class CatalogNode extends ProjectNode implements
             LOG.error("could not create property sheet", ex); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     CatalogNode.class,
-                    "Err_duringPropViewCreation"), ex); // NOI18N
+                    "CatalogNode.createSheet().ErrorUtils.duringPropViewCreation.message"), ex); // NOI18N
         }
         return sheet;
     }
@@ -1268,10 +1268,10 @@ public class CatalogNode extends ProjectNode implements
                         WindowManager.getDefault().getMainWindow(),
                         org.openide.util.NbBundle.getMessage(
                             CatalogPasteType.class,
-                            "Dsc_copyDynNodeQuestion"), // NOI18N
+                            "CatalogNode.paste().JOptionPane.message"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
                             CatalogPasteType.class,
-                            "Dsc_copyDynChildren"), // NOI18N
+                            "CatalogNode.paste().JOptionPane.title"), // NOI18N
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE,
                         null,
@@ -1279,14 +1279,14 @@ public class CatalogNode extends ProjectNode implements
                             {
                                 org.openide.util.NbBundle.getMessage(
                                         CatalogPasteType.class,
-                                        "Dsc_yes"), // NOI18N
+                                        "CatalogNode.paste().JOptionPane.yesOption"), // NOI18N
                                 org.openide.util.NbBundle.getMessage(
                                         CatalogNode.class,
-                                        "Dsc_noCapitalised") // NOI18N
+                                        "CatalogNode.paste().JOptionPane.noOption") // NOI18N
                             },
                         org.openide.util.NbBundle.getMessage(
                             CatalogPasteType.class,
-                            "Dsc_noCapitalised")); // NOI18N
+                            "CatalogNode.paste().JOptionPane.noOption")); // NOI18N
                 if(answer != JOptionPane.YES_OPTION)
                 {
                     return null;
@@ -1399,7 +1399,7 @@ final class CatalogNodeChildren extends Children.Keys
                 final CatNode node = new CatNode();
                 node.setName(org.openide.util.NbBundle.getMessage(
                         ChildrenBuilder.class,
-                        "Dsc_dataInconsistency")); // NOI18N
+                        "CatalogNode.ChildrenBuilder.run().node.errorName")); // NOI18N
                 node.setNodeType("none"); // NOI18N
                 node.setIsLeaf(true);
                 node.setIsRoot(false);
@@ -1409,13 +1409,13 @@ final class CatalogNodeChildren extends Children.Keys
                     ErrorUtils.showErrorMessage(
                             org.openide.util.NbBundle.getMessage(
                                 ChildrenBuilder.class,
-                                "Err_dataInconsistencyCheckDB"), ex); // NOI18N
+                                "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckDB.message"), ex); // NOI18N
                 }else
                 {
                     ErrorUtils.showErrorMessage(
                             org.openide.util.NbBundle.getMessage(
                                 ChildrenBuilder.class,
-                                "Dsc_dataInconsistencyCheckTable", // NOI18N
+                                "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckTable.message", // NOI18N
                                 catNode.getCidsClass().getTableName()),
                             ex);
                 }
@@ -1497,7 +1497,7 @@ final class DynamicCatalogNodeChildren extends Children.Keys
                     {
                         org.openide.util.NbBundle.getMessage(
                                 DynamicCatalogNodeChildren.class,
-                                "Err_duringConToDB")// NOI18N
+                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().duringConToDB")// NOI18N
                     });
                     refresh();
                     if(loadingNode != null)
@@ -1519,7 +1519,7 @@ final class DynamicCatalogNodeChildren extends Children.Keys
                     {
                         org.openide.util.NbBundle.getMessage(
                                 DynamicCatalogNodeChildren.class,
-                                "Err_queryUnsuccessful") // NOI18N
+                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().") // NOI18N
                     });
                     refresh();
                     if(loadingNode != null)
@@ -1619,7 +1619,7 @@ final class DynamicCatalogNodeChildren extends Children.Keys
                     {
                         org.openide.util.NbBundle.getMessage(
                                 DynamicCatalogNodeChildren.class,
-                                "Err_queryResultEvaluation") // NOI18N
+                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryResultEvaluation") // NOI18N
                     });
                     refresh();
                     return;

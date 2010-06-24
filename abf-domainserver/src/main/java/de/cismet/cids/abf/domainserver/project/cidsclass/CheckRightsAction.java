@@ -362,7 +362,7 @@ public final class CheckRightsAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(CheckRightsAction.class, "CTL_CheckRightsAction"); // NOI18N
+        return NbBundle.getMessage(CheckRightsAction.class, "CheckRightsAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

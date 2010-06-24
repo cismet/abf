@@ -116,7 +116,7 @@ public final class EditRightsWizardAction extends CookieAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                EditRightsWizardAction.class, "Dsc_assignRights"); // NOI18N
+                EditRightsWizardAction.class, "EditRightsWizardAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -168,7 +168,7 @@ public final class EditRightsWizardAction extends CookieAction
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
                 EditRightsWizardAction.class,
-                "Dsc_combinedRightsAssignment")); // NOI18N
+                "EditRightsWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         wizard.putProperty(PROP_ARRAY_CIDSCLASSES, classes);
         wizard.putProperty(PROP_BACKEND, backend);
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
@@ -199,11 +199,11 @@ public final class EditRightsWizardAction extends CookieAction
                 ErrorUtils.showErrorMessage(
                         org.openide.util.NbBundle.getMessage(
                             EditRightsWizardAction.class, 
-                            "Err_storeClassesFollowingSuccessful")
+                            "EditRightsWizardAction.performAction(Node[]).ErrorUtils.message")
                             + successful.toString(),
                         org.openide.util.NbBundle.getMessage(
                             EditRightsWizardAction.class, 
-                            "Err_duringStore"), // NOI18N
+                            "EditRightsWizardAction.performAction(Node[]).ErrorUtils.title"), // NOI18N
                         e);
             }
         }

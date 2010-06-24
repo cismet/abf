@@ -16,7 +16,8 @@ public final class CreateDiagramFromClassWithRelationsAction extends DiagramActi
     }
     
     public String getName() {
-        return NbBundle.getMessage(CreateDiagramFromClassWithRelationsAction.class, "CTL_CreateDiagramFromClassWithRelationsAction");
+        return NbBundle.getMessage(CreateDiagramFromClassWithRelationsAction.class,
+                "CreateDiagramFromClassWithRelationsAction.getName().returnvalue");
     }
     
     protected String iconResource() {

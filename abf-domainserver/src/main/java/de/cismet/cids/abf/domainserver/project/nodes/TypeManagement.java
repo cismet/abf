@@ -74,7 +74,7 @@ public final class TypeManagement extends ProjectNode implements
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "datatype.png"); // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(
-                TypeManagement.class, "Dsc_userdefinedTypes")); // NOI18N
+                TypeManagement.class, "TypeManagement.TypeManagement(DomainserverProject).displayName")); // NOI18N
     }
     
     @Override
@@ -183,7 +183,7 @@ final class TypeManagementChildren extends Children.Keys
                     ErrorUtils.showErrorMessage(
                             org.openide.util.NbBundle.getMessage(
                                 TypeManagementChildren.class,
-                                "Err_loadingUserdefTypes"),  // NOI18N
+                                "TypeManagement.addNotify().ErrorUtils.message"),  // NOI18N
                             ex);
                 }
             }

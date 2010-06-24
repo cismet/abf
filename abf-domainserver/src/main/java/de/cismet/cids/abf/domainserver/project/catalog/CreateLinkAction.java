@@ -55,7 +55,7 @@ public class CreateLinkAction extends CookieAction
     public String getName()
     {
         return NbBundle.getMessage(CreateLinkAction.class,
-                "CTL_CreateLinkAction"); // NOI18N
+                "CreateLinkAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

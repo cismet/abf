@@ -118,10 +118,10 @@ public class InconsistencyPanel extends javax.swing.JPanel
                 add(errorTableScrollPane, GroupLayout.DEFAULT_SIZE, 268, Short.
                 MAX_VALUE)));
         errorCodeLabel.setText(org.openide.util.NbBundle.getMessage(
-                InconsistencyPanel.class, "Lbl_errorCode")); // NOI18N
+                InconsistencyPanel.class, "InconsistencyPanel.createPanel(InspectionResult).errorCodeLabel.text")); // NOI18N
         errorCodeDisplayLabel.setText(String.valueOf(result.getMessageCode()));
         messageLabel.setText(org.openide.util.NbBundle.getMessage(
-                InconsistencyPanel.class, "Lbl_message")); // NOI18N
+                InconsistencyPanel.class, "InconsistencyPanel.createPanel(InspectionResult).messageLabel.text")); // NOI18N
         messageLabel.setText(result.getResultMessage());
         final DefaultTableModel dtm = (DefaultTableModel)errorTable.getModel();
         dtm.setColumnIdentifiers(result.getTable().getColumnNames());
@@ -176,7 +176,7 @@ public class InconsistencyPanel extends javax.swing.JPanel
 
         txaMessage.setColumns(20);
         txaMessage.setRows(5);
-        txaMessage.setText(org.openide.util.NbBundle.getMessage(InconsistencyPanel.class, "Txa_inconsistencyMessage")); // NOI18N
+        txaMessage.setText(org.openide.util.NbBundle.getMessage(InconsistencyPanel.class, "InconsistencyPanel.txaMessage.text")); // NOI18N
         jScrollPane1.setViewportView(txaMessage);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);

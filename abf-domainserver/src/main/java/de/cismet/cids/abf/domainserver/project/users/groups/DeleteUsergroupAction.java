@@ -45,8 +45,8 @@ public final class DeleteUsergroupAction extends CookieAction {
     protected void performAction(final Node[] nodes) {
         final int answer = JOptionPane.showConfirmDialog(
                 WindowManager.getDefault().getMainWindow(),
-                org.openide.util.NbBundle.getMessage(DeleteUsergroupAction.class, "Dsc_reallyDeleteUsergroupQuestion"), // NOI18N
-                org.openide.util.NbBundle.getMessage(DeleteUsergroupAction.class, "Dsc_deleteUsergroup"), // NOI18N
+                org.openide.util.NbBundle.getMessage(DeleteUsergroupAction.class, "DeleteUsergroupAction.performAction(Node[]).JOptionPane.message"), // NOI18N
+                org.openide.util.NbBundle.getMessage(DeleteUsergroupAction.class, "DeleteUsergroupAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {
@@ -67,7 +67,7 @@ public final class DeleteUsergroupAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(DeleteUsergroupAction.class, "CTL_DeleteUsergroupAction"); // NOI18N
+        return NbBundle.getMessage(DeleteUsergroupAction.class, "DeleteUsergroupAction.getName().returnvalue"); // NOI18N
     }
 
     @Override

@@ -25,8 +25,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cboDomain" pref="268" max="32767" attributes="0"/>
-                          <Component id="lblDomainserverName" alignment="0" pref="268" max="32767" attributes="0"/>
+                          <Component id="cboDomain" pref="270" max="32767" attributes="0"/>
+                          <Component id="lblDomainserverName" alignment="0" pref="270" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -36,8 +36,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jScrollPane1" pref="262" max="32767" attributes="0"/>
-                          <Component id="txtName" alignment="0" pref="262" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="277" max="32767" attributes="0"/>
+                          <Component id="txtName" alignment="0" pref="277" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -76,7 +76,9 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="lblName">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Name:"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="NewUsergroupVisualPanel1.lblName.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
@@ -87,7 +89,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblDesc">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Beschreibung:"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="NewUsergroupVisualPanel1.lblDesc.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="146"/>
@@ -120,7 +124,7 @@
     <Component class="javax.swing.JLabel" name="lblGoal">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="Lbl_goal" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="NewUsergroupVisualPanel1.lblGoal.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AccessibilityProperties>
@@ -140,7 +144,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblDomain">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Domain:"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/users/groups/Bundle.properties" key="NewUsergroupVisualPanel1.lblDomain.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>

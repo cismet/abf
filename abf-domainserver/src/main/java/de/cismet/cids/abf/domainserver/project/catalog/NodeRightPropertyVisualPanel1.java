@@ -298,11 +298,11 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements
         final DefaultTableModel tModel = (DefaultTableModel)tblRights.
                 getModel();
         final String group = org.openide.util.NbBundle.getMessage(
-                NodeRightPropertyVisualPanel1.class, "Dsc_group"); // NOI18N
+                NodeRightPropertyVisualPanel1.class, "NodeRightPropertyVisualPanel1.init().group"); // NOI18N
         final String right = org.openide.util.NbBundle.getMessage(
-                NodeRightPropertyVisualPanel1.class, "Dsc_right"); // NOI18N
+                NodeRightPropertyVisualPanel1.class, "NodeRightPropertyVisualPanel1.init().right"); // NOI18N
         final String domain = org.openide.util.NbBundle.getMessage(
-                NodeRightPropertyVisualPanel1.class, "Dsc_domain"); // NOI18N
+                NodeRightPropertyVisualPanel1.class, "NodeRightPropertyVisualPanel1.init().domain"); // NOI18N
         tModel.setColumnIdentifiers(new Object[] {group, right, domain});
         while(tModel.getRowCount() > 0)
         {
@@ -852,7 +852,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements
         ));
         scpRights.setViewportView(tblRights);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblRights, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "Lbl_rights")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblRights, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "NodeRightPropertyVisualPanel1.lblRights.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(btnAddAll, "<<");
 
@@ -865,11 +865,11 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements
         lstGroup.setModel(new DefaultListModel());
         jScrollPane2.setViewportView(lstGroup);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblGroup, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "Lbl_groups")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblGroup, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "NodeRightPropertyVisualPanel1.lblGroup.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDefRights, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "Lbl_defaultRight")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDefRights, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "NodeRightPropertyVisualPanel1.lblDefRight.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPolicy, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "Lbl_nodePolicy")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPolicy, org.openide.util.NbBundle.getMessage(NodeRightPropertyVisualPanel1.class, "NodeRightPropertyVisualPanel1.lblPolicy.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -917,7 +917,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(lblGroup)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)))
+                                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)))
                         .addContainerGap())
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(btnAddAll)

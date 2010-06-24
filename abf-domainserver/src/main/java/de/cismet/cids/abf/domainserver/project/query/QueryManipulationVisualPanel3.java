@@ -166,11 +166,11 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements
         final DefaultTableModel tModel =
                 (DefaultTableModel)tblRights.getModel();
         final String group = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel3.class, "Dsc_group"); // NOI18N
+                QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.init().group"); // NOI18N
         final String right = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel3.class, "Dsc_right"); // NOI18N
+                QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.init().right"); // NOI18N
         final String domain = org.openide.util.NbBundle.getMessage(
-                QueryManipulationVisualPanel3.class, "Dsc_domain"); // NOI18N
+                QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.init().domain"); // NOI18N
         tModel.setColumnIdentifiers(new Object[] {group, right, domain});
         while(tModel.getRowCount() > 0)
         {
@@ -259,7 +259,7 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements
     {
         return org.openide.util.NbBundle.getMessage(
                 QueryManipulationVisualPanel3.class,
-                "Dsc_assignRights"); // NOI18N
+                "QueryManipulationVisualPanel3.getName().returnvalue"); // NOI18N
     }
     
     public Query getQuery()
@@ -675,9 +675,9 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements
 
         setMaximumSize(new java.awt.Dimension(661, 460));
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblRight, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "Lbl_right")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblRight, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblRight.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblGroups, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "Lbl_groups")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblGroups, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblGroups.text")); // NOI18N
 
         jScrollPane1.setViewportView(lstGroup);
 
@@ -702,7 +702,7 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements
 
         org.openide.awt.Mnemonics.setLocalizedText(btnRemoveAll, ">>");
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblStmt, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "Lbl_stmt")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblStmt, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblStmt.text")); // NOI18N
 
         tblRights.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -722,7 +722,7 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements
         });
         jScrollPane4.setViewportView(tblRights);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblRights, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "lbl_rights")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblRights, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblRights.text")); // NOI18N
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(104, 20));
 

@@ -61,7 +61,7 @@ public final class QueryManagement extends ProjectNode
     {
         super(new QueryManagementChildren(project), project);
         this.setName(org.openide.util.NbBundle.getMessage(
-                QueryManagement.class, "Dsc_queryManagement")); // NOI18N
+                QueryManagement.class, "QueryManagement.QueryManagement(DomainserverProject).name")); // NOI18N
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "search.png"); // NOI18N
     }

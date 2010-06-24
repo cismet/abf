@@ -129,7 +129,7 @@ public class NewCidsClassWizardAction extends CookieAction
     @Override
     public String getName()
     {
-        return org.openide.util.NbBundle.getMessage(NewCidsClassWizardAction.class, "Dsc_newClass");
+        return org.openide.util.NbBundle.getMessage(NewCidsClassWizardAction.class, "NewCidsClassWizardAction.getName().returnvalue");
     }
     
     @Override
@@ -193,10 +193,10 @@ public class NewCidsClassWizardAction extends CookieAction
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 NewCidsClassWizardAction.class,
-                                "Err_classNoCorrespondingType"), // NOI18N
+                                "NewCidsClassWizardAction.performAction(Node,CidsClass).JOptionPane.message"), // NOI18N
                             org.openide.util.NbBundle.getMessage(
                                 NewCidsClassWizardAction.class,
-                                "Err_classWithoutType"), // NOI18N
+                                "NewCidsClassWizardAction.performAction(Node,CidsClass).JOptionPane.title"), // NOI18N
                             JOptionPane.WARNING_MESSAGE);
                 }
             });
@@ -213,11 +213,11 @@ public class NewCidsClassWizardAction extends CookieAction
         {
             wizard.setTitle(org.openide.util.NbBundle.getMessage(
                     NewCidsClassWizardAction.class, 
-                    "Dsc_createNewClass")); // NOI18N
+                    "NewCidsClassWizardAction.performAction(Node,CidsClass).wizard.title")); // NOI18N
         }else
         {
             wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                    NewCidsClassWizardAction.class, "Dsc_alterClass"));// NOI18N
+                    NewCidsClassWizardAction.class, "NewCidsClassWizardAction.performAction(Node,CidsClass).wizard.title.changeClass"));// NOI18N
         }
         wizard.putProperty(PROJECT_PROP, project);
         // use copy of cidsclass, not class itself to avoid changes to remain in

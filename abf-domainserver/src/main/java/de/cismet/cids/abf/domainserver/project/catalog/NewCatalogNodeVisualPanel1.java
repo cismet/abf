@@ -79,7 +79,7 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
             NewCatalogNodeVisualPanel1.class);
 
     public static final String NO_OBJECT = org.openide.util.NbBundle.getMessage(
-            NewCatalogNodeVisualPanel1.class, "Dsc_noObjectBrackets"); // NOI18N
+            NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.NO_OBJECT"); // NOI18N
     
     private final transient NewCatalogNodeWizardPanel1 model;
     private final transient CachingURLComboBoxModel cachingURLModel;
@@ -146,11 +146,11 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
         catNode = model.getCatNode();
         final JLabel lblLoading = new JLabel(
                 org.openide.util.NbBundle.getMessage(
-                    NewCatalogNodeVisualPanel1.class, "Dsc_loading")); // NOI18N
+                    NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.init().lblLoading.text")); // NOI18N
         lblLoading.setIcon(loadingIcon);
         final JLabel lblLoadingErr = new JLabel(
                 org.openide.util.NbBundle.getMessage(
-                    NewCatalogNodeVisualPanel1.class, "Err_loading")); // NOI18N
+                    NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.init().lblLoadingErr")); // NOI18N
         lblLoadingErr.setIcon(loadingErrIcon);
         final ListCellRenderer renderer = new Renderers.UnifiedCellRenderer();
         // set up classes combo box
@@ -254,7 +254,7 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
 
         txtObject.setText(NO_OBJECT);
         txtNodeName.setText(org.openide.util.NbBundle.getMessage(
-                NewCatalogNodeVisualPanel1.class, "Dsc_newNode")); // NOI18N
+                NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.txtNodeName.text")); // NOI18N
         edpDynChild.setContentType("text/x-sql"); // NOI18N
         final EditorKit kit = JEditorPane.createEditorKitForContentType(
                 "text/x-sql"); // NOI18N
@@ -270,7 +270,7 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
         {
             cboDomain.setSelectedItem(org.openide.util.NbBundle.getMessage(
                     NewCatalogNodeVisualPanel1.class,
-                    "Dsc_notApplicable")); // NOI18N
+                    "NewCatalogNodeVisualPanel1.init().cboDomain.selectedItem")); // NOI18N
             cboDomain.setEnabled(false);
             lblDomain.setEnabled(false);
         }else
@@ -349,7 +349,7 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewCatalogNodeVisualPanel1.class, "Dsc_properties"); // NOI18N
+                NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.getName().returnvalue"); // NOI18N
     }
     
     @Override
@@ -390,7 +390,7 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
         {
             lblSelect = new JLabel(org.openide.util.NbBundle.getMessage(
                     NewCatalogNodeVisualPanel1.class,
-                    "Dsc_chooseURLBrackets")); // NOI18N
+                    "NewCatalogNodeVisualPanel1.CachingURLComboBoxModel.lblSelect.text")); // NOI18N
             addElement(URL.NO_DESCRIPTION);
             addElement(lblSelect);
         }
@@ -429,26 +429,25 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblNodeName, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_nodeName")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblNodeName, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.lblNodeName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_desc")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.lblDesc.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblClass, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_class")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblClass, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.lblClass.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblObject, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_objectId")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblObject, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.lblObject.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblNodeType, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_nodeType")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblNodeType, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.lblNodeType.text")); // NOI18N
 
         jScrollPane1.setViewportView(edpDynChild);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDynChild, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_dynChildren")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDynChild, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.lblDynChild")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(cboSqlSort, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_sqlSort")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(cboSqlSort, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.cboSqlSort.text")); // NOI18N
         cboSqlSort.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         cboSqlSort.setIconTextGap(15);
-        cboSqlSort.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDomain, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "Lbl_link")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDomain, org.openide.util.NbBundle.getMessage(NewCatalogNodeVisualPanel1.class, "NewCatalogNodeVisualPanel1.lblDomain.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -461,7 +460,7 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
                     .add(layout.createSequentialGroup()
                         .add(lblNodeName)
                         .add(26, 26, 26)
-                        .add(txtNodeName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE))
+                        .add(txtNodeName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
@@ -469,7 +468,7 @@ public final class NewCatalogNodeVisualPanel1 extends JPanel implements Observer
                                 .add(cboDesc, 0, 300, Short.MAX_VALUE)
                                 .add(cboNodeType, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .add(lblNodeType))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 100, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 106, Short.MAX_VALUE)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(txtObject)
                             .add(lblObject)

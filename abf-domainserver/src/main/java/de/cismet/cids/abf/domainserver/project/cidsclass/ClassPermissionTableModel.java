@@ -137,11 +137,11 @@ public final class ClassPermissionTableModel extends AbstractTableModel
         if(GROUP == column)
         {
             return org.openide.util.NbBundle.getMessage(
-                    ClassPermissionTableModel.class, "Dsc_group"); // NOI18N
+                    ClassPermissionTableModel.class, "ClassPermissionTableModel.getColumnName(int).groupColumn"); // NOI18N
         }else if(PERMISSION == column)
         {
             return org.openide.util.NbBundle.getMessage(
-                    ClassPermissionTableModel.class, "Dsc_right"); // NOI18N
+                    ClassPermissionTableModel.class, "ClassPermissionTableModel.getColumnName(int).permissionColumn"); // NOI18N
         }else
         {
             throw new IllegalArgumentException(

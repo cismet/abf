@@ -80,7 +80,7 @@ public final class CatalogManagement extends ProjectNode implements
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "tree.png"); // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(
-                CatalogManagement.class, "Dsc_catalog")); // NOI18N
+                CatalogManagement.class, "CatalogManagement.CatalogManagement(DomainserverProject).displayName")); // NOI18N
         project.addConnectionListener(this);
     }
     

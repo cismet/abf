@@ -64,7 +64,7 @@ public class ClassManagement extends ProjectNode implements Refreshable,
         getCookieSet().add(this);
         project.addConnectionListener(this);
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "class_management.png"); // NOI18N
-        setDisplayName(NbBundle.getMessage(ClassManagement.class, "Dsc_classes")); // NOI18N
+        setDisplayName(NbBundle.getMessage(ClassManagement.class, "ClassManagement.ClassManagement(DomainserverProject).displayName")); // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -259,7 +259,7 @@ final class ClassManagementChildren extends Children.Keys
                         {
                             LOG.error("could not fetch all classes from backend", ex); // NOI18N
                             ErrorUtils.showErrorMessage(
-                                    NbBundle.getMessage(ClassManagementChildren.class, "Err_requestingClasses"),//NOI18N
+                                    NbBundle.getMessage(ClassManagementChildren.class, "ClassManagement.addNotify().ErrorUtils.message"),//NOI18N
                                     ex);
                         }
                     }

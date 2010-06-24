@@ -64,7 +64,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblGroups" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="scpGroups" pref="261" max="32767" attributes="0"/>
+                              <Component id="scpGroups" pref="279" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -109,7 +109,7 @@
     <Component class="javax.swing.JLabel" name="lblRights">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Lbl_rights" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="NewCidsClassVisualPanel2.lblRights.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -184,7 +184,7 @@
     <Component class="javax.swing.JLabel" name="lblGroups">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Lbl_groups" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="NewCidsClassVisualPanel2.lblGroups.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -194,7 +194,7 @@
     <Component class="javax.swing.JLabel" name="lblDefaultRight">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Lbl_defaultRight" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="NewCidsClassVisualPanel2.lblDefaultRight.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -217,7 +217,7 @@
     <Component class="javax.swing.JLabel" name="lblPolicy">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="Lbl_PolicyOfClass" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/domainserver/project/cidsclass/Bundle.properties" key="NewCidsClassVisualPanel2.lblPolicy.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>

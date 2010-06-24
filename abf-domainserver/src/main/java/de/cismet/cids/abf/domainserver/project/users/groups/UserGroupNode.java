@@ -143,16 +143,16 @@ public final class UserGroupNode extends ProjectNode implements
             final Property idProp = new PropertySupport.Reflection(userGroup, 
                     Integer.class, "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    UserGroupNode.class, "Dsc_id")); // NOI18N
+                    UserGroupNode.class, "UserGroupNode.createSheet().idProp")); // NOI18N
             //</editor-fold>
             //<editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
             final Property nameProp = new PropertySupport(
                     "name", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_name"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().nameProp.name"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_nameOfUsergroup"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().nameProp.nameOfUsergroup"), // NOI18N
                     true,
                     true)
             {
@@ -191,9 +191,9 @@ public final class UserGroupNode extends ProjectNode implements
                     "domain", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_domain"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().domainProp.domain"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_domainOfUsergroup"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().domainProp.domainOfUsergroup"), // NOI18N
                     true,
                     false)
             {
@@ -219,10 +219,10 @@ public final class UserGroupNode extends ProjectNode implements
                     "description", // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_description"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().descProp.description"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         UserGroupNode.class, 
-                        "Dsc_descriptionOfUsergroup"), // NOI18N
+                        "UserGroupNode.createSheet().descProp.descriptionOfUsergroup"), // NOI18N
                     true,
                     true)
             {
@@ -259,9 +259,9 @@ public final class UserGroupNode extends ProjectNode implements
                     "usercount", // NOI18N
                     Integer.class,
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_usercount"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().countUser.usercount"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_usercountOfGroup"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().countUser.usercountOfGroup"), // NOI18N
                     true,
                     false)
             {
@@ -287,9 +287,9 @@ public final class UserGroupNode extends ProjectNode implements
                     "admincount", // NOI18N
                     Integer.class, 
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_admincount"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().countAdmins.admincount"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        UserGroupNode.class, "Dsc_admincountOfGroup"), // NOI18N
+                        UserGroupNode.class, "UserGroupNode.createSheet().countAdmins.admincountOfGroup"), // NOI18N
                     true,
                     false)
             {
@@ -323,11 +323,11 @@ public final class UserGroupNode extends ProjectNode implements
             final Sheet.Set set = Sheet.createPropertiesSet();
             final Sheet.Set setAdditionalInfo = Sheet.createPropertiesSet();
             set.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    UserGroupNode.class, "Dsc_properties")); // NOI18N
+                    UserGroupNode.class, "UserGroupNode.createSheet().displayName")); // NOI18N
             setAdditionalInfo.setName("additionalInfo"); // NOI18N
             setAdditionalInfo.setDisplayName(org.openide.util.NbBundle
                     .getMessage(UserGroupNode.class, 
-                    "Dsc_additionalInfo")); // NOI18N
+                    "UserGroupNode.createSheet().additionalInfo")); // NOI18N
             set.put(nameProp);
             set.put(domainProp);
             set.put(descProp);

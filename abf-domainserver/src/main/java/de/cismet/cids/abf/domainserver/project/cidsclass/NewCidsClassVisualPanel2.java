@@ -146,11 +146,11 @@ public final class NewCidsClassVisualPanel2 extends JPanel
         final DefaultTableModel tModel = (DefaultTableModel)tblRights.
                 getModel();
         final String group = org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel2.class, "Dsc_group"); // NOI18N
+                NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.init().group"); // NOI18N
         final String right = org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel2.class, "Dsc_right"); // NOI18N
+                NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.init().right"); // NOI18N
         final String domain = org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel2.class, "Dsc_domain"); // NOI18N
+                NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.init().domain"); // NOI18N
         tModel.setColumnIdentifiers(new Object[] {group, right, domain});
         tblRights.setTableHeader(new JTableHeader(tblRights.getColumnModel(
                 )));
@@ -441,7 +441,7 @@ public final class NewCidsClassVisualPanel2 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel2.class, "Dsc_changeRights"); // NOI18N
+                NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.getName().returnvalue"); // NOI18N
     }
     
     Set<ClassPermission> getPermissions()
@@ -788,7 +788,7 @@ public final class NewCidsClassVisualPanel2 extends JPanel
         tblRights.setModel(new DefaultTableModel());
         scpRightsTable.setViewportView(tblRights);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblRights, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "Lbl_rights")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblRights, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.lblRights.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(btnAddAll, "<<");
         btnAddAll.addActionListener(new java.awt.event.ActionListener() {
@@ -821,9 +821,9 @@ public final class NewCidsClassVisualPanel2 extends JPanel
         lstGroups.setModel(new DefaultListModel());
         scpGroups.setViewportView(lstGroups);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblGroups, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "Lbl_groups")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblGroups, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.lblGroups.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDefaultRight, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "Lbl_defaultRight")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDefaultRight, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.lblDefaultRight.text")); // NOI18N
 
         cboRights.setModel(new DefaultComboBoxModel());
         cboRights.addActionListener(new java.awt.event.ActionListener() {
@@ -832,7 +832,7 @@ public final class NewCidsClassVisualPanel2 extends JPanel
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPolicy, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "Lbl_PolicyOfClass")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPolicy, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel2.class, "NewCidsClassVisualPanel2.lblPolicy.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -880,7 +880,7 @@ public final class NewCidsClassVisualPanel2 extends JPanel
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(lblGroups)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(scpGroups, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)))
+                                .add(scpGroups, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)))
                         .addContainerGap())
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(btnAddAll)

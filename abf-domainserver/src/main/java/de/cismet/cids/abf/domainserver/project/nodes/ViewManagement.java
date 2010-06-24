@@ -59,7 +59,7 @@ public final class ViewManagement extends ProjectNode implements ConnectionListe
         super(Children.LEAF, project);
         project.addConnectionListener(this);
         image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "class_management.png"); // NOI18N
-        setDisplayName(org.openide.util.NbBundle.getMessage(ViewManagement.class, "Dsc_topics"));    // NOI18N
+        setDisplayName(org.openide.util.NbBundle.getMessage(ViewManagement.class, "ViewManagement.ViewManagement(DomainserverProject).displayName"));    // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -188,7 +188,7 @@ final class ViewManagementChildren extends Children.Keys {
                             ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     ViewManagementChildren.class,
-                                    "Err_duringLoadingDiagrams"),       // NOI18N
+                                    "ViewManagement.addNotify().ErrorUtils.message"),       // NOI18N
                                 ex);
                         }
                     }

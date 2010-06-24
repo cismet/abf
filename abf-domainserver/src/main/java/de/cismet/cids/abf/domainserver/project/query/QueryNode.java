@@ -108,7 +108,7 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
             idProp = new PropertySupport.Reflection(query, Integer.class, 
                     "getId", null); // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_id")); // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().idProp.name")); // NOI18N
         }catch(final NoSuchMethodException nsme)
         {
             LOG.error("could not get id", nsme); // NOI18N
@@ -119,9 +119,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryName", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_queryName"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().nameProp.queryName"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_nameOfQuery"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().nameProp.nameOfQuery"), // NOI18N
                 true,
                 false)
         {
@@ -153,9 +153,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryDesc", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_description"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().descProp.description"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_descOfQuery"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().descProp.descOfQuery"), // NOI18N
                 true,
                 false)
         {
@@ -186,9 +186,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryResult", // NOI18N
                 Integer.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_result"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().resultProp.result"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_resultOfQuery"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().resultProp.resultOfQuery"), // NOI18N
                 true,
                 false)
         {
@@ -215,9 +215,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryUpdate", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_update"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().updateProp.update"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_doesUpdate"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().updateProp.doesUpdate"), // NOI18N
                 true,
                 false)
         {
@@ -228,9 +228,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
             {
                 return query.getIsUpdate() ?
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_yes") : // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().updateProp.getValue().yes") : // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_no"); // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().updateProp.getValue().no"); // NOI18N
             }
 
             @Override
@@ -247,9 +247,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryUnion", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_union"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().unionProp.union"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_doesUnion"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().unionProp.doesUnion"), // NOI18N
                 true,
                 false)
         {
@@ -260,9 +260,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
             {
                 return query.getIsUnion() ?
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_yes") : // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().unionProp.getValue().yes") : // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_no"); // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().unionProp.getValue().no"); // NOI18N
             }
 
             @Override
@@ -279,9 +279,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryRoot", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_root"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().rootProp.root"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_rootTooltip"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().rootProp.rootTooltip"), // NOI18N
                 true,
                 false)
         {
@@ -292,9 +292,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
             {
                 return query.getIsRoot() ?
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_yes") : // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().rootProp.getValue().yes") : // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_no"); // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().rootProp.getValue().no"); // NOI18N
             }
 
             @Override
@@ -311,9 +311,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryBatch", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_batch"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().batchProp.batch"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_partOfBatch"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().batchProp.partOfBatch"), // NOI18N
                 true,
                 false)
         {
@@ -324,9 +324,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
             {
                 return query.getIsBatch() ?
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_yes") : // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().batchProp.getValue().yes") : // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_no"); // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().batchProp.getValue().no"); // NOI18N
             }
 
             @Override
@@ -343,9 +343,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryConj", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_conjunction"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().conjProp.conjunction"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_conjunctionTooltip"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().conjProp.conjunctionTooltip"), // NOI18N
                 true,
                 false)
         {
@@ -356,9 +356,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
             {
                 return query.getIsConjunction() ?
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_yes") : // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().conjProp.getValue().yes") : // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_no"); // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().conjProp.getValue().no"); // NOI18N
             }
 
             @Override
@@ -375,9 +375,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "querySearch", // NOI18N
                 String.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_search"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().searchProp.search"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_searchTooltip"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().searchProp.searchTooltip"), // NOI18N
                 true,
                 false)
         {
@@ -388,9 +388,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
             {
                 return query.getIsSearch() ?
                     org.openide.util.NbBundle.getMessage(
-                        QueryNode.class, "Dsc_yes") : // NOI18N
+                        QueryNode.class, "QueryNode.createSheet().searchProp.getValue().yes") : // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        QueryNode.class, "Dsc_no"); // NOI18N
+                        QueryNode.class, "QueryNode.createSheet().searchProp.getValue().no"); // NOI18N
             }
 
             @Override
@@ -407,9 +407,9 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                 "queryParam", // NOI18N
                 Integer.class,
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_paramCount"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().paramProp.paramCount"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
-                    QueryNode.class, "Dsc_paramCountTooltip"), // NOI18N
+                    QueryNode.class, "QueryNode.createSheet().paramProp.paramCountTooltip"), // NOI18N
                 true,
                 false)
         {
@@ -444,7 +444,7 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                         String.class,
                         qp.getUserGroup().getName(),
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_aUsergroup"), // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().rightProps.aUsergroup"), // NOI18N
                         true,
                         false)
                 {
@@ -485,7 +485,7 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
                         String.class,
                         cc.getId().toString(),
                         org.openide.util.NbBundle.getMessage(
-                            QueryNode.class, "Dsc_aClass"), // NOI18N
+                            QueryNode.class, "QueryNode.createSheet().rightProps.aClass"), // NOI18N
                         true,
                         false)
                 {
@@ -515,11 +515,11 @@ public class QueryNode extends ProjectNode implements QueryContextCookie
         clazz.setName("nodeClassProps"); // NOI18N
         rights.setName("nodeRights"); // NOI18N
         main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                QueryNode.class, "Dsc_properties")); // NOI18N
+                QueryNode.class, "QueryNode.createSheet().main.displayName")); // NOI18N
         clazz.setDisplayName(org.openide.util.NbBundle.getMessage(
-                QueryNode.class, "Dsc_cidsClass")); // NOI18N
+                QueryNode.class, "QueryNode.createSheet().clazz.displayName")); // NOI18N
         rights.setDisplayName(org.openide.util.NbBundle.getMessage(
-                QueryNode.class, "Dsc_rights")); // NOI18N
+                QueryNode.class, "QueryNode.createSheet().rights.displayName")); // NOI18N
         main.put(idProp);
         main.put(nameProp);
         main.put(descProp);

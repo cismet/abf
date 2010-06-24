@@ -127,7 +127,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel3.class, "Dsc_assignClassAttr");// NOI18N
+                NewCidsClassVisualPanel3.class, "NewCidsClassVisualPanel3.getName().returnvalue");// NOI18N
     }
     
     CidsClass getCidsClass()
@@ -185,10 +185,10 @@ public final class NewCidsClassVisualPanel3 extends JPanel
             {
                 case KEY:
                     return org.openide.util.NbBundle.getMessage(
-                            NewCidsClassVisualPanel3.class, "Dsc_key");// NOI18N
+                            NewCidsClassVisualPanel3.class, "NewCidsClassVisualPanel3.ClassAttrTableModel.getColumnName(int).column1");// NOI18N
                 case VALUE:
                     return org.openide.util.NbBundle.getMessage(
-                            NewCidsClassVisualPanel3.class, "Dsc_val");// NOI18N
+                            NewCidsClassVisualPanel3.class, "NewCidsClassVisualPanel3.ClassAttrTableModel.getColumnName(int).column2");// NOI18N
                 default:
                     throw new IllegalArgumentException(
                             "unknown column: " + column); // NOI18N
@@ -249,7 +249,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        scpClassAttr.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel3.class, "Dsc_classAttrs"))); // NOI18N
+        scpClassAttr.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel3.class, "NewCidsClassVisualPanel3.scpClassAttr.border.title"))); // NOI18N
         scpClassAttr.setPreferredSize(new java.awt.Dimension(130, 296));
         scpClassAttr.setViewportView(tblClassAttr);
 
@@ -306,10 +306,10 @@ public final class NewCidsClassVisualPanel3 extends JPanel
             ErrorUtils.showErrorMessage(
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassVisualPanel3.class, 
-                        "Err_couldNotLoadType"), // NOI18N
+                        "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).InterruptedException.ErrorUtils.message"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassVisualPanel3.class,
-                        "Err_loadingInterrupt"), // NOI18N
+                        "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).InterruptedException.ErrorUtils.title"), // NOI18N
                     ex);
             return;
         }catch(final ExecutionException ex)
@@ -318,10 +318,10 @@ public final class NewCidsClassVisualPanel3 extends JPanel
             ErrorUtils.showErrorMessage(
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassVisualPanel3.class, 
-                        "Err_couldNotLoadType"), // NOI18N
+                        "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).ExecutionException.ErrorUtils.message"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassVisualPanel3.class, 
-                        "Err_loading"), // NOI18N
+                        "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).ExecutionException.ErrorUtils.title"), // NOI18N
                     ex);
             return;
         }

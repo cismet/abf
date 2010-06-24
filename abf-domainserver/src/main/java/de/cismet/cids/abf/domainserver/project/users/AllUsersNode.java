@@ -68,7 +68,7 @@ public final class AllUsersNode extends ProjectNode implements Refreshable
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "all_users.png"); // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(
-                AllUsersNode.class, "Dsc_allUsers")); // NOI18N
+                AllUsersNode.class, "AllUsersNode.displayName")); // NOI18N
     }
     
     @Override

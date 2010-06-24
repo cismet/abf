@@ -77,7 +77,7 @@ public final class JavaClassManagement extends ProjectNode implements
         nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                 + "java.png"); // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(
-                JavaClassManagement.class, "Dsc_javaclasses")); // NOI18N
+                JavaClassManagement.class, "JavaClassManagement.JavaClassManagement(DomainserverProject).displayName")); // NOI18N
     }
     
     @Override
@@ -186,7 +186,7 @@ final class JavaClassManagementChildren extends Children.Keys
                     ErrorUtils.showErrorMessage(
                             org.openide.util.NbBundle.getMessage(
                                 JavaClassManagement.class, 
-                                "Err_duringJavaclassRetrievel"), ex); // NOI18N
+                                "JavaClassManagement.addNotify().ErrorUtils.message"), ex); // NOI18N
                 }
             }
         }, getClass().getSimpleName() + "::addNotifyRunner"); // NOI18N
