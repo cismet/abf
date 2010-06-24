@@ -94,22 +94,22 @@ public class MessagingUserNode extends AbstractNode implements RMUserCookie {
     protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
-        set.setDisplayName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "Dsc_properties"));         // NOI18N
+        set.setDisplayName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "MessagingUserNode.createSheet().displayName"));         // NOI18N
         try {
             final Property nameProp = new PropertySupport.Reflection(user, String.class, "getUserName", null);       // NOI18N
-            nameProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "Dsc_login"));            // NOI18N
+            nameProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "MessagingUserNode.createSheet().nameProp.name"));            // NOI18N
             final Property domainProp = new PropertySupport.Reflection(user, String.class, "getUserDomain", null);   // NOI18N
-            domainProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "Dsc_domain"));         // NOI18N
+            domainProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "MessagingUserNode.createSheet().domainProp.name"));         // NOI18N
             final Property groupProp = new PropertySupport.Reflection(user, String.class, "getUserGroup", null);     // NOI18N
-            groupProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "Dsc_usergroup"));       // NOI18N
+            groupProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "MessagingUserNode.createSheet().groupProp.name"));       // NOI18N
             final Property onlineTimeProp = new PropertySupport.Reflection(
                     user,
                     String.class,
                     "getOnlineTimeAsString",
                     null);                                                                                           // NOI18N
-            onlineTimeProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "Dsc_onlineTime")); // NOI18N
+            onlineTimeProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "MessagingUserNode.createSheet().onlineTimeProp.name")); // NOI18N
             final Property ipProp = new PropertySupport.Reflection(user, String.class, "getIpAddress", null);        // NOI18N
-            ipProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "Dsc_ipAddress"));          // NOI18N
+            ipProp.setName(org.openide.util.NbBundle.getMessage(MessagingUserNode.class, "MessagingUserNode.createSheet().ipProp.name"));          // NOI18N
             set.put(nameProp);
             set.put(domainProp);
             set.put(groupProp);

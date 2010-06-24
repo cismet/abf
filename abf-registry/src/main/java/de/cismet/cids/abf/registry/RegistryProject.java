@@ -260,13 +260,13 @@ public class RegistryProject implements Project, Connectable {
             handle = ProgressHandleFactory.createHandle(
                     org.openide.util.NbBundle.getMessage(
                         RegistryProject.class,
-                        "Dsc_disconnectFromRegistry", // NOI18N
+                        "RegistryProject.handle.message.disconnectFromRegistry", // NOI18N
                         runtimeProps.getProperty("registryIP"))); // NOI18N
         } else {
             handle = ProgressHandleFactory.createHandle(
                     org.openide.util.NbBundle.getMessage(
                         RegistryProject.class,
-                        "Dsc_connectToRegistry", // NOI18N
+                        "RegistryProject.handle.message.connectToRegistry", // NOI18N
                         runtimeProps.getProperty("registryIP"))); // NOI18N
         }
         handle.start();

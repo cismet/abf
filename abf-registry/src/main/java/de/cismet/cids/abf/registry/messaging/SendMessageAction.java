@@ -50,7 +50,7 @@ public final class SendMessageAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(SendMessageAction.class, "CTL_SendMessageAction"); // NOI18N
+        return NbBundle.getMessage(SendMessageAction.class, "SendMessageAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -82,7 +82,7 @@ public final class SendMessageAction extends CookieAction {
                 WindowManager.getDefault().getMainWindow(),
                 org.openide.util.NbBundle.getMessage(
                     SendMessageAction.class,
-                    "Dsc_whichMessageQuestion",
+                    "SendMessageAction.performAction(Node[]).message",
                     map.size()));
         if ((message != null) && (message.trim().isEmpty())) {
             for (final Entry<RMUser, RegistryProject> entry : map.entrySet()) {
@@ -96,7 +96,7 @@ public final class SendMessageAction extends CookieAction {
                                 message,
                                 org.openide.util.NbBundle.getMessage(
                                     SendMessageAction.class,
-                                    "Dsc_messageFromAdmin")); // NOI18N
+                                    "SendMessageAction.performAction(Node[]).messageFromAdmin")); // NOI18N
                 } catch (final RemoteException ex) {
                     LOG.error("could not send message", ex);  // NOI18N
                 } catch (final UnableToSendMessageException ex) {

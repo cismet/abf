@@ -90,13 +90,13 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
                         htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
                             RegistryProjectNode.class,
-                            "Dsc_disconnect"));   // NOI18N
+                            "RegistryProjectNode.getHtmlDisplayName().returnvalue.disconnect"));   // NOI18N
             } else {
                 return MessageFormat.format(
                         htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
                             RegistryProjectNode.class,
-                            "Dsc_connect"));      // NOI18N
+                            "RegistryProjectNode.getHtmlDisplayName().returnvalue.connect"));      // NOI18N
             }
         } else {
             if (project.isConnected()) {
@@ -104,13 +104,13 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
                         htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
                             RegistryProjectNode.class,
-                            "Dsc_connected"));    // NOI18N
+                            "RegistryProjectNode.getHtmlDisplayName().returnvalue.connected"));    // NOI18N
             } else {
                 return MessageFormat.format(
                         htmlTemplate,
                         org.openide.util.NbBundle.getMessage(
                             RegistryProjectNode.class,
-                            "Dsc_disconnected")); // NOI18N
+                            "RegistryProjectNode.getHtmlDisplayName().returnvalue.disconnected")); // NOI18N
             }
         }
     }

@@ -59,7 +59,7 @@ public class MessagingNode extends AbstractNode implements ConnectionListener, R
         super(Children.LEAF);
         this.registryProject = registryProject;
         icon = ImageUtilities.loadImage(RegistryProject.IMAGE_FOLDER + "allUsers.png");                 // NOI18N
-        setDisplayName(org.openide.util.NbBundle.getMessage(MessagingNode.class, "Dsc_loggedOnUsers")); // NOI18N
+        setDisplayName(org.openide.util.NbBundle.getMessage(MessagingNode.class, "MessagingNode.displayName")); // NOI18N
         registryProject.addConnectionListener(this);
         getCookieSet().add(new RegistryProjectCookieImpl(registryProject));
     }
