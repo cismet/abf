@@ -88,7 +88,7 @@ public class BrokerProject implements Project {
                 ErrorUtils.showErrorMessage(
                     org.openide.util.NbBundle.getMessage(
                         BrokerProject.class,
-                        "Err_couldNotCreateWebFolder"), // NOI18N
+                        "BrokerProject.getWebinterfaceFolder(boolean).ErrorUtils.message"), // NOI18N
                     ioe);
             }
         }
@@ -130,7 +130,7 @@ public class BrokerProject implements Project {
                 ErrorUtils.showErrorMessage(
                     org.openide.util.NbBundle.getMessage(
                         BrokerProject.class,
-                        "Err_loadingProjectProps"), // NOI18N
+                        "BrokerProject.loadProperties().ErrorUtils.message"), // NOI18N
                     e);
             }
         }
