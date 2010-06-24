@@ -65,7 +65,7 @@ public final class NewJarVisualPanel extends JPanel
         txtName.getDocument().addDocumentListener(WeakListeners.
                 document(docL, txtName.getDocument()));
         txtName.setText(org.openide.util.NbBundle.getMessage(
-                NewJarVisualPanel.class, "Txt_newGroup")); // NOI18N
+                NewJarVisualPanel.class, "NewJarVisualPanel.txtName.text")); // NOI18N
         txtName.setSelectionStart(0);
         txtName.setSelectionEnd(txtName.getText().length());
     }
@@ -74,7 +74,7 @@ public final class NewJarVisualPanel extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewJarVisualPanel.class, "Dsc_name"); // NOI18N
+                NewJarVisualPanel.class, "NewJarVisualPanel.getName().returnvalue"); // NOI18N
     }
     
     String getJarName()
@@ -111,7 +111,7 @@ public final class NewJarVisualPanel extends JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblName, org.openide.util.NbBundle.getMessage(NewJarVisualPanel.class, "Lbl_name")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblName, org.openide.util.NbBundle.getMessage(NewJarVisualPanel.class, "NewJarVisualPanel.lblName.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

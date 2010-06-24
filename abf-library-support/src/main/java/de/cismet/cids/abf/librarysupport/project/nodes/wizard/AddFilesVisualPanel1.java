@@ -99,7 +99,7 @@ public final class AddFilesVisualPanel1 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                AddFilesVisualPanel1.class, "Dsc_addFiles");// NOI18N
+                AddFilesVisualPanel1.class, "AddFilesVisualPanel.getName().returnvalue");// NOI18N
     }
     
     public File[] getChoosenFiles()
@@ -122,7 +122,7 @@ public final class AddFilesVisualPanel1 extends JPanel
 
         fileChooser.setControlButtonsAreShown(false);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPackage, org.openide.util.NbBundle.getMessage(AddFilesVisualPanel1.class, "Lbl_addToThisPackage")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPackage, org.openide.util.NbBundle.getMessage(AddFilesVisualPanel1.class, "AddFilesVisualPanel.lblPackage.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -131,11 +131,11 @@ public final class AddFilesVisualPanel1 extends JPanel
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(fileChooser, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
+                    .add(fileChooser, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(lblPackage)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(cboPackage, 0, 464, Short.MAX_VALUE)))
+                        .add(cboPackage, 0, 506, Short.MAX_VALUE)))
                 .addContainerGap())
             .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
         );

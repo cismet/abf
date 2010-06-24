@@ -72,7 +72,7 @@ public final class DeployAllJarsAction extends NodeAction
     public String getName()
     {
         return NbBundle.getMessage(DeployAllJarsAction.class, 
-                "CTL_DeployAllJarsAction"); // NOI18N
+                "DeployAllJarsAction.getName().returnvalue"); // NOI18N
     }
     
     @Override

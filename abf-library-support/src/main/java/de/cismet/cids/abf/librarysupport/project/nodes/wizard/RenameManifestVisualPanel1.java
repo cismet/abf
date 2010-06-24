@@ -105,7 +105,7 @@ public final class RenameManifestVisualPanel1 extends JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblNewName, org.openide.util.NbBundle.getMessage(RenameManifestVisualPanel1.class, "Lbl_newName")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblNewName, org.openide.util.NbBundle.getMessage(RenameManifestVisualPanel1.class, "RenameManifestVisualPanel1.lblNewName.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -117,7 +117,7 @@ public final class RenameManifestVisualPanel1 extends JPanel implements
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(lblNewName)
                         .add(48, 48, 48)
-                        .add(txtNewName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))
+                        .add(txtNewName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE))
                     .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE))
                 .addContainerGap())
         );

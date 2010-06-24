@@ -128,7 +128,7 @@ public final class LibrarySupportProjectNode extends AbstractNode implements
         content.add((RefreshCookie)this);
         setName(project.getProjectDirectory().getParent().getName() + 
                 NbBundle.getMessage(
-                    this.getClass(), "LibraryManagement")); // NOI18N
+                    this.getClass(), "LibrarySupportProjectNode.name")); // NOI18N
         getChildren().getNodes();
     }
     
@@ -151,7 +151,7 @@ public final class LibrarySupportProjectNode extends AbstractNode implements
                     + "warningBadge.gif"); // NOI18N
             setShortDescription(java.util.ResourceBundle.getBundle(
                     "de/cismet/cids/abf/librarysupport/project/Bundle")// NOI18N
-                    .getString("KeystoreNotSet")); // NOI18N
+                    .getString("LibrarySupportProjectNode.getIcon(int).shortDescription.keystoreNotSet")); // NOI18N
             return ImageUtilities.mergeImages(nodeImage, badge, 3, 3);
         }
         final File ks = new File(path);
@@ -162,7 +162,7 @@ public final class LibrarySupportProjectNode extends AbstractNode implements
                     + "warningBadge.gif"); // NOI18N
             setShortDescription(java.util.ResourceBundle.getBundle(
                     "de/cismet/cids/abf/librarysupport/project/Bundle")// NOI18N
-                    .getString("GivenKeystoreUnusable")); // NOI18N
+                    .getString("LibrarySupportProjectNode.getIcon(int).shortDescription.givenKeystoreUnusable")); // NOI18N
             return ImageUtilities.mergeImages(nodeImage, badge, 3, 3);
             
         }
@@ -256,10 +256,10 @@ public final class LibrarySupportProjectNode extends AbstractNode implements
                         WindowManager.getDefault().getMainWindow(), 
                         java.util.ResourceBundle.getBundle("de/cismet" // NOI18N
                         + "/cids/abf/librarysupport/project/Bundle") // NOI18N
-                        .getString("UnmanagedChangesManageQuestion"), // NOI18N
+                        .getString("LibrarySupportProjectNode.closing().JOptionPane.confirmDialog.message"), // NOI18N
                         java.util.ResourceBundle.getBundle("de/cismet" // NOI18N
                         + "/cids/abf/librarysupport/project/Bundle") // NOI18N
-                        .getString("ManageChanges"), // NOI18N
+                        .getString("LibrarySupportProjectNode.closing().JOptionPane.confirmDialog.title"), // NOI18N
                         JOptionPane.YES_NO_CANCEL_OPTION, 
                         JOptionPane.QUESTION_MESSAGE);
                 if(answer == JOptionPane.CANCEL_OPTION)
@@ -501,10 +501,10 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys
                     final int create = JOptionPane.showConfirmDialog(
                             WindowManager.getDefault().getMainWindow(),
                             NbBundle.getMessage(this.getClass(),
-                                "CreateStructureQuestion", // NOI18N
+                                "LibrarySupportProjectNode.getStarterDirs().JOptionPane.confirmDialog.message", // NOI18N
                                 list.toString()),
                             NbBundle.getMessage(this.getClass(),
-                                "FaultyStructure"), // NOI18N
+                                "LibrarySupportProjectNode.getStarterDirs().JOptionPane.confirmDialog.title"), // NOI18N
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
                     if(create == JOptionPane.YES_OPTION)
@@ -565,10 +565,10 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys
                     final int create = JOptionPane.showConfirmDialog(
                             WindowManager.getDefault().getMainWindow(),
                             NbBundle.getMessage(this.getClass(),
-                                "CreateStructureQuestion", // NOI18N
+                                "LibrarySupportProjectNode.getLocalDirs().JOptionPane.confirmDialog.message", // NOI18N
                                 list.toString()),
                             NbBundle.getMessage(this.getClass(),
-                                "FaultyStructure"), // NOI18N
+                                "LibrarySupportProjectNode.getLocalDirs().JOptionPane.confirmDialog.title"), // NOI18N
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
                     if(create == JOptionPane.YES_OPTION)
@@ -597,7 +597,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys
         }
         final ProgressHandle handle = ProgressHandleFactory.createHandle(
                 NbBundle.getMessage(this.getClass(),
-                "CreateStructure")); // NOI18N
+                "LibrarySupportProjectNode.createStructure(List<FileObject>,boolean).handle.message")); // NOI18N
         EventQueue.invokeLater(new Runnable()
         {
             @Override
@@ -814,7 +814,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys
                                 MessageFormat.format(java.util.ResourceBundle
                                 .getBundle("de/cismet/cids/abf/" // NOI18N
                                 + "librarysupport/project/Bundle") // NOI18N
-                                .getString("ErrorEmptyManifest"), fo // NOI18N
+                                .getString("LibrarySupportProjectNode.moveAndCleanDir(FileObject).emptyManifestError"), fo // NOI18N
                                 .getName()));
                     }
                 }else

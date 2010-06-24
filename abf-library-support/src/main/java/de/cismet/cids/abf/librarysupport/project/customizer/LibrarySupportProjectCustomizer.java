@@ -82,7 +82,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
                 DEPLOY_KEYSTORE,
                 org.openide.util.NbBundle
                     .getMessage(LibrarySupportProjectCustomizer.class, 
-                    "Lbl_keystore"), // NOI18N
+                    "LibrarySupportProjectCustomizer.init().deployKeystore.label"), // NOI18N
                 null, // TODO: provide icon
                 (ProjectCustomizer.Category[])null);
         final ProjectCustomizer.Category deployManifest = ProjectCustomizer.
@@ -90,7 +90,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
                 DEPLOY_KEYSTORE,
                 org.openide.util.NbBundle
                     .getMessage(LibrarySupportProjectCustomizer.class, 
-                    "Lbl_manifest"), // NOI18N
+                    "LibrarySupportProjectCustomizer.init().deployManifest.label"), // NOI18N
                 null, // TODO: provide icon
                 (ProjectCustomizer.Category[])null);
         final ProjectCustomizer.Category[] deployCategories =
@@ -102,7 +102,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
                 GENERAL_CATEGORY,
                 org.openide.util.NbBundle
                     .getMessage(LibrarySupportProjectCustomizer.class,
-                    "Lbl_general"), // NOI18N
+                    "LibrarySupportProjectCustomizer.init().general.label"), // NOI18N
                 null, // TODO: provide icon)
                 (ProjectCustomizer.Category[])null);
         final ProjectCustomizer.Category deploy = ProjectCustomizer.Category.
@@ -110,7 +110,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
                 DEPLOY_CATEGORY,
                 org.openide.util.NbBundle
                     .getMessage(LibrarySupportProjectCustomizer.class,
-                    "Lbl_incorporate"), // NOI18N
+                    "LibrarySupportProjectCustomizer.init().deploy.label"), // NOI18N
                 null, //TODO: provide icon
                 deployCategories);
         categories = new ProjectCustomizer.Category[2];
@@ -138,7 +138,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
         dialog.addWindowListener(okListener);
         final String title = org.openide.util.NbBundle
                 .getMessage(LibrarySupportProjectCustomizer.class,
-                "Lbl_projectProperties") + ProjectUtils // NOI18N
+                "LibrarySupportProjectCustomizer.showCustomizer().dialog.title") + ProjectUtils // NOI18N
                 .getInformation(project).getDisplayName();
         dialog.setTitle(title);
         dialog.setVisible(true);

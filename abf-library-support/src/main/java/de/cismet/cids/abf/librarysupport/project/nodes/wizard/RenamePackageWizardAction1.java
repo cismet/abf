@@ -119,7 +119,7 @@ public final class RenamePackageWizardAction1 extends NodeAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                RenamePackageWizardAction1.class, "Dsc_rename"); // NOI18N
+                RenamePackageWizardAction1.class, "RenamePackageWizardAction1.getName().returnvalue"); // NOI18N
     }
     
     @Override
@@ -153,7 +153,7 @@ public final class RenamePackageWizardAction1 extends NodeAction
         //     .getName()
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                RenamePackageWizardAction1.class, "Dsc_renamePackage"));//NOI18N
+                RenamePackageWizardAction1.class, "RenamePackageWizardAction1.performAction(Node[]).wizard.title"));//NOI18N
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
@@ -189,9 +189,9 @@ public final class RenamePackageWizardAction1 extends NodeAction
                         WindowManager.getDefault().getMainWindow(),
                         org.openide.util.NbBundle.getMessage(
                         RenamePackageWizardAction1.class, 
-                        "Err_folderCouldNotBeCreated"), // NOI18N
+                        "RenamePackageWizardAction1.performAction(Node[]).JOptionPane.folderCouldNotBeCreated.message"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                        RenamePackageWizardAction1.class, "Err_error"),// NOI18N
+                        RenamePackageWizardAction1.class, "RenamePackageWizardAction1.performAction(Node[]).JOptionPane.folderCouldNotBeCreated.title"),// NOI18N
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -208,9 +208,9 @@ public final class RenamePackageWizardAction1 extends NodeAction
                         WindowManager.getDefault().getMainWindow(),
                         org.openide.util.NbBundle.getMessage(
                         RenamePackageWizardAction1.class, 
-                        "Err_fileOfSourcePackageCouldNotBeCopied"), // NOI18N
+                        "RenamePackageWizardAction1.performAction(Node[]).JOptionPane.fileOfSourcePackageCouldNotBeCopied.message"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                        RenamePackageWizardAction1.class, "Err_error"),// NOI18N
+                        RenamePackageWizardAction1.class, "RenamePackageWizardAction1.performAction(Node[]).JOptionPane.fileOfSourcePackageCouldNotBeCopied.title"),// NOI18N
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -236,9 +236,9 @@ public final class RenamePackageWizardAction1 extends NodeAction
                         WindowManager.getDefault().getMainWindow(),
                         org.openide.util.NbBundle.getMessage(
                         RenamePackageWizardAction1.class, 
-                        "Err_fileOfSourcePackageCouldNotBeDeleted"), // NOI18N
+                        "RenamePackageWizardAction1.performAction(Node[]).JOptionPane.fileOfSourcePackageCouldNotBeDeleted.message"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
-                        RenamePackageWizardAction1.class, "Err_error"),// NOI18N
+                        RenamePackageWizardAction1.class, "RenamePackageWizardAction1.performAction(Node[]).JOptionPane.fileOfSourcePackageCouldNotBeDeleted.title"),// NOI18N
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }

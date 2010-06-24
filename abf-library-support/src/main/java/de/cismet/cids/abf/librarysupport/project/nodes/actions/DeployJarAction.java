@@ -73,14 +73,14 @@ public final class DeployJarAction extends NodeAction
     public String getName()
     {
         final String label = NbBundle.getMessage(DeployJarAction.class, 
-                "CTL_DeployJarAction"); // NOI18N
+                "DeployJarAction.getName().label"); // NOI18N
         if(enableAction)
         {
             return label;
         }else
         {    
             return label + org.openide.util.NbBundle.getMessage(
-                    DeployJarAction.class, "Lbl_keystoreNotSet"); // NOI18N
+                    DeployJarAction.class, "DeployJarAction.getName().label.keystoreNotSet"); // NOI18N
         }
     }
     
@@ -119,7 +119,7 @@ public final class DeployJarAction extends NodeAction
             LOG.error("could not deploy jar", ex); // NOI18N
             ErrorManager.getDefault().annotate(
                     ex, org.openide.util.NbBundle.getMessage(DeployJarAction
-                    .class, "Err_groupCouldntBeIncorporated")); // NOI18N
+                    .class, "DeployJarAction.deploy().incorporateError")); // NOI18N
         }
     }
 

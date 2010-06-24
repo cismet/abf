@@ -83,7 +83,7 @@ public final class NewStarterVisualPanel1 extends JPanel
                 KEY_GENERAL_MANIFEST);
         manifestPathField.setText(basicManPath);
         nameField.setText(org.openide.util.NbBundle.getMessage(
-                NewStarterVisualPanel1.class, "Dsc_newStarter")); // NOI18N
+                NewStarterVisualPanel1.class, "NewStarterVisualPanel1.init().namefield.text")); // NOI18N
         nameField.setSelectionStart(0);
         nameField.setSelectionEnd(nameField.getText().length());
         previewArea.setEditable(false);
@@ -93,7 +93,7 @@ public final class NewStarterVisualPanel1 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewStarterVisualPanel1.class, "Dsc_name"); // NOI18N
+                NewStarterVisualPanel1.class, "NewStarterVisualPanel1.getName().returnvalue"); // NOI18N
     }
     
     private void updatePreview()
@@ -117,7 +117,7 @@ public final class NewStarterVisualPanel1 extends JPanel
             {
                 previewArea.setText(org.openide.util.NbBundle.getMessage(
                         NewStarterVisualPanel1.class,
-                        "Dsc_noPreviewAvailable")); // NOI18N
+                        "NewStarterVisualPanel1.previewArea.text.noPreview")); // NOI18N
                 LOG.warn("could not read manifest file", ex); // NOI18N
             } finally
             {
@@ -136,7 +136,7 @@ public final class NewStarterVisualPanel1 extends JPanel
         {
             previewArea.setText(org.openide.util.NbBundle.getMessage(
                     NewStarterVisualPanel1.class,
-                    "Dsc_noValidFileProvided")); // NOI18N
+                    "NewStarterVisualPanel1.previewArea.text.noValidFileProvided")); // NOI18N
         }
     }
     
@@ -180,9 +180,9 @@ public final class NewStarterVisualPanel1 extends JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(basicManifestLabel, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "Lbl_rootManifest")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(basicManifestLabel, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "NewStarterVisualPanel1.basicManifestLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(chooseButton, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "Btn_browse")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(chooseButton, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "NewStarterVisualPanel1.chooseButton.text")); // NOI18N
         chooseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseButtonActionPerformed(evt);
@@ -193,9 +193,9 @@ public final class NewStarterVisualPanel1 extends JPanel
         previewArea.setRows(5);
         jScrollPane1.setViewportView(previewArea);
 
-        org.openide.awt.Mnemonics.setLocalizedText(previewLabel, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "Lbl_preview")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(previewLabel, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "NewStarterVisualPanel1.previewLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(nameLabel, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "Lbl_name")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(nameLabel, org.openide.util.NbBundle.getMessage(NewStarterVisualPanel1.class, "NewStarterVisualPanel1.nameLabel.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -214,11 +214,11 @@ public final class NewStarterVisualPanel1 extends JPanel
                             .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
                                 .add(nameLabel)
                                 .add(61, 61, 61)
-                                .add(nameField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
+                                .add(nameField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE))
                             .add(layout.createSequentialGroup()
                                 .add(basicManifestLabel)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(manifestPathField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)))
+                                .add(manifestPathField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(chooseButton)
                         .add(20, 20, 20))))
@@ -278,7 +278,7 @@ public final class NewStarterVisualPanel1 extends JPanel
             {
                 return org.openide.util.NbBundle.getMessage(
                         NewStarterVisualPanel1.class,
-                        "Dsc_manifestFile"); // NOI18N
+                        "NewStarterVisualPanel1.getDescription().returnvalue"); // NOI18N
             }
         });
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);

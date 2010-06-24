@@ -109,7 +109,7 @@ public final class NewJarWizardPanel implements WizardDescriptor.Panel
         {
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
-                    NewJarWizardPanel.class, "Dsc_groupNameNotValid"));// NOI18N
+                    NewJarWizardPanel.class, "NewJarWizardPanel.isValid().wizard.PROP_ERROR_MESSAGE.groupNotValid"));// NOI18N
             return false;
         }
         try
@@ -120,7 +120,7 @@ public final class NewJarWizardPanel implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                         NewJarWizardPanel.class, 
-                        "Dsc_groupNameAlreadyExists")); // NOI18N
+                        "NewJarWizardPanel.isValid().wizard.PROP_ERROR_MESSAGE.groupExisits")); // NOI18N
                 return false;
             }
         } catch(final Exception e)
@@ -128,7 +128,7 @@ public final class NewJarWizardPanel implements WizardDescriptor.Panel
             LOG.warn("could not check validity", e); // NOI18N
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
-                    NewJarWizardPanel.class, "Dsc_nameNotValid")); // NOI18N
+                    NewJarWizardPanel.class, "NewJarWizardPanel.isValid().wizard.PROP_ERROR_MESSAGE.nameNotValid")); // NOI18N
             return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);

@@ -170,7 +170,7 @@ public final class LibrarySupportProject implements Project
         {
             return java.util.ResourceBundle.getBundle(
                     "de/cismet/cids/abf/librarysupport/project/Bundle")// NOI18N
-                    .getString("LibraryManagementProjectName"); // NOI18N
+                    .getString("LibrarySupportProject.getName().returnvalue"); // NOI18N
         }
 
         @Override

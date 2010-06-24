@@ -301,7 +301,7 @@ final class ResourceJarManangementChildren extends Children.Keys
             LOG.error("could not obtain source directory"); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     ResourceJarManangementChildren.class,
-                    "Err_sourceFolderNotAvailable"), null); // NOI18N
+                    "LocalManagement.addNotify().ErrorUtils.message"), null); // NOI18N
             setKeys(new Object[] {});
             return;
         }

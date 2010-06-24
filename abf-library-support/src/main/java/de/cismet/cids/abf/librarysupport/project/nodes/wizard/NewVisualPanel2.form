@@ -28,9 +28,9 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cboPackage" alignment="0" pref="619" max="32767" attributes="0"/>
-                          <Component id="txtPackageName" alignment="0" pref="619" max="32767" attributes="0"/>
-                          <Component id="txtNewFolder" alignment="0" pref="619" max="32767" attributes="0"/>
+                          <Component id="cboPackage" alignment="0" pref="637" max="32767" attributes="0"/>
+                          <Component id="txtPackageName" alignment="0" pref="637" max="32767" attributes="0"/>
+                          <Component id="txtNewFolder" alignment="0" pref="637" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -67,7 +67,7 @@
     <Component class="javax.swing.JLabel" name="lblPackageName">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/wizard/Bundle.properties" key="Lbl_packageName" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/wizard/Bundle.properties" key="NewVisualPanel2.lblPackageName.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -82,7 +82,7 @@
     <Component class="javax.swing.JLabel" name="lblNewFolder">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/wizard/Bundle.properties" key="Lbl_newFolder" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/wizard/Bundle.properties" key="NewVisualPanel2.lblNewFolder.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -108,7 +108,7 @@
     <Component class="javax.swing.JLabel" name="lblPackage">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/wizard/Bundle.properties" key="Lbl_package" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/wizard/Bundle.properties" key="NewVisualPanel2.lblPackage.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <AuxValues>

@@ -121,7 +121,7 @@ public final class NewStarterWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                     NewStarterWizardPanel1.class, 
-                    "Dsc_starterNameInvalid")); // NOI18N
+                    "NewStarterWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGED.starterNameInvalid")); // NOI18N
             return false;
         }
         try
@@ -134,7 +134,7 @@ public final class NewStarterWizardPanel1 implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                         NewStarterWizardPanel1.class, 
-                        "Dsc_fileAlreadyExists")); // NOI18N
+                        "NewStarterWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGED.fileAlreadyExists")); // NOI18N
                 return false;
             }
         } catch(final Exception e)
@@ -142,7 +142,7 @@ public final class NewStarterWizardPanel1 implements WizardDescriptor.Panel
             LOG.warn("could not check validity", e); // NOI18N
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
-                    NewStarterWizardPanel1.class, "Dsc_nameNotValid"));// NOI18N
+                    NewStarterWizardPanel1.class, "NewJarWizardPanel.isValid().wizard.PROP_ERROR_MESSAGE.nameNotValid"));// NOI18N
             return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);

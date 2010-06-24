@@ -116,7 +116,7 @@ public final class RenameManifestWizardAction1 extends NodeAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                RenameManifestWizardAction1.class, "Dsc_rename"); // NOI18N
+                RenameManifestWizardAction1.class, "RenameManifestWizardAction1.getName().returnvalue"); // NOI18N
     }
     
     @Override
@@ -148,7 +148,7 @@ public final class RenameManifestWizardAction1 extends NodeAction
         wizard.putProperty(PROP_MANIFEST, cookie.getManifest());
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                RenameManifestWizardAction1.class, "Dsc_rename")); // NOI18N
+                RenameManifestWizardAction1.class, "RenameManifestWizardAction1.performAction(Node[]).wizard.title")); // NOI18N
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();

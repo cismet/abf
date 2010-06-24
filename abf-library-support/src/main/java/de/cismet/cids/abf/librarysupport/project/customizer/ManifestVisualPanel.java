@@ -103,7 +103,7 @@ public final class ManifestVisualPanel extends javax.swing.JPanel
             }catch(final Exception ex)
             {
                 previewArea.setText(org.openide.util.NbBundle.getMessage(
-                        ManifestVisualPanel.class, "Txt_noPreview")); // NOI18N
+                        ManifestVisualPanel.class, "ManifestVisualPanel.previewArea.text.noPreview")); // NOI18N
                 LOG.warn("could not read manifest file", ex); // NOI18N
             } finally
             {
@@ -121,7 +121,7 @@ public final class ManifestVisualPanel extends javax.swing.JPanel
         }else
         {
             previewArea.setText(org.openide.util.NbBundle.getMessage(
-                    ManifestVisualPanel.class, "Txt_noValidFile")); // NOI18N
+                    ManifestVisualPanel.class, "ManifestVisualPanel.previewArea.text.noValidFile")); // NOI18N
         }
     }
 
@@ -159,9 +159,9 @@ public final class ManifestVisualPanel extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        basicManifestLabel.setText(org.openide.util.NbBundle.getMessage(ManifestVisualPanel.class, "Lbl_standardManifest")); // NOI18N
+        basicManifestLabel.setText(org.openide.util.NbBundle.getMessage(ManifestVisualPanel.class, "ManifestVisualPanel.basicManifestLabel.text")); // NOI18N
 
-        chooseButton.setText(org.openide.util.NbBundle.getMessage(ManifestVisualPanel.class, "Btn_browse")); // NOI18N
+        chooseButton.setText(org.openide.util.NbBundle.getMessage(ManifestVisualPanel.class, "ManifestVisualPanel.chooseButton.text")); // NOI18N
         chooseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseButtonActionPerformed(evt);
@@ -172,7 +172,7 @@ public final class ManifestVisualPanel extends javax.swing.JPanel
         previewArea.setRows(5);
         jScrollPane1.setViewportView(previewArea);
 
-        previewLabel.setText(org.openide.util.NbBundle.getMessage(ManifestVisualPanel.class, "Lbl_preview")); // NOI18N
+        previewLabel.setText(org.openide.util.NbBundle.getMessage(ManifestVisualPanel.class, "ManifestVisualPanel.previewLabel.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -185,7 +185,7 @@ public final class ManifestVisualPanel extends javax.swing.JPanel
                     .add(layout.createSequentialGroup()
                         .add(basicManifestLabel)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(basicManifestField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                        .add(basicManifestField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(chooseButton))
                     .add(previewLabel))
@@ -241,7 +241,7 @@ public final class ManifestVisualPanel extends javax.swing.JPanel
             public String getDescription()
             {
                 return org.openide.util.NbBundle.getMessage(
-                        ManifestVisualPanel.class, "ManifestFile"); // NOI18N
+                        ManifestVisualPanel.class, "ManifestVisualPanel.getDescription().returnvalue"); // NOI18N
             }
         });
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);

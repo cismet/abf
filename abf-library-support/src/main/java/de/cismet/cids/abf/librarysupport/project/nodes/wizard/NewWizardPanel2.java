@@ -135,7 +135,7 @@ public final class NewWizardPanel2 implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                         NewWizardPanel2.class,
-                        "Dsc_packageNameNotValid")); // NOI18N
+                        "NewWizardPanel2.isvalid().wizard.PROP_ERROR_MESSAGE.packageNameNotValid")); // NOI18N
                 warn = true;
             }
         }else
@@ -145,7 +145,7 @@ public final class NewWizardPanel2 implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                         NewWizardPanel2.class,
-                        "Dsc_nameOfFileNotValid")); // NOI18N
+                        "NewWizardPanel2.isvalid().wizard.PROP_ERROR_MESSAGE.nameOfFileNotValid")); // NOI18N
                 return false;
             }
         }
@@ -158,7 +158,7 @@ public final class NewWizardPanel2 implements WizardDescriptor.Panel
                 wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                         NewWizardPanel2.class,
-                        "Dsc_fileAlreadyExists")); // NOI18N
+                        "NewWizardPanel2.isValid().wizard.PROP_ERROR_MESSAGED.fileAlreadyExists")); // NOI18N
                 return false;
             }else if(toCreate.isValid() && toCreate.isFolder())
             {
@@ -168,19 +168,19 @@ public final class NewWizardPanel2 implements WizardDescriptor.Panel
                     wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                             org.openide.util.NbBundle.getMessage(
                             NewWizardPanel2.class,
-                            "Dsc_folderExistsButCannotRead")); // NOI18N
+                            "NewWizardPanel2.isValid().wizard.PROP_ERROR_MESSAGED.folderExistsButCannotRead")); // NOI18N
                 }else if(!toCreate.canWrite())
                 {
                     wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                             org.openide.util.NbBundle.getMessage(
                             NewWizardPanel2.class,
-                            "Dsc_folderExistsButCannotWrite")); // NOI18N
+                            "NewWizardPanel2.isValid().wizard.PROP_ERROR_MESSAGED.folderExistsButCannotWrite")); // NOI18N
                 }else
                 {
                     wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                             org.openide.util.NbBundle.getMessage(
                             NewWizardPanel2.class,
-                            "Dsc_folderAlreadyExists")); // NOI18N
+                            "NewWizardPanel2.isValid().wizard.PROP_ERROR_MESSAGED.folderAlreadyExists")); // NOI18N
                 }
                 return false;
             }

@@ -127,7 +127,7 @@ public class NewJarWizardAction extends NodeAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewJarWizardAction.class, "Dsc_addNewGroup"); // NOI18N
+                NewJarWizardAction.class, "NewJarWizardAction.getName().returnvalue"); // NOI18N
     }
     
     @Override
@@ -170,7 +170,7 @@ public class NewJarWizardAction extends NodeAction
         wizard.putProperty(PROP_SOURCE_DIR, srcDir);
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                NewJarWizardAction.class, "Dsc_newGroup")); // NOI18N
+                NewJarWizardAction.class, "NewJarWizardAction.performAction().wizard.title")); // NOI18N
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();

@@ -118,7 +118,7 @@ public final class RenamePackageWizardPanel1 implements
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                     RenamePackageWizardPanel1.class, 
-                    "Dsc_packageNameNotValid")); // NOI18N
+                    "RenamePackageVisualPanel1.isvalid().wizard.PROP_ERROR_MESSAGE.packageNameNotValid")); // NOI18N
             return false;
         }
         final String relPath = visPanel.getPackage().replace(".", "/");// NOI18N
@@ -132,7 +132,7 @@ public final class RenamePackageWizardPanel1 implements
                     wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                             org.openide.util.NbBundle.getMessage(
                             RenamePackageWizardPanel1.class, 
-                            "Dsc_noChangesMade")); // NOI18N
+                            "RenamePackageWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.noChangesMade")); // NOI18N
                     return false;
                 }
                 if(toCreate.isValid() && toCreate.isData())
@@ -140,7 +140,7 @@ public final class RenamePackageWizardPanel1 implements
                     wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                             org.openide.util.NbBundle.getMessage(
                             RenamePackageWizardPanel1.class, 
-                            "Dsc_normalFileAlreadyExists")); // NOI18N
+                            "RenamePackageWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.normalFileAlreadyExists")); // NOI18N
                     return false;
                 }else if(toCreate.isValid() && toCreate.isFolder())
                 {
@@ -150,19 +150,19 @@ public final class RenamePackageWizardPanel1 implements
                         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                                 org.openide.util.NbBundle.getMessage(
                                 RenamePackageWizardPanel1.class,
-                                "Dsc_folderExistsButCannotRead")); // NOI18N
+                                "RenamePackageVisualPanel1.isvalid().wizard.PROP_ERROR_MESSAGE.folderExistsButCannotRead")); // NOI18N
                     }else if(!toCreate.canWrite())
                     {
                         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                                 org.openide.util.NbBundle.getMessage(
                                 RenamePackageWizardPanel1.class,
-                                "Dsc_folderExistsButCannotWrite")); // NOI18N
+                                "RenamePackageVisualPanel1.isvalid().wizard.PROP_ERROR_MESSAGE.folderExistsButCannotWrite")); // NOI18N
                     }else
                     {
                         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                                 org.openide.util.NbBundle.getMessage(
                                 RenamePackageWizardPanel1.class,
-                                "Dsc_folderAlreadyExists")); // NOI18N
+                                "RenamePackageVisualPanel1.isvalid().wizard.PROP_ERROR_MESSAGE.folderAlreadyExists")); // NOI18N
                     }
                     return false;
                 }
@@ -172,7 +172,7 @@ public final class RenamePackageWizardPanel1 implements
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                                 org.openide.util.NbBundle.getMessage(
                                 RenamePackageWizardPanel1.class, 
-                                "Dsc_invalidName")); // NOI18N
+                                "RenamePackageVisualPanel1.isvalid().wizard.PROP_ERROR_MESSAGE.invalidName")); // NOI18N
             return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);

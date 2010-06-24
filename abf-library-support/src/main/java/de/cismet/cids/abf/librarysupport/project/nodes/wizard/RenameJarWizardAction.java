@@ -73,7 +73,7 @@ public final class RenameJarWizardAction extends NewJarWizardAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                RenameJarWizardAction.class, "Dsc_rename"); // NOI18N
+                RenameJarWizardAction.class, "RenameJarWizardAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -104,7 +104,7 @@ public final class RenameJarWizardAction extends NewJarWizardAction
         wizard.putProperty(PROP_SOURCE_DIR, srcDir.getParent());
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                RenameJarWizardAction.class, "Dsc_renameGroup")); // NOI18N
+                RenameJarWizardAction.class, "RenameJarWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();

@@ -64,10 +64,9 @@ public final class GeneralVisualPanel extends javax.swing.JPanel
     private void initComponents() {
 
         autoreloadCheckbox.setSelected(true);
-        autoreloadCheckbox.setText(org.openide.util.NbBundle.getMessage(GeneralVisualPanel.class, "Chk_autoReload")); // NOI18N
-        autoreloadCheckbox.setToolTipText(org.openide.util.NbBundle.getMessage(GeneralVisualPanel.class, "Chk_autoReloadTooltip")); // NOI18N
+        autoreloadCheckbox.setText(org.openide.util.NbBundle.getMessage(GeneralVisualPanel.class, "GeneralVisualPanel.autoreloadCheckbox.text")); // NOI18N
+        autoreloadCheckbox.setToolTipText(org.openide.util.NbBundle.getMessage(GeneralVisualPanel.class, "GeneralVisualPanel.autoreloadCheckbox.tooltip")); // NOI18N
         autoreloadCheckbox.setEnabled(false);
-        autoreloadCheckbox.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

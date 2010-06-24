@@ -58,7 +58,7 @@ public final class NewVisualPanel1 extends JPanel
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(NewVisualPanel1.class, 
-                "Dsc_step1"); // NOI18N
+                "NewVisualPanel1.getName().returnvalue"); // NOI18N
     }
     
     /** This method is called from within the constructor to
@@ -69,13 +69,13 @@ public final class NewVisualPanel1 extends JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPackage, org.openide.util.NbBundle.getMessage(NewVisualPanel1.class, "Lbl_package")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPackage, org.openide.util.NbBundle.getMessage(NewVisualPanel1.class, "NewVisualPanel1.lblPackage.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblTypes, org.openide.util.NbBundle.getMessage(NewVisualPanel1.class, "Lbl_types")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblTypes, org.openide.util.NbBundle.getMessage(NewVisualPanel1.class, "NewVisualPanel1.lblTypes.text")); // NOI18N
 
         jScrollPane1.setViewportView(lstTypes);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDescription, org.openide.util.NbBundle.getMessage(NewVisualPanel1.class, "Lbl_description")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblDescription, org.openide.util.NbBundle.getMessage(NewVisualPanel1.class, "NewVisualPanel1.lblDescription.text")); // NOI18N
 
         jScrollPane2.setViewportView(TxpDescription);
 
@@ -86,12 +86,12 @@ public final class NewVisualPanel1 extends JPanel
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+                    .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(lblTypes)
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 364, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 28, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 55, Short.MAX_VALUE)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(lblDescription)
                             .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 356, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))

@@ -100,7 +100,7 @@ public final class SourceFolderNode extends ProjectNode implements
         NODE_IMAGE = ImageUtilities.loadImage(LibrarySupportProject
                 .IMAGE_FOLDER + "jar_16.gif"); // NOI18N
         BINARY_ARCHIVE = org.openide.util.NbBundle.getMessage(
-                SourceFolderNode.class, "Dsc_binaryArchive"); // NOI18N
+                SourceFolderNode.class, "SourceFolderNode.BINARY_ARCHIVE"); // NOI18N
     }
 
     /**
@@ -359,7 +359,7 @@ public final class SourceFolderNode extends ProjectNode implements
             LOG.error("delete failed: " + sourceDir.getName(), ex); // NOI18N
             ErrorManager.getDefault().annotate(ex, org.openide.util.NbBundle
                     .getMessage(SourceFolderNode.class, 
-                    "Err_deleteFailed") + sourceDir.getName()); // NOI18N
+                    "SourceFolderNode.destroy().ErrorManager.message") + sourceDir.getName()); // NOI18N
         } finally
         {
             if(lock != null && lock.isValid())

@@ -198,7 +198,7 @@ public final class PackageFolderNode extends FilterNode implements Observer
                         ErrorManager.getDefault().annotate(ex,
                                 org.openide.util.NbBundle.getMessage(
                                 PackageFolderNode.class, 
-                                "Err_deleteFailed") + fo.getNameExt());// NOI18N
+                                "PackageFolderNode.destroy().ErrorManager.message") + fo.getNameExt());// NOI18N
                     }
                 }
             }else

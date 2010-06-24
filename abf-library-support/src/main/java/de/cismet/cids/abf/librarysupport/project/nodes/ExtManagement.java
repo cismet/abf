@@ -83,6 +83,6 @@ public final class ExtManagement extends FilterNode
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                ExtManagement.class, "Dsc_external"); // NOI18N
+                ExtManagement.class, "ExtManagement.getName().returnvalue"); // NOI18N
     }
 }

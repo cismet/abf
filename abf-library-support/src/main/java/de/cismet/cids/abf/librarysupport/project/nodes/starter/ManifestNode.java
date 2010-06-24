@@ -190,7 +190,7 @@ public final class ManifestNode extends DataNode implements
             LOG.error("could not rename manifest", ex); // NOI18N
             ErrorManager.getDefault().annotate(ex, org.openide.util.NbBundle
                     .getMessage(ManifestNode.class, 
-                    "Err_renameManifest")); // NOI18N
+                    "ManifestNode.setName(String,boolean).ErrorManager.message")); // NOI18N
         } finally
         {
             if(lock != null && lock.isValid())
@@ -224,7 +224,7 @@ public final class ManifestNode extends DataNode implements
                 LOG.error("could not delete source folder", ex); // NOI18N
                 ErrorManager.getDefault().annotate(ex, org.openide.util.NbBundle
                         .getMessage(ManifestNode.class, 
-                        "Err_deleteSourceFolder")); // NOI18N
+                        "ManifestNode.destroy().ErrorManager.message")); // NOI18N
             } finally
             {
                 if(lock != null && lock.isValid())
@@ -283,7 +283,7 @@ public final class ManifestNode extends DataNode implements
                 LOG.error("could not create source dir", e); // NOI18N
                 ErrorManager.getDefault().annotate(e, org.openide.util.NbBundle
                         .getMessage(ManifestNode.class, 
-                        "Err_createSourceObject")); // NOI18N
+                        "ManifestNode.getSourceObject().ErrorManager.message")); // NOI18N
                 throw new FileNotFoundException("src dir not present " // NOI18N
                         + "and not creatable\n\n" + e); // NOI18N
             }

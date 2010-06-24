@@ -83,6 +83,6 @@ public final class IntManagement extends FilterNode
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                IntManagement.class, "Dsc_internal"); // NOI18N
+                IntManagement.class, "IntManagement.getName().returnvalue"); // NOI18N
     }
 }

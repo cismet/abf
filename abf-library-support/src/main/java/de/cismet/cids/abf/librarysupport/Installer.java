@@ -60,8 +60,8 @@ public final class Installer extends ModuleInstall {
                     if (!cleanupRequested) {
                         final int answer = JOptionPane.showConfirmDialog(
                                 WindowManager.getDefault().getMainWindow(),
-                                NbBundle.getMessage(this.getClass(), "UnmanagedChangesManageQuestion"), // NOI18N
-                                NbBundle.getMessage(this.getClass(), "ManageChanges"), // NOI18N
+                                NbBundle.getMessage(this.getClass(), "Installer.closing().JOptionPane.confirmDialog.message"), // NOI18N
+                                NbBundle.getMessage(this.getClass(), "Installer.closing().JOptionPane.confirmDialog.title"), // NOI18N
                                 JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.QUESTION_MESSAGE);
                         if (answer == JOptionPane.CANCEL_OPTION) {

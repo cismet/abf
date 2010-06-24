@@ -82,7 +82,7 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel
         if(mainKeyStore == null)
         {
             mainKeystoreTextField.setText(org.openide.util.NbBundle.getMessage(
-                    KeystoreVisualPanel.class, "Txt_noKeystore")); // NOI18N
+                    KeystoreVisualPanel.class, "KeystoreVisualPanel.mainKeystoreTextField.text.noKeystore")); // NOI18N
         }else
         {
             mainKeystoreTextField.setText(mainKeyStore);
@@ -105,14 +105,14 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel
                 errorLabel.setIcon(warning);
                 errorLabel.setText(org.openide.util.NbBundle.getMessage(
                         KeystoreVisualPanel.class,
-                        "Txt_mainKeystoreUnreadable")); // NOI18N
+                        "KeystoreVisualPanel.mainKeystoreTextField.text.keystoreUnreadable")); // NOI18N
             }
         }else
         {
             errorLabel.setIcon(warning);
             errorLabel.setText(org.openide.util.NbBundle.getMessage(
                     KeystoreVisualPanel.class,
-                    "Txt_mainKeystoreNotExist")); // NOI18N
+                    "KeystoreVisualPanel.mainKeystoreTextField.text.keystoreNotExistant")); // NOI18N
         }
     }
 
@@ -134,25 +134,24 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainKeystoreLabel.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "Lbl_mainKeystore")); // NOI18N
+        mainKeystoreLabel.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.mainKeystoreLabel.text")); // NOI18N
 
-        chooseButton.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "Btn_browse")); // NOI18N
+        chooseButton.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.chooseButton.text")); // NOI18N
         chooseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseButtonActionPerformed(evt);
             }
         });
 
-        multipleKeystoreCheckBox.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "Chk_individualKeystores")); // NOI18N
+        multipleKeystoreCheckBox.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.multipleKeystoreCheckBox.text")); // NOI18N
         multipleKeystoreCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         multipleKeystoreCheckBox.setEnabled(false);
-        multipleKeystoreCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        errorLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
+        errorLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         errorLabel.setForeground(new java.awt.Color(255, 204, 0));
-        errorLabel.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "Lbl_error")); // NOI18N
+        errorLabel.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.errorLabel.text")); // NOI18N
 
-        passwordLabel.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "Lbl_password")); // NOI18N
+        passwordLabel.setText(org.openide.util.NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.passwordLabel.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -170,11 +169,11 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(layout.createSequentialGroup()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, passwordField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
-                                    .add(mainKeystoreTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE))
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, passwordField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                                    .add(mainKeystoreTextField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(chooseButton))
-                            .add(multipleKeystoreCheckBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE))))
+                            .add(multipleKeystoreCheckBox, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -204,7 +203,7 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel
         chooser.setMultiSelectionEnabled(false);
         chooser.setCurrentDirectory(userhome);
         chooser.setDialogTitle(org.openide.util.NbBundle.getMessage(
-                KeystoreVisualPanel.class, "Dlg_chooseKeystore")); // NOI18N
+                KeystoreVisualPanel.class, "KeystoreVisualPanel.chooseButtonActionPerformed(ActionEvent).chooser.dialogTitle")); // NOI18N
         chooser.setFileHidingEnabled(false);
         final int retVal = chooser.showOpenDialog(this);
         if(retVal == JFileChooser.APPROVE_OPTION)

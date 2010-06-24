@@ -110,7 +110,7 @@ public final class RenameManifestWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                     RenameManifestWizardPanel1.class, 
-                    "Dsc_starterNameNotValid")); // NOI18N
+                    "RenameManifestWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.starterNameNotValid")); // NOI18N
             return false;
         }
         try
@@ -122,7 +122,7 @@ public final class RenameManifestWizardPanel1 implements WizardDescriptor.Panel
                  wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                         RenameManifestWizardPanel1.class,
-                        "Dsc_fileAlreadyExists")); // NOI18N
+                        "RenameManifestWizardPanel.isValid().wizard.PROP_ERROR_MESSAGED.fileAlreadyExists")); // NOI18N
                 return false;
             }
         } catch(final Exception e)
@@ -131,7 +131,7 @@ public final class RenameManifestWizardPanel1 implements WizardDescriptor.Panel
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                         org.openide.util.NbBundle.getMessage(
                         RenameManifestWizardPanel1.class,
-                        "Dsc_nameOfFileNotValid")); // NOI18N
+                        "RenameManifestWizardPanel.isvalid().wizard.PROP_ERROR_MESSAGE.nameOfFileNotValid")); // NOI18N
             return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);

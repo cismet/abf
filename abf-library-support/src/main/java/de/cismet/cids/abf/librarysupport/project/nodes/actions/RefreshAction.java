@@ -73,7 +73,7 @@ public final class RefreshAction extends CallableSystemAction
     public String getName()
     {
         return NbBundle.getMessage(RefreshAction.class, 
-                "CTL_RefreshAction"); // NOI18N
+                "RefreshAction.getName().returnvalue"); // NOI18N
     }
     
     @Override

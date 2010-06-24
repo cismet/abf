@@ -58,7 +58,7 @@ public final class DeployVisualPanel extends javax.swing.JPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(DeployVisualPanel.class, "Lbl_chooseSubCategory")); // NOI18N
+        jLabel1.setText(org.openide.util.NbBundle.getMessage(DeployVisualPanel.class, "DeployVisualPanel.jLabel1.text")); // NOI18N
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);

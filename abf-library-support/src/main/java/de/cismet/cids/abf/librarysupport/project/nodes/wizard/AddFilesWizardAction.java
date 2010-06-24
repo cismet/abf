@@ -120,7 +120,7 @@ public final class AddFilesWizardAction extends NodeAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                AddFilesWizardAction.class, "Dsc_addFiles"); // NOI18N
+                AddFilesWizardAction.class, "AddFilesWizardAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -152,7 +152,7 @@ public final class AddFilesWizardAction extends NodeAction
         //{0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                AddFilesWizardAction.class, "Dsc_addFiles")); // NOI18N
+                AddFilesWizardAction.class, "AddFilesWizardAction.performAction().wizard.title")); // NOI18N
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
@@ -224,7 +224,7 @@ public final class AddFilesWizardAction extends NodeAction
                         ErrorManager.getDefault().annotate(ex,
                                 org.openide.util.NbBundle.getMessage(
                                 AddFilesWizardAction.class, 
-                                "Err_probWithDestFolder")); // NOI18N
+                                "AddFilesWizardAction.performAction().ErrorManager.message")); // NOI18N
                     }finally
                     {
                         if(destLock != null && destLock.isValid())

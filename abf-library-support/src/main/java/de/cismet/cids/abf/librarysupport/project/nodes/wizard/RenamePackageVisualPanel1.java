@@ -102,7 +102,7 @@ public final class RenamePackageVisualPanel1 extends JPanel implements
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                RenamePackageVisualPanel1.class, "Dsc_namePlace");
+                RenamePackageVisualPanel1.class, "RenamePackageVisualPanel1.getName().returnvalue");
     }
     
     String getPackage()
@@ -167,9 +167,9 @@ public final class RenamePackageVisualPanel1 extends JPanel implements
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPackageName, org.openide.util.NbBundle.getMessage(RenamePackageVisualPanel1.class, "Lbl_packageName")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPackageName, org.openide.util.NbBundle.getMessage(RenamePackageVisualPanel1.class, "RenamePackageVisualPanel1.lblPackageName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblNewFolder, org.openide.util.NbBundle.getMessage(RenamePackageVisualPanel1.class, "Lbl_newFolder")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblNewFolder, org.openide.util.NbBundle.getMessage(RenamePackageVisualPanel1.class, "RenamePackageVisualPanel1.lblNewFolder.text")); // NOI18N
 
         txtNewFolder.setBackground(new java.awt.Color(228, 226, 226));
         txtNewFolder.setEditable(false);
@@ -181,15 +181,15 @@ public final class RenamePackageVisualPanel1 extends JPanel implements
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+                    .add(jSeparator2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(lblNewFolder)
                             .add(lblPackageName))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(txtNewFolder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
-                            .add(txtPackageName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))))
+                            .add(txtNewFolder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
+                            .add(txtPackageName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

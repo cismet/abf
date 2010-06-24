@@ -96,7 +96,7 @@ public final class RebuildFromJarAction extends CookieAction implements
     public String getName()
     {
         return NbBundle.getMessage(RebuildFromJarAction.class, 
-                "CTL_RebuildFromJarAction"); // NOI18N
+                "RebuildFromJarAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -207,11 +207,11 @@ public final class RebuildFromJarAction extends CookieAction implements
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 RebuildFromJarAction.class,
-                                "Dlg_doRebuildQuestion", // NOI18N
+                                "RebuildFromJarAction.performAction(Node[]).run().JOptionPane.confirmDialog.message", // NOI18N
                                 BACKUP_DIR_NAME),
                             org.openide.util.NbBundle.getMessage(
                             RebuildFromJarAction.class, 
-                                "Dlg_ConfirmRebuild"), // NOI18N
+                                "RebuildFromJarAction.performAction(Node[]).run().JOptionPane.confirmDialog.title"), // NOI18N
                             JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.WARNING_MESSAGE);
             }
@@ -261,7 +261,7 @@ public final class RebuildFromJarAction extends CookieAction implements
         {
             handle = ProgressHandleFactory.createHandle(
                     org.openide.util.NbBundle.getMessage(RebuildFromJarAction.
-                    class, "Dsc_rebuildFromJar"), (Cancellable)this); // NOI18N
+                    class, "RebuildFromJarAction.handle.message"), (Cancellable)this); // NOI18N
             EventQueue.invokeLater(new Runnable()
             {
                 @Override
@@ -341,7 +341,7 @@ public final class RebuildFromJarAction extends CookieAction implements
         {
             final InputOutput ioTab = IOProvider.getDefault().getIO(
                     org.openide.util.NbBundle.getMessage(RebuildFromJarAction
-                    .class, "Dsc_RebuildOf") + node.getDisplayName(), // NOI18N
+                    .class, "RebuildFromJarAction.rebuildFromJar(Node[]).iotab.message") + node.getDisplayName(), // NOI18N
                     false);
             final OutputWriter out = ioTab.getOut();
             final OutputWriter err = ioTab.getErr();
@@ -364,7 +364,7 @@ public final class RebuildFromJarAction extends CookieAction implements
                 }
                 final FileObject sourceDir = getSourceDir(node);
                 out.println(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_workDir") // NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.workFolder") // NOI18N
                         + sourceDir.getPath());
                 if(cancelAction)
                 {
@@ -372,7 +372,7 @@ public final class RebuildFromJarAction extends CookieAction implements
                 }
                 final FileObject jarDir = getJarDir(node);
                 out.println(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_sourceFolder")// NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.sourceFolder")// NOI18N
                         + jarDir.getPath());
                 if(cancelAction)
                 {
@@ -380,7 +380,7 @@ public final class RebuildFromJarAction extends CookieAction implements
                 }
                 final FileObject backupDir = getBackupDir(sourceDir);
                 out.println(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_backupFolder")// NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.backupFolder")// NOI18N
                         + backupDir.getPath());
                 if(cancelAction)
                 {
@@ -389,7 +389,7 @@ public final class RebuildFromJarAction extends CookieAction implements
                 final String jarName = sourceDir.getName();
                 final FileObject jar = getJar(jarDir, jarName);
                 out.println(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_sourceArchive")//NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.sourceArchive")//NOI18N
                         + jar.getPath());
                 out.println();
                 if(cancelAction)
@@ -397,30 +397,30 @@ public final class RebuildFromJarAction extends CookieAction implements
                     return;
                 }
                 out.print(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_doBackup")); // NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.doBackup")); // NOI18N
                 doBackup(backupDir, sourceDir);
                 out.println(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_finished")); // NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.finished")); // NOI18N
                 if(cancelAction)
                 {
                     return;
                 }
                 out.print(org.openide.util.NbBundle.getMessage(
                         RebuildFromJarAction.class, 
-                        "Txt_emptyWorkDir")); // NOI18N
+                        "RebuildFromJarAction.rebuildFromJar(Node[]).out.emptyWorkDir")); // NOI18N
                 FileUtils.deleteContent(sourceDir, true);
                 out.println(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_finished")); // NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.finished")); // NOI18N
                 if(cancelAction)
                 {
                     return;
                 }
                 out.print(org.openide.util.NbBundle.getMessage(
                         RebuildFromJarAction.class, 
-                        "Txt_extractSourceToWorkDir")); // NOI18N
+                        "RebuildFromJarAction.rebuildFromJar(Node[]).out.extractSourceToWorkDir")); // NOI18N
                 FileUtils.extractJar(jar, sourceDir, filter);
                 out.println(org.openide.util.NbBundle.getMessage(
-                        RebuildFromJarAction.class, "Txt_finished")); // NOI18N
+                        RebuildFromJarAction.class, "RebuildFromJarAction.rebuildFromJar(Node[]).out.finished")); // NOI18N
                 out.println();
                 printSuccess(out, (System.currentTimeMillis() - begin) / 1000);
                 cleanModifications(node);
@@ -431,7 +431,7 @@ public final class RebuildFromJarAction extends CookieAction implements
                 err.println();
                 err.println(org.openide.util.NbBundle.getMessage(
                         RebuildFromJarAction.class, 
-                        "Txt_errorWhileRebuild")); // NOI18N
+                        "RebuildFromJarAction.rebuildFromJar(Node[]).out.errorWhileRebuild")); // NOI18N
                 e.printStackTrace(err);
                 errorNodes.get().add(node);
             }finally
@@ -445,11 +445,11 @@ public final class RebuildFromJarAction extends CookieAction implements
     private void printSuccess(final PrintWriter out, final long durationSec)
     {
         final String rebuildSuccess = org.openide.util.NbBundle.getMessage(
-                RebuildFromJarAction.class, "Txt_rebuildSuccess"); // NOI18N
+                RebuildFromJarAction.class, "RebuildFromJarAction.printSuccess(PrintWriter,long).rebuildSuccess"); // NOI18N
         final String duration = org.openide.util.NbBundle.getMessage(
-                RebuildFromJarAction.class, "Txt_duration"); // NOI18N
+                RebuildFromJarAction.class, "RebuildFromJarAction.printSuccess(PrintWriter,long).duration"); // NOI18N
         final String seconds = org.openide.util.NbBundle.getMessage(
-                RebuildFromJarAction.class, "Txt_seconds"); // NOI18N
+                RebuildFromJarAction.class, "RebuildFromJarAction.printSuccess(PrintWriter,long).seconds"); // NOI18N
         final String secValue = String.valueOf(durationSec);
         final StringBuffer secondLine = new StringBuffer(
                 rebuildSuccess.length() + 4);
@@ -537,9 +537,9 @@ public final class RebuildFromJarAction extends CookieAction implements
                         WindowManager.getDefault().getMainWindow(),
                         org.openide.util.NbBundle.getMessage(
                             RebuildFromJarAction.class, 
-                            "Err_checkNodeStatus", htmlList.toString()),//NOI18N
+                            "RebuildFromJarAction.displayErrors(Collection<Node>).JoptionPane.messageDialog.message", htmlList.toString()),//NOI18N
                         org.openide.util.NbBundle.getMessage(
-                            RebuildFromJarAction.class, "Err_rebuild"),// NOI18N
+                            RebuildFromJarAction.class, "RebuildFromJarAction.displayErrors(Collection<Node>).JoptionPane.messageDialog.title"),// NOI18N
                         JOptionPane.ERROR_MESSAGE);
             }
         });

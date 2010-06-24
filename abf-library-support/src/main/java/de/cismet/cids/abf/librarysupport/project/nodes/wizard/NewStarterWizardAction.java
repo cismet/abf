@@ -130,7 +130,7 @@ public final class NewStarterWizardAction extends NodeAction
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewStarterWizardAction.class, "Dsc_addNewStarter");
+                NewStarterWizardAction.class, "NewStarterWizardAction.getName().returnvalue");
     }
     
     @Override
@@ -174,7 +174,7 @@ public final class NewStarterWizardAction extends NodeAction
         wizard.putProperty(PROP_PROJECT, lscc.getLibrarySupportContext());
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                NewStarterWizardAction.class, "Dsc_newStarter"));
+                NewStarterWizardAction.class, "NewStarterWizardAction.performAction(Node[]).wizard.title"));
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
@@ -208,7 +208,7 @@ public final class NewStarterWizardAction extends NodeAction
                 ErrorManager.getDefault().annotate(ex,
                         org.openide.util.NbBundle.getMessage(
                         NewStarterWizardAction.class, 
-                        "Err_couldNotCreateNewSourceFolder")); // NOI18N
+                        "NewStarterWizardAction.performAction(Node[]).ErrorManager.couldNotCreateNewSourceFolderError")); // NOI18N
             }
         }
     }

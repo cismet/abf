@@ -149,10 +149,10 @@ public final class NewWizardAction extends CookieAction
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         if(isPackage)
         {
-            wizard.setTitle(org.openide.util.NbBundle.getMessage(NewWizardAction.class, "Dsc_createNewPackage"));
+            wizard.setTitle(org.openide.util.NbBundle.getMessage(NewWizardAction.class, "NewWizardAction.performAction(Node,boolean,String).wizard.title.createNewPackage"));
         }else
         {
-            wizard.setTitle(org.openide.util.NbBundle.getMessage(NewWizardAction.class, "Dsc_createNewFile"));
+            wizard.setTitle(org.openide.util.NbBundle.getMessage(NewWizardAction.class, "NewWizardAction.performAction(Node,boolean,String).wizard.title.createNewFile"));
         }
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
@@ -191,8 +191,8 @@ public final class NewWizardAction extends CookieAction
                         {
                             JOptionPane.showMessageDialog(
                                     WindowManager.getDefault().getMainWindow(),
-                                    org.openide.util.NbBundle.getMessage(NewWizardAction.class, "Err_couldNotCreatePackage"),
-                                    org.openide.util.NbBundle.getMessage(NewWizardAction.class, "Err_error"),
+                                    org.openide.util.NbBundle.getMessage(NewWizardAction.class, "NewWizardAction.performAction(Node,boolean,String).JOptionPane.message"),
+                                    org.openide.util.NbBundle.getMessage(NewWizardAction.class, "NewWizardAction.performAction(Node,boolean,String).JOptionPane.message"),
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     });
@@ -266,16 +266,16 @@ public final class NewWizardAction extends CookieAction
             LOG.debug("requesting popup presenter"); // NOI18N
         }
         final JMenu item = new JMenu(org.openide.util.NbBundle.getMessage(
-                NewWizardAction.class, "Dsc_new")); // NOI18N
+                NewWizardAction.class, "NewWizardAction.getPopupPresenter().item.text")); // NOI18N
         final JMenuItem file = new JMenuItem(org.openide.util.NbBundle
-                .getMessage(NewWizardAction.class, "Dsc_file")); // NOI18N
+                .getMessage(NewWizardAction.class, "NewWizardAction.getPopupPresenter().file.text")); // NOI18N
         final JMenuItem pakkage = new JMenuItem(org.openide.util.NbBundle
-                .getMessage(NewWizardAction.class, "Dsc_package")); // NOI18N
+                .getMessage(NewWizardAction.class, "NewWizardAction.getPopupPresenter().pakkage.text")); // NOI18N
         final JMenuItem propFile = new JMenuItem(org.openide.util.NbBundle
                 .getMessage(NewWizardAction.class,
-                "Dsc_propertiesFile"));// NOI18N
+                "NewWizardAction.getPopupPresenter().propFile.text"));// NOI18N
         final JMenuItem txtFile = new JMenuItem(org.openide.util.NbBundle
-                .getMessage(NewWizardAction.class, "Dsc_textFile")); // NOI18N
+                .getMessage(NewWizardAction.class, "NewWizardAction.getPopupPresenter().txtFile.text")); // NOI18N
         file.setActionCommand("file"); // NOI18N
         pakkage.setActionCommand("package"); // NOI18N
         propFile.setActionCommand("propFile"); // NOI18N

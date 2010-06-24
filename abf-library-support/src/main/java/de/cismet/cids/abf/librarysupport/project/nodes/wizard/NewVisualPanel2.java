@@ -89,29 +89,29 @@ public final class NewVisualPanel2 extends JPanel implements DocumentListener
         String name = "";  // NOI18N
         final String ext = model.getExt();
         lblPackageName.setText(org.openide.util.NbBundle.getMessage(
-                NewVisualPanel2.class, "Lbl_fileName")); // NOI18N
+                NewVisualPanel2.class, "NewVisualPanel2.lblPackageName.text.fileName")); // NOI18N
         lblNewFolder.setText(org.openide.util.NbBundle.getMessage(
-                NewVisualPanel2.class, "Lbl_newFile")); // NOI18N
+                NewVisualPanel2.class, "NewVisualPanel2.lblNewFolder.text.newFile")); // NOI18N
         if(model.isPackage())
         {
             name = org.openide.util.NbBundle.getMessage(
-                    NewVisualPanel2.class, "Txt_newPackage"); // NOI18N
+                    NewVisualPanel2.class, "NewVisualPanel2.init().name.newPackage"); // NOI18N
             lblPackageName.setText(org.openide.util.NbBundle.getMessage(
-                    NewVisualPanel2.class, "Lbl_packageName")); // NOI18N
+                    NewVisualPanel2.class, "NewVisualPanel2.lblPackageName.text")); // NOI18N
             lblNewFolder.setText(org.openide.util.NbBundle.getMessage(
-                    NewVisualPanel2.class, "Lbl_newFolder")); // NOI18N
+                    NewVisualPanel2.class, "NewVisualPanel2.lblNewFolder.text")); // NOI18N
         }else if(ext == null || "".equals(ext)) // NOI18N
         {
             name = org.openide.util.NbBundle.getMessage(
-                    NewVisualPanel2.class, "Txt_newFile"); // NOI18N
+                    NewVisualPanel2.class, "NewVisualPanel2.init().name.newFile"); // NOI18N
         }else if("properties".equals(ext)) // NOI18N
         {
             name = org.openide.util.NbBundle.getMessage(
-                    NewVisualPanel2.class, "Txt_newPropertiesFile"); // NOI18N
+                    NewVisualPanel2.class, "NewVisualPanel2.init().name.newPropertiesFile"); // NOI18N
         }else if("txt".equals(ext)) // NOI18N
         {
             name = org.openide.util.NbBundle.getMessage(
-                    NewVisualPanel2.class, "Txt_newTextFile"); // NOI18N
+                    NewVisualPanel2.class, "NewVisualPanel2.init().name.newTextFile"); // NOI18N
         }
         txtPackageName.setText(name);
         txtPackageName.setSelectionStart(
@@ -166,7 +166,7 @@ public final class NewVisualPanel2 extends JPanel implements DocumentListener
     public String getName()
     {
         return org.openide.util.NbBundle.getMessage(
-                NewVisualPanel2.class, "Dsc_namePlace"); // NOI18N
+                NewVisualPanel2.class, "NewVisualPanel2.getName().returnvalue"); // NOI18N
     }
     
     String getDir()
@@ -211,14 +211,14 @@ public final class NewVisualPanel2 extends JPanel implements DocumentListener
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPackageName, org.openide.util.NbBundle.getMessage(NewVisualPanel2.class, "Lbl_packageName")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPackageName, org.openide.util.NbBundle.getMessage(NewVisualPanel2.class, "NewVisualPanel2.lblPackageName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblNewFolder, org.openide.util.NbBundle.getMessage(NewVisualPanel2.class, "Lbl_newFolder")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblNewFolder, org.openide.util.NbBundle.getMessage(NewVisualPanel2.class, "NewVisualPanel2.lblNewFolder.text")); // NOI18N
 
         txtNewFolder.setBackground(new java.awt.Color(228, 226, 226));
         txtNewFolder.setEditable(false);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPackage, org.openide.util.NbBundle.getMessage(NewVisualPanel2.class, "Lbl_package")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lblPackage, org.openide.util.NbBundle.getMessage(NewVisualPanel2.class, "NewVisualPanel2.lblPackage.text")); // NOI18N
 
         cboPackage.setFocusable(false);
 
@@ -237,9 +237,9 @@ public final class NewVisualPanel2 extends JPanel implements DocumentListener
                             .add(lblPackageName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(cboPackage, 0, 619, Short.MAX_VALUE)
-                            .add(txtPackageName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
-                            .add(txtNewFolder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE))))
+                            .add(cboPackage, 0, 637, Short.MAX_VALUE)
+                            .add(txtPackageName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+                            .add(txtNewFolder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
