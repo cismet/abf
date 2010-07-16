@@ -24,4 +24,11 @@
             <netbeans.run.params>-J-XX:MaxPermSize=128m</netbeans.run.params>
         </properties>
     </action>
+    <action>
+            <actionName>CUSTOM-Run Platform</actionName>
+            <displayName>Run Platform</displayName>
+            <goals>
+                <goal>nbm:run-platform</goal>
+            </goals>
+        </action>
 </actions>

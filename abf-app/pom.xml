@@ -58,6 +58,21 @@
             <artifactId>java</artifactId>
             <version>${netbeans.version}</version>
             <type>pom</type>
+            <!-- exclude netbeans persistence stuff to prevent class loading issues-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.netbeans.modules</groupId>
+                    <artifactId>org-netbeans-modules-j2ee-persistence-kit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.netbeans.modules</groupId>
+                    <artifactId>org-netbeans-modules-hibernate</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.netbeans.api</groupId>
+                    <artifactId>org-netbeans-modules-j2ee-toplinklib</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- END: ENABLED CLUSTERS -->
         <dependency>
