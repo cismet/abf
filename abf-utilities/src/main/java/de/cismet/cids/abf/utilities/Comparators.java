@@ -294,7 +294,7 @@ public final class Comparators {
          */
         @Override
         public int compare(final CatNode cn1, final CatNode cn2) {
-            return cn1.getName().compareTo(cn2.getName());
+            return String.valueOf(cn1.getName()).compareTo(String.valueOf(cn2.getName()));
         }
     }
 }
