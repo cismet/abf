@@ -620,7 +620,7 @@ public final class CidsAttributeNode extends ProjectNode implements
                     org.openide.util.NbBundle.getMessage(
                         CidsAttributeNode.class, "CidsAttributeNode.createSheet().toStringProp.toString"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().toStringProp.toStringOfAttr"),// NOI18N
+                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().toStringProp.toStringClassOfAttr"),// NOI18N
                     true,
                     true)
             {

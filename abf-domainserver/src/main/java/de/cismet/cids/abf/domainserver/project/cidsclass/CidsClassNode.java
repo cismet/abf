@@ -657,7 +657,7 @@ public final class CidsClassNode extends ProjectNode implements
                     org.openide.util.NbBundle.getMessage(
                         CidsClassNode.class, "CidsClassNode.createSheet().objectIconProp.objectIcon"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsClassNode.class, "CidsClassNode.createSheet().objectIconProp.iconOfClassiconOfClass"), // NOI18N
+                        CidsClassNode.class, "CidsClassNode.createSheet().objectIconProp.iconOfClass"), // NOI18N
                     true,
                     true)
             {
@@ -997,7 +997,7 @@ public final class CidsClassNode extends ProjectNode implements
             }
         }catch(final Exception ex)
         {
-            LOG.debug("error during sheet creation", ex); // NOI18N
+            LOG.warn("error during sheet creation", ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
         }
         return sheet;

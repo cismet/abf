@@ -88,10 +88,10 @@ public final class DeleteLockAction extends NodeAction
                                 DeleteLockAction.class, "DeleteLockAction.performAction(Node[]).JOptionPane.yesOption"), // NOI18N
                         org.openide.util.NbBundle.getMessage(
                                 DeleteLockAction.class,
-                                "DeleteLockAction.performAction(Node[]).JOptionPane.noOption=NO") // NOI18N
+                                "DeleteLockAction.performAction(Node[]).JOptionPane.noOption") // NOI18N
                     },
                 org.openide.util.NbBundle.getMessage(
-                    DeleteLockAction.class, "DeleteLockAction.performAction(Node[]).JOptionPane.noOption=NO")); // NOI18N
+                    DeleteLockAction.class, "DeleteLockAction.performAction(Node[]).JOptionPane.noOption")); // NOI18N
         if(answer != JOptionPane.YES_OPTION)
         {
             return;

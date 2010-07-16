@@ -71,7 +71,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel
     public NewCidsClassWizardPanel1()
     {
         listeners = new HashSet<ChangeListener>(1);
-        highValidator = new NameValidator(NameValidator.NAME_HIGH);
+        highValidator = new NameValidator(NameValidator.SCHEMA_HIGH);
     }
     
     @Override

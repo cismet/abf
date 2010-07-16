@@ -230,8 +230,8 @@ public final class QueriesNode extends ProjectNode implements
                         }
                     }
                 };
-                RequestProcessor.getDefault().post(run, 100, Thread.
-                        NORM_PRIORITY);
+//                RequestProcessor.getDefault().post(run, 100, Thread.NORM_PRIORITY);
+
                 return new Node[] {new AbstractNode(Children.LEAF)
                 {
                     @Override

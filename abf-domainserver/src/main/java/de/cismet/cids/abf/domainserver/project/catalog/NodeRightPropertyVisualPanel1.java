@@ -93,6 +93,7 @@ import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXList;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.table.TableColumnExt;
+import org.openide.util.NbBundle;
 
 public final class NodeRightPropertyVisualPanel1 extends JPanel implements 
         ChangeListener
@@ -537,9 +538,8 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements
     @Override
     public String getName()
     {
-        return org.openide.util.NbBundle.getMessage(
-                NodeRightPropertyVisualPanel1.class, 
-                "Dsc_changeRights"); // NOI18N
+        return NbBundle.getMessage(
+                NodeRightPropertyVisualPanel1.class, "NewCatalogNodeWizardAction.getName().returnvalue"); // NOI18N
     }
     
     List<NodePermission> getPermissions()

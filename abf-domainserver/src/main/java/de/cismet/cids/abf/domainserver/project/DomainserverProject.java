@@ -1033,7 +1033,11 @@ public final class DomainserverProject implements Project, Connectable
 
     public CatalogNodeContextCookie[] getLinkableCatNodeCookies()
     {
-        return Arrays.copyOf(catNodeCookies, catNodeCookies.length);
+        if(catNodeCookies == null){
+            return new CatalogNodeContextCookie[0];
+        }else{
+            return Arrays.copyOf(catNodeCookies, catNodeCookies.length);
+        }
     }
 
     protected void fireConnectionStatusChanged(final boolean newStatus)

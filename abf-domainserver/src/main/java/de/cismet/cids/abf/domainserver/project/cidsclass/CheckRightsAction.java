@@ -11,16 +11,17 @@
  */
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverContext;
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
-import de.cismet.cids.abf.utilities.Comparators;
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
+import org.netbeans.api.project.ProjectInformation;
 
-import de.cismet.cids.jpa.entity.cidsclass.Attribute;
-import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
-import de.cismet.cids.jpa.entity.common.PermissionAwareEntity;
-import de.cismet.cids.jpa.entity.permission.Permission;
-import de.cismet.cids.jpa.entity.user.UserGroup;
+import org.openide.nodes.Node;
+import org.openide.util.Cancellable;
+import org.openide.util.HelpCtx;
+import org.openide.util.NbBundle;
+import org.openide.util.actions.CookieAction;
+import org.openide.windows.IOProvider;
+import org.openide.windows.InputOutput;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -41,18 +42,18 @@ import java.util.Set;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-import org.netbeans.api.progress.ProgressHandle;
-import org.netbeans.api.progress.ProgressHandleFactory;
-import org.netbeans.api.project.ProjectInformation;
+import de.cismet.cids.abf.domainserver.project.DomainserverContext;
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
+import de.cismet.cids.abf.utilities.Comparators;
 
-import org.openide.nodes.Node;
-import org.openide.util.Cancellable;
-import org.openide.util.HelpCtx;
-import org.openide.util.NbBundle;
-import org.openide.util.Utilities;
-import org.openide.util.actions.CookieAction;
-import org.openide.windows.IOProvider;
-import org.openide.windows.InputOutput;
+import de.cismet.cids.jpa.entity.cidsclass.Attribute;
+import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
+import de.cismet.cids.jpa.entity.common.PermissionAwareEntity;
+import de.cismet.cids.jpa.entity.permission.Permission;
+import de.cismet.cids.jpa.entity.user.UserGroup;
+import java.util.HashMap;
+import org.openide.util.ImageUtilities;
 
 /**
  * DOCUMENT ME!
@@ -76,7 +77,7 @@ public final class CheckRightsAction extends CookieAction {
      * Creates a new CheckRightsAction object.
      */
     public CheckRightsAction() {
-        runningProjects = new Hashtable<DomainserverProject, Map<CidsClass, List<String>>>(2);
+        runningProjects = new HashMap<DomainserverProject, Map<CidsClass, List<String>>>(2);
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -159,7 +160,7 @@ public final class CheckRightsAction extends CookieAction {
                 io.getErr().println();
                 io.getErr().println(NbBundle.getMessage(CheckRightsAction.class, "CheckRightsAction.io.issueSummary")); // NOI18N
                 io.getErr().println();
-                for (Entry<CidsClass, List<String>> entry : issues.entrySet()) {
+                for (final Entry<CidsClass, List<String>> entry : issues.entrySet()) {
                     io.getErr().println(entry.getKey().getName());
                     for (final String issue : entry.getValue()) {
                         io.getErr().println(issue);
@@ -270,7 +271,8 @@ public final class CheckRightsAction extends CookieAction {
             if (related == null) {
                 // this will never occur here because all usergroups of the domainserver are in both maps
                 throw new IllegalStateException(
-                    "erroneous relatedEffectivePermission map: missing usergroup: " + usergroup); // NOI18N
+                    "erroneous relatedEffectivePermission map: missing usergroup: "
+                            + usergroup); // NOI18N
             }
             for (final Permission permission : effective.keySet()) {
                 if (effective.get(permission)) {
@@ -280,9 +282,9 @@ public final class CheckRightsAction extends CookieAction {
                         // this will never occur here because all permissions for all usergroups are in both maps
                         throw new IllegalStateException(
                             "erroneous relatedEffectivePermission map: missing permission for usergroup: " // NOI18N
-                            + usergroup
-                            + " :: "                                                                       // NOI18N
-                            + permission);
+                                    + usergroup
+                                    + " :: "                                                               // NOI18N
+                                    + permission);
                     }
                     if (!relatedPerm) {
                         // we found an issue and we will store it for later summary
@@ -292,11 +294,11 @@ public final class CheckRightsAction extends CookieAction {
                             runningProjects.get(project).put(cidsClass, issues);
                         }
                         issues.add(
-                            "\t"                                                      // NOI18N
-                            + NbBundle.getMessage(
-                                CheckRightsAction.class,
-                                "CheckRightsAction.io.issueUGRightClassRelatedClass", // NOI18N
-                                new Object[] { usergroup, permission, cidsClass, relatedClass }));
+                            "\t"                                                              // NOI18N
+                                    + NbBundle.getMessage(
+                                        CheckRightsAction.class,
+                                        "CheckRightsAction.io.issueUGRightClassRelatedClass", // NOI18N
+                                        new Object[] { usergroup, permission, cidsClass, relatedClass }));
                         good = false;
                     }
                 }
@@ -373,7 +375,6 @@ public final class CheckRightsAction extends CookieAction {
     @Override
     protected void initialize() {
         super.initialize();
-        // see org.openide.util.actions.SystemAction.iconResource() Javadoc for more details
         putValue("noIconInMenu", Boolean.TRUE); // NOI18N
     }
 
@@ -390,15 +391,13 @@ public final class CheckRightsAction extends CookieAction {
         final DomainserverProject project = activatedNodes[0].getCookie(DomainserverContext.class)
                     .getDomainserverProject();
         if (activatedNodes.length == 1) {
-            if (
-                (activatedNodes[0].getCookie(ClassManagementContextCookie.class) == null)
+            if ((activatedNodes[0].getCookie(ClassManagementContextCookie.class) == null)
                         && (activatedNodes[0].getCookie(CidsClassContextCookie.class) == null)) {
                 return false;
             }
         } else {
             for (final Node node : activatedNodes) {
-                if (
-                    !node.getCookie(DomainserverContext.class).getDomainserverProject().equals(project)
+                if (!node.getCookie(DomainserverContext.class).getDomainserverProject().equals(project)
                             || (node.getCookie(CidsClassContextCookie.class) == null)) {
                     return false;
                 }
@@ -503,7 +502,7 @@ public final class CheckRightsAction extends CookieAction {
          * Creates a new CancelAction object.
          */
         public CancelAction() {
-            icon = new ImageIcon(Utilities.loadImage("de/cismet/cids/abf/abfcore/res/images/button_cancel.png")); // NOI18N
+            icon = new ImageIcon(ImageUtilities.loadImage("de/cismet/cids/abf/domainserver/images/button_cancel.png")); // NOI18N
             cancelled = false;
         }
 

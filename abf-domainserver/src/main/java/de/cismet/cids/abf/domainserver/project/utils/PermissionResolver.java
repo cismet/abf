@@ -63,46 +63,46 @@ public final class PermissionResolver {
     static {
         PERM_STRING_READ = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.PERM_STRING_READ");             // NOI18N
+                "PermissionResolver.PERM_STRING_READ");                   // NOI18N
         PERM_STRING_WRITE = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.PERM_STRING_WRITE");            // NOI18N
+                "PermissionResolver.PERM_STRING_WRITE");                  // NOI18N
         PERM_STRING_NOT = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.PERM_STRING_NOT");              // NOI18N
+                "PermissionResolver.PERM_STRING_NOT");                    // NOI18N
         INH_STRING_CLASS_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.INH_STRING_CLASS_POLICY");       // NOI18N
+                "PermissionResolver.INH_STRING_CLASS_POLICY");            // NOI18N
         INH_STRING_NODE_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.INH_STRING_NODE_POLICY");        // NOI18N
+                "PermissionResolver.INH_STRING_NODE_POLICY");             // NOI18N
         INH_STRING_SERVER_ATTR_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.INH_STRING_SERVER_ATTR_POLICY");  // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_ATTR_POLICY");      // NOI18N
         INH_STRING_SERVER_CLASS_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.INH_STRING_SERVER_CLASS_POLICY"); // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_CLASS_POLICY");     // NOI18N
         INH_STRING_SERVER_NODE_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.INH_STRING_SERVER_NODE_POLICY");  // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_NODE_POLICY");      // NOI18N
         INH_STRING_SERVER_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.INH_STRING_SERVER_POLICY");      // NOI18N
+                "PermissionResolver.INH_STRING_SERVER_POLICY");           // NOI18N
         USE_STRING_ATTR_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.USE_STRING_ATTR_POLICY");        // NOI18N
+                "PermissionResolver.USE_STRING_ATTR_POLICY");             // NOI18N
         USE_STRING_CLASS_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.USE_STRING_CLASS_POLICY");       // NOI18N
+                "PermissionResolver.USE_STRING_CLASS_POLICY");            // NOI18N
         USE_STRING_NODE_POLICY = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.USE_STRING_NODE_POLICY");        // NOI18N
+                "PermissionResolver.USE_STRING_NODE_POLICY");             // NOI18N
         PERM_STRING_DERIVED_FROM_CLASS = NbBundle.getMessage(
                 PermissionResolver.class,
                 "PermissionResolver.PERM_STRING_DERIVED_FROM_CLASS");     // NOI18N
         PERM_STRING_UNSUPPORTED_PERMISSION = NbBundle.getMessage(
                 PermissionResolver.class,
-                "PermissionResolver.PERM_STRING_UNSUPPORTED_PERMISSION");           // NOI18N
+                "PermissionResolver.PERM_STRING_UNSUPPORTED_PERMISSION"); // NOI18N
         MAP = new Hashtable<DomainserverProject, PermissionResolver>();
     }
 
@@ -240,26 +240,26 @@ public final class PermissionResolver {
         if (!serverFound) {
             throw new IllegalStateException(
                 DomainserverProject.PROP_POLICY_SERVER
-                + " is not valid: "
-                + project.getServerPolicy());    // NOI18N
+                        + " is not valid: "
+                        + project.getServerPolicy());    // NOI18N
         }
         if (!attrFound) {
             throw new IllegalStateException(
                 DomainserverProject.PROP_POLICY_ATTR
-                + " is not valid: "
-                + project.getAttrPolicy());      // NOI18N
+                        + " is not valid: "
+                        + project.getAttrPolicy());      // NOI18N
         }
         if (!cNodeFound) {
             throw new IllegalStateException(
                 DomainserverProject.PROP_POLICY_CLASS_NODE
-                + " is not valid: "
-                + project.getClassNodePolicy()); // NOI18N
+                        + " is not valid: "
+                        + project.getClassNodePolicy()); // NOI18N
         }
         if (!nNodeFound) {
             throw new IllegalStateException(
                 DomainserverProject.PROP_POLICY_ORG_NODE
-                + " is not valid: "
-                + project.getOrgNodePolicy());   // NOI18N
+                        + " is not valid: "
+                        + project.getOrgNodePolicy());   // NOI18N
         }
     }
 
@@ -277,16 +277,16 @@ public final class PermissionResolver {
      */
     public boolean hasPerm(final UserGroup usergroup, final PermissionAwareEntity entity, final Permission desired) {
         if (usergroup == null) {
-            throw new IllegalArgumentException("usergroup may not be null");                  // NOI18N
+            throw new IllegalArgumentException("usergroup may not be null");                        // NOI18N
         }
         if (desired == null) {
-            throw new IllegalArgumentException("permission may not be null");                 // NOI18N
+            throw new IllegalArgumentException("permission may not be null");                       // NOI18N
         }
         final Policy policy = getEffectivePolicy(entity);
         if (policy == null) {
             throw new UnsupportedOperationException(
-                "hasPerm has been called for catnode that has 'derivePermFromClass' flag or " // NOI18N
-                + "effective policy was not found! Both operations are not supported yet");   // NOI18N
+                "hasPerm has been called for catnode that has 'derivePermFromClass' flag or "       // NOI18N
+                        + "effective policy was not found! Both operations are not supported yet"); // NOI18N
         }
         for (final AbstractPermission ap : entity.getPermissions()) {
             if (usergroup.equals(ap.getUserGroup())) {
@@ -540,6 +540,7 @@ public final class PermissionResolver {
      * @throws  IllegalArgumentException  DOCUMENT ME!
      * @throws  IllegalStateException     DOCUMENT ME!
      */
+    // TODO: refactor since this implementation is rather hard to understand
     private Policy getOrgNodePolicy(final CatNode node) {
         if (!node.getNodeType().equals(CatNode.Type.ORG.getType())) {
             throw new IllegalArgumentException("node is not of type OrgNode");         // NOI18N
@@ -549,29 +550,23 @@ public final class PermissionResolver {
             throw new IllegalStateException("node has more than one parent: " + node); // NOI18N
         } else if (parents.isEmpty()) {
             // INFO: special routine for transient nodes (nodes during creation)
-            if (node.getId() == null) {
-                if (node.getProspectiveParent() == null) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("prospective parent is null, assume root node");
-                    }
-                    throw new IllegalStateException("could not find prospective parent for transient node"); // NOI18N
-                } else {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("using prospective parent");                                               // NOI18N
-                    }
-                    parents.add(node.getProspectiveParent());
+            if ((node.getId() == null) && (node.getProspectiveParent() != null)) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("using prospective parent for transient node");                         // NOI18N
                 }
+                parents.add(node.getProspectiveParent());
             } else {
                 for (final Policy pol : policies) {
                     if (project.getOrgNodePolicy().equals(pol.getName())) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug(
-                                "no policy found so far, returning server's pure node policy");              // NOI18N
+                            LOG.debug("no policy found so far, returning server's pure node policy"); // NOI18N
                         }
                         result.get().inheritanceString = INH_STRING_SERVER_NODE_POLICY;
+
                         return pol;
                     }
                 }
+
                 return null;
             }
         }
@@ -582,18 +577,20 @@ public final class PermissionResolver {
                 for (final Policy pol : policies) {
                     if (project.getOrgNodePolicy().equals(pol.getName())) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("no policy found so far, returning server's pure node policy");        // NOI18N
+                            LOG.debug("no policy found so far, returning server's pure node policy"); // NOI18N
                         }
                         result.get().inheritanceString = INH_STRING_SERVER_NODE_POLICY;
+
                         return pol;
                     }
                 }
             }
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug("returning parent's policy for orgnode");                                              // NOI18N
+            LOG.debug("returning parent's policy for orgnode"); // NOI18N
         }
         result.get().inheritanceString = INH_STRING_NODE_POLICY;
+
         return policy;
     }
 

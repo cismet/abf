@@ -1519,7 +1519,7 @@ final class DynamicCatalogNodeChildren extends Children.Keys
                     {
                         org.openide.util.NbBundle.getMessage(
                                 DynamicCatalogNodeChildren.class,
-                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().") // NOI18N
+                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryUnsuccessful") // NOI18N
                     });
                     refresh();
                     if(loadingNode != null)
@@ -1527,9 +1527,6 @@ final class DynamicCatalogNodeChildren extends Children.Keys
                         loadingNode.dispose();
                         loadingNode = null;
                     }
-                    return;
-                } finally
-                {
                     try
                     {
                         set.close();
@@ -1538,6 +1535,7 @@ final class DynamicCatalogNodeChildren extends Children.Keys
                     {
                         LOG.warn("could not close connection", sqle); // NOI18N
                     }
+                    return;
                 }
                 try
                 {
@@ -1629,6 +1627,14 @@ final class DynamicCatalogNodeChildren extends Children.Keys
                     {
                         loadingNode.dispose();
                         loadingNode = null;
+                    }
+                    try
+                    {
+                        set.close();
+                        con.close();
+                    } catch (final SQLException sqle)
+                    {
+                        LOG.warn("could not close connection", sqle); // NOI18N
                     }
                 }
             }

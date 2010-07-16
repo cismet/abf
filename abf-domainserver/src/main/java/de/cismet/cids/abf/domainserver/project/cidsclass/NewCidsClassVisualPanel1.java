@@ -80,6 +80,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -153,6 +154,9 @@ public final class NewCidsClassVisualPanel1 extends JPanel
                 model.fireChangeEvent();
             }
         });
+        final JCheckBox chkEditorBox = new JCheckBox();
+        chkEditorBox.setHorizontalAlignment(JCheckBox.CENTER);
+        tblAttr.setDefaultEditor(Boolean.class, new DefaultCellEditor(chkEditorBox));
         lstTypes.setCellRenderer(new ListCellRendererImpl());
         cboClassIcons.addItemListener(new ItemListener()
         {
@@ -996,8 +1000,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         {
             try
             {
-                final Object o = dtde.getTransferable().getTransferData(
-                        CidsTypeTransferable.CIDS_TYPE_FLAVOR);
+                final Object o = dtde.getTransferable().getTransferData(CidsTypeTransferable.CIDS_TYPE_FLAVOR);
                 if(o instanceof Type)
                 {
                     final Attribute attr = new Attribute();
@@ -1013,8 +1016,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
                         if (c.isArrayLink())
                         {
                             attr.setArray(true);
-                            attr.setArrayKey(cidsClass.getName() +
-                                    "_reference"); // NOI18N
+                            attr.setArrayKey(cidsClass.getName() + "_reference"); // NOI18N
                         }
                     }
                     attr.setName(""); // NOI18N

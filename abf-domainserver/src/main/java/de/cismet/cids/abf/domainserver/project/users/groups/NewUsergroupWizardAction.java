@@ -54,6 +54,7 @@ import org.openide.ErrorManager;
 import org.openide.WizardDescriptor;
 import org.openide.nodes.Node;
 import org.openide.util.HelpCtx;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.CookieAction;
 
 /**
@@ -121,13 +122,13 @@ public final class NewUsergroupWizardAction extends CookieAction
     @Override
     public String getName()
     {
-        return "Neue Benutzergruppe";
+        return NbBundle.getMessage(NewUsergroupWizardAction.class, "NewUsergroupWizardAction.getName().returnvalue"); // NOI18N
     }
     
     @Override
     public String iconResource()
     {
-        return DomainserverProject.IMAGE_FOLDER + "add_group.png";
+        return DomainserverProject.IMAGE_FOLDER + "add_group.png"; // NOI18N
     }
     
     @Override
