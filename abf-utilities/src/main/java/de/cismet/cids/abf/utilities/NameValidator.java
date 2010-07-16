@@ -7,12 +7,12 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities;
 
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.Field;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import org.apache.log4j.Logger;
 
 /**
  * This class is able to check a given String against some validation pattern.
@@ -43,6 +43,16 @@ public class NameValidator {
      */
     public static final int NAME_HIGH = 2;
     static final String NAME_HIGH_REGEX = "[a-zA-Z][\\w]*"; // NOI18N
+
+    /**
+     * This type is to check a String whether it suffices high security name pattern but permits one single dot in
+     * between to allow for schema namespaces.<br/>
+     * <br/>
+     * A high security schema pattern can start with a letter (a-Z) and contains only letters from a-Z, numbers from 0-9
+     * and the character "_" in any combination, then a dot and then the same pattern as before.
+     */
+    public static final int SCHEMA_HIGH = 7;
+    static final String SCHEMA_HIGH_REGEX = "([a-zA-Z][\\w]*\\.)?[a-zA-Z][\\w]*"; // NOI18N
 
     /**
      * This type is to check a String whether it suffices medium security name pattern.<br/>
@@ -113,6 +123,7 @@ public class NameValidator {
         if ((name == null) || (name.length() == 0)) {
             return false;
         }
+
         return pattern.matcher(name).matches();
     }
 
@@ -129,6 +140,7 @@ public class NameValidator {
         if ((name == null) || (name.length() == 0)) {
             return false;
         }
+
         return createPattern(validationType).matcher(name).matches();
     }
 
@@ -146,9 +158,9 @@ public class NameValidator {
         try {
             for (final Field field : fields) {
                 if (field.getInt(null) == valType) {
-                    final String regex =
-                        NameValidator.class.getDeclaredField(field.getName() + "_REGEX") // NOI18N
-                        .get(null).toString();
+                    final String regex = NameValidator.class.getDeclaredField(field.getName() + "_REGEX")
+                                .get(null)
+                                .toString(); // NOI18N
 
                     return Pattern.compile(regex);
                 }
