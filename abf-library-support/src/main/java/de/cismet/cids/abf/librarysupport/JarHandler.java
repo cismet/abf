@@ -73,7 +73,7 @@ public final class JarHandler
     private static final String TMP_DIR_ADDITION = "_abf_tmp_"; // NOI18N
     private static final String TMP_BUILD_FILE = "__tmp_build.xml"; // NOI18N
     private static final String ANT_PROPERTY_FILE =
-            "de/cismet/cids/abf/librarysupport/ant.properties"; // NOI18N
+            "/de/cismet/cids/abf/librarysupport/ant.properties"; // NOI18N
     
     private static final transient Logger LOG = Logger.getLogger(
             JarHandler.class);

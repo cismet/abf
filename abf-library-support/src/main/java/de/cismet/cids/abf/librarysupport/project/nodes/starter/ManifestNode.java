@@ -131,7 +131,7 @@ public final class ManifestNode extends DataNode implements
         final Action[] ret = new Action[supar.length + 3];
         for(int i = 0; i < supar.length; i++)
         {
-            if(supar[i] instanceof OpenAction)
+            if(i == 0)
             {
                 ret[i] = supar[i];
                 ret[i+1] = null;
@@ -147,6 +147,12 @@ public final class ManifestNode extends DataNode implements
             }
         }
         return ret;
+    }
+
+    @Override
+    public Action getPreferredAction()
+    {
+        return CallableSystemAction.get(OpenAction.class);
     }
 
     @Override

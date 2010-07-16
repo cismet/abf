@@ -286,11 +286,7 @@ public final class StarterManagement extends ProjectNode implements
         @Override
         public void fileAttributeChanged(final FileAttributeEvent fae)
         {
-            if(LOG.isDebugEnabled())
-            {
-                LOG.debug(getName() + " fireAttributeChange: " // NOI18N
-                        + fae.getFile().getNameExt());
-            }
+            // do nothing
         }
     }
 }
