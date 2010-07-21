@@ -1,42 +1,63 @@
-/*
- * CatalogNode.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on 21. Juni 2007, 16:20
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.catalog;
+
+import org.apache.log4j.Logger;
+
+import org.hibernate.ObjectNotFoundException;
+
+import org.openide.actions.CopyAction;
+import org.openide.actions.CutAction;
+import org.openide.actions.DeleteAction;
+import org.openide.actions.PasteAction;
+import org.openide.nodes.Children;
+import org.openide.nodes.Node;
+import org.openide.nodes.Node.Property;
+import org.openide.nodes.NodeTransfer;
+import org.openide.nodes.PropertySupport;
+import org.openide.nodes.Sheet;
+import org.openide.util.Exceptions;
+import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
+import org.openide.util.actions.CallableSystemAction;
+import org.openide.util.datatransfer.PasteType;
+import org.openide.windows.WindowManager;
+
+import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.datatransfer.Transferable;
+
+import java.beans.PropertyEditor;
+
+import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.persistence.NoResultException;
+
+import javax.swing.Action;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -49,6 +70,7 @@ import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
+
 import de.cismet.cids.jpa.backend.service.impl.Backend;
 import de.cismet.cids.jpa.entity.catalog.CatNode;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
@@ -58,59 +80,20 @@ import de.cismet.cids.jpa.entity.common.URLBase;
 import de.cismet.cids.jpa.entity.permission.NodePermission;
 import de.cismet.cids.jpa.entity.permission.Permission;
 import de.cismet.cids.jpa.entity.permission.Policy;
+
 import de.cismet.diff.db.DatabaseConnection;
-import java.awt.EventQueue;
-import java.awt.Image;
-import java.awt.datatransfer.Transferable;
-import java.beans.PropertyEditor;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import javax.persistence.NoResultException;
-import javax.swing.Action;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import org.apache.log4j.Logger;
-import org.hibernate.ObjectNotFoundException;
-import org.openide.actions.CopyAction;
-import org.openide.actions.CutAction;
-import org.openide.actions.DeleteAction;
-import org.openide.actions.PasteAction;
-import org.openide.nodes.Children;
-import org.openide.nodes.Node;
-import org.openide.nodes.Node.Property;
-import org.openide.nodes.NodeTransfer;
-import org.openide.nodes.PropertySupport;
-import org.openide.nodes.Sheet;
-import org.openide.util.ImageUtilities;
-import org.openide.util.actions.CallableSystemAction;
-import org.openide.util.datatransfer.PasteType;
-import org.openide.windows.WindowManager;
-
-
 
 /**
+ * DOCUMENT ME!
  *
- * @author martin.scholl@cismet.de
- * @version 1.29
+ * @author   martin.scholl@cismet.de
+ * @version  1.29
  */
-public class CatalogNode extends ProjectNode implements 
-        Refreshable,
-        CatalogNodeContextCookie
-{
-    private static final transient Logger LOG = Logger.getLogger(
-            CatalogNode.class);
+public class CatalogNode extends ProjectNode implements Refreshable, CatalogNodeContextCookie {
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    private static final transient Logger LOG = Logger.getLogger(CatalogNode.class);
 
     private static final Image IMAGE_OPEN;
     private static final Image IMAGE_CLOSED;
@@ -120,991 +103,875 @@ public class CatalogNode extends ProjectNode implements
     private static final Image BADGE_OBJ;
     private static final String NULL;
 
-    private final transient PermissionResolver permResolve;
-
-    static
-    {
-        IMAGE_OPEN = ImageUtilities
-                .icon2Image(UIManager.getIcon("Tree.openIcon")); // NOI18N
-        IMAGE_CLOSED = ImageUtilities
-                .icon2Image(UIManager.getIcon("Tree.closedIcon")); // NOI18N
-        BADGE_ORG = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER + "badge_org.png"); // NOI18N
-        BADGE_OBJ = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER + "badge_object.png");// NOI18N
-        BADGE_DYN = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER + "badge_dynamic.png");//NOI18N
-        BADGE_CLASS = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER + "badge_class.png"); // NOI18N
-        NULL = "null"; // NOI18N
+    static {
+        IMAGE_OPEN = ImageUtilities.icon2Image(UIManager.getIcon("Tree.openIcon"));                   // NOI18N
+        IMAGE_CLOSED = ImageUtilities.icon2Image(UIManager.getIcon("Tree.closedIcon"));               // NOI18N
+        BADGE_ORG = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_org.png");     // NOI18N
+        BADGE_OBJ = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_object.png");  // NOI18N
+        BADGE_DYN = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_dynamic.png"); // NOI18N
+        BADGE_CLASS = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_class.png"); // NOI18N
+        NULL = "null";                                                                                // NOI18N
     }
+
+    //~ Instance fields --------------------------------------------------------
 
     transient CatNode catNode;
     transient Refreshable parent;
-    
-    public CatalogNode(final CatNode catNode, final DomainserverProject project,
-            final Refreshable parent)
-    {
+
+    private final transient PermissionResolver permResolve;
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new CatalogNode object.
+     *
+     * @param  catNode  DOCUMENT ME!
+     * @param  project  DOCUMENT ME!
+     * @param  parent   DOCUMENT ME!
+     */
+    public CatalogNode(final CatNode catNode, final DomainserverProject project, final Refreshable parent) {
         super(Children.LEAF, project);
         this.catNode = catNode;
         this.parent = parent;
         permResolve = PermissionResolver.getInstance(project);
         setDisplayName(catNode.getName());
-        EventQueue.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                refresh();
-            }
-        });
+        EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    refresh();
+                }
+            });
     }
 
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    public String getHtmlDisplayName()
-    {
+    public String getHtmlDisplayName() {
         return getDisplayName();
     }
 
     @Override
-    public Action[] getActions(final boolean b) 
-    {
-        return new Action[] 
-        {
-            CallableSystemAction.get(NewCatalogNodeWizardAction.class), null,
-            CallableSystemAction.get(ModifyNodeRightsWizardAction.class), null,
-            CallableSystemAction.get(CopyAction.class),
-            CallableSystemAction.get(CutAction.class),
-            CallableSystemAction.get(PasteAction.class),
-            CallableSystemAction.get(CreateLinkAction.class),
-            CallableSystemAction.get(InsertLinkAction.class), null,
-            CallableSystemAction.get(DeleteAction.class), null,
-            CallableSystemAction.get(RefreshAction.class)
-        };
+    public Action[] getActions(final boolean b) {
+        return new Action[] {
+                CallableSystemAction.get(NewCatalogNodeWizardAction.class),
+                null,
+                CallableSystemAction.get(ModifyNodeRightsWizardAction.class),
+                null,
+                CallableSystemAction.get(CopyAction.class),
+                CallableSystemAction.get(CutAction.class),
+                CallableSystemAction.get(PasteAction.class),
+                CallableSystemAction.get(CreateLinkAction.class),
+                CallableSystemAction.get(InsertLinkAction.class),
+                null,
+                CallableSystemAction.get(DeleteAction.class),
+                null,
+                CallableSystemAction.get(RefreshAction.class)
+            };
     }
-    
+
     @Override
-    public boolean canDestroy()
-    {
+    public boolean canDestroy() {
+        return catNode.getId() > 0;
+    }
+
+    @Override
+    public boolean canCopy() {
         return true;
     }
-    
+
     @Override
-    public boolean canCopy()
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean canCut()
-    {
+    public boolean canCut() {
         // cannot cut dynamically created nodes
-        if(catNode.getId() == -1)
-        {
+        if (catNode.getId() == -1) {
             return false;
         }
+
         return true;
     }
-    
+
     @Override
-    public void destroy()
-    {
-        try
-        {
-            if(LOG.isDebugEnabled())
-            {
-                LOG.debug("CatalogNode: destroy requested"); // NOI18N
+    public void destroy() {
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("CatalogNode: destroy requested");                                          // NOI18N
             }
-            if(parent instanceof CatalogNode)
-            {
+            if (parent instanceof CatalogNode) {
                 final CatalogNode parentNode = (CatalogNode)parent;
-                try
-                {
-                    if(project.getCidsDataObjectBackend().deleteNode(
-                            parentNode.catNode, catNode))
-                    {
-                        project.getLookup().lookup(CatalogManagement.class).
-                                destroyedNode(catNode, this);
-                    }else
-                    {
-                        project.getLookup().lookup(CatalogManagement.class).
-                                removedNode(catNode, this);
+                try {
+                    if (project.getCidsDataObjectBackend().deleteNode(
+                                    parentNode.catNode,
+                                    catNode)) {
+                        project.getLookup().lookup(CatalogManagement.class).destroyedNode(catNode, this);
+                    } else {
+                        project.getLookup().lookup(CatalogManagement.class).removedNode(catNode, this);
                     }
-                }catch(final NoResultException nre)
-                {
-                    LOG.debug("possibly already deleted", nre); // NOI18N
+                } catch (final NoResultException nre) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("possibly already deleted", nre);                                   // NOI18N
+                    }
                     ErrorUtils.showErrorMessage(
-                            org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class,
-                                "CatalogNode.destroy.ErrorUtils.nodeDeletionProbablyAlreadyDel.message"), // NOI18N
-                            org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class,
-                                "CatalogNode.destroy.ErrorUtils.nodeDeletionProbablyAlreadyDel.title"), nre); // NOI18N
+                        NbBundle.getMessage(
+                            CatalogNode.class,
+                            "CatalogNode.destroy.ErrorUtils.nodeDeletionProbablyAlreadyDel.message"), // NOI18N
+                        NbBundle.getMessage(
+                            CatalogNode.class,
+                            "CatalogNode.destroy.ErrorUtils.nodeDeletionProbablyAlreadyDel.title"),   // NOI18N
+                        nre);
                 }
-            }else
-            {
+            } else {
                 project.getCidsDataObjectBackend().deleteRootNode(catNode);
-                project.getLookup().lookup(CatalogManagement.class).
-                                removedNode(catNode, this);
+                project.getLookup().lookup(CatalogManagement.class).removedNode(catNode, this);
             }
             parent.refresh();
-        }catch(final Exception e)
-        {
-            LOG.error("could not destroy node", e); // NOI18N
-            ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "CatalogNode.destroy.ErrorUtils.duringNodeDeletion.message"), e); // NOI18N
+        } catch (final Exception e) {
+            LOG.error("could not destroy node", e);                                                   // NOI18N
+            ErrorUtils.showErrorMessage(NbBundle.getMessage(
+                    CatalogNode.class,
+                    "CatalogNode.destroy.ErrorUtils.duringNodeDeletion.message"),                     // NOI18N
+                e);
         }
     }
 
     @Override
-    public void refresh()
-    {
-        if(project.isConnected())
-        {
-            catNode.setIsLeaf(project.getCidsDataObjectBackend().isLeaf(catNode,
-                    true));
+    public void refresh() {
+        if (project.isConnected()) {
+            catNode.setIsLeaf(project.getCidsDataObjectBackend().isLeaf(catNode, true));
             final Children c = getChildren();
-            if(catNode.isLeaf()
-                    && (catNode.getDynamicChildren() == null
-                        || NULL.equalsIgnoreCase(catNode.getDynamicChildren())))
-            {
-                EventQueue.invokeLater(new Runnable() 
-                {
-                    @Override
-                    public void run()
-                    {
-                        setChildren(Children.LEAF);
-                    }
-                });
-            }else if(c instanceof CatalogNodeChildren)
-            {
-                if(catNode.getDynamicChildren() == null 
-                        || NULL.equalsIgnoreCase(catNode.getDynamicChildren()))
-                {
+            if (catNode.isLeaf()
+                        && ((catNode.getDynamicChildren() == null)
+                            || NULL.equalsIgnoreCase(catNode.getDynamicChildren()))) {
+                EventQueue.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            setChildren(Children.LEAF);
+                        }
+                    });
+            } else if (c instanceof CatalogNodeChildren) {
+                if ((catNode.getDynamicChildren() == null) || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
                     ((CatalogNodeChildren)c).refreshAll();
-                }else
-                {
-                    setChildren(new DynamicCatalogNodeChildren(catNode,
-                            project));
+                } else {
+                    setChildren(new DynamicCatalogNodeChildren(catNode, project));
                 }
-            }else if(c instanceof DynamicCatalogNodeChildren)
-            {
-                if(catNode.getDynamicChildren() == null
-                        || NULL.equalsIgnoreCase(catNode.getDynamicChildren()))
-                {
+            } else if (c instanceof DynamicCatalogNodeChildren) {
+                if ((catNode.getDynamicChildren() == null) || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
                     setChildren(new CatalogNodeChildren(catNode, project));
-                }else
-                {
+                } else {
                     ((DynamicCatalogNodeChildren)c).refreshAll();
                 }
-            }else if(c == Children.LEAF)
-            {
-                if(catNode.getDynamicChildren() == null)
-                {
+            } else if (c == Children.LEAF) {
+                if (catNode.getDynamicChildren() == null) {
                     setChildren(new CatalogNodeChildren(catNode, project));
-                }else
-                {
-                    setChildren(new DynamicCatalogNodeChildren(
-                            catNode, project));
+                } else {
+                    setChildren(new DynamicCatalogNodeChildren(catNode, project));
                 }
             }
             // TODO: fire property change to display possibly changed rights
-            //firePropertySetsChange(null, getPropertySets());
+            // firePropertySetsChange(null, getPropertySets());
             // TODO: as long as i did not find out about the mechanism to fire
-            // an appropriate property change and/or how to register an 
-            // appropriate listener at the right place if this is necessary, 
+            // an appropriate property change and/or how to register an
+            // appropriate listener at the right place if this is necessary,
             // this workaround is acceptable
             setSheet(createSheet());
-        }
-        else
-        {
+        } else {
             setChildren(Children.LEAF);
         }
     }
-    
+
     @Override
-    public Sheet createSheet()
-    {
+    public Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
         final boolean mayWrite;
-        if(parent instanceof CatalogNode)
-        {
+        if (parent instanceof CatalogNode) {
             final CatalogNode cn = (CatalogNode)parent;
             mayWrite = (cn.catNode.getDynamicChildren() == null);
-        }else
-        {
+        } else {
             mayWrite = true;
         }
-        try
-        {
+        try {
+            //J-
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeID ">
-            final Property idProp = new PropertySupport.Reflection(catNode, 
-                    Integer.class, "getId", null); // NOI18N
-            idProp.setName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "CatalogNode.createSheet().idProp.name")); // NOI18N
+            final Property idProp = new PropertySupport.Reflection(catNode,
+                    Integer.class, "getId", null);             // NOI18N
+            idProp.setName(NbBundle.getMessage(
+                    CatalogNode.class,
+                    "CatalogNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeName ">
             final Property nameProp = new PropertySupport(
-                    "nodeName", // NOI18N
+                    "nodeName",                                       // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().nameProp.name"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().nameProp.nameOfNode"), // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().nameProp.name"),   // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().nameProp.nameOfNode"), // NOI18N
                     true,
-                    mayWrite)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException, 
-                        InvocationTargetException
-                {
-                    return catNode.getName();
-                }
+                    mayWrite) {
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return catNode.getName();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException 
-                {
-                    final String name = object.toString();
-                    final String oldName = catNode.getName();
-                    try
-                    {
-                        catNode.setName(name);
-                        project.getCidsDataObjectBackend().store(catNode);
-                        CatalogNode.this.setDisplayName(name);
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("name could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                        InvocationTargetException {
+                        final String name = object.toString();
+                        final String oldName = catNode.getName();
+                        try {
+                            catNode.setName(name);
+                            project.getCidsDataObjectBackend().store(catNode);
+                            CatalogNode.this.setDisplayName(name);
+                        } catch (final Exception ex) {
+                            LOG.error("name could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "CatalogNode.createSheet().nameProp.setValue(Object).ErrorUtils.duringNameChange.message"), ex); // NOI18N
-                        catNode.setName(oldName);
-                    }
-                }
-            };// </editor-fold>
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeDescription ">
-            final Property urlProp = new PropertySupport(
-                    "nodeUrl", // NOI18N
-                    String.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().urlProp.name"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().urlProp.urlDescribingTheNode"),// NOI18N
-                    true,
-                    mayWrite)
-            {
-                private NodeURLPropertyEditor editor;
-
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException, 
-                        InvocationTargetException
-                {
-                    final URL url = catNode.getUrl();
-                    return url == null ? URL.NO_DESCRIPTION : url;
-                }
-
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException 
-                {
-                    if(!(object instanceof URL))
-                    {
-                        throw new IllegalArgumentException(
-                                "object must be of type URL"); // NOI18N
-                    }
-                    final URL url = (URL)object;
-                    final URL oldURL = catNode.getUrl();
-                    try
-                    {
-                        catNode.setUrl((url.equals(URL.NO_DESCRIPTION)) ?
-                            null : url);
-                        project.getCidsDataObjectBackend().store(catNode);
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("url could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().urlProp.setValue(Object).ErrorUtils.duringURLchange.message"), ex); // NOI18N
-                        catNode.setUrl(oldURL);
-                    }
-                }
-
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    if(editor == null)
-                    {
-                        editor = new NodeURLPropertyEditor(project);
-                    }
-                    return editor;
-                }
-            };// </editor-fold>
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeType ">
-            final Property nodeTypeProp = new PropertySupport(
-                    "nodeType", // NOI18N
-                    String.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.typeOfNode"), // NOI18N
-                    true,
-                    mayWrite)
-            {
-                private NodeTypePropertyEditor editor;
-
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException, 
-                        InvocationTargetException
-                {
-                    final String type = catNode.getNodeType();
-                    if(type.equals(CatNode.Type.CLASS.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.classNode"); // NOI18N
-                    }else if(type.equals(CatNode.Type.OBJECT.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.objectNode"); // NOI18N
-                    }else if(type.equals(CatNode.Type.ORG.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.orgNode"); // NOI18N
-                    }else
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "CatalogNode.createSheet().nodeTypeProp.nodeType.unknownType"); // NOI18N
-                    }
-                }
-
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException 
-                {
-                    final String oldType = catNode.getNodeType();
-                    final String type = object.toString();
-                    try
-                    {
-                        catNode.setNodeType(type);
-                        project.getCidsDataObjectBackend().store(catNode);
-                        fireIconChange();
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("type could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().nodeTypeProp.setValue(Object).ErrorUtils.duringTypeChange.message"), ex); // NOI18N
-                        catNode.setNodeType(oldType);
-                    }
-                }
-
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    if(editor == null)
-                    {
-                        editor = new NodeTypePropertyEditor();
-                    }
-                    return editor;
-                }
-            };// </editor-fold>
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeIsRoot ">
-            final Property rootProp = new PropertySupport(
-                    "nodeIsRoot", // NOI18N
-                    Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().rootProp.rootNode"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().rootProp.isNodeRootNode"), // NOI18N
-                    true,
-                    mayWrite)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException, 
-                        InvocationTargetException
-                {
-                    if(catNode.getIsRoot() == null)
-                    {
-                        return Boolean.FALSE;
-                    }
-                    return catNode.getIsRoot();
-                }
-
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException 
-                {
-                    final Boolean isRoot = (Boolean)object;
-                    final Boolean oldIsRoot = catNode.getIsRoot();
-                    try
-                    {
-                        catNode.setIsRoot(isRoot);
-                        project.getCidsDataObjectBackend().store(catNode);
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("isRoot could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().rootProp.setValue(Object).ErrorUtils.duringRootFlagChange.message"), ex); // NOI18N
-                        catNode.setIsRoot(oldIsRoot);
-                    }
-                }
-            };// </editor-fold>
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodePolicy ">
-            final Property policyProp = new PropertySupport(
-                    "nodePolicy",// NOI18N
-                    String.class, 
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().policyProp.policy"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().policyProp.policyTooltip"), // NOI18N
-                    true,
-                    mayWrite)
-            {
-                private PolicyPropertyEditor editor;
-
-                @Override
-                public Object getValue() throws
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    Policy p = catNode.getPolicy();
-                    if(p == null)
-                    {
-                        final PermissionResolver.Result r = permResolve.
-                                getPermString(catNode, null);
-                        if(r.getInheritanceString() == null)
-                        {
-                            // should never occur
-                            p = Policy.NO_POLICY;
-                        }else
-                        {
-                            p = new Policy();
-                            p.setName("<" // NOI18N
-                                    + r.getInheritanceString() + ">"); // NOI18N
+                                    "CatalogNode.createSheet().nameProp.setValue(Object).ErrorUtils.duringNameChange.message"), // NOI18N
+                                ex);
+                            catNode.setName(oldName);
                         }
                     }
-                    return p;
-                }
+                };                                                      // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeDescription ">
+            final Property urlProp = new PropertySupport(
+                    "nodeUrl",                                                 // NOI18N
+                    String.class,
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().urlProp.name"),             // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().urlProp.urlDescribingTheNode"), // NOI18N
+                    true,
+                    mayWrite) {
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
+                    private NodeURLPropertyEditor editor;
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        final URL url = catNode.getUrl();
+                        return (url == null) ? URL.NO_DESCRIPTION : url;
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    if(!(object instanceof Policy))
-                    {
-                        throw new IllegalArgumentException(
-                                "object must be of type Policy"); // NOI18N
-                    }
-                    final Policy policy = (Policy)object;
-                    final Policy oldPolicy = catNode.getPolicy();
-                    try
-                    {
-                        catNode.setPolicy((policy.getId() == null) ?
-                            null : policy);
-                        project.getCidsDataObjectBackend().store(catNode);
-                        refresh();
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("policy could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                        InvocationTargetException {
+                        if (!(object instanceof URL)) {
+                            throw new IllegalArgumentException(
+                                "object must be of type URL");         // NOI18N
+                        }
+                        final URL url = (URL)object;
+                        final URL oldURL = catNode.getUrl();
+                        try {
+                            catNode.setUrl((url.equals(URL.NO_DESCRIPTION)) ? null : url);
+                            project.getCidsDataObjectBackend().store(catNode);
+                        } catch (final Exception ex) {
+                            LOG.error("url could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "CatalogNode.createSheet().policyProp.setValue(Object).ErrorUtils.duringRightsChange.message"), ex); // NOI18N
-                        catNode.setPolicy(oldPolicy);
+                                    "CatalogNode.createSheet().urlProp.setValue(Object).ErrorUtils.duringURLchange.message"),// NOI18N
+                                ex);
+                            catNode.setUrl(oldURL);
+                        }
                     }
-                }
 
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    if(editor == null)
-                    {
-                        editor = new PolicyPropertyEditor(project);
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        if (editor == null) {
+                            editor = new NodeURLPropertyEditor(project);
+                        }
+                        return editor;
                     }
-                    return editor;
-                }
+                }; // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeType ">
+            final Property nodeTypeProp = new PropertySupport(
+                    "nodeType",                                           // NOI18N
+                    String.class,
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().nodeTypeProp.nodeType"), // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().nodeTypeProp.typeOfNode"), // NOI18N
+                    true,
+                    mayWrite) {
 
-            };// </editor-fold>
+                    private NodeTypePropertyEditor editor;
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        final String type = catNode.getNodeType();
+                        if (type.equals(CatNode.Type.CLASS.getType())) {
+                            return NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().nodeTypeProp.nodeType.classNode");   // NOI18N
+                        } else if (type.equals(CatNode.Type.OBJECT.getType())) {
+                            return NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().nodeTypeProp.nodeType.objectNode");  // NOI18N
+                        } else if (type.equals(CatNode.Type.ORG.getType())) {
+                            return NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().nodeTypeProp.nodeType.orgNode");     // NOI18N
+                        } else {
+                            return NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().nodeTypeProp.nodeType.unknownType"); // NOI18N
+                        }
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final String oldType = catNode.getNodeType();
+                        final String type = object.toString();
+                        try {
+                            catNode.setNodeType(type);
+                            project.getCidsDataObjectBackend().store(catNode);
+                            fireIconChange();
+                        } catch (final Exception ex) {
+                            LOG.error("type could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().nodeTypeProp.setValue(Object).ErrorUtils.duringTypeChange.message"),// NOI18N
+                                ex);
+                            catNode.setNodeType(oldType);
+                        }
+                    }
+
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        if (editor == null) {
+                            editor = new NodeTypePropertyEditor();
+                        }
+                        return editor;
+                    }
+                }; // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeIsRoot ">
+            final Property rootProp = new PropertySupport(
+                    "nodeIsRoot",                                         // NOI18N
+                    Boolean.class,
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().rootProp.rootNode"),   // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().rootProp.isNodeRootNode"), // NOI18N
+                    true,
+                    mayWrite) {
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        if (catNode.getIsRoot() == null) {
+                            return Boolean.FALSE;
+                        }
+                        return catNode.getIsRoot();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Boolean isRoot = (Boolean)object;
+                        final Boolean oldIsRoot = catNode.getIsRoot();
+                        try {
+                            catNode.setIsRoot(isRoot);
+                            project.getCidsDataObjectBackend().store(catNode);
+                        } catch (final Exception ex) {
+                            LOG.error("isRoot could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().rootProp.setValue(Object).ErrorUtils.duringRootFlagChange.message"),// NOI18N
+                                ex);
+                            catNode.setIsRoot(oldIsRoot);
+                        }
+                    }
+                };                                                        // </editor-fold>
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: NodePolicy ">
+            final Property policyProp = new PropertySupport(
+                    "nodePolicy",                                          // NOI18N
+                    String.class,
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().policyProp.policy"),    // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().policyProp.policyTooltip"), // NOI18N
+                    true,
+                    mayWrite) {
+
+                    private PolicyPropertyEditor editor;
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        Policy p = catNode.getPolicy();
+                        if (p == null) {
+                            final PermissionResolver.Result r = permResolve.getPermString(catNode, null);
+                            if (r.getInheritanceString() == null) {
+                                // should never occur
+                                p = Policy.NO_POLICY;
+                            } else {
+                                p = new Policy();
+                                p.setName("<" // NOI18N
+                                            + r.getInheritanceString() + ">"); // NOI18N
+                            }
+                        }
+                        return p;
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        if (!(object instanceof Policy)) {
+                            throw new IllegalArgumentException(
+                                "object must be of type Policy");         // NOI18N
+                        }
+                        final Policy policy = (Policy)object;
+                        final Policy oldPolicy = catNode.getPolicy();
+                        try {
+                            catNode.setPolicy((policy.getId() == null) ? null : policy);
+                            project.getCidsDataObjectBackend().store(catNode);
+                            refresh();
+                        } catch (final Exception ex) {
+                            LOG.error("policy could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().policyProp.setValue(Object).ErrorUtils.duringRightsChange.message"),// NOI18N
+                                ex);
+                            catNode.setPolicy(oldPolicy);
+                        }
+                    }
+
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        if (editor == null) {
+                            editor = new PolicyPropertyEditor(project);
+                        }
+                        return editor;
+                    }
+                }; // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeDerivePerm ">
             final Property derivePermProp = new PropertySupport(
-                    "nodeDerivePerm", // NOI18N
+                    "nodeDerivePerm",                                                         // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().derivePermProp.deriveRightsFromClass"),//NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().derivePermProp.deriveRightsFromClass"),    // NOI18N
+                    NbBundle.getMessage(
                         CatalogNode.class,
                         "CatalogNode.createSheet().derivePermProp.deriveRightsFromClassTooltip"), // NOI18N
                     true,
-                    mayWrite)
-            {
-                @Override
-                public Object getValue() throws
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    if(catNode.getDerivePermFromClass() == null)
-                    {
-                        return Boolean.FALSE;
-                    }
-                    return catNode.getDerivePermFromClass();
-                }
+                    mayWrite) {
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Boolean derive = (Boolean)object;
-                    final Boolean oldDerive = catNode.getDerivePermFromClass();
-                    if(derive != null && catNode.getCidsClass() == null)
-                    {
-                        final int answer = JOptionPane.showConfirmDialog(
-                                WindowManager.getDefault().getMainWindow(),
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().derivePermProp.setValue(Object).JOptionPane.message"), // NOI18N
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().derivePermProp.setValue(Object).JOptionPane.title"), // NOI18N
-                                JOptionPane.OK_CANCEL_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
-                        if(answer == JOptionPane.CANCEL_OPTION)
-                        {
-                            return;
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        if (catNode.getDerivePermFromClass() == null) {
+                            return Boolean.FALSE;
                         }
+                        return catNode.getDerivePermFromClass();
                     }
-                    try
-                    {
-                        catNode.setDerivePermFromClass(derive);
-                        project.getCidsDataObjectBackend().store(catNode);
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("derivePerm could not be changed", // NOI18N
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Boolean derive = (Boolean)object;
+                        final Boolean oldDerive = catNode.getDerivePermFromClass();
+                        if ((derive != null) && (catNode.getCidsClass() == null)) {
+                            final int answer = JOptionPane.showConfirmDialog(
+                                    WindowManager.getDefault().getMainWindow(),
+                                    NbBundle.getMessage(
+                                        CatalogNode.class,
+                                        "CatalogNode.createSheet().derivePermProp.setValue(Object).JOptionPane.message"), // NOI18N
+                                    NbBundle.getMessage(
+                                        CatalogNode.class,
+                                        "CatalogNode.createSheet().derivePermProp.setValue(Object).JOptionPane.title"), // NOI18N
+                                    JOptionPane.OK_CANCEL_OPTION,
+                                    JOptionPane.WARNING_MESSAGE);
+                            if (answer == JOptionPane.CANCEL_OPTION) {
+                                return;
+                            }
+                        }
+                        try {
+                            catNode.setDerivePermFromClass(derive);
+                            project.getCidsDataObjectBackend().store(catNode);
+                        } catch (final Exception ex) {
+                            LOG.error("derivePerm could not be changed",                                                // NOI18N
                                 ex);
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
                                     CatalogNode.class,
                                     "CatalogNode.createSheet().derivePermProp.setValue(Object).ErrorUtils.deriveFromClassFlagChange.message"), // NOI18N
                                 ex);
-                        catNode.setDerivePermFromClass(oldDerive);
+                            catNode.setDerivePermFromClass(oldDerive);
+                        }
                     }
-                }
-            };// </editor-fold>
+                };                                                                                                      // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeIcon ">
             final Property iconProp = new PropertySupport(
-                    "nodeIcon", // NOI18N
+                    "nodeIcon",                                        // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().iconProp.icon"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().iconProp.iconTooltip"), // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().iconProp.icon"),    // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().iconProp.iconTooltip"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    final String icon = catNode.getIcon();
-                    return icon == null ? org.openide.util.NbBundle.getMessage(
-                            CatalogNode.class,
-                            "CatalogNode.createSheet().iconProp.getValue().returnvalue.notIconBrackets") : icon; // NOI18N
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final String icon = object.toString();
-                    final String oldIcon = catNode.getIcon();
-                    try
-                    {
-                        if(NULL.equals(icon) || "".equals(icon) // NOI18N
-                                || org.openide.util.NbBundle.getMessage(
-                                        CatalogNode.class,
-                                        "CatalogNode.createSheet().iconProp.getValue().returnvalue.notIconBrackets")
-                                   .equals(icon)) // NOI18N
-                        {
-                            catNode.setIcon(null);
-                        }else
-                        {
-                            catNode.setIcon(icon);
-                        }
-                        project.getCidsDataObjectBackend().store(catNode);
-                        fireIconChange();
-                        refresh();
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("icon could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().iconProp.setValue(Object).ErrorUtils.duringIconChange.message"), ex); // NOI18N
-                        catNode.setIcon(oldIcon);
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        final String icon = catNode.getIcon();
+                        return (icon == null)
+                            ? NbBundle.getMessage(
+                                CatalogNode.class,
+                                "CatalogNode.createSheet().iconProp.getValue().returnvalue.notIconBrackets") : icon;     // NOI18N
                     }
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final String icon = object.toString();
+                        final String oldIcon = catNode.getIcon();
+                        try {
+                            if (NULL.equals(icon) || "".equals(icon)    // NOI18N
+                                        || NbBundle.getMessage(
+                                            CatalogNode.class,
+                                            "CatalogNode.createSheet().iconProp.getValue().returnvalue.notIconBrackets")// NOI18N
+                                        .equals(icon))
+                            {
+                                catNode.setIcon(null);
+                            } else {
+                                catNode.setIcon(icon);
+                            }
+                            project.getCidsDataObjectBackend().store(catNode);
+                            fireIconChange();
+                            refresh();
+                        } catch (final Exception ex) {
+                            LOG.error("icon could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().iconProp.setValue(Object).ErrorUtils.duringIconChange.message"),// NOI18N
+                                ex);
+                            catNode.setIcon(oldIcon);
+                        }
+                    }
+                };                                                      // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeIconFactory ">
             final Property factoryProp = new PropertySupport(
-                    "nodeIconFactory", // NOI18N
+                    "nodeIconFactory",                                           // NOI18N
                     JavaClass.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().factoryProp.iconFactory"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().factoryProp.iconFactoryTooltip"), // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().factoryProp.iconFactory"),    // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().factoryProp.iconFactoryTooltip"), // NOI18N
                     true,
-                    mayWrite)
-            {
-                private JavaClassPropertyEditor editor;
+                    mayWrite) {
 
-                @Override
-                public Object getValue() throws
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return catNode.getIconFactory();
-                }
+                    private JavaClassPropertyEditor editor;
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return catNode.getIconFactory();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final JavaClass old = catNode.getIconFactory();
-                    if(object == null)
-                    {
-                        final int answer = JOptionPane.showConfirmDialog(
-                                WindowManager.getDefault().getMainWindow(),
-                                org.openide.util.NbBundle.getMessage(
+                        InvocationTargetException {
+                        final JavaClass old = catNode.getIconFactory();
+                        if (object == null) {
+                            final int answer = JOptionPane.showConfirmDialog(
+                                    WindowManager.getDefault().getMainWindow(),
+                                    NbBundle.getMessage(
+                                        CatalogNode.class,
+                                        "CatalogNode.createSheet().factoryProp.setValue(Object).JOptionPane.message"), // NOI18N
+                                    NbBundle.getMessage(
+                                        CatalogNode.class,
+                                        "CatalogNode.createSheet().factoryProp.setValue(Object).JOptionPane.title"), // NOI18N
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE);
+                            if (answer == JOptionPane.NO_OPTION) {
+                                return;
+                            }
+                        }
+                        try {
+                            catNode.setIconFactory((JavaClass)object);
+                            project.getCidsDataObjectBackend().store(catNode);
+                            fireIconChange();
+                        } catch (final Exception e) {
+                            LOG.error("iconfactory could not be changed",                                            // NOI18N
+                                e);
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "CatalogNode.createSheet().factoryProp.setValue(Object).JOptionPane.message"),// NOI18N
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().factoryProp.setValue(Object).JOptionPane.title"), // NOI18N
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE);
-                        if(answer == JOptionPane.NO_OPTION)
-                        {
-                            return;
+                                    "CatalogNode.createSheet().factoryProp.setValue(Object).ErrorUtils.duringIconFactoryChange.message"),// NOI18N
+                                e);
+                            catNode.setIconFactory(old);
                         }
                     }
-                    try
-                    {
-                        catNode.setIconFactory((JavaClass)object);
-                        project.getCidsDataObjectBackend().store(catNode);
-                        fireIconChange();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("iconfactory could not be changed", // NOI18N
-                                e);
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().factoryProp.setValue(Object).ErrorUtils.duringIconFactoryChange.message"), e);// NOI18N
-                        catNode.setIconFactory(old);
-                    }
-                }
 
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    if(editor == null)
-                    {
-                        editor = new JavaClassPropertyEditor(project, JavaClass.
-                                Type.UNKNOWN);
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        if (editor == null) {
+                            editor = new JavaClassPropertyEditor(project, JavaClass.Type.UNKNOWN);
+                        }
+                        return editor;
                     }
-                    return editor;
-                }
-            };// </editor-fold>
+                }; // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeObjectSet ">
-            final Map<String, String> objectInfo =
-                    project.getCidsDataObjectBackend().getSimpleObjectInformation(catNode);
+            final Map<String, String> objectInfo = project.getCidsDataObjectBackend()
+                        .getSimpleObjectInformation(catNode);
             final HashSet<Property> objectProps = new HashSet<Property>();
-            if(objectInfo != null)
-            {
-                for(final Iterator<Entry<String, String>> entries = objectInfo.
-                        entrySet().iterator(); entries.hasNext();)
-                {
+            if (objectInfo != null) {
+                for (final Iterator<Entry<String, String>> entries = objectInfo.entrySet().iterator();
+                            entries.hasNext();) {
                     final Entry<String, String> entry = entries.next();
                     objectProps.add(new PropertySupport.ReadOnly(
-                            "node" + entry.getKey(), // NOI18N
+                            "node"// NOI18N
+                                    + entry.getKey(),
                             String.class,
                             entry.getKey(),
-                            entry.getKey())
-                    {
-                        @Override
-                        public Object getValue() throws 
-                                IllegalAccessException, 
-                                InvocationTargetException
-                        {
-                            final String value = entry.getValue();
-                            if(value == null || NULL.equalsIgnoreCase(value))
-                            {
-                                return org.openide.util.NbBundle.getMessage(
-                                        CatalogNode.class,
-                                        "CatalogNode.createSheet().factoryProp.getValue().returnvalue.valueNotSetBrackets"); // NOI18N
+                            entry.getKey()) {
+
+                            @Override
+                            public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                                final String value = entry.getValue();
+                                if ((value == null) || NULL.equalsIgnoreCase(value)) {
+                                    return NbBundle.getMessage(
+                                            CatalogNode.class,
+                                            "CatalogNode.createSheet().factoryProp.getValue().returnvalue.valueNotSetBrackets"); // NOI18N
+                                }
+                                return entry.getValue();
                             }
-                            return entry.getValue();
-                        }
-                    });
+                        });
                 }
-            }// </editor-fold>
+            }                                                                                                                    // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeClass ">
             final Property classProp = new PropertySupport(
-                    "nodeClass", // NOI18N
+                    "nodeClass",                                               // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().classProp.linkedClass"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().classProp.linkedClassTooltip"), // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().classProp.linkedClass"),    // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().classProp.linkedClassTooltip"), // NOI18N
                     true,
-                    mayWrite)
-            {
-                private NodeClassPropertyEditor editor;
+                    mayWrite) {
 
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException, 
-                        InvocationTargetException
-                {
-                    final CidsClass cc = catNode.getCidsClass();
-                    return cc == null ? CidsClass.NO_CLASS : cc;
-                }
+                    private NodeClassPropertyEditor editor;
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        final CidsClass cc = catNode.getCidsClass();
+                        return (cc == null) ? CidsClass.NO_CLASS : cc;
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    if(!(object instanceof CidsClass))
-                    {
-                        throw new IllegalArgumentException(
-                                "object must be instanceof CidsClass");// NOI18N
-                    }
-                    final CidsClass clazz = (CidsClass)object;
-                    final CidsClass oldClass = catNode.getCidsClass();
-                    try
-                    {
-                        catNode.setCidsClass((clazz.equals(CidsClass.NO_CLASS)) 
-                                ? null : clazz);
-                        project.getCidsDataObjectBackend().store(catNode);
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("class could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                        InvocationTargetException {
+                        if (!(object instanceof CidsClass)) {
+                            throw new IllegalArgumentException(
+                                "object must be instanceof CidsClass");  // NOI18N
+                        }
+                        final CidsClass clazz = (CidsClass)object;
+                        final CidsClass oldClass = catNode.getCidsClass();
+                        try {
+                            catNode.setCidsClass((clazz.equals(CidsClass.NO_CLASS)) ? null : clazz);
+                            project.getCidsDataObjectBackend().store(catNode);
+                        } catch (final Exception ex) {
+                            LOG.error("class could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "CatalogNode.createSheet().classProp.setValue(Object).ErrorUtils.duringClassChange.message"), ex); // NOI18N
-                        catNode.setCidsClass(oldClass);
+                                    "CatalogNode.createSheet().classProp.setValue(Object).ErrorUtils.duringClassChange.message"), // NOI18N
+                                ex);
+                            catNode.setCidsClass(oldClass);
+                        }
                     }
-                }
 
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    if(editor == null)
-                    {
-                        editor = new NodeClassPropertyEditor(project);
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        if (editor == null) {
+                            editor = new NodeClassPropertyEditor(project);
+                        }
+                        return editor;
                     }
-                    return editor;
-                }
-            };// </editor-fold>
+                }; // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodePermissions ">
             final LinkedList<Property> rightProps = new LinkedList<Property>();
-            if(catNode.getNodePermissions() != null)
-            {
-                final List<NodePermission> perms = new ArrayList<
-                        NodePermission>(catNode.getNodePermissions());
-                for(final NodePermission perm : perms)
-                {
+            if (catNode.getNodePermissions() != null) {
+                final List<NodePermission> perms = new ArrayList<NodePermission>(catNode.getNodePermissions());
+                for (final NodePermission perm : perms) {
                     rightProps.add(new PropertySupport(
-                            "nodeRight" + perm.toString(), // NOI18N
+                            "nodeRight"// NOI18N
+                                    + perm.toString(),
                             String.class,
                             perm.getUserGroup().getName(),
-                            org.openide.util.NbBundle.getMessage(
-                                CatalogNode.class, "CatalogNode.createSheet().rightProp.aUsergroup"), // NOI18N
+                            NbBundle.getMessage(
+                                CatalogNode.class,
+                                "CatalogNode.createSheet().rightProp.aUsergroup"), // NOI18N
                             true,
-                            false)
-                    {
-                        @Override
-                        public Object getValue() throws 
-                                IllegalAccessException, 
-                                InvocationTargetException
-                        {
-                            final Permission p = perm.getPermission();
-                            String s = permResolve.getPermString(catNode, p).
-                                    getPermissionString();
-                            if(s == null)
-                            {
-                                s = p.getKey();
-                            }
-                            return s;
-                        }
+                            false) {
 
-                        @Override
-                        public void setValue(final Object object) throws
-                                IllegalAccessException,
+                            @Override
+                            public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                                final Permission p = perm.getPermission();
+                                String s = permResolve.getPermString(catNode, p).getPermissionString();
+                                if (s == null) {
+                                    s = p.getKey();
+                                }
+                                return s;
+                            }
+
+                            @Override
+                            public void setValue(final Object object) throws IllegalAccessException,
                                 IllegalArgumentException,
-                                InvocationTargetException 
-                        {
-                            // not needed
-                        }
-                    });
+                                InvocationTargetException {
+                                // not needed
+                            }
+                        });
                 }
-            }// </editor-fold>
+            } // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: DynamicChildrenSQL ">
             final Property dynaChildrenSQL = new PropertySupport(
-                    "nodeDynaChildrenSQL", // NOI18N
+                    "nodeDynaChildrenSQL",                                        // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQL.sqlQuery"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQL.sqlQueryTooltip"), // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().dynaChildrenSQL.sqlQuery"),    // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().dynaChildrenSQL.sqlQueryTooltip"), // NOI18N
                     true,
-                    mayWrite)
-            {
-                private PropertyEditor editor;
+                    mayWrite) {
 
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException, 
-                        InvocationTargetException
-                {
-                    return catNode.getDynamicChildren();
-                }
+                    private PropertyEditor editor;
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return catNode.getDynamicChildren();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException 
-                {
-                    final String sql = object.toString();
-                    final String oldSql = catNode.getDynamicChildren();
-                    try
-                    {
-                        if(NULL.equals(sql) || "".equals(sql)) // NOI18N
-                        {
-                            catNode.setDynamicChildren(null);
-                        }else
-                        {
-                            catNode.setDynamicChildren(sql);
-                        }
-                        project.getCidsDataObjectBackend().store(catNode);
-                        fireIconChange();
-                        refresh();
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("dynamic children statement could" // NOI18N
-                                + " not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                        InvocationTargetException {
+                        final String sql = object.toString();
+                        final String oldSql = catNode.getDynamicChildren();
+                        try {
+                            if (NULL.equals(sql) || "".equals(sql))      // NOI18N
+                            {
+                                catNode.setDynamicChildren(null);
+                            } else {
+                                catNode.setDynamicChildren(sql);
+                            }
+                            project.getCidsDataObjectBackend().store(catNode);
+                            fireIconChange();
+                            refresh();
+                        } catch (final Exception ex) {
+                            LOG.error("dynamic children statement could" // NOI18N
+                                        + " not be changed", ex);        // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
                                     CatalogNode.class,
-                                    "CatalogNode.createSheet().dynaChildrenSQL.setValue(Object).ErrorUtils.duringDynChildrenChange.message"), ex);//NOI18N
-                        catNode.setDynamicChildren(oldSql);
+                                    "CatalogNode.createSheet().dynaChildrenSQL.setValue(Object).ErrorUtils.duringDynChildrenChange.message"),// NOI18N
+                                ex);
+                            catNode.setDynamicChildren(oldSql);
+                        }
                     }
-                }
 
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    if(editor == null)
-                    {
-                        editor = new DynamicChildrenPropertyEditor();
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        if (editor == null) {
+                            editor = new DynamicChildrenPropertyEditor();
+                        }
+                        return editor;
                     }
-                    return editor;
-                }
-            };// </editor-fold>
+                }; // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: DynamicChildrenSQLSort ">
             final Property dynaChildrenSQLSort = new PropertySupport(
-                    "nodeDynaChildrenSQLSort", // NOI18N
+                    "nodeDynaChildrenSQLSort",                                       // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQLSort.sqlSort"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CatalogNode.class, "CatalogNode.createSheet().dynaChildrenSQLSort.sqlSortTooltip"), // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().dynaChildrenSQLSort.sqlSort"),    // NOI18N
+                    NbBundle.getMessage(
+                        CatalogNode.class,
+                        "CatalogNode.createSheet().dynaChildrenSQLSort.sqlSortTooltip"), // NOI18N
                     true,
-                    mayWrite)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException, 
-                        InvocationTargetException
-                {
-                    if(catNode.getSqlSort() == null)
-                    {
-                        return Boolean.FALSE;
-                    }
-                    return catNode.getSqlSort();
-                }
+                    mayWrite) {
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException 
-                {
-                    final Boolean sqlSort = (Boolean)object;
-                    final Boolean oldSqlSort = catNode.getSqlSort();
-                    try
-                    {
-                        catNode.setSqlSort(sqlSort);
-                        project.getCidsDataObjectBackend().store(catNode);
-                    }catch(final Exception ex)
-                    {
-                        LOG.error("SQLSort could not be changed", ex); // NOI18N
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CatalogNode.class,
-                                    "CatalogNode.createSheet().dynaChildrenSQL.setValue(Object).ErrorUtils.duringSqlSortChange.message"), ex); // NOI18N
-                        catNode.setSqlSort(oldSqlSort);
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        if (catNode.getSqlSort() == null) {
+                            return Boolean.FALSE;
+                        }
+                        return catNode.getSqlSort();
                     }
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Boolean sqlSort = (Boolean)object;
+                        final Boolean oldSqlSort = catNode.getSqlSort();
+                        try {
+                            catNode.setSqlSort(sqlSort);
+                            project.getCidsDataObjectBackend().store(catNode);
+                        } catch (final Exception ex) {
+                            LOG.error("SQLSort could not be changed", ex); // NOI18N
+                            ErrorUtils.showErrorMessage(
+                                NbBundle.getMessage(
+                                    CatalogNode.class,
+                                    "CatalogNode.createSheet().dynaChildrenSQL.setValue(Object).ErrorUtils.duringSqlSortChange.message"),// NOI18N
+                                ex);
+                            catNode.setSqlSort(oldSqlSort);
+                        }
+                    }
+                };                                                         // </editor-fold>
+            //J+
+
             final Sheet.Set main = Sheet.createPropertiesSet();
             final Sheet.Set clazz = Sheet.createPropertiesSet();
             final Sheet.Set object = Sheet.createPropertiesSet();
             final Sheet.Set rights = Sheet.createPropertiesSet();
             final Sheet.Set dynaChildren = Sheet.createPropertiesSet();
-            main.setName("nodeProps"); // NOI18N
-            clazz.setName("nodeClassProps"); // NOI18N
-            object.setName("nodeObjectProps"); // NOI18N
-            rights.setName("nodeRights"); // NOI18N
-            dynaChildren.setName("nodeDynaChildrenProps"); // NOI18N
-            main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "CatalogNode.createSheet().main.displayName")); // NOI18N
-            clazz.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "CatalogNode.createSheet().clazz.displayName")); // NOI18N
-            object.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "CatalogNode.createSheet().object.displayName")); // NOI18N
-            rights.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "CatalogNode.createSheet().rights.displayName")); // NOI18N
-            dynaChildren.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CatalogNode.class, "CatalogNode.createSheet().dynaChildren.displayName")); // NOI18N
+            main.setName("nodeProps");                                                                                   // NOI18N
+            clazz.setName("nodeClassProps");                                                                             // NOI18N
+            object.setName("nodeObjectProps");                                                                           // NOI18N
+            rights.setName("nodeRights");                                                                                // NOI18N
+            dynaChildren.setName("nodeDynaChildrenProps");                                                               // NOI18N
+            main.setDisplayName(NbBundle.getMessage(CatalogNode.class, "CatalogNode.createSheet().main.displayName"));   // NOI18N
+            clazz.setDisplayName(NbBundle.getMessage(CatalogNode.class, "CatalogNode.createSheet().clazz.displayName")); // NOI18N
+            object.setDisplayName(NbBundle.getMessage(
+                    CatalogNode.class,
+                    "CatalogNode.createSheet().object.displayName"));                                                    // NOI18N
+            rights.setDisplayName(NbBundle.getMessage(
+                    CatalogNode.class,
+                    "CatalogNode.createSheet().rights.displayName"));                                                    // NOI18N
+            dynaChildren.setDisplayName(NbBundle.getMessage(
+                    CatalogNode.class,
+                    "CatalogNode.createSheet().dynaChildren.displayName"));                                              // NOI18N
             main.put(idProp);
             main.put(nameProp);
             main.put(urlProp);
@@ -1113,16 +980,12 @@ public class CatalogNode extends ProjectNode implements
             main.put(policyProp);
             main.put(derivePermProp);
             main.put(iconProp);
-            //main.put(factoryProp);
+            // main.put(factoryProp);
             clazz.put(classProp);
-            for(final Iterator<Property> props = objectProps.iterator(); props.
-                    hasNext();)
-            {
+            for (final Iterator<Property> props = objectProps.iterator(); props.hasNext();) {
                 object.put(props.next());
             }
-            for(final Iterator<Property> props = rightProps.iterator(); props.
-                    hasNext();)
-            {
+            for (final Iterator<Property> props = rightProps.iterator(); props.hasNext();) {
                 rights.put(props.next());
             }
             sheet.put(main);
@@ -1132,188 +995,183 @@ public class CatalogNode extends ProjectNode implements
             dynaChildren.put(dynaChildrenSQL);
             dynaChildren.put(dynaChildrenSQLSort);
             sheet.put(dynaChildren);
-        } catch(final Exception ex)
-        {
-            LOG.error("could not create property sheet", ex); // NOI18N
-            ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
+        } catch (final Exception ex) {
+            LOG.error("could not create property sheet", ex);                               // NOI18N
+            ErrorUtils.showErrorMessage(NbBundle.getMessage(
                     CatalogNode.class,
-                    "CatalogNode.createSheet().ErrorUtils.duringPropViewCreation.message"), ex); // NOI18N
+                    "CatalogNode.createSheet().ErrorUtils.duringPropViewCreation.message"), // NOI18N
+                ex);
         }
         return sheet;
     }
 
     // TODO: use iconfactory if set or get icon from icon resource
     @Override
-    public Image getIcon(final int i)
-    {
-        if(catNode.getDynamicChildren() != null)
-        {
+    public Image getIcon(final int i) {
+        if (catNode.getDynamicChildren() != null) {
             return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_DYN, 0, 0);
-        }else if("N".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("N".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
             return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_ORG, 0, 0);
-        }else if("C".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("C".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
             return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_CLASS, 0, 0);
-        }else if("O".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("O".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
             return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_OBJ, 0, 0);
-        }else if("none".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("none".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
         {
             return null;
-        }else
-        {
+        } else {
             return IMAGE_CLOSED;
         }
     }
 
     @Override
-    public Image getOpenedIcon(final int i)
-    {
-        if(catNode.getDynamicChildren() != null)
-        {
+    public Image getOpenedIcon(final int i) {
+        if (catNode.getDynamicChildren() != null) {
             return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_DYN, 0, 0);
-        }else if("N".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("N".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
             return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_ORG, 0, 0);
-        }else if("C".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("C".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
             return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_CLASS, 0, 0);
-        }else if("O".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("O".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
             return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_OBJ, 0, 0);
-        }else if("none".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
+        } else if ("none".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
         {
             return null;
-        }else
-        {
+        } else {
             return IMAGE_OPEN;
         }
     }
 
     @Override
-    protected void createPasteTypes(final Transferable transferable, final List 
-            list)
-    {
+    protected void createPasteTypes(final Transferable transferable, final List list) {
         super.createPasteTypes(transferable, list);
         int mode = NodeTransfer.COPY;
         Node node = NodeTransfer.node(transferable, mode);
-        if(!(node instanceof CatalogNode))
-        {
+        if (!(node instanceof CatalogNode)) {
             mode = NodeTransfer.MOVE;
             node = NodeTransfer.node(transferable, mode);
-            if(!(node instanceof CatalogNode))
-            {
+            if (!(node instanceof CatalogNode)) {
                 return;
             }
         }
         final CatalogNode pasteNode = (CatalogNode)node;
-                // one cannot add children to object nodes
-        if(!catNode.getNodeType().equals(CatNode.Type.OBJECT.getType()) &&
-                // one can only perform copy & paste/dnd within a project
-                pasteNode.project.getProjectDirectory().equals(project.
-                        getProjectDirectory()) &&
-                // one cannot paste a node in itself
-                //!pasteNode.equals(this) &&
-                // one cannot paste a node where it already is
-                //!(pasteNode.getParent() != null && pasteNode.getParent().
-                //        equals(this.catNode)) &&
-                // one cannot insert if this is dynamic node
-                catNode.getDynamicChildren() == null) // &&
-                // this restriction must not be present
-                // one cannot insert dynamically created nodes 
-                //(pasteNode.getParent() == null || pasteNode.getParent().
-                //        getDynamicChildren() == null))
+        // one cannot add children to object nodes
+        if (!catNode.getNodeType().equals(CatNode.Type.OBJECT.getType())                             // one can only perform copy & paste/dnd
+                                                                                                     // within a project
+                    && pasteNode.project.getProjectDirectory().equals(project.getProjectDirectory()) // one cannot paste a node in itself
+                                                                                                     // !pasteNode.equals(this) &&
+                    &&// one cannot paste a node where it already is
+                    // !(pasteNode.getParent() != null && pasteNode.getParent().
+                    // equals(this.catNode)) &&
+                    // one cannot insert if this is dynamic node
+                    (catNode.getDynamicChildren() == null)) // &&
+        // this restriction must not be present
+        // one cannot insert dynamically created nodes
+        // (pasteNode.getParent() == null || pasteNode.getParent().
+        // getDynamicChildren() == null))
         {
             list.add(new CatalogPasteType(pasteNode, mode));
         }
     }
 
     @Override
-    public CatNode getCatNode()
-    {
+    public CatNode getCatNode() {
         return catNode;
     }
 
     @Override
-    public void setCatNode(final CatNode catNode)
-    {
+    public void setCatNode(final CatNode catNode) {
         this.catNode = catNode;
     }
 
     @Override
-    public CatNode getParent()
-    {
-        return (parent instanceof CatalogNode) ? 
-            ((CatalogNode)parent).catNode : null;
+    public CatNode getParent() {
+        return (parent instanceof CatalogNode) ? ((CatalogNode)parent).catNode : null;
     }
-    
-    private final class CatalogPasteType extends PasteType
-    {
+
+    //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class CatalogPasteType extends PasteType {
+
+        //~ Instance fields ----------------------------------------------------
+
         private final transient CatalogNode node;
         private final transient int mode;
-        
-        public CatalogPasteType(final CatalogNode node, final int mode)
-        {
+
+        //~ Constructors -------------------------------------------------------
+
+        /**
+         * Creates a new CatalogPasteType object.
+         *
+         * @param  node  DOCUMENT ME!
+         * @param  mode  DOCUMENT ME!
+         */
+        public CatalogPasteType(final CatalogNode node, final int mode) {
             this.node = node;
             this.mode = mode;
         }
 
+        //~ Methods ------------------------------------------------------------
+
         @Override
-        public Transferable paste() throws IOException
-        {
-            if(node.catNode.getId() == -1)
-            {
-                final int answer = JOptionPane.showOptionDialog(
-                        WindowManager.getDefault().getMainWindow(),
-                        org.openide.util.NbBundle.getMessage(
-                            CatalogPasteType.class,
-                            "CatalogNode.paste().JOptionPane.message"), // NOI18N
-                        org.openide.util.NbBundle.getMessage(
-                            CatalogPasteType.class,
-                            "CatalogNode.paste().JOptionPane.title"), // NOI18N
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE,
-                        null,
-                        new Object[] 
-                            {
-                                org.openide.util.NbBundle.getMessage(
-                                        CatalogPasteType.class,
-                                        "CatalogNode.paste().JOptionPane.yesOption"), // NOI18N
-                                org.openide.util.NbBundle.getMessage(
-                                        CatalogNode.class,
-                                        "CatalogNode.paste().JOptionPane.noOption") // NOI18N
+        public Transferable paste() throws IOException {
+            if (node.catNode.getId() == -1) {
+                if (SwingUtilities.isEventDispatchThread()) {
+                    final int answer = JOptionPane.showOptionDialog(
+                            WindowManager.getDefault().getMainWindow(),
+                            NbBundle.getMessage(CatalogPasteType.class, "CatalogNode.paste().JOptionPane.message"), // NOI18N
+                            NbBundle.getMessage(CatalogPasteType.class, "CatalogNode.paste().JOptionPane.title"),  // NOI18N
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            null,
+                            new Object[] {
+                                NbBundle.getMessage(
+                                    CatalogPasteType.class,
+                                    "CatalogNode.paste().JOptionPane.yesOption"),                                  // NOI18N
+                                NbBundle.getMessage(CatalogNode.class, "CatalogNode.paste().JOptionPane.noOption") // NOI18N
                             },
-                        org.openide.util.NbBundle.getMessage(
-                            CatalogPasteType.class,
-                            "CatalogNode.paste().JOptionPane.noOption")); // NOI18N
-                if(answer != JOptionPane.YES_OPTION)
-                {
-                    return null;
+                            NbBundle.getMessage(CatalogPasteType.class, "CatalogNode.paste().JOptionPane.noOption")); // NOI18N
+                    if (JOptionPane.YES_OPTION != answer) {
+                        return null;
+                    }
+                } else {
+                    final AnswerRunner answerRunner = new AnswerRunner();
+                    try {
+                        SwingUtilities.invokeAndWait(answerRunner);
+                    } catch (final Exception ex) {
+                        LOG.warn("could not complete answerrunner", ex);
+                    }
+                    if (JOptionPane.YES_OPTION != answerRunner.getAnswer()) {
+                        return null;
+                    }
                 }
             }
             final CatNode parent;
-            if(node.parent instanceof CatalogNode)
-            {
+            if (node.parent instanceof CatalogNode) {
                 parent = ((CatalogNode)node.parent).catNode;
-            }else
-            {
+            } else {
                 parent = null;
             }
             final Backend backend = project.getCidsDataObjectBackend();
-            if(mode == NodeTransfer.COPY)
-            {
-                if(LOG.isDebugEnabled())
-                {
-                    LOG.debug("copyNode"); // NOI18N
+            if (mode == NodeTransfer.COPY) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("copyNode");                                                                         // NOI18N
                 }
                 backend.copyNode(parent, catNode, node.catNode);
-            }
-            else
-            {
-                if(LOG.isDebugEnabled())
-                {
-                    LOG.debug("moveNode"); // NOI18N
+            } else {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("moveNode");                                                                         // NOI18N
                 }
                 backend.moveNode(parent, catNode, node.catNode);
                 node.parent.refresh();
@@ -1322,335 +1180,365 @@ public class CatalogNode extends ProjectNode implements
             node.refresh();
             return null;
         }
+
+        //~ Inner Classes ------------------------------------------------------
+
+        /**
+         * DOCUMENT ME!
+         *
+         * @version  $Revision$, $Date$
+         */
+        private final class AnswerRunner implements Runnable {
+
+            //~ Instance fields ------------------------------------------------
+
+            private int answer;
+
+            //~ Methods --------------------------------------------------------
+
+            @Override
+            public void run() {
+                answer = JOptionPane.showOptionDialog(
+                        WindowManager.getDefault().getMainWindow(),
+                        NbBundle.getMessage(CatalogPasteType.class, "CatalogNode.paste().JOptionPane.message"), // NOI18N
+                        NbBundle.getMessage(CatalogPasteType.class, "CatalogNode.paste().JOptionPane.title"),  // NOI18N
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        new Object[] {
+                            NbBundle.getMessage(
+                                CatalogPasteType.class,
+                                "CatalogNode.paste().JOptionPane.yesOption"),                                  // NOI18N
+                            NbBundle.getMessage(CatalogNode.class, "CatalogNode.paste().JOptionPane.noOption") // NOI18N
+                        },
+                        NbBundle.getMessage(CatalogPasteType.class, "CatalogNode.paste().JOptionPane.noOption")); // NOI18N
+            }
+
+            /**
+             * DOCUMENT ME!
+             *
+             * @return  DOCUMENT ME!
+             */
+            int getAnswer() {
+                return answer;
+            }
+        }
     }
 }
 
-final class CatalogNodeChildren extends Children.Keys
-{
-    private static final transient Logger LOG = Logger.getLogger(
-            CatalogNodeChildren.class);
-    
+/**
+ * DOCUMENT ME!
+ *
+ * @version  $Revision$, $Date$
+ */
+final class CatalogNodeChildren extends Children.Keys {
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    private static final transient Logger LOG = Logger.getLogger(CatalogNodeChildren.class);
+
+    //~ Instance fields --------------------------------------------------------
+
     private final transient CatNode catNode;
     private final transient DomainserverProject project;
     private final transient CatalogManagement catalogManagement;
-    
-    public CatalogNodeChildren(final CatNode node, final DomainserverProject 
-            project)
-    {
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new CatalogNodeChildren object.
+     *
+     * @param  node     DOCUMENT ME!
+     * @param  project  DOCUMENT ME!
+     */
+    public CatalogNodeChildren(final CatNode node, final DomainserverProject project) {
         this.project = project;
         this.catNode = node;
         catalogManagement = project.getLookup().lookup(CatalogManagement.class);
     }
 
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    protected Node[] createNodes(final Object key)
-    {
-        if(key instanceof LoadingNode)
-        {
-            return new Node[] {(LoadingNode)key};
+    protected Node[] createNodes(final Object key) {
+        if (key instanceof LoadingNode) {
+            return new Node[] { (LoadingNode)key };
         }
-        if(key instanceof CatNode)
-        {
+        if (key instanceof CatNode) {
             final CatNode node = (CatNode)key;
-            final CatalogNode cn = new CatalogNode(node, project,
-                    (Refreshable)getNode());
+            final CatalogNode cn = new CatalogNode(node, project, (Refreshable)getNode());
             catalogManagement.addOpenNode(node, cn);
-            return new Node[] {cn};
-        }else
-        {
+            return new Node[] { cn };
+        } else {
             return new Node[] {};
         }
     }
-    
-    void refreshAll()
-    {
+
+    /**
+     * DOCUMENT ME!
+     */
+    void refreshAll() {
         addNotify();
     }
-    
+
     @Override
-    protected void addNotify()
-    {
+    protected void addNotify() {
         final Thread builder = new Thread(new ChildrenBuilder());
-        setKeys(new Object[] {new LoadingNode()});
+        setKeys(new Object[] { new LoadingNode() });
         builder.start();
     }
-    
-    final class ChildrenBuilder implements Runnable
-    {
+
+    //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    final class ChildrenBuilder implements Runnable {
+
+        //~ Methods ------------------------------------------------------------
+
         @Override
-        public void run()
-        {
-            try
-            {
-                final List<CatNode> l = project.
-                        getCidsDataObjectBackend().getNodeChildren(
-                        catNode);
+        public void run() {
+            try {
+                final List<CatNode> l = project.getCidsDataObjectBackend().getNodeChildren(catNode);
                 Collections.sort(l, new Comparators.CatNodes());
                 EventQueue.invokeLater(new Runnable() {
 
-                    @Override
-                    public void run()
-                    {
-                        setKeys(l);
-                    }
-                });
-            }catch(final ObjectNotFoundException ex)
-            {
+                        @Override
+                        public void run() {
+                            setKeys(l);
+                        }
+                    });
+            } catch (final ObjectNotFoundException ex) {
                 final CatNode node = new CatNode();
-                node.setName(org.openide.util.NbBundle.getMessage(
+                node.setName(NbBundle.getMessage(
                         ChildrenBuilder.class,
-                        "CatalogNode.ChildrenBuilder.run().node.errorName")); // NOI18N
-                node.setNodeType("none"); // NOI18N
+                        "CatalogNode.ChildrenBuilder.run().node.errorName"));                                   // NOI18N
+                node.setNodeType("none");                                                                       // NOI18N
                 node.setIsLeaf(true);
                 node.setIsRoot(false);
                 node.setId(-1);
-                if(catNode.getCidsClass() == null)
-                {
+                if (catNode.getCidsClass() == null) {
                     ErrorUtils.showErrorMessage(
-                            org.openide.util.NbBundle.getMessage(
-                                ChildrenBuilder.class,
-                                "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckDB.message"), ex); // NOI18N
-                }else
-                {
+                        NbBundle.getMessage(
+                            ChildrenBuilder.class,
+                            "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckDB.message"),   // NOI18N
+                        ex);
+                } else {
                     ErrorUtils.showErrorMessage(
-                            org.openide.util.NbBundle.getMessage(
-                                ChildrenBuilder.class,
-                                "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckTable.message", // NOI18N
-                                catNode.getCidsClass().getTableName()),
-                            ex);
+                        NbBundle.getMessage(
+                            ChildrenBuilder.class,
+                            "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckTable.message", // NOI18N
+                            catNode.getCidsClass().getTableName()),
+                        ex);
                 }
-                LOG.error("data inconsistency", ex); // NOI18N
-                EventQueue.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        setKeys(new Object[] {node});
-                    }
-                });
+                LOG.error("data inconsistency", ex);                                                            // NOI18N
+                EventQueue.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            setKeys(new Object[] { node });
+                        }
+                    });
             }
         }
     }
 }
 
-final class DynamicCatalogNodeChildren extends Children.Keys
-{
-    private static final transient Logger LOG = Logger.getLogger(
-            DynamicCatalogNodeChildren.class);
-    
+/**
+ * DOCUMENT ME!
+ *
+ * @version  $Revision$, $Date$
+ */
+final class DynamicCatalogNodeChildren extends Children.Keys {
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    private static final transient Logger LOG = Logger.getLogger(DynamicCatalogNodeChildren.class);
+
+    //~ Instance fields --------------------------------------------------------
+
     private final transient DomainserverProject project;
     private final transient CatNode parentNode;
     private transient LoadingNode loadingNode;
-    
-    public DynamicCatalogNodeChildren(final CatNode node, final 
-            DomainserverProject project)
-    {
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new DynamicCatalogNodeChildren object.
+     *
+     * @param  node     DOCUMENT ME!
+     * @param  project  DOCUMENT ME!
+     */
+    public DynamicCatalogNodeChildren(final CatNode node, final DomainserverProject project) {
         this.parentNode = node;
         this.project = project;
     }
-    
+
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    protected Node[] createNodes(final Object object)
-    {
-        if(object instanceof LoadingNode)
-        {
-            return new Node[] {(LoadingNode)object};
-        }else if(object instanceof CatNode)
-        {
+    protected Node[] createNodes(final Object object) {
+        if (object instanceof LoadingNode) {
+            return new Node[] { (LoadingNode)object };
+        } else if (object instanceof CatNode) {
             final CatNode catNode = (CatNode)object;
-            return new Node[] 
-            {
-                new CatalogNode(catNode, project, (Refreshable)getNode())
-            };
-        }else
-        {
-            return new Node[]{};
+            return new Node[] { new CatalogNode(catNode, project, (Refreshable)getNode()) };
+        } else {
+            return new Node[] {};
         }
     }
 
-    void refreshAll()
-    {
+    /**
+     * DOCUMENT ME!
+     */
+    void refreshAll() {
         addNotify();
     }
-    
+
     @Override
-    protected void addNotify()
-    {
+    protected void addNotify() {
         loadingNode = new LoadingNode();
-        setKeys(new Object[] {loadingNode});
+        setKeys(new Object[] { loadingNode });
         refresh();
         final Backend backend = project.getCidsDataObjectBackend();
-        final Thread t = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Connection con = null;
-                try
-                {
-                    con = DatabaseConnection.getConnection(project.
-                            getRuntimeProps());
-                } catch (final SQLException ex)
-                {
-                    LOG.error("could not connect to database", ex); // NOI18N
-                    setKeys(new Object[]
-                    {
-                        org.openide.util.NbBundle.getMessage(
-                                DynamicCatalogNodeChildren.class,
-                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().duringConToDB")// NOI18N
-                    });
-                    refresh();
-                    if(loadingNode != null)
-                    {
-                        loadingNode.dispose();
-                        loadingNode = null;
-                    }
-                    return;
-                }
-                ResultSet set = null;
-                try
-                {
-                    set = con.createStatement().executeQuery(parentNode.
-                            getDynamicChildren());
-                } catch (final SQLException ex)
-                {
-                    LOG.error("could not fetch resultset", ex); // NOI18N
-                    setKeys(new Object[]
-                    {
-                        org.openide.util.NbBundle.getMessage(
-                                DynamicCatalogNodeChildren.class,
-                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryUnsuccessful") // NOI18N
-                    });
-                    refresh();
-                    if(loadingNode != null)
-                    {
-                        loadingNode.dispose();
-                        loadingNode = null;
-                    }
-                    try
-                    {
-                        set.close();
-                        con.close();
-                    } catch (final SQLException sqle)
-                    {
-                        LOG.warn("could not close connection", sqle); // NOI18N
-                    }
-                    return;
-                }
-                try
-                {
-                    final List<CatNode> nodes = new LinkedList<CatNode>();
-                    final HashMap<Integer, CidsClass> classCache = new HashMap<
-                            Integer, CidsClass>();
-                    while(set.next())
-                    {
-                        final CatNode c = new CatNode();
-                        c.setName(set.getString("name")); // NOI18N
-                        c.setDynamicChildren(
-                                set.getString("dynamic_children")); // NOI18N
-                        c.setSqlSort(set.getBoolean("sql_sort")); // NOI18N
-                        try
-                        {
-                            c.setId(set.getInt("id")); // NOI18N
-                        }catch(final SQLException ex)
-                        {
-                            LOG.warn("id could not be set", ex); // NOI18N
-                        }
-                        try
-                        {
-                            c.setObjectId(set.getInt("object_id")); // NOI18N
-                        }catch(final SQLException ex)
-                        {
-                            LOG.warn("object_id could not be set", ex);// NOI18N
-                        }
-                        try
-                        {
-                            c.setNodeType(set.getString("node_type")); // NOI18N
-                        }catch(final SQLException ex)
-                        {
-                            LOG.warn("node_type could not be set", ex);// NOI18N
-                        }
-                        try
-                        {
-                            final int classId = set.getInt("class_id");// NOI18N
-                            final CidsClass clazz;
-                            if(classCache.containsKey(classId))
-                            {
-                                clazz = classCache.get(classId);
-                            }else
-                            {
-                                clazz = backend.getEntity(CidsClass.class,
-                                        classId);
-                                classCache.put(classId, clazz);
+        final Thread t = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Connection con = null;
+                        try {
+                            con = DatabaseConnection.getConnection(project.getRuntimeProps());
+                        } catch (final SQLException ex) {
+                            LOG.error("could not connect to database", ex);                                 // NOI18N
+                            setKeys(
+                                new Object[] {
+                                    NbBundle.getMessage(
+                                        DynamicCatalogNodeChildren.class,
+                                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().duringConToDB") // NOI18N
+                                });
+                            refresh();
+                            if (loadingNode != null) {
+                                loadingNode.dispose();
+                                loadingNode = null;
                             }
-                            c.setCidsClass(clazz);
-                        }catch(final NoResultException ex)
-                        {
-                            LOG.warn("cidsclass could not be set", ex);// NOI18N
-                        }catch(final SQLException ex)
-                        {
-                            LOG.warn("cidsclass could not be set", ex);// NOI18N
+
+                            return;
                         }
-                        try
-                        {
-                            final URL url = 
-                                    getURL(set.getString("url")); // NOI18N
-                            c.setUrl(url);
-                        }catch(final SQLException ex)
-                        {
-                            LOG.warn("url could not be set", ex); // NOI18N
+                        ResultSet set = null;
+                        try {
+                            set = con.createStatement().executeQuery(parentNode.getDynamicChildren());
+                        } catch (final SQLException ex) {
+                            LOG.error("could not fetch resultset", ex);                                         // NOI18N
+                            setKeys(
+                                new Object[] {
+                                    NbBundle.getMessage(
+                                        DynamicCatalogNodeChildren.class,
+                                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryUnsuccessful") // NOI18N
+                                });
+                            refresh();
+                            if (loadingNode != null) {
+                                loadingNode.dispose();
+                                loadingNode = null;
+                            }
+                            try {
+                                set.close();
+                                con.close();
+                            } catch (final SQLException sqle) {
+                                LOG.warn("could not close connection", sqle);                                   // NOI18N
+                            }
+
+                            return;
                         }
-                        c.setIsLeaf(true);
-                        nodes.add(c);
+                        try {
+                            final List<CatNode> nodes = new LinkedList<CatNode>();
+                            final HashMap<Integer, CidsClass> classCache = new HashMap<Integer, CidsClass>();
+                            while (set.next()) {
+                                final CatNode c = new CatNode();
+                                c.setName(set.getString("name"));                                                   // NOI18N
+                                c.setDynamicChildren(set.getString("dynamic_children"));                            // NOI18N
+                                c.setSqlSort(set.getBoolean("sql_sort"));                                           // NOI18N
+                                try {
+                                    c.setId(set.getInt("id"));                                                      // NOI18N
+                                } catch (final SQLException ex) {
+                                    LOG.warn("id could not be set", ex);                                            // NOI18N
+                                }
+                                try {
+                                    c.setObjectId(set.getInt("object_id"));                                         // NOI18N
+                                } catch (final SQLException ex) {
+                                    LOG.warn("object_id could not be set", ex);                                     // NOI18N
+                                }
+                                try {
+                                    c.setNodeType(set.getString("node_type"));                                      // NOI18N
+                                } catch (final SQLException ex) {
+                                    LOG.warn("node_type could not be set", ex);                                     // NOI18N
+                                }
+                                try {
+                                    final int classId = set.getInt("class_id");                                     // NOI18N
+                                    final CidsClass clazz;
+                                    if (classCache.containsKey(classId)) {
+                                        clazz = classCache.get(classId);
+                                    } else {
+                                        clazz = backend.getEntity(CidsClass.class, classId);
+                                        classCache.put(classId, clazz);
+                                    }
+                                    c.setCidsClass(clazz);
+                                } catch (final NoResultException ex) {
+                                    LOG.warn("cidsclass could not be set", ex);                                     // NOI18N
+                                } catch (final SQLException ex) {
+                                    LOG.warn("cidsclass could not be set", ex);                                     // NOI18N
+                                }
+                                try {
+                                    final URL url = getURL(set.getString("url"));                                   // NOI18N
+                                    c.setUrl(url);
+                                } catch (final SQLException ex) {
+                                    LOG.warn("url could not be set", ex);                                           // NOI18N
+                                }
+                                c.setIsLeaf(true);
+                                nodes.add(c);
+                            }
+                            if ((parentNode.getSqlSort() == null) || !parentNode.getSqlSort()) {
+                                Collections.sort(nodes, new Comparators.CatNodes());
+                            }
+                            setKeys(nodes);
+                            refresh();
+                        } catch (final SQLException ex) {
+                            LOG.error("could not evaluate resultset", ex);                                          // NOI18N
+                            setKeys(
+                                new Object[] {
+                                    NbBundle.getMessage(
+                                        DynamicCatalogNodeChildren.class,
+                                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryResultEvaluation") // NOI18N
+                                });
+                            refresh();
+                            return;
+                        } finally {
+                            if (loadingNode != null) {
+                                loadingNode.dispose();
+                                loadingNode = null;
+                            }
+                            try {
+                                set.close();
+                                con.close();
+                            } catch (final SQLException sqle) {
+                                LOG.warn("could not close connection", sqle);                                       // NOI18N
+                            }
+                        }
                     }
-                    if(parentNode.getSqlSort() == null
-                            || !parentNode.getSqlSort())
-                    {
-                        Collections.sort(nodes, new Comparators.CatNodes());
+
+                    private URL getURL(final String s) {
+                        final URL url = new URL();
+                        url.setObjectName(s);
+                        final URLBase base = new URLBase();
+                        base.setPath("");           // NOI18N
+                        base.setProtocolPrefix(""); // NOI18N
+                        base.setServer("");         // NOI18N
+                        url.setUrlbase(base);
+                        return url;
                     }
-                    setKeys(nodes);
-                    refresh();
-                }catch(final SQLException ex)
-                {
-                    LOG.error("could not evaluate resultset", ex); // NOI18N
-                    setKeys(new Object[]
-                    {
-                        org.openide.util.NbBundle.getMessage(
-                                DynamicCatalogNodeChildren.class,
-                                "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryResultEvaluation") // NOI18N
-                    });
-                    refresh();
-                    return;
-                }finally
-                {
-                    if(loadingNode != null)
-                    {
-                        loadingNode.dispose();
-                        loadingNode = null;
-                    }
-                    try
-                    {
-                        set.close();
-                        con.close();
-                    } catch (final SQLException sqle)
-                    {
-                        LOG.warn("could not close connection", sqle); // NOI18N
-                    }
-                }
-            }
-            
-            private URL getURL(final String s)
-            {
-                final URL url = new URL();
-                url.setObjectName(s);
-                final URLBase base = new URLBase();
-                base.setPath(""); // NOI18N
-                base.setProtocolPrefix(""); // NOI18N
-                base.setServer(""); // NOI18N
-                url.setUrlbase(base);
-                return url;
-            }
-        });
+                });
         t.setPriority(7);
         t.start();
     }

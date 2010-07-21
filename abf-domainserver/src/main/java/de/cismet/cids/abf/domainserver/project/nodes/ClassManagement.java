@@ -7,6 +7,7 @@
  ****************************************************/
 package de.cismet.cids.abf.domainserver.project.nodes;
 
+import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CheckRightsAction;
@@ -135,6 +136,8 @@ public class ClassManagement extends ProjectNode implements Refreshable,
                     CallableSystemAction.get(NewCidsClassWizardAction.class),
                     null,
                     CallableSystemAction.get(CheckRightsAction.class),
+                    null,
+                    CallableSystemAction.get(RefreshAction.class),
                     null,
                     CallableSystemAction.get(ImportClassesAction.class)
                 };
