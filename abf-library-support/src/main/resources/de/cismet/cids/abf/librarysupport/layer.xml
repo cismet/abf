@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
     <folder name="Actions">
         <folder name="Lib">
@@ -11,6 +11,15 @@
             </file>
             <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-DeployJarAction.instance">
                 <attr name="position" intvalue="100"/>
+            </file>
+            <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-InstallAsMavenArtifactAction.instance">
+                <attr name="delegate" methodvalue="org.openide.awt.Actions.inject"/>
+                <attr name="displayName" bundlevalue="de.cismet.cids.abf.librarysupport.project.nodes.actions.Bundle#CTL_InstallAsMavenArtifactAction"/>
+                <attr name="injectable" stringvalue="de.cismet.cids.abf.librarysupport.project.nodes.actions.InstallAsMavenArtifactAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.context"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+                <attr name="selectionType" stringvalue="EXACTLY_ONE"/>
+                <attr name="type" stringvalue="org.netbeans.api.project.Project"/>
             </file>
             <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-RebuildFromJarAction.instance">
                 <attr name="position" intvalue="400"/>
@@ -43,6 +52,14 @@
             <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-DeployAllJars.shadow">
                 <attr name="originalFile" stringvalue="Actions/Lib/de-cismet-cids-abf-librarysupport-project-nodes-actions-DeployAllJarsAction.instance"/>
                 <attr name="position" intvalue="400"/>
+            </file>
+            <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-InstallAsMavenArtifactAction-separatorAfter.instance">
+                <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                <attr name="position" intvalue="875"/>
+            </file>
+            <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-InstallAsMavenArtifactAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Lib/de-cismet-cids-abf-librarysupport-project-nodes-actions-InstallAsMavenArtifactAction.instance"/>
+                <attr name="position" intvalue="850"/>
             </file>
             <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-RebuildFromJarAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Lib/de-cismet-cids-abf-librarysupport-project-nodes-actions-RebuildFromJarAction.instance"/>

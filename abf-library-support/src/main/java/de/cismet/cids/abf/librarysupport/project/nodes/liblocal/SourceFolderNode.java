@@ -44,6 +44,7 @@ import de.cismet.cids.abf.utilities.DnDUtils.UnifiedFilePasteType;
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 import de.cismet.cids.abf.librarysupport.project.nodes.*;
 import de.cismet.cids.abf.librarysupport.project.nodes.actions.DeployJarAction;
+import de.cismet.cids.abf.librarysupport.project.nodes.actions.InstallAsMavenArtifactAction;
 import de.cismet.cids.abf.librarysupport.project.nodes.actions.RebuildFromJarAction;
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.PackageContextCookieImpl;
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.SourceContextCookie;
@@ -228,7 +229,8 @@ public final class SourceFolderNode extends ProjectNode implements
         {
             return new Action[]
             {
-                CallableSystemAction.get(DeployJarAction.class), null,
+                CallableSystemAction.get(DeployJarAction.class),
+                CallableSystemAction.get(InstallAsMavenArtifactAction.class), null,
                 CallableSystemAction.get(NewWizardAction.class),
                 CallableSystemAction.get(AddFilesWizardAction.class), null,
                 CallableSystemAction.get(CopyAction.class),
