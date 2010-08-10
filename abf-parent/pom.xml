@@ -45,6 +45,7 @@
     </scm>
 
     <properties>
+        <!-- !!! REMEBER TO UPDATE IMPLEMENTATION VERSION OF MAVEN API IN LIBRARY SUPPORT ON NB UPDATE !!! -->
         <netbeans.version>RELEASE69</netbeans.version>
         <branding.token>cidsabf</branding.token>
     </properties>
@@ -188,6 +189,11 @@
                 <artifactId>org-netbeans-spi-navigator</artifactId>
                 <version>${netbeans.version}</version>
             </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-maven</artifactId>
+                <version>${netbeans.version}</version>
+        </dependency>
         </dependencies>
     </dependencyManagement>
 
