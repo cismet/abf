@@ -49,6 +49,7 @@ import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.SourceContextCookie;
 import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
+import org.openide.filesystems.FileObject;
 
 /**
  * DOCUMENT ME!
@@ -128,7 +129,7 @@ public final class InstallAsMavenArtifactAction extends CookieAction {
         }
 
         final MavenArtifactEntryPanel artifactPanel = new MavenArtifactEntryPanel();
-        artifactPanel.setGroupId(DEFAULT_GROUPID); // NOI18N
+        artifactPanel.setGroupIdSuffix(artifact.getParentFile().getName().replace("local", "")); // NOI18N
         artifactPanel.setArtifactId(artifact.getName().substring(0, artifact.getName().length() - 4));
         artifactPanel.setVersion(DEFAULT_VERSION);
 
@@ -159,7 +160,7 @@ public final class InstallAsMavenArtifactAction extends CookieAction {
         final BeanRunConfig config = new BeanRunConfig();
         config.setExecutionName(NbBundle.getMessage(
                 InstallAsMavenArtifactAction.class,
-                "InstallAsMavenArtifactAction.performAction(Node).config.executionName")); // NOI18N
+                "InstallAsMavenArtifactAction.performAction(Node).config.executionName"));   // NOI18N
         config.setExecutionDirectory(artifact.getParentFile());
         config.setTaskDisplayName(NbBundle.getMessage(
                 InstallAsMavenArtifactAction.class,

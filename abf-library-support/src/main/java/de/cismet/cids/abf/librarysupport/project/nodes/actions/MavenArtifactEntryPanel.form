@@ -19,15 +19,17 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lblArtifactId" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblGroupIdSuffix" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="lblGroupId" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblArtifactId" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="lblVersion" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="txtGroupId" alignment="0" pref="283" max="32767" attributes="0"/>
-                  <Component id="txtArtifactId" alignment="0" pref="283" max="32767" attributes="0"/>
-                  <Component id="txtVersion" alignment="0" pref="283" max="32767" attributes="0"/>
+                  <Component id="txtVersion" alignment="1" pref="251" max="32767" attributes="0"/>
+                  <Component id="txtArtifactId" alignment="1" pref="251" max="32767" attributes="0"/>
+                  <Component id="txtGroupIdSuffix" alignment="0" pref="251" max="32767" attributes="0"/>
+                  <Component id="txtGroupId" alignment="1" pref="251" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -38,20 +40,25 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblGroupIdSuffix" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtGroupIdSuffix" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblGroupId" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtGroupId" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblArtifactId" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtArtifactId" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblVersion" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtVersion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblVersion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -71,17 +78,17 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblGroupId">
+    <Component class="javax.swing.JLabel" name="lblGroupIdSuffix">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/actions/Bundle.properties" key="MavenArtifactEntryPanel.lblGroupId.text" replaceFormat="NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/actions/Bundle.properties" key="MavenArtifactEntryPanel.lblGroupIdSuffix.text" replaceFormat="NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtGroupId">
+    <Component class="javax.swing.JTextField" name="txtGroupIdSuffix">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/actions/Bundle.properties" key="MavenArtifactEntryPanel.txtGroupId.text" replaceFormat="NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/actions/Bundle.properties" key="MavenArtifactEntryPanel.txtGroupIdSuffix.text" replaceFormat="NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
       </Properties>
     </Component>
@@ -97,6 +104,25 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/actions/Bundle.properties" key="MavenArtifactEntryPanel.txtVersion.text" replaceFormat="NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblGroupId">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/actions/Bundle.properties" key="MavenArtifactEntryPanel.lblGroupId.text" replaceFormat="NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtGroupId">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="d4" green="d4" id="TextComponent.selectionBackgroundInactive" palette="3" red="d4" type="palette"/>
+        </Property>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="de/cismet/cids/abf/librarysupport/project/nodes/actions/Bundle.properties" key="MavenArtifactEntryPanel.txtGroupId.text" replaceFormat="NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
+        </Property>
+        <Property name="focusTraversalKeysEnabled" type="boolean" value="false"/>
+        <Property name="focusable" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>
