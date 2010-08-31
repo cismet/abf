@@ -180,9 +180,10 @@ public final class ExportClassesAction extends CookieAction {
         if (p == null) {
             throw new IllegalStateException("project.properties not found");                          // NOI18N
         }
-        final File outDir = new File(p.getProperty(FILECHOOSER_DIR, System.getProperty("user.dir"))); // NOI18N
+        final String chooserDir = p.getProperty(FILECHOOSER_DIR, System.getProperty("user.home"));
+        File outDir = new File(chooserDir); // NOI18N
         if (!(outDir.exists() && outDir.isDirectory() && outDir.canRead())) {
-            throw new IllegalStateException("invalid output directory");                              // NOI18N
+            outDir = new File(System.getProperty("user.home"));
         }
         final JFileChooser chooser = new JFileChooser(outDir);
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -1060,7 +1061,12 @@ public final class ExportClassesAction extends CookieAction {
             final List<String> refList,
             final PrintWriter out,
             final String preIndent) {
+        if(type.getName() == null){
+            throw(new IllegalStateException("Could not find type for Cidsclass "+type.getCidsClass().toString())); //NOI18N
+        }
+        else{
         out.println(PROCESS + preIndent + type.getName());
+        }
         final Node typeNode = doc.createElementNS(NAMESPACE, CS_TYPE);
         final String id = type.getId().toString();
         // has the cidsclass already been exported for this type ?
