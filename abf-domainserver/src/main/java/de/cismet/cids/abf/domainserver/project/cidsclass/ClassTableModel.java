@@ -46,6 +46,7 @@ public final class ClassTableModel extends AbstractTableModel {
     //~ Instance fields --------------------------------------------------------
 
     private final transient CidsClass cidsClass;
+    private transient boolean sync;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -265,6 +266,12 @@ public final class ClassTableModel extends AbstractTableModel {
                 }
                 case NAME: {
                     attr.setName((String)aValue);
+
+                    // sync fieldname if it is not set already
+                    final String fieldname = (String)getValueAt(row, FIELD_NAME);
+                    if ((fieldname == null) || fieldname.isEmpty() || sync) {
+                        attr.setFieldName(((String)aValue).toLowerCase());
+                    }
                     break;
                 }
                 case FIELD_NAME: {
@@ -323,5 +330,14 @@ public final class ClassTableModel extends AbstractTableModel {
                 return false;
             }
         }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  sync  DOCUMENT ME!
+     */
+    void setAttrSync(final boolean sync) {
+        this.sync = sync;
     }
 }

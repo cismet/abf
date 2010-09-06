@@ -1,56 +1,18 @@
-/*
- * NewCidsClassVisualPanel1.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * thorsten.hell@cismet.de
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on ???
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
-import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
-import de.cismet.cids.abf.domainserver.project.utils.Renderers;
-import de.cismet.cids.abf.utilities.CidsTypeTransferable;
-import de.cismet.cids.abf.utilities.Comparators;
-import de.cismet.cids.jpa.backend.service.impl.Backend;
-import de.cismet.cids.jpa.entity.cidsclass.Attribute;
-import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
-import de.cismet.cids.jpa.entity.cidsclass.Icon;
-import de.cismet.cids.jpa.entity.cidsclass.Type;
-import de.cismet.cids.jpa.entity.permission.Policy;
+import org.apache.log4j.Logger;
+
+import org.jdesktop.swingx.JXTable;
+
+import org.openide.util.ImageUtilities;
+
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.datatransfer.Transferable;
@@ -69,12 +31,14 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -91,23 +55,40 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.apache.log4j.Logger;
-import org.jdesktop.swingx.JXTable;
-import org.openide.util.ImageUtilities;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
+import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.domainserver.project.utils.Renderers;
+import de.cismet.cids.abf.utilities.CidsTypeTransferable;
+import de.cismet.cids.abf.utilities.Comparators;
+
+import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.entity.cidsclass.Attribute;
+import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
+import de.cismet.cids.jpa.entity.cidsclass.Icon;
+import de.cismet.cids.jpa.entity.cidsclass.Type;
+import de.cismet.cids.jpa.entity.permission.Policy;
 
 /**
+ * DOCUMENT ME!
  *
- * @author thorsten.hell@cismet.de
- * @author martin.scholl@cismet.de
+ * @author   thorsten.hell@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  $Revision$, $Date$
  */
-public final class NewCidsClassVisualPanel1 extends JPanel
-{
+public final class NewCidsClassVisualPanel1 extends JPanel {
+
+    //~ Static fields/initializers ---------------------------------------------
+
     private static final transient Logger LOG = Logger.getLogger(
             NewCidsClassVisualPanel1.class);
-    
+
     private static final int DOWN = 1;
     private static final int UP = -1;
-    
+
+    //~ Instance fields --------------------------------------------------------
+
     private final transient ImageIcon dbType;
     private transient ClassTableModel classTableModel;
     private transient CidsClass cidsClass;
@@ -115,71 +96,122 @@ public final class NewCidsClassVisualPanel1 extends JPanel
     private final transient SyncTableDocListener syncTableDocL;
     private final transient ItemListener attrPolicyL;
     private final transient NewCidsClassWizardPanel1 model;
-    
-    public NewCidsClassVisualPanel1(final NewCidsClassWizardPanel1 model)
-    {
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private final transient javax.swing.JComboBox cboAttrPolicy = new javax.swing.JComboBox();
+    private final transient javax.swing.JComboBox cboClassIcons = new javax.swing.JComboBox();
+    private final transient javax.swing.JComboBox cboObjectIcons = new javax.swing.JComboBox();
+    private final transient javax.swing.JCheckBox chkIndexed = new javax.swing.JCheckBox();
+    private final transient javax.swing.JCheckBox chkSync = new javax.swing.JCheckBox();
+    private final transient javax.swing.JCheckBox chkType = new javax.swing.JCheckBox();
+    private final transient javax.swing.JButton cmdDown = new javax.swing.JButton();
+    private final transient javax.swing.JButton cmdRemove = new javax.swing.JButton();
+    private final transient javax.swing.JButton cmdUp = new javax.swing.JButton();
+    private final transient javax.swing.ButtonGroup grpTypeSort = new javax.swing.ButtonGroup();
+    private final transient javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
+    private final transient javax.swing.JToolBar jToolBar1 = new javax.swing.JToolBar();
+    private final transient javax.swing.JToolBar jToolBar2 = new javax.swing.JToolBar();
+    private javax.swing.JToggleButton jtbAttrSync;
+    private final transient javax.swing.JLabel lblAttrPolicy = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblClassIcon = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblClassName = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblDesc = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblObjectIcon = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblPrimKey = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblSortAndFilter = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblSpace1 = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblTableName = new javax.swing.JLabel();
+    private final transient javax.swing.JList lstTypes = new DragJList();
+    private final transient javax.swing.JPanel panAttr = new javax.swing.JPanel();
+    private final transient javax.swing.JPanel panCenter = new javax.swing.JPanel();
+    private final transient javax.swing.JPanel panClass1 = new javax.swing.JPanel();
+    private final transient javax.swing.JPanel panClass2 = new javax.swing.JPanel();
+    private final transient javax.swing.JPanel panClass3 = new javax.swing.JPanel();
+    private final transient javax.swing.JPanel panTypes = new javax.swing.JPanel();
+    private final transient javax.swing.JPanel panhead = new javax.swing.JPanel();
+    private final transient javax.swing.JScrollPane scpTableAttr = new javax.swing.JScrollPane();
+    private final transient javax.swing.JScrollPane scpTypes = new javax.swing.JScrollPane();
+    private final transient javax.swing.JTable tblAttr = new DropAwareJXTable();
+    private final transient javax.swing.JToggleButton togArrayTables = new javax.swing.JToggleButton();
+    private final transient javax.swing.JToggleButton togOnlyDbTypes = new javax.swing.JToggleButton();
+    private final transient javax.swing.JToggleButton togOnlyUserTypes = new javax.swing.JToggleButton();
+    private final transient javax.swing.JToggleButton togSortedAlpha = new javax.swing.JToggleButton();
+    private final transient javax.swing.JToggleButton togSortedLinks = new javax.swing.JToggleButton();
+    private final transient javax.swing.JTextField txtClassname = new javax.swing.JTextField();
+    private final transient javax.swing.JTextField txtDescription = new javax.swing.JTextField();
+    private final transient javax.swing.JTextField txtPrimaryKeyfield = new javax.swing.JTextField();
+    private final transient javax.swing.JTextField txtTablename = new javax.swing.JTextField();
+    // End of variables declaration//GEN-END:variables
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new NewCidsClassVisualPanel1 object.
+     *
+     * @param  model  DOCUMENT ME!
+     */
+    public NewCidsClassVisualPanel1(final NewCidsClassWizardPanel1 model) {
         this.model = model;
         initComponents();
         dbType = new ImageIcon(ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER + "db_types.png")); // NOI18N
+                    DomainserverProject.IMAGE_FOLDER
+                            + "db_types.png")); // NOI18N
         syncClassDocL = new SyncClassDocListener();
         syncTableDocL = new SyncTableDocListener();
-        attrPolicyL = new ItemListener()
-        {
-            @Override
-            public void itemStateChanged(final ItemEvent e)
-            {
-                if(e.getStateChange() == ItemEvent.SELECTED)
-                {
-                    final Policy policy = (Policy)e.getItem();
-                    model.getCidsClass().setAttributePolicy(
-                            policy.getId() == null ? null : policy);
+        attrPolicyL = new ItemListener() {
+
+                @Override
+                public void itemStateChanged(final ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        final Policy policy = (Policy)e.getItem();
+                        model.getCidsClass().setAttributePolicy((policy.getId() == null) ? null : policy);
+                    }
                 }
-            }
-        };
+            };
         ((JXTable)tblAttr).setAutoStartEditOnKeyStroke(true);
         ((JXTable)tblAttr).setTerminateEditOnFocusLost(true);
         tblAttr.setDefaultEditor(String.class, new DefaultCellEditor(new JTextField()));
-        tblAttr.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener()
-        {
-            @Override
-            public void editingCanceled(final ChangeEvent e)
-            {
-                model.fireChangeEvent();
-            }
-            
-            @Override
-            public void editingStopped(final ChangeEvent e)
-            {
-                model.fireChangeEvent();
-            }
-        });
+        tblAttr.getDefaultEditor(String.class).addCellEditorListener(new CellEditorListener() {
+
+                @Override
+                public void editingCanceled(final ChangeEvent e) {
+                    model.fireChangeEvent();
+                }
+
+                @Override
+                public void editingStopped(final ChangeEvent e) {
+                    model.fireChangeEvent();
+                }
+            });
+
         final JCheckBox chkEditorBox = new JCheckBox();
         chkEditorBox.setHorizontalAlignment(JCheckBox.CENTER);
         tblAttr.setDefaultEditor(Boolean.class, new DefaultCellEditor(chkEditorBox));
         lstTypes.setCellRenderer(new ListCellRendererImpl());
-        cboClassIcons.addItemListener(new ItemListener()
-        {
-            @Override
-            public void itemStateChanged(final ItemEvent e)
-            {
-                final CidsClass c = classTableModel.getCidsClass();
-                c.setClassIcon((Icon)cboClassIcons.getSelectedItem());
-            }
-        });
-        cboObjectIcons.addItemListener(new ItemListener()
-        {
-            @Override
-            public void itemStateChanged(final ItemEvent e)
-            {
-                final CidsClass c = classTableModel.getCidsClass();
-                c.setObjectIcon((Icon)cboObjectIcons.getSelectedItem());
-            }
-        });
+        cboClassIcons.addItemListener(new ItemListener() {
+
+                @Override
+                public void itemStateChanged(final ItemEvent e) {
+                    final CidsClass c = classTableModel.getCidsClass();
+                    c.setClassIcon((Icon)cboClassIcons.getSelectedItem());
+                }
+            });
+        cboObjectIcons.addItemListener(new ItemListener() {
+
+                @Override
+                public void itemStateChanged(final ItemEvent e) {
+                    final CidsClass c = classTableModel.getCidsClass();
+                    c.setObjectIcon((Icon)cboObjectIcons.getSelectedItem());
+                }
+            });
     }
-    
-    void init()
-    {
+
+    //~ Methods ----------------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     */
+    void init() {
         txtClassname.getDocument().removeDocumentListener(syncTableDocL);
         txtTablename.getDocument().removeDocumentListener(syncClassDocL);
         txtDescription.getDocument().removeDocumentListener(syncClassDocL);
@@ -192,49 +224,42 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         final JXTable attrTable = (JXTable)tblAttr;
         attrTable.setSortOrder(0, SortOrder.ASCENDING);
         attrTable.setSortable(true);
-        for(int i = 1; i < attrTable.getColumnCount(); ++i)
-        {
+        for (int i = 1; i < attrTable.getColumnCount(); ++i) {
             attrTable.getColumnExt(i).setSortable(false);
         }
         attrTable.getColumnExt(0).setVisible(false);
         retrieveAndSortTypes();
-        final List allIcons = new ArrayList(project.getCidsDataObjectBackend().
-                getAllEntities(Icon.class));
+        final List allIcons = new ArrayList(project.getCidsDataObjectBackend().getAllEntities(Icon.class));
         Collections.sort(allIcons, new Comparators.Icons());
         cboClassIcons.setModel(new DefaultComboBoxModel(allIcons.toArray()));
         cboObjectIcons.setModel(new DefaultComboBoxModel(allIcons.toArray()));
         cboClassIcons.setRenderer(new Renderers.IconCellRenderer(project));
         cboObjectIcons.setRenderer(new Renderers.IconCellRenderer(project));
-        if(cidsClass == null)
-        {
-            txtClassname.setText(""); // NOI18N
-            txtTablename.setText(""); // NOI18N
+        if (cidsClass == null) {
+            txtClassname.setText("");                           // NOI18N
+            txtTablename.setText("");                           // NOI18N
             chkSync.setSelected(true);
             cboClassIcons.setSelectedIndex(0);
             cboObjectIcons.setSelectedIndex(0);
-            txtPrimaryKeyfield.setText("ID"); // NOI18N
+            txtPrimaryKeyfield.setText("ID");                   // NOI18N
             chkType.setEnabled(false);
             chkType.setSelected(true);
             chkIndexed.setSelected(false);
-            txtDescription.setText(""); // NOI18N
-        }
-        else
-        {
+            txtDescription.setText("");                         // NOI18N
+        } else {
             cboClassIcons.setSelectedItem(cidsClass.getClassIcon());
             cboObjectIcons.setSelectedItem(cidsClass.getObjectIcon());
             txtClassname.setText(cidsClass.getName());
             txtTablename.setText(cidsClass.getTableName());
-            chkSync.setSelected(cidsClass.getName().equalsIgnoreCase(cidsClass.
-                    getTableName()));
+            chkSync.setSelected(cidsClass.getName().equalsIgnoreCase(cidsClass.getTableName()));
             txtPrimaryKeyfield.setText(cidsClass.getPrimaryKeyField());
             cboObjectIcons.getSelectedItem();
             cboObjectIcons.getModel();
             chkType.setEnabled(false);
             chkType.setSelected(true);
-            chkIndexed.setSelected(cidsClass.isIndexed() != null && cidsClass.
-                    isIndexed());
+            chkIndexed.setSelected((cidsClass.isIndexed() != null) && cidsClass.isIndexed());
             final String desc = cidsClass.getDescription();
-            txtDescription.setText(desc == null ? "" : desc); // NOI18N
+            txtDescription.setText((desc == null) ? "" : desc); // NOI18N
         }
         this.cidsClass = classTableModel.getCidsClass();
         txtClassname.getDocument().addDocumentListener(syncTableDocL);
@@ -242,174 +267,76 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         txtDescription.getDocument().addDocumentListener(syncClassDocL);
         txtPrimaryKeyfield.getDocument().addDocumentListener(syncClassDocL);
         syncTablename();
+        classTableModel.setAttrSync(jtbAttrSync.isSelected());
         model.fireChangeEvent();
     }
 
-    private void initCboAttrPolicy()
-    {
+    /**
+     * DOCUMENT ME!
+     */
+    private void initCboAttrPolicy() {
         cboAttrPolicy.removeItemListener(attrPolicyL);
         ((DefaultComboBoxModel)cboAttrPolicy.getModel()).removeAllElements();
         cboAttrPolicy.addItem(Policy.NO_POLICY);
-        final List<Policy> policies = model.getProject().
-                getCidsDataObjectBackend().getAllEntities(Policy.class);
+        final List<Policy> policies = model.getProject().getCidsDataObjectBackend().getAllEntities(Policy.class);
         Collections.sort(policies, new Comparators.Policies());
-        for(final Policy p : policies)
-        {
+        for (final Policy p : policies) {
             cboAttrPolicy.addItem(p);
         }
-        if(model.getCidsClass() == null
-                || model.getCidsClass().getAttributePolicy() == null)
-        {
+        if ((model.getCidsClass() == null)
+                    || (model.getCidsClass().getAttributePolicy() == null)) {
             cboAttrPolicy.setSelectedIndex(0);
-        }else
-        {
+        } else {
             cboAttrPolicy.setSelectedItem(
-                    model.getCidsClass().getAttributePolicy());
+                model.getCidsClass().getAttributePolicy());
         }
-        cboAttrPolicy.setRenderer(new DefaultListCellRenderer()
-        {
-            @Override
-            public Component getListCellRendererComponent(
-                    final JList list,
-                    final Object value,
-                    final int index,
-                    final boolean isSelected,
-                    final boolean cellHasFocus)
-            {
-                final JLabel label = (JLabel)super.getListCellRendererComponent(
-                        list, value, index, isSelected, cellHasFocus);
-                final Policy policy = (Policy)value;
-                final String s;
-                final CidsClass clazz = model.getCidsClass();
-                if(policy != null 
-                        && Policy.NO_POLICY.equals(policy)
-                        && clazz != null
-                        && !clazz.getAttributes().isEmpty())
-                {
-                    final Policy p = clazz.getAttributePolicy();
-                    clazz.setAttributePolicy(null);
-                    try
-                    {
-                        s = "<" + PermissionResolver.getInstance(model. //NOI18N
-                                getProject()).getPermString(clazz.getAttributes(
-                                ).iterator().next(), null).getInheritanceString(
-                                ) + ">"; // NOI18N
-                    }finally
-                    {
-                        clazz.setAttributePolicy(p);
+        cboAttrPolicy.setRenderer(new DefaultListCellRenderer() {
+
+                @Override
+                public Component getListCellRendererComponent(
+                        final JList list,
+                        final Object value,
+                        final int index,
+                        final boolean isSelected,
+                        final boolean cellHasFocus) {
+                    final JLabel label = (JLabel)super.getListCellRendererComponent(
+                            list,
+                            value,
+                            index,
+                            isSelected,
+                            cellHasFocus);
+                    final Policy policy = (Policy)value;
+                    final String s;
+                    final CidsClass clazz = model.getCidsClass();
+                    if ((policy != null)
+                                && Policy.NO_POLICY.equals(policy)
+                                && (clazz != null)
+                                && !clazz.getAttributes().isEmpty()) {
+                        final Policy p = clazz.getAttributePolicy();
+                        clazz.setAttributePolicy(null);
+                        try {
+                            s = "<"
+                                        + PermissionResolver.getInstance(model.getProject())
+                                        .getPermString(clazz.getAttributes().iterator().next(), null)
+                                        .getInheritanceString() + ">"; // NOI18N
+                        } finally {
+                            clazz.setAttributePolicy(p);
+                        }
+                    } else {
+                        s = policy.getName();
                     }
-                }else
-                {
-                    s = policy.getName();
+                    label.setText(s);
+                    label.setIcon(null);
+                    return label;
                 }
-                label.setText(s);
-                label.setIcon(null);
-                return label;
-            }
-        });
+            });
         cboAttrPolicy.addItemListener(attrPolicyL);
     }
-    
-    private final class ListCellRendererImpl extends DefaultListCellRenderer
-    {
-        @Override
-        public Component getListCellRendererComponent(final JList list, final 
-                Object value, final int index, final boolean isSelected, final 
-                boolean cellHasFocus)
-        {
-            final JLabel lbl = (JLabel)super.getListCellRendererComponent(
-                    list, value, index, isSelected, cellHasFocus);
-            if(!(value instanceof Type))
-            {
-                return lbl;
-            }
-            final Type t = (Type)value;
-            lbl.setText(t.getName());
-            if(!t.isComplexType())
-            {
-                lbl.setIcon(dbType);
-                return lbl;
-            }
-            final CidsClass c = t.getCidsClass();
-            if(c == null)
-            {
-                return lbl;
-            }
-            Icon icon = c.getClassIcon();
-            if(icon == null)
-            {
-                icon = c.getObjectIcon();
-            }
-            if(icon == null)
-            {
-                lbl.setIcon(null);
-            }else
-            {
-                final Image image = ProjectUtils.getImageForIconAndProject(
-                        icon, model.getProject());
-                if(image == null)
-                {
-                    LOG.warn("the icon could not be set: " // NOI18N
-                            + icon.getFileName());
-                }else
-                {
-                    lbl.setIcon(new ImageIcon(image));
-                }
-            }
-            return lbl;
-        }
-    }
-    
-    private final class SyncClassDocListener implements DocumentListener
-    {
-        @Override
-        public void changedUpdate(final DocumentEvent e)
-        {
-            syncClass();
-            model.fireChangeEvent();
-        }
-        
-        @Override
-        public void insertUpdate(final DocumentEvent e)
-        {
-            syncClass();
-            model.fireChangeEvent();
-        }
-        
-        @Override
-        public void removeUpdate(final DocumentEvent e)
-        {
-            syncClass();
-            model.fireChangeEvent();
-        }
-    }
-    
-    private final class SyncTableDocListener implements DocumentListener
-    {
-        @Override
-        public void changedUpdate(final DocumentEvent e)
-        {
-            syncTablename();
-            model.fireChangeEvent();
-        }
-        
-        @Override
-        public void insertUpdate(final DocumentEvent e)
-        {
-            syncTablename();
-            model.fireChangeEvent();
-        }
-        
-        @Override
-        public void removeUpdate(final DocumentEvent e)
-        {
-            syncTablename();
-            model.fireChangeEvent();
-        }
-    }
 
-    private void syncClass()
-    {
+    /**
+     * DOCUMENT ME!
+     */
+    private void syncClass() {
         final CidsClass c = classTableModel.getCidsClass();
         c.setName(txtClassname.getText());
         c.setTableName(txtTablename.getText());
@@ -419,106 +346,93 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         c.setIndexed(chkIndexed.isSelected());
         c.setArrayLink(false);
     }
-    
-    private void syncTablename()
-    {
-        if(chkSync.isSelected())
-        {
+
+    /**
+     * DOCUMENT ME!
+     */
+    private void syncTablename() {
+        if (chkSync.isSelected()) {
             txtTablename.setText(txtClassname.getText().toUpperCase());
         }
         syncClass();
     }
-    
+
     @Override
-    public String getName()
-    {
+    public String getName() {
         return org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.getName().returnvalue"); // NOI18N
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.getName().returnvalue"); // NOI18N
     }
-    
-    private void retrieveAndSortTypes()
-    {
+
+    /**
+     * DOCUMENT ME!
+     */
+    private void retrieveAndSortTypes() {
         final Backend backend = model.getProject().getCidsDataObjectBackend();
         final List<Type> types = backend.getAllEntities(Type.class);
         final List countedTypesList = backend.getSortedTypes();
         final Map<Integer, Long> countedTypes = new HashMap<Integer, Long>();
-        for(final Object o : countedTypesList)
-        {
+        for (final Object o : countedTypesList) {
             final Object[] oa = (Object[])o;
             final Long counter = ((Long)oa[0]).longValue();
             final Integer countedTypeId = ((Integer)oa[1]);
             countedTypes.put(countedTypeId, counter);
         }
-        Collections.sort(types, new Comparator<Type>()
-        {
-            @Override
-            public int compare(final Type t1, final Type t2)
-            {
-                final int id1 = t1.getId();
-                final int id2 = t2.getId();
-                if(togSortedLinks.isSelected())
-                {
-                    if(countedTypes.containsKey(id1)
-                            && countedTypes.containsKey(id2))
-                    {
-                        final Long l1 = countedTypes.get(id1);
-                        final Long l2 = countedTypes.get(id2);
-                        return (l1.compareTo(l2))*(-1);
-                    }else if((!countedTypes.containsKey(id1)
-                                && countedTypes.containsKey(id2))
-                            || t2.isComplexType())
-                    {
-                        return 1;
-                    }else if((countedTypes.containsKey(id1) 
-                                && !countedTypes.containsKey(id2))
-                            || t1.isComplexType())
-                    {
-                        return -1;
-                    }else
-                    {
-                        return t1.getName().compareTo(t2.getName());
-                    }
-                }else
-                {
-                    final String s1 = t1.getName();
-                    final String s2 = t2.getName();
-                    if (s1 == null || s2 == null)
-                    {
-                        return t1.getName().compareTo(t2.getName());
-                    }else
-                    {
-                        return s1.toLowerCase().compareTo(s2.toLowerCase());
+        Collections.sort(types, new Comparator<Type>() {
+
+                @Override
+                public int compare(final Type t1, final Type t2) {
+                    final int id1 = t1.getId();
+                    final int id2 = t2.getId();
+                    if (togSortedLinks.isSelected()) {
+                        if (countedTypes.containsKey(id1)
+                                    && countedTypes.containsKey(id2)) {
+                            final Long l1 = countedTypes.get(id1);
+                            final Long l2 = countedTypes.get(id2);
+                            return (l1.compareTo(l2)) * (-1);
+                        } else if ((!countedTypes.containsKey(id1)
+                                        && countedTypes.containsKey(id2))
+                                    || t2.isComplexType()) {
+                            return 1;
+                        } else if ((countedTypes.containsKey(id1)
+                                        && !countedTypes.containsKey(id2))
+                                    || t1.isComplexType()) {
+                            return -1;
+                        } else {
+                            return t1.getName().compareTo(t2.getName());
+                        }
+                    } else {
+                        final String s1 = t1.getName();
+                        final String s2 = t2.getName();
+                        if ((s1 == null) || (s2 == null)) {
+                            return t1.getName().compareTo(t2.getName());
+                        } else {
+                            return s1.toLowerCase().compareTo(s2.toLowerCase());
+                        }
                     }
                 }
-            }
-            
-            @Override
-            public boolean equals(final Object obj)
-            {
-                return false;
-            }
-        });
+
+                @Override
+                public boolean equals(final Object obj) {
+                    return false;
+                }
+            });
+
         final DefaultListModel dlModel = new DefaultListModel();
-        for(final Type t : types)
-        {
-            if(!t.getName().startsWith("_")) // NOI18N
+        for (final Type t : types) {
+            if (!t.getName().startsWith("_")) // NOI18N
             {
-                if(togOnlyDbTypes.isSelected() && !t.isComplexType())
-                {
+                if (togOnlyDbTypes.isSelected() && !t.isComplexType()) {
                     dlModel.addElement(t);
                 }
-                if(togOnlyUserTypes.isSelected() && t.isComplexType())
-                {
-                    if(togArrayTables.isSelected())
-                    {
+                if (togOnlyUserTypes.isSelected() && t.isComplexType()) {
+                    if (togArrayTables.isSelected()) {
                         dlModel.addElement(t);
-                    }else
-                    {
+                    } else {
                         final CidsClass c = t.getCidsClass();
                         t.getName();
                         t.getId();
-                        if(c != null && !c.isArrayLink())
-                        {
+                        if ((c != null) && !c.isArrayLink()) {
                             dlModel.addElement(t);
                         }
                     }
@@ -527,21 +441,26 @@ public final class NewCidsClassVisualPanel1 extends JPanel
         }
         lstTypes.setModel(dlModel);
     }
-    
-    public CidsClass getCidsClass()
-    {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public CidsClass getCidsClass() {
         syncClass();
         return classTableModel.getCidsClass();
     }
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
+     * content of this method is always regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
+
+        jtbAttrSync = new javax.swing.JToggleButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -581,6 +500,18 @@ public final class NewCidsClassVisualPanel1 extends JPanel
             }
         });
         jToolBar1.add(cmdDown);
+
+        jtbAttrSync.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jtbAttrSync, "Synchronise");
+        jtbAttrSync.setFocusable(false);
+        jtbAttrSync.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jtbAttrSync.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jtbAttrSync.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtbAttrSyncActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jtbAttrSync);
 
         org.openide.awt.Mnemonics.setLocalizedText(lblSpace1, "          ");
         jToolBar1.add(lblSpace1);
@@ -696,7 +627,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel
                         .add(txtTablename, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(chkSync))
-                    .add(txtDescription, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                    .add(txtDescription, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
                     .add(txtClassname, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 285, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -800,49 +731,59 @@ public final class NewCidsClassVisualPanel1 extends JPanel
 
         add(panClass3, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void cmdDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDownActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void cmdDownActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDownActionPerformed
         move(DOWN);
     }//GEN-LAST:event_cmdDownActionPerformed
-    
-    private void cmdRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRemoveActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void cmdRemoveActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRemoveActionPerformed
         final int selectedRow = tblAttr.getSelectedRow();
-        if(selectedRow >= 0)
-        {
-            final int modelRow =
-                    ((JXTable)tblAttr).convertRowIndexToModel(selectedRow);
+        if (selectedRow >= 0) {
+            final int modelRow = ((JXTable)tblAttr).convertRowIndexToModel(selectedRow);
             classTableModel.getCidsClass().getAttributes().remove(
-                    classTableModel.getAttributeAt(modelRow));
+                classTableModel.getAttributeAt(modelRow));
             classTableModel.fireTableDataChanged();
             final int rc = tblAttr.getRowCount();
-            if(rc > 0)
-            {
-                if((rc - 1) >= selectedRow)
-                {
+            if (rc > 0) {
+                if ((rc - 1) >= selectedRow) {
                     ((JXTable)tblAttr).getSelectionModel().setSelectionInterval(
-                            selectedRow, selectedRow);
-                }else
-                {
+                        selectedRow,
+                        selectedRow);
+                } else {
                     ((JXTable)tblAttr).getSelectionModel().setSelectionInterval(
-                            rc - 1, rc - 1);
+                        rc
+                                - 1,
+                        rc
+                                - 1);
                 }
                 model.fireChangeEvent();
             }
         }
     }//GEN-LAST:event_cmdRemoveActionPerformed
-    
-    private void move(final int direction)
-    {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  direction  DOCUMENT ME!
+     */
+    private void move(final int direction) {
         final int selectedRow = tblAttr.getSelectedRow();
-        if((direction == DOWN && selectedRow >= 0
-                    && selectedRow < tblAttr.getRowCount() - 1)
-                || (direction == UP && selectedRow > 0
-                    && selectedRow < tblAttr.getRowCount()))
-        {
-            final int modelRow =
-                    ((JXTable)tblAttr).convertRowIndexToModel(selectedRow);
-            final int switcherModelRow = ((JXTable)tblAttr)
-                    .convertRowIndexToModel(selectedRow + direction);
+        if (((direction == DOWN) && (selectedRow >= 0)
+                        && (selectedRow < (tblAttr.getRowCount() - 1)))
+                    || ((direction == UP) && (selectedRow > 0)
+                        && (selectedRow < tblAttr.getRowCount()))) {
+            final int modelRow = ((JXTable)tblAttr).convertRowIndexToModel(selectedRow);
+            final int switcherModelRow = ((JXTable)tblAttr).convertRowIndexToModel(selectedRow + direction);
             final Attribute selected = classTableModel.getAttributeAt(modelRow);
             final Attribute switcher = classTableModel.getAttributeAt(
                     switcherModelRow);
@@ -850,196 +791,336 @@ public final class NewCidsClassVisualPanel1 extends JPanel
             selected.setPosition(switcher.getPosition());
             switcher.setPosition(sel);
             classTableModel.fireTableDataChanged();
-            ((JXTable)tblAttr).getSelectionModel().setSelectionInterval(
-                    selectedRow + direction, selectedRow + direction);
+            ((JXTable)tblAttr).getSelectionModel()
+                    .setSelectionInterval(
+                        selectedRow
+                        + direction,
+                        selectedRow
+                        + direction);
         }
     }
-    
-    private void cmdUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdUpActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void cmdUpActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdUpActionPerformed
         move(UP);
     }//GEN-LAST:event_cmdUpActionPerformed
-    
-    private void togArrayTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togArrayTablesActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void togArrayTablesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togArrayTablesActionPerformed
         retrieveAndSortTypes();
     }//GEN-LAST:event_togArrayTablesActionPerformed
-    
-    private void togOnlyDbTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togOnlyDbTypesActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void togOnlyDbTypesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togOnlyDbTypesActionPerformed
         retrieveAndSortTypes();
     }//GEN-LAST:event_togOnlyDbTypesActionPerformed
-    
-    private void togOnlyUserTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togOnlyUserTypesActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void togOnlyUserTypesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togOnlyUserTypesActionPerformed
         retrieveAndSortTypes();
     }//GEN-LAST:event_togOnlyUserTypesActionPerformed
-    
-    private void togSortedLinksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togSortedLinksActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void togSortedLinksActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togSortedLinksActionPerformed
         retrieveAndSortTypes();
     }//GEN-LAST:event_togSortedLinksActionPerformed
-    
-    private void togSortedAlphaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togSortedAlphaActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void togSortedAlphaActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togSortedAlphaActionPerformed
         retrieveAndSortTypes();
     }//GEN-LAST:event_togSortedAlphaActionPerformed
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private final transient javax.swing.JComboBox cboAttrPolicy = new javax.swing.JComboBox();
-    private final transient javax.swing.JComboBox cboClassIcons = new javax.swing.JComboBox();
-    private final transient javax.swing.JComboBox cboObjectIcons = new javax.swing.JComboBox();
-    private final transient javax.swing.JCheckBox chkIndexed = new javax.swing.JCheckBox();
-    private final transient javax.swing.JCheckBox chkSync = new javax.swing.JCheckBox();
-    private final transient javax.swing.JCheckBox chkType = new javax.swing.JCheckBox();
-    private final transient javax.swing.JButton cmdDown = new javax.swing.JButton();
-    private final transient javax.swing.JButton cmdRemove = new javax.swing.JButton();
-    private final transient javax.swing.JButton cmdUp = new javax.swing.JButton();
-    private final transient javax.swing.ButtonGroup grpTypeSort = new javax.swing.ButtonGroup();
-    private final transient javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
-    private final transient javax.swing.JToolBar jToolBar1 = new javax.swing.JToolBar();
-    private final transient javax.swing.JToolBar jToolBar2 = new javax.swing.JToolBar();
-    private final transient javax.swing.JLabel lblAttrPolicy = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblClassIcon = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblClassName = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblDesc = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblObjectIcon = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblPrimKey = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblSortAndFilter = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblSpace1 = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel lblTableName = new javax.swing.JLabel();
-    private final transient javax.swing.JList lstTypes = new DragJList();
-    private final transient javax.swing.JPanel panAttr = new javax.swing.JPanel();
-    private final transient javax.swing.JPanel panCenter = new javax.swing.JPanel();
-    private final transient javax.swing.JPanel panClass1 = new javax.swing.JPanel();
-    private final transient javax.swing.JPanel panClass2 = new javax.swing.JPanel();
-    private final transient javax.swing.JPanel panClass3 = new javax.swing.JPanel();
-    private final transient javax.swing.JPanel panTypes = new javax.swing.JPanel();
-    private final transient javax.swing.JPanel panhead = new javax.swing.JPanel();
-    private final transient javax.swing.JScrollPane scpTableAttr = new javax.swing.JScrollPane();
-    private final transient javax.swing.JScrollPane scpTypes = new javax.swing.JScrollPane();
-    private final transient javax.swing.JTable tblAttr = new DropAwareJXTable();
-    private final transient javax.swing.JToggleButton togArrayTables = new javax.swing.JToggleButton();
-    private final transient javax.swing.JToggleButton togOnlyDbTypes = new javax.swing.JToggleButton();
-    private final transient javax.swing.JToggleButton togOnlyUserTypes = new javax.swing.JToggleButton();
-    private final transient javax.swing.JToggleButton togSortedAlpha = new javax.swing.JToggleButton();
-    private final transient javax.swing.JToggleButton togSortedLinks = new javax.swing.JToggleButton();
-    private final transient javax.swing.JTextField txtClassname = new javax.swing.JTextField();
-    private final transient javax.swing.JTextField txtDescription = new javax.swing.JTextField();
-    private final transient javax.swing.JTextField txtPrimaryKeyfield = new javax.swing.JTextField();
-    private final transient javax.swing.JTextField txtTablename = new javax.swing.JTextField();
-    // End of variables declaration//GEN-END:variables
-    
-    
-    final class DragJList extends JList implements 
-            DragGestureListener,
-            DragSourceListener
-    {
+
+    private void jtbAttrSyncActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jtbAttrSyncActionPerformed
+    {//GEN-HEADEREND:event_jtbAttrSyncActionPerformed
+        classTableModel.setAttrSync(jtbAttrSync.isSelected());
+    }//GEN-LAST:event_jtbAttrSyncActionPerformed
+
+    //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class ListCellRendererImpl extends DefaultListCellRenderer {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public Component getListCellRendererComponent(final JList list,
+                final Object value,
+                final int index,
+                final boolean isSelected,
+                final boolean cellHasFocus) {
+            final JLabel lbl = (JLabel)super.getListCellRendererComponent(
+                    list,
+                    value,
+                    index,
+                    isSelected,
+                    cellHasFocus);
+            if (!(value instanceof Type)) {
+                return lbl;
+            }
+            final Type t = (Type)value;
+            lbl.setText(t.getName());
+            if (!t.isComplexType()) {
+                lbl.setIcon(dbType);
+                return lbl;
+            }
+            final CidsClass c = t.getCidsClass();
+            if (c == null) {
+                return lbl;
+            }
+            Icon icon = c.getClassIcon();
+            if (icon == null) {
+                icon = c.getObjectIcon();
+            }
+            if (icon == null) {
+                lbl.setIcon(null);
+            } else {
+                final Image image = ProjectUtils.getImageForIconAndProject(
+                        icon,
+                        model.getProject());
+                if (image == null) {
+                    LOG.warn("the icon could not be set: " // NOI18N
+                                + icon.getFileName());
+                } else {
+                    lbl.setIcon(new ImageIcon(image));
+                }
+            }
+            return lbl;
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class SyncClassDocListener implements DocumentListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void changedUpdate(final DocumentEvent e) {
+            syncClass();
+            model.fireChangeEvent();
+        }
+
+        @Override
+        public void insertUpdate(final DocumentEvent e) {
+            syncClass();
+            model.fireChangeEvent();
+        }
+
+        @Override
+        public void removeUpdate(final DocumentEvent e) {
+            syncClass();
+            model.fireChangeEvent();
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class SyncTableDocListener implements DocumentListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void changedUpdate(final DocumentEvent e) {
+            syncTablename();
+            model.fireChangeEvent();
+        }
+
+        @Override
+        public void insertUpdate(final DocumentEvent e) {
+            syncTablename();
+            model.fireChangeEvent();
+        }
+
+        @Override
+        public void removeUpdate(final DocumentEvent e) {
+            syncTablename();
+            model.fireChangeEvent();
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    final class DragJList extends JList implements DragGestureListener, DragSourceListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        // <editor-fold defaultstate="collapsed" desc=" Not needed ListenerImpls ">
+        @Override
+        public void dragDropEnd(final DragSourceDropEvent e) {
+            // not needed
+        }
+
+        @Override
+        public void dragEnter(final DragSourceDragEvent e) {
+            // not needed
+        }
+
+        @Override
+        public void dragExit(final DragSourceEvent e) {
+            // not needed
+        }
+
+        @Override
+        public void dragOver(final DragSourceDragEvent e) {
+            // not needed
+        }
+
+        @Override
+        public void dropActionChanged(final DragSourceDragEvent e) {
+            // not needed
+        }
+        // </editor-fold>
+
+        //~ Instance fields ----------------------------------------------------
+
         private final transient DragSource dragSource;
-        
-        public DragJList()
-        {
+
+        //~ Constructors -------------------------------------------------------
+
+        /**
+         * Creates a new DragJList object.
+         */
+        public DragJList() {
             dragSource = DragSource.getDefaultDragSource();
             dragSource.createDefaultDragGestureRecognizer(
-                    this, // component where drag originates
-                    DnDConstants.ACTION_COPY_OR_MOVE, // actions
-                    this
-            ); // drag gesture recognizer
-            
+                this,                             // component where drag originates
+                DnDConstants.ACTION_COPY_OR_MOVE, // actions
+                this);                            // drag gesture recognizer
         }
-        
+
+        //~ Methods ------------------------------------------------------------
+
         @Override
-        public void dragGestureRecognized(final DragGestureEvent e)
-        {
+        public void dragGestureRecognized(final DragGestureEvent e) {
             final Object o = this.getSelectedValue();
             final Transferable trans = new CidsTypeTransferable(o);
             dragSource.startDrag(e, DragSource.DefaultCopyDrop, trans, this);
         }
-        
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    final class DropAwareJXTable extends JXTable implements DropTargetListener {
+
+        //~ Methods ------------------------------------------------------------
+
         // <editor-fold defaultstate="collapsed" desc=" Not needed ListenerImpls ">
         @Override
-        public void dragDropEnd(final DragSourceDropEvent e)
-        {
+        public void dragExit(final DropTargetEvent dte) {
             // not needed
         }
 
         @Override
-        public void dragEnter(final DragSourceDragEvent e)
-        {
+        public void dropActionChanged(final DropTargetDragEvent dtde) {
             // not needed
         }
 
         @Override
-        public void dragExit(final DragSourceEvent e)
-        {
+        public void dragOver(final DropTargetDragEvent dtde) {
             // not needed
         }
 
         @Override
-        public void dragOver(final DragSourceDragEvent e)
-        {
-            // not needed
-        }
-
-        @Override
-        public void dropActionChanged(final DragSourceDragEvent e)
-        {
+        public void dragEnter(final DropTargetDragEvent dtde) {
             // not needed
         }
         // </editor-fold>
-    }
-    
-    final class DropAwareJXTable extends JXTable implements 
-            DropTargetListener
-    {
+
+        //~ Instance fields ----------------------------------------------------
+
         private final transient int acceptableActions;
         private final transient DropTarget dt;
-        
-        public DropAwareJXTable()
-        {
+
+        //~ Constructors -------------------------------------------------------
+
+        /**
+         * Creates a new DropAwareJXTable object.
+         */
+        public DropAwareJXTable() {
             acceptableActions = DnDConstants.ACTION_COPY_OR_MOVE;
             dt = new DropTarget(this, acceptableActions, this);
         }
-        
+
+        //~ Methods ------------------------------------------------------------
+
         @Override
-        public void drop(final DropTargetDropEvent dtde)
-        {
-            try
-            {
+        public void drop(final DropTargetDropEvent dtde) {
+            try {
                 final Object o = dtde.getTransferable().getTransferData(CidsTypeTransferable.CIDS_TYPE_FLAVOR);
-                if(o instanceof Type)
-                {
+                if (o instanceof Type) {
                     final Attribute attr = new Attribute();
                     attr.setCidsClass(cidsClass);
                     final Type t = (Type)o;
-                    if(t.isComplexType())
-                    {
+                    if (t.isComplexType()) {
                         final CidsClass c = t.getCidsClass();
                         attr.setEditor(c.getEditor());
                         attr.setForeignKey(true);
                         attr.setForeignKeyClass(c.getId());
                         attr.setToString(c.getToString());
-                        if (c.isArrayLink())
-                        {
+                        if (c.isArrayLink()) {
                             attr.setArray(true);
-                            attr.setArrayKey(cidsClass.getName() + "_reference"); // NOI18N
+                            attr.setArrayKey(cidsClass.getName() + "_reference");                            // NOI18N
                         }
                     }
-                    attr.setName(""); // NOI18N
+                    attr.setName("");                                                                        // NOI18N
                     attr.setType(t);
-                    if(!t.isComplexType()
-                            && (t.getName().equalsIgnoreCase("varchar")// NOI18N
-                                || t.getName().equalsIgnoreCase("char")// NOI18N
-                                || t.getName()
-                                           .equalsIgnoreCase("varbit")))//NOI18N
+                    if (!t.isComplexType()
+                                && (t.getName().equalsIgnoreCase("varchar")                                  // NOI18N
+                                    || t.getName().equalsIgnoreCase("char")                                  // NOI18N
+                                    || t.getName().equalsIgnoreCase("varbit")))                              // NOI18N
                     {
                         final String answer = JOptionPane.showInputDialog(
                                 this,
                                 org.openide.util.NbBundle.getMessage(
-                                    NewCidsClassVisualPanel1.class, 
+                                    NewCidsClassVisualPanel1.class,
                                     "NewCidsClassVisualPanel1.DropAwareJXTable.drop().JOptionPane.message"), // NOI18N
-                                t.getName() + "(???)", // NOI18N
+                                t.getName()
+                                        + "(???)",                                                           // NOI18N
                                 JOptionPane.QUESTION_MESSAGE);
-                        try
-                        {
+                        try {
                             attr.setPrecision(Integer.valueOf(answer));
-                        }catch (final Exception skip)
-                        {
-                            LOG.warn("exception skipped", skip); // NOI18N
+                        } catch (final Exception skip) {
+                            LOG.warn("exception skipped", skip);                                             // NOI18N
                         }
                     }
                     attr.setPosition(classTableModel.getRowCount());
@@ -1048,39 +1129,11 @@ public final class NewCidsClassVisualPanel1 extends JPanel
                     tblAttr.editCellAt(classTableModel.getRowCount() - 1, 0);
                     this.requestFocusInWindow();
                 }
-            }catch(final Exception e)
-            {
-                LOG.warn("exception occured during drop action", e); // NOI18N
-            }finally
-            {
+            } catch (final Exception e) {
+                LOG.warn("exception occured during drop action", e);                                         // NOI18N
+            } finally {
                 dtde.dropComplete(true);
             }
         }
-        
-        // <editor-fold defaultstate="collapsed" desc=" Not needed ListenerImpls ">
-        @Override
-        public void dragExit(final DropTargetEvent dte)
-        {
-            // not needed
-        }
-
-        @Override
-        public void dropActionChanged(final DropTargetDragEvent dtde)
-        {
-            // not needed
-        }
-
-        @Override
-        public void dragOver(final DropTargetDragEvent dtde)
-        {
-            // not needed
-        }
-
-        @Override
-        public void dragEnter(final DropTargetDragEvent dtde)
-        {
-            // not needed
-        }
-        // </editor-fold>
     }
 }

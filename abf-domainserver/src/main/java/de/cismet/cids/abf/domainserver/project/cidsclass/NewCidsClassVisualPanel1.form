@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.3" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
@@ -141,6 +141,18 @@
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="146"/>
                   </AuxValues>
+                </Component>
+                <Component class="javax.swing.JToggleButton" name="jtbAttrSync">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Synchronise"/>
+                    <Property name="focusable" type="boolean" value="false"/>
+                    <Property name="horizontalTextPosition" type="int" value="0"/>
+                    <Property name="verticalTextPosition" type="int" value="3"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtbAttrSyncActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblSpace1">
                   <Properties>
@@ -390,7 +402,7 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="chkSync" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="txtDescription" alignment="0" pref="295" max="32767" attributes="1"/>
+                          <Component id="txtDescription" alignment="0" pref="299" max="32767" attributes="1"/>
                           <Component id="txtClassname" alignment="0" min="-2" pref="285" max="-2" attributes="1"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
