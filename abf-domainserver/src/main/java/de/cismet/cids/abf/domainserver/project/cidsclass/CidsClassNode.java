@@ -39,6 +39,7 @@
 
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
+import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.PolicyPropertyEditor;

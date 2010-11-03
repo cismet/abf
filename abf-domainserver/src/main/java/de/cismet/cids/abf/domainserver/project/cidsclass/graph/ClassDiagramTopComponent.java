@@ -5,22 +5,36 @@
 *              ... and it just works.
 *
 ****************************************************/
-package de.cismet.cids.abf.domainserver.project.cidsclass;
+package de.cismet.cids.abf.domainserver.project.cidsclass.graph;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.cidsclass.graph.AttributeWidget;
-import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassGraphScene;
-import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassNodeWidget;
-import de.cismet.cids.abf.domainserver.project.cidsclass.graph.RelationWidget;
-import de.cismet.cids.abf.domainserver.project.cidsclass.graph.SatelliteLookupHint;
-import de.cismet.cids.abf.domainserver.project.nodes.ViewManagement;
-import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
-import de.cismet.cids.abf.domainserver.project.view.ViewNode;
-import de.cismet.cids.abf.utilities.windows.ErrorUtils;
+import org.apache.log4j.Logger;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
-import de.cismet.cids.jpa.entity.cidsclass.Attribute;
-import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+import org.dom4j.tree.DefaultElement;
+
+import org.netbeans.api.visual.action.ActionFactory;
+import org.netbeans.api.visual.action.PopupMenuProvider;
+import org.netbeans.api.visual.action.WidgetAction;
+import org.netbeans.api.visual.model.ObjectSceneEvent;
+import org.netbeans.api.visual.model.ObjectSceneEventType;
+import org.netbeans.api.visual.model.ObjectSceneListener;
+import org.netbeans.api.visual.model.ObjectState;
+import org.netbeans.api.visual.widget.Widget;
+
+import org.openide.explorer.ExplorerManager;
+import org.openide.filesystems.FileUtil;
+import org.openide.nodes.Node;
+import org.openide.util.ImageUtilities;
+import org.openide.util.Lookup;
+import org.openide.util.NbBundle;
+import org.openide.util.Utilities;
+import org.openide.util.lookup.Lookups;
+import org.openide.util.lookup.ProxyLookup;
+import org.openide.windows.TopComponent;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -46,33 +60,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Logger;
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.cidsclass.CidsAttributeNode;
+import de.cismet.cids.abf.domainserver.project.cidsclass.CidsClassNode;
+import de.cismet.cids.abf.domainserver.project.nodes.ViewManagement;
+import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.domainserver.project.view.ViewNode;
+import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
-import org.dom4j.tree.DefaultElement;
-
-import org.netbeans.api.visual.action.ActionFactory;
-import org.netbeans.api.visual.action.PopupMenuProvider;
-import org.netbeans.api.visual.action.WidgetAction;
-import org.netbeans.api.visual.model.ObjectSceneEvent;
-import org.netbeans.api.visual.model.ObjectSceneEventType;
-import org.netbeans.api.visual.model.ObjectSceneListener;
-import org.netbeans.api.visual.model.ObjectState;
-import org.netbeans.api.visual.widget.Widget;
-
-import org.openide.explorer.ExplorerManager;
-import org.openide.filesystems.FileUtil;
-import org.openide.nodes.Node;
-import org.openide.util.Lookup;
-import org.openide.util.NbBundle;
-import org.openide.util.Utilities;
-import org.openide.util.lookup.Lookups;
-import org.openide.util.lookup.ProxyLookup;
-import org.openide.windows.TopComponent;
+import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.entity.cidsclass.Attribute;
+import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 
 // TODO: completely refactor this class
 /**
@@ -84,31 +82,20 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -4208581785937901599L;
-    private static final transient Logger LOG = Logger.getLogger(
-            ClassDiagramTopComponent.class);
+    private static final transient Logger LOG = Logger.getLogger(ClassDiagramTopComponent.class);
 
-    /** path to the icon used by the component and its open action. */
-    static final String ICON_PATH = "de/cismet/cids/abf/abfcore/projecttypes/"
-        + "domainserver/nodes/classmanagement/classes.png";
-
-    private static final Image FOREIGN_KEY = Utilities.loadImage(
-            "de/cismet/cids/abf/abfcore/res/images/foreignKey.png",
-            true); // NOI18N
-    private static final Image SEARCH_INDEX = Utilities.loadImage(
-            "de/cismet/cids/abf/abfcore/res/images/search.png",
-            true); // NOI18N
-    private static final Image PRIMARY_KEY = Utilities.loadImage(
-            "de/cismet/cids/abf/abfcore/res/images/key.png",
-            true); // NOI18N
-    private static final Image ARRAY = Utilities.loadImage(
-            "de/cismet/cids/abf/abfcore/res/images/array.png",
-            true); // NOI18N
-
-    private static final String DEFAULT_VIEW_NAME = "default";
+    private static final String DEFAULT_VIEW_NAME = "default"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
+
+    private final transient Image foreignKey = ImageUtilities.loadImage(
+            "de/cismet/cids/abf/abfcore/res/images/foreignKey.png"); // NOI18N
+    private final transient Image searchIndex = ImageUtilities.loadImage(
+            "de/cismet/cids/abf/abfcore/res/images/search.png");     // NOI18N
+    private final transient Image primaryKey = ImageUtilities.loadImage(
+            "de/cismet/cids/abf/abfcore/res/images/key.png");        // NOI18N
+    private final transient Image array = ImageUtilities.loadImage(
+            "de/cismet/cids/abf/abfcore/res/images/array.png");      // NOI18N
 
     private transient ExplorerManager explorerManager = new ExplorerManager();
 
@@ -166,14 +153,14 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                 new Lookup[] {
                     Lookups.singleton(this),
                     Lookups.fixed(
-                        new Object[] { new SatelliteLookupHint() })
+                        new Object[] { new SatelliteNavigationPanel.SatelliteLookupHint() })
                 }));
         try {
             setName(NbBundle.getMessage(ClassDiagramTopComponent.class,
                     "ClassDiagramTopComponent.name"));
             setToolTipText(NbBundle.getMessage(ClassDiagramTopComponent.class,
                     "ClassDiagramTopComponent.tooltip"));
-            setIcon(Utilities.loadImage(ICON_PATH, true));
+            setIcon(ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "classes.png"));
             if (LOG.isDebugEnabled()) {
                 LOG.debug("trying to create view from scene");
             }
@@ -184,25 +171,31 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             scpDiagramPane.setViewportView(myView);
             final ObjectSceneListener l = new ObjectSceneListener() {
 
+                    @Override
                     public void focusChanged(final ObjectSceneEvent ose, final Object object, final Object object0) {
                     }
 
+                    @Override
                     public void highlightingChanged(
                             final ObjectSceneEvent e,
                             final Set<Object> s,
                             final Set<Object> s2) {
                     }
 
+                    @Override
                     public void hoverChanged(final ObjectSceneEvent ose, final Object object, final Object object0) {
                     }
 
+                    @Override
                     public void objectAdded(final ObjectSceneEvent objectSceneEvent,
                             final Object object) {
                     }
 
+                    @Override
                     public void objectRemoved(final ObjectSceneEvent ose, final Object object) {
                     }
 
+                    @Override
                     public void objectStateChanged(
                             final ObjectSceneEvent ose,
                             final Object object,
@@ -210,10 +203,11 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                             final ObjectState objectState0) {
                     }
 
+                    @Override
                     public void selectionChanged(final ObjectSceneEvent e, final Set<Object> s1, final Set<Object> s2) {
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("selection changed: " + e + " :: " + s1
-                                + " :: " + s2);
+                                        + " :: " + s2);
                         }
                         Node activation = null;
                         final Set selection = getScene().getSelectedObjects();
@@ -226,7 +220,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                             if (cnw != null) {
                                 if (LOG.isDebugEnabled()) {
                                     LOG.debug("got activated node from ClassNodeW"
-                                        + "idget: " + cnw);
+                                                + "idget: " + cnw);
                                 }
                                 activation = cnw.getCidsClassNode();
                             } else {
@@ -234,7 +228,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                                 if (aw != null) {
                                     if (LOG.isDebugEnabled()) {
                                         LOG.debug("got activated node from Attrib"
-                                            + "uteWidget: " + aw);
+                                                    + "uteWidget: " + aw);
                                     }
                                     activation = aw.getCidsAttributeNode();
                                 }
@@ -243,28 +237,28 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                                 try {
                                     if (LOG.isDebugEnabled()) {
                                         LOG.debug("changing explorermanager root "
-                                            + "context");
+                                                    + "context");
                                     }
                                     explorerManager.setRootContext(activation);
                                     if (LOG.isDebugEnabled()) {
                                         LOG.debug("changing explorermanager selec"
-                                            + "ted nodes");
+                                                    + "ted nodes");
                                     }
                                     explorerManager.setSelectedNodes(
                                         new Node[] { activation });
                                     if (LOG.isDebugEnabled()) {
                                         LOG.debug("setting activated nodes to exp"
-                                            + "lorermanager's selection");
+                                                    + "lorermanager's selection");
                                     }
                                     setActivatedNodes(explorerManager.getSelectedNodes());
                                 } catch (final Exception ex) {
                                     LOG.error("could not set activated nodes", ex);
                                     ErrorUtils.showErrorMessage(
                                         "Es ist ein uner"
-                                        + "warteter Fehler aufgetreten. Bitte "
-                                        + "melden Sie den Fehler, damit er "
-                                        + "schnellstmöglich behoben werden "
-                                        + "kann.\n\nVielen Dank",
+                                                + "warteter Fehler aufgetreten. Bitte "
+                                                + "melden Sie den Fehler, damit er "
+                                                + "schnellstmöglich behoben werden "
+                                                + "kann.\n\nVielen Dank",
                                         ex);
                                 }
                             }
@@ -278,8 +272,8 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             LOG.error("error during initialisation", ex);
             ErrorUtils.showErrorMessage(
                 "Es ist ein unerwarteter Fehler aufge"
-                + "treten. Bitte melden Sie den Fehler, damit er schnellstm"
-                + "öglich behoben werden kann.\n\nVielen Dank",
+                        + "treten. Bitte melden Sie den Fehler, damit er schnellstm"
+                        + "öglich behoben werden kann.\n\nVielen Dank",
                 ex);
         }
     }
@@ -318,7 +312,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         }
         final Set<CidsClass> all = getAllRelationClasses(c, new HashSet<CidsClass>());
         final Vector<CidsClassNode> v = new Vector<CidsClassNode>();
-        for (CidsClass cc : all) {
+        for (final CidsClass cc : all) {
             v.add(new CidsClassNode(cc, project));
         }
         addClasses(v);
@@ -376,9 +370,15 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             final int y, final boolean minimized) {
         if (LOG.isDebugEnabled()) {
             LOG.debug(
-                "trying to purely add class: " + cidsClassNode + " :: x"
-                + " = " + x + " :: y = " + y + " :: minimized = "
-                + minimized);
+                "trying to purely add class: "
+                        + cidsClassNode
+                        + " :: x"
+                        + " = "
+                        + x
+                        + " :: y = "
+                        + y
+                        + " :: minimized = "
+                        + minimized);
         }
         classNodes.add(cidsClassNode);
         final CidsClass cidsClass = cidsClassNode.getCidsClass();
@@ -416,7 +416,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         w.setCidsClassNode(cidsClassNode);
         if (LOG.isDebugEnabled()) {
             LOG.debug("setting widget's preffered location: (" + x + ", " + y
-                + ")");
+                        + ")");
         }
         w.setPreferredLocation(new Point(x, y));
         final Vector images = new Vector();
@@ -438,7 +438,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             LOG.debug("setting widget's node properties");
         }
         w.setNodeProperties(cidsClassNode.getIcon(0), cidsClass.getTableName()
-            + "   ", null, images);
+                    + "   ", null, images);
         scene.validate();
         classNodeWidgets.put(widgetName, w);
         allClasses.add(cidsClassNode);
@@ -476,16 +476,16 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             }
             final Vector<Image> v = new Vector<Image>();
             if (attr.getFieldName().equalsIgnoreCase(pkFieldName)) {
-                v.add(PRIMARY_KEY);
+                v.add(primaryKey);
             }
             if (attr.isIndexed()) {
-                v.add(SEARCH_INDEX);
+                v.add(searchIndex);
             }
             if (attr.isArray()) {
-                v.add(ARRAY);
+                v.add(array);
             }
             if (attr.isForeignKey()) {
-                v.add(FOREIGN_KEY);
+                v.add(foreignKey);
             }
             pin.setGlyphs(v);
         }
@@ -561,7 +561,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         if (LOG.isDebugEnabled()) {
             LOG.debug("removing relations");
         }
-        Collection<String> keys = new Vector<String>(scene.getEdges());
+        final Collection<String> keys = new Vector<String>(scene.getEdges());
         for (final String key : keys) {
             try {
                 if (LOG.isDebugEnabled()) {
@@ -589,7 +589,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             final CidsClass cidsClass = classNode.getCidsClass();
             final String domainServerName = classNode.getDomainserverProject().getDomainserverProjectNode().getName();
             final String widgetName = cidsClass.getId() + "@"
-                + domainServerName;
+                        + domainServerName;
             for (final Attribute attr : cidsClass.getAttributes()) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("processing attribute: " + attr);
@@ -620,7 +620,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                                 if (foreignAttr.getFieldName().equalsIgnoreCase(
                                                 attr.getArrayKey())) {
                                     to = toClassNodeWidgetString + "."
-                                        + foreignAttr.getId();
+                                                + foreignAttr.getId();
                                     break;
                                 }
                             }
@@ -633,14 +633,13 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("relation not present");
                         }
-                        if (
-                            (classNodeWidgets.get(toClassNodeWidgetString)
+                        if ((classNodeWidgets.get(toClassNodeWidgetString)
                                         != null)
                                     && (classNodeWidgets.get(
                                             fromClassNodeWidgetString) != null)) {
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug("both related classes present, crea"
-                                    + "ting new relation");
+                                            + "ting new relation");
                             }
                             final RelationWidget edge = (RelationWidget)scene.addEdge(edgeWidgetName);
                             scene.setEdgeSource(edgeWidgetName, from);
@@ -660,7 +659,6 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         jLabel1 = new javax.swing.JLabel();
         scpDiagramPane = new javax.swing.JScrollPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -684,13 +682,16 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         chkSaveChanges.setSelected(true);
         chkSaveChanges.setMargin(new java.awt.Insets(0, 0, 0, 0));
         chkSaveChanges.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkSaveChangesActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    chkSaveChangesActionPerformed(evt);
+                }
+            });
         jToolBar1.add(chkSaveChanges);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/filesave.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/filesave.png"))); // NOI18N
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 2));
         jToolBar1.add(jLabel2);
 
@@ -701,10 +702,12 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
 
         org.openide.awt.Mnemonics.setLocalizedText(cmdSetViewName, "Namen ändern");
         cmdSetViewName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdSetViewNameActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdSetViewNameActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdSetViewName);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -712,60 +715,75 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         jSeparator2.setMaximumSize(new java.awt.Dimension(1, 32767));
         jToolBar1.add(jSeparator2);
 
-        cmdZoomOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_out.png"))); // NOI18N
+        cmdZoomOut.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_out.png"))); // NOI18N
         cmdZoomOut.setToolTipText("Zoom Out");
         cmdZoomOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdZoomOutActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdZoomOutActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdZoomOut);
 
-        cmdZoomIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_in.png"))); // NOI18N
+        cmdZoomIn.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_in.png"))); // NOI18N
         cmdZoomIn.setToolTipText("Zoom In");
         cmdZoomIn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdZoomInActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdZoomInActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdZoomIn);
 
-        cmdResetZoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_home.png"))); // NOI18N
+        cmdResetZoom.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_home.png"))); // NOI18N
         cmdResetZoom.setToolTipText("Originalgröße");
         cmdResetZoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdResetZoomActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdResetZoomActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdResetZoom);
 
-        cmdZoomToAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_fit.png"))); // NOI18N
+        cmdZoomToAll.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_fit.png"))); // NOI18N
         cmdZoomToAll.setToolTipText("alle anzeigen");
         cmdZoomToAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdZoomToAllActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdZoomToAllActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdZoomToAll);
 
-        cmdDoLayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/layout_orthogonal.png"))); // NOI18N
+        cmdDoLayout.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/layout_orthogonal.png"))); // NOI18N
         cmdDoLayout.setToolTipText("Layout erneuern");
         cmdDoLayout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdDoLayoutActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdDoLayoutActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdDoLayout);
 
         add(jToolBar1, java.awt.BorderLayout.NORTH);
-    }// </editor-fold>//GEN-END:initComponents
+    } // </editor-fold>//GEN-END:initComponents
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void chkSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSaveChangesActionPerformed
+    private void chkSaveChangesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSaveChangesActionPerformed
     }//GEN-LAST:event_chkSaveChangesActionPerformed
 
     /**
@@ -773,7 +791,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdSetViewNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSetViewNameActionPerformed
+    private void cmdSetViewNameActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSetViewNameActionPerformed
         if (LOG.isDebugEnabled()) {
             LOG.debug("asking for new view name");
         }
@@ -793,7 +811,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomOutActionPerformed
+    private void cmdZoomOutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomOutActionPerformed
         scene.setZoomFactor(scene.getZoomFactor() * 0.9);
         scene.revalidate();
         scene.validate();
@@ -804,7 +822,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomInActionPerformed
+    private void cmdZoomInActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomInActionPerformed
         scene.setZoomFactor(scene.getZoomFactor() * 1.1);
         scene.revalidate();
         scene.validate();
@@ -815,7 +833,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdResetZoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetZoomActionPerformed
+    private void cmdResetZoomActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetZoomActionPerformed
         scene.setZoomFactor(1);
         scene.revalidate();
         scene.validate();
@@ -841,7 +859,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomToAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomToAllActionPerformed
+    private void cmdZoomToAllActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomToAllActionPerformed
         zoomToFit();
     }//GEN-LAST:event_cmdZoomToAllActionPerformed
 
@@ -850,7 +868,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdDoLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDoLayoutActionPerformed
+    private void cmdDoLayoutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDoLayoutActionPerformed
         scene.layoutScene();
     }//GEN-LAST:event_cmdDoLayoutActionPerformed
 
@@ -922,16 +940,17 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
                 // TODO: change encoding to UTF-8
                 format.setEncoding("ISO-8859-1");
                 try {
-                    XMLWriter writer = new XMLWriter(out, format);
+                    final XMLWriter writer = new XMLWriter(out, format);
                     writer.write(view);
                     writer.flush();
                 } catch (final Exception e) {
                     LOG.error("could not save diagramm to disk", e);
                     ErrorUtils.showErrorMessage(
-                        "Das Diagramm '" + viewName
-                        + "' konnte nicht gespeichert werden",
+                        "Das Diagramm '"
+                                + viewName
+                                + "' konnte nicht gespeichert werden",
                         "Fehler beim"
-                        + " Speichern",
+                                + " Speichern",
                         e);
                 }
             } else {
@@ -982,8 +1001,6 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
     public void setDomainserverProject(final DomainserverProject project) {
         this.project = project;
         setViewName(getFreeViewname(project, "Neues Thema"));
-        setToolTipText(NbBundle.getMessage(ClassDiagramTopComponent.class,
-                "ClassDiagramTopComponent.tooltip"));
         explorerManager.setRootContext(project.getDomainserverProjectNode());
     }
 
@@ -992,6 +1009,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @return  DOCUMENT ME!
      */
+    @Override
     public ExplorerManager getExplorerManager() {
         return explorerManager;
     }
@@ -1038,11 +1056,15 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             }
             setName(
                 NbBundle.getMessage(ClassDiagramTopComponent.class,
-                    "ClassDiagramTopComponent.name") + " [" + viewName + "@"
-                + project.getDomainserverProjectNode().getName() + "]");
+                    "ClassDiagramTopComponent.name")
+                        + " ["
+                        + viewName
+                        + "@"
+                        + project.getDomainserverProjectNode().getName()
+                        + "]");
         } catch (final Exception e) {
             LOG.error("could not set viewname: " + viewName + " :: forced = "
-                + forced, e);
+                        + forced, e);
         }
     }
 
@@ -1060,14 +1082,13 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         int counter = 0;
         final Set opened = TopComponent.getRegistry().getOpened();
         final Vector<String> v = new Vector<String>();
-        for (Object o : opened) {
+        for (final Object o : opened) {
             if (o instanceof ClassDiagramTopComponent) {
                 v.add(((ClassDiagramTopComponent)o).getViewName());
             }
         }
         project.getProjectDirectory().refresh();
-        while (
-            ((project != null) && (project.getProjectDirectory().getFileObject(
+        while (((project != null) && (project.getProjectDirectory().getFileObject(
                                 getFileNameOfView(ret)) != null))
                     || (v.contains(ret))) {
             counter++;
@@ -1079,7 +1100,8 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
     /**
      * DOCUMENT ME!
      *
-     * @param   cidsClass  DOCUMENT ME!
+     * @param   cidsClass        DOCUMENT ME!
+     * @param   relationClasses  DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
      */
@@ -1156,6 +1178,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         r.setBounds((int)posX, (int)posY, (int)r.getWidth(), (int)r.getHeight());
         EventQueue.invokeLater(new Runnable() {
 
+                @Override
                 public void run() {
                     myView.scrollRectToVisible(r);
                 }
@@ -1344,12 +1367,14 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
          *
          * @return  DOCUMENT ME!
          */
+        @Override
         public JPopupMenu getPopupMenu(final Widget widget, final Point localLocation) {
             final JPopupMenu popupMenu = new JPopupMenu();
             final JMenuItem remove = new JMenuItem(((ClassNodeWidget)widget).getNodeName() + " entfernen");
             remove.addActionListener(
                 new ActionListener() {
 
+                    @Override
                     public void actionPerformed(final ActionEvent e) {
                         removeClassWidget((ClassNodeWidget)widget);
                     }

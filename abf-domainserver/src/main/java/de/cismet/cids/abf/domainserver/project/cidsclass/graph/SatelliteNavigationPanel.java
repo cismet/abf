@@ -1,58 +1,84 @@
-/*
- * SatelliteNavigationPanel.java
- *
- * Created on 17. Januar 2007, 12:15
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.cidsclass.graph;
 
-import de.cismet.cids.abf.domainserver.project.cidsclass.ClassDiagramTopComponent;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
+import org.apache.log4j.Logger;
+
 import org.netbeans.spi.navigator.NavigatorPanel;
+
 import org.openide.util.Lookup;
 import org.openide.windows.TopComponent;
 
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.netbeans.spi.navigator.NavigatorLookupHint;
+
 /**
+ * DOCUMENT ME!
  *
- * @author Stefan Flemming
+ * @author   Stefan Flemming
+ * @version  $Revision$, $Date$
  */
 public class SatelliteNavigationPanel implements NavigatorPanel {
-    
-    /** Creates a new instance of SatelliteNavigationPanel no argument required */
-    public SatelliteNavigationPanel() {
-        
-    }
-    
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    private static final transient Logger LOG = Logger.getLogger(SatelliteNavigationPanel.class);
+
+    //~ Methods ----------------------------------------------------------------
+
+    @Override
     public String getDisplayHint() {
-        return "SSSSSS";//return NbBundle.getMessage(SatelliteNavigationPanel.class, "HINT_SatelliteNavigationPanel");
+        return getDisplayName();
     }
-    
+
+    @Override
     public String getDisplayName() {
-        return "SSSSSS";//NbBundle.getMessage(SatelliteNavigationPanel.class, "CTL_SatelliteNavigationPanel");
+        return "Class Graph Satellite Panel";
     }
-    
+
+    @Override
     public JComponent getComponent() {
-        TopComponent tc=TopComponent.getRegistry().getActivated();
+        final TopComponent tc = TopComponent.getRegistry().getActivated();
         if (tc instanceof ClassDiagramTopComponent) {
             return ((ClassDiagramTopComponent)tc).getScene().createSatelliteView();
-        }
-        else {
+        } else {
             return new JPanel();
         }
     }
-    
-    public void panelActivated(Lookup context) {
+
+    @Override
+    public void panelActivated(final Lookup context) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("called panelActivated: " + context); // NOI18N
+        }
     }
-    
+
+    @Override
     public void panelDeactivated() {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("called panelDeactivated"); // NOI18N
+        }
     }
-    
+
+    @Override
     public Lookup getLookup() {
         return null;
     }
-    
+
+    static final class SatelliteLookupHint implements NavigatorLookupHint {
+
+    //~ Methods ----------------------------------------------------------------
+
+    @Override
+    public String getContentType() {
+        return "cismet/satellite-wiring"; // NOI18N
+    }
+}
 }

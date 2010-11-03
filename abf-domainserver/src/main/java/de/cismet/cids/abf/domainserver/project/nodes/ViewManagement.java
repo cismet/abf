@@ -30,7 +30,7 @@ import java.util.Set;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
-import de.cismet.cids.abf.domainserver.project.cidsclass.ClassDiagramTopComponent;
+import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
 import de.cismet.cids.abf.domainserver.project.view.ViewNode;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;

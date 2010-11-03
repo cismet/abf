@@ -29,7 +29,7 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
-import de.cismet.cids.abf.domainserver.project.cidsclass.ClassDiagramTopComponent;
+import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
 import de.cismet.cids.abf.domainserver.project.nodes.ViewManagement;
 
 /**

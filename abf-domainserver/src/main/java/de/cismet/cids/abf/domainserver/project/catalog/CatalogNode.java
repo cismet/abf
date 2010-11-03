@@ -21,7 +21,6 @@ import org.openide.nodes.Node.Property;
 import org.openide.nodes.NodeTransfer;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
-import org.openide.util.Exceptions;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
@@ -55,9 +54,11 @@ import java.util.Map.Entry;
 import javax.persistence.NoResultException;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalIconFactory;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -104,8 +105,25 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
     private static final String NULL;
 
     static {
-        IMAGE_OPEN = ImageUtilities.icon2Image(UIManager.getIcon("Tree.openIcon"));                   // NOI18N
-        IMAGE_CLOSED = ImageUtilities.icon2Image(UIManager.getIcon("Tree.closedIcon"));               // NOI18N
+        Icon openIcon = UIManager.getIcon("Tree.openIcon"); // NOI18N
+        // native GTK look and feel fix
+        if (openIcon == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("GTK+ fix: using tree folder icon from metaliconfactory for opened icon"); // NOI18N
+            }
+            openIcon = MetalIconFactory.getTreeFolderIcon();
+        }
+
+        Icon closedIcon = UIManager.getIcon("Tree.closedIcon"); // NOI18N
+        // native GTK look and feel fix
+        if (closedIcon == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("GTK+ fix: using tree folder icon from metaliconfactory for closed icon");  // NOI18N
+            }
+            closedIcon = MetalIconFactory.getTreeFolderIcon();
+        }
+        IMAGE_OPEN = ImageUtilities.icon2Image(openIcon);
+        IMAGE_CLOSED = ImageUtilities.icon2Image(closedIcon);
         BADGE_ORG = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_org.png");     // NOI18N
         BADGE_OBJ = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_object.png");  // NOI18N
         BADGE_DYN = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_dynamic.png"); // NOI18N
@@ -1060,24 +1078,26 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
                 return;
             }
         }
+
+        //J-
         final CatalogNode pasteNode = (CatalogNode)node;
         // one cannot add children to object nodes
-        if (!catNode.getNodeType().equals(CatNode.Type.OBJECT.getType())                             // one can only perform copy & paste/dnd
-                                                                                                     // within a project
-                    && pasteNode.project.getProjectDirectory().equals(project.getProjectDirectory()) // one cannot paste a node in itself
-                                                                                                     // !pasteNode.equals(this) &&
-                    &&// one cannot paste a node where it already is
-                    // !(pasteNode.getParent() != null && pasteNode.getParent().
-                    // equals(this.catNode)) &&
-                    // one cannot insert if this is dynamic node
-                    (catNode.getDynamicChildren() == null)) // &&
-        // this restriction must not be present
-        // one cannot insert dynamically created nodes
-        // (pasteNode.getParent() == null || pasteNode.getParent().
-        // getDynamicChildren() == null))
+        if (!catNode.getNodeType().equals(CatNode.Type.OBJECT.getType())
+                // one can only perform copy & paste/dnd within a project
+                && pasteNode.project.getProjectDirectory().equals(project.getProjectDirectory())
+                // one cannot paste a node in itself
+                // !pasteNode.equals(this) &&
+                // one cannot paste a node where it already is
+                // !(pasteNode.getParent() != null && pasteNode.getParent().equals(this.catNode))
+                // one cannot insert if this is dynamic node
+                && (catNode.getDynamicChildren() == null))
+                // this restriction must not be present
+                // one cannot insert dynamically created nodes
+                // && (pasteNode.getParent() == null || pasteNode.getParent().getDynamicChildren() == null))
         {
             list.add(new CatalogPasteType(pasteNode, mode));
         }
+        //J+
     }
 
     @Override

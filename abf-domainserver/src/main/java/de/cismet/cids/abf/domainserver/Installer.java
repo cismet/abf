@@ -14,7 +14,7 @@ import org.openide.modules.ModuleInstall;
 import org.openide.windows.TopComponent;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.cidsclass.ClassDiagramTopComponent;
+import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
 
 /**
  * Manages a module's lifecycle. Remember that an installer is optional and often not needed at all.

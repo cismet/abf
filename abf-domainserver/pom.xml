@@ -105,6 +105,11 @@
             <artifactId>org-jdesktop-layout</artifactId>
         </dependency>
         <!-- END of nbm-required declaration -->
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-core-multiview</artifactId>
+            <version>RELEASE69</version>
+        </dependency>
     </dependencies>
 
     <build>

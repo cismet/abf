@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.jdesktop.swingx.JXTable;
 
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 import java.awt.Component;
 import java.awt.Image;
@@ -502,7 +503,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         jToolBar1.add(cmdDown);
 
         jtbAttrSync.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(jtbAttrSync, "Synchronise");
+        org.openide.awt.Mnemonics.setLocalizedText(jtbAttrSync, NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.jtbAttrSync.text")); // NOI18N
         jtbAttrSync.setFocusable(false);
         jtbAttrSync.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jtbAttrSync.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -854,7 +855,12 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         retrieveAndSortTypes();
     }//GEN-LAST:event_togSortedAlphaActionPerformed
 
-    private void jtbAttrSyncActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jtbAttrSyncActionPerformed
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void jtbAttrSyncActionPerformed(final java.awt.event.ActionEvent evt)//GEN-FIRST:event_jtbAttrSyncActionPerformed
     {//GEN-HEADEREND:event_jtbAttrSyncActionPerformed
         classTableModel.setAttrSync(jtbAttrSync.isSelected());
     }//GEN-LAST:event_jtbAttrSyncActionPerformed

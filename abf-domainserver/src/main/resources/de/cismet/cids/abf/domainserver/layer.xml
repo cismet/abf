@@ -99,7 +99,6 @@
                 <attr name="position" intvalue="400"/>
             </file>
         </folder>
-        <file name="CVS_hidden"/>
         <folder name="Diagram.instance">
             <attr name="position" intvalue="400"/>
             <attr name="SystemFileSystem.localizingBundle" stringvalue="de.cismet.cids.abf.domainserver.Bundle"/>
@@ -119,7 +118,7 @@
                 <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance"/>
                 <attr name="position" intvalue="100"/>
             </file>
-            </folder>
+        </folder>
         <folder name="Usermanagement.instance">
             <attr name="position" intvalue="300"/>
             <attr name="SystemFileSystem.localizingBundle" stringvalue="de.cismet.cids.abf.domainserver.Bundle"/>
@@ -159,6 +158,13 @@
         <file name="Source_hidden"/>
     </folder>
     <folder name="Toolbars">
+        <folder name="File">
+            <file name="org-openide-actions-SaveAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/System/org-openide-actions-SaveAction.instance"/>
+                <attr name="position" intvalue="444"/>
+            </file>
+            <file name="org-openide-actions-SaveAllAction.shadow_hidden"/>
+        </folder>
         <folder name="Diagram">
             <attr name="position" intvalue="400"/>
             <file name="de-cismet-cids-abf-domainserver-project-cidsclass-AddToCurrentDiagram.shadow">
@@ -177,7 +183,7 @@
                 <attr name="originalFile" stringvalue="Actions/Diagram/de-cismet-cids-abf-domainserver-project-cidsclass-CreateDiagramFromClassWithRelationsAction.instance"/>
                 <attr name="position" intvalue="100"/>
             </file>
-            </folder>
+        </folder>
         <folder name="Domainserver">
             <attr name="position" intvalue="100"/>
             <file name="de-cismet-cids-abf-domainserver-ConnectAction.shadow">
@@ -200,9 +206,7 @@
                 <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-cidsclass-ImportClassesAction.instance"/>
                 <attr name="position" intvalue="250"/>
             </file>
-            </folder>
-        <file name="Build_hidden"/>
-        <file name="Debug_hidden"/>
+        </folder>
         <folder name="Usermanagement">
             <attr name="position" intvalue="300"/>
             <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUsergroupAction.shadow">
@@ -229,29 +233,10 @@
                 <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance"/>
                 <attr name="position" intvalue="400"/>
             </file>
+            <file name="Build_hidden"/>
+            <file name="Debug_hidden"/>
         </folder>
 
-    </folder>
-    <folder name="Windows2">
-        <folder name="Components">
-            <file name="ClassDiagramTopComponent.settings" url="ClassDiagramTopComponentSettings.xml"/>
-            <file name="SyncingSqlTopComponent.settings" url="SyncingSqlTopComponentSettings.xml"/>
-        </folder>
-        <folder name="Modes">
-            <folder name="editor">
-                <file name="ClassDiagramTopComponent.wstcref" url="ClassDiagramTopComponentWstcref.xml"/>
-                <file name="SyncingSqlTopComponent.wstcref" url="SyncingSqlTopComponentWstcref.xml"/>
-            </folder>
-            <folder name="navigator">
-                <attr name="navigatorTC.wstcref/properties.wstcref" boolvalue="true"/>
-                <file name="navigatorTC.wstcref" url="navigatorTCWstcref.xml"/>
-                <file name="properties.wstcref" url="propertiesWstcref_1.xml"/>
-            </folder>
-            <folder name="properties">
-                <file name="properties.wstcref" url="propertiesWstcref.xml"/>
-                <file name="properties.wstcref_hidden"/>
-            </folder>
-        </folder>
     </folder>
     <folder name="Navigator">
         <folder name="Panels">

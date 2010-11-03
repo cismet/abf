@@ -172,7 +172,7 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
                                 final List<CatNode> rootNodes = project.getCidsDataObjectBackend().getRootNodes();
                                 final ListIterator<CatNode> it = rootNodes.listIterator();
                                 while (it.hasNext()) {
-                                    if (CatNode.Type.CLASS.toString().equals(it.next().getNodeType())) {
+                                    if (CatNode.Type.CLASS.getType().equals(it.next().getNodeType())) {
                                         it.remove();
                                     }
                                 }
