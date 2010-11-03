@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.cismet</groupId>
         <artifactId>cismet-parent</artifactId>
-        <version>1.0</version>
+        <version>1.2.2</version>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
@@ -27,6 +27,7 @@
 
     <modules>
         <!--module>../abf-app</module-->
+        <module>../abf-l10n-de</module>
         <module>../abf-branding</module>
         <module>../abf-update-center</module>
         <module>../abf-utilities</module>
@@ -36,6 +37,7 @@
         <module>../abf-broker</module>
         <module>../abf-client</module>
         <module>../abf-domainserver</module>
+        <module>../abf-distribution</module>
     </modules>
 
     <scm>
@@ -46,7 +48,7 @@
 
     <properties>
         <!-- !!! REMEBER TO UPDATE IMPLEMENTATION VERSION OF MAVEN API IN LIBRARY SUPPORT ON NB UPDATE !!! -->
-        <netbeans.version>RELEASE69</netbeans.version>
+        <netbeans.version>RELEASE691</netbeans.version>
         <branding.token>cidsabf</branding.token>
     </properties>
 
@@ -189,11 +191,11 @@
                 <artifactId>org-netbeans-spi-navigator</artifactId>
                 <version>${netbeans.version}</version>
             </dependency>
-        <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-modules-maven</artifactId>
+            <dependency>
+                <groupId>org.netbeans.modules</groupId>
+                <artifactId>org-netbeans-modules-maven</artifactId>
                 <version>${netbeans.version}</version>
-        </dependency>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -225,13 +227,11 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.4.1</version>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.0</version>
+                </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.0</version>
-            </plugin>
-        </plugins>
     </build>
 </project>
