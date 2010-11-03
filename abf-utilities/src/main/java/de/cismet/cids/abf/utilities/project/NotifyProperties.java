@@ -20,11 +20,6 @@ import java.util.Properties;
  */
 public class NotifyProperties extends Properties {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 3706583352903228873L;
-
     //~ Instance fields --------------------------------------------------------
 
     private final transient ProjectState state;

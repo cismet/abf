@@ -37,8 +37,6 @@ public class ErrorPanel extends javax.swing.JPanel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -8096154248899537792L;
     private static final transient Logger LOG = Logger.getLogger(
             ErrorPanel.class);
 

@@ -35,11 +35,6 @@ public final class DataSystemUtil {
      */
     private static final class NoFoldersFilter implements DataFilter {
 
-        //~ Static fields/initializers -----------------------------------------
-
-        /** Use serialVersionUID for interoperability. */
-        private static final long serialVersionUID = 6445764160586840464L;
-
         //~ Methods ------------------------------------------------------------
 
         @Override

@@ -15,11 +15,6 @@ package de.cismet.cids.abf.utilities;
  */
 public class CacheException extends RuntimeException {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -5426497354312572913L;
-
     //~ Constructors -----------------------------------------------------------
 
     /**

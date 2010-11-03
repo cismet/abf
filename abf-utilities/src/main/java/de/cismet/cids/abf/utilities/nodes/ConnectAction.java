@@ -24,11 +24,6 @@ import de.cismet.cids.abf.utilities.UtilityCommons;
  */
 public final class ConnectAction extends CookieAction {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 8874221040720723926L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override
