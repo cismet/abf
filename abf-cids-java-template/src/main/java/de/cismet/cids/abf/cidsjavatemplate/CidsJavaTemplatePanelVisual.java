@@ -30,9 +30,6 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -4067865228812999364L;
-
     public static final String PROP_PROJECT_NAME = "projectName"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
