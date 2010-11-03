@@ -204,7 +204,6 @@ public class MavenArtifactEntryPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         lblArtifactId = new javax.swing.JLabel();
         txtArtifactId = new javax.swing.JTextField();
         lblGroupIdSuffix = new javax.swing.JLabel();
@@ -214,66 +213,98 @@ public class MavenArtifactEntryPanel extends javax.swing.JPanel {
         lblGroupId = new javax.swing.JLabel();
         txtGroupId = new javax.swing.JTextField();
 
-        lblArtifactId.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.lblArtifactId.text")); // NOI18N
+        lblArtifactId.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.lblArtifactId.text")); // NOI18N
 
-        txtArtifactId.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.txtArtifactId.text")); // NOI18N
+        txtArtifactId.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.txtArtifactId.text")); // NOI18N
 
-        lblGroupIdSuffix.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.lblGroupIdSuffix.text")); // NOI18N
+        lblGroupIdSuffix.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.lblGroupIdSuffix.text")); // NOI18N
 
-        txtGroupIdSuffix.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.txtGroupIdSuffix.text")); // NOI18N
+        txtGroupIdSuffix.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.txtGroupIdSuffix.text")); // NOI18N
 
-        lblVersion.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.lblVersion.text")); // NOI18N
+        lblVersion.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.lblVersion.text")); // NOI18N
 
-        txtVersion.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.txtVersion.text")); // NOI18N
+        txtVersion.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.txtVersion.text")); // NOI18N
 
-        lblGroupId.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.lblGroupId.text")); // NOI18N
+        lblGroupId.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.lblGroupId.text")); // NOI18N
 
-        txtGroupId.setBackground(javax.swing.UIManager.getDefaults().getColor("TextComponent.selectionBackgroundInactive"));
-        txtGroupId.setText(NbBundle.getMessage(MavenArtifactEntryPanel.class, "MavenArtifactEntryPanel.txtGroupId.text")); // NOI18N
+        txtGroupId.setBackground(javax.swing.UIManager.getDefaults().getColor(
+                "TextComponent.selectionBackgroundInactive"));
+        txtGroupId.setText(NbBundle.getMessage(
+                MavenArtifactEntryPanel.class,
+                "MavenArtifactEntryPanel.txtGroupId.text")); // NOI18N
         txtGroupId.setFocusTraversalKeysEnabled(false);
         txtGroupId.setFocusable(false);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(lblGroupIdSuffix)
-                    .add(lblGroupId)
-                    .add(lblArtifactId)
-                    .add(lblVersion))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtVersion, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtArtifactId, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                    .add(txtGroupIdSuffix, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtGroupId, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(lblGroupIdSuffix).add(
+                        lblGroupId).add(lblArtifactId).add(lblVersion)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        txtVersion,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        251,
+                        Short.MAX_VALUE).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        txtArtifactId,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        251,
+                        Short.MAX_VALUE).add(
+                        txtGroupIdSuffix,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        251,
+                        Short.MAX_VALUE).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        txtGroupId,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        251,
+                        Short.MAX_VALUE)).addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblGroupIdSuffix)
-                    .add(txtGroupIdSuffix, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblGroupId)
-                    .add(txtGroupId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblArtifactId)
-                    .add(txtArtifactId, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(txtVersion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(lblVersion))
-                .addContainerGap(32, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblGroupIdSuffix).add(
+                        txtGroupIdSuffix,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblGroupId).add(
+                        txtGroupId,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).add(18, 18, 18).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblArtifactId).add(
+                        txtArtifactId,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(
+                        txtVersion,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(lblVersion)).addContainerGap(
+                    32,
+                    Short.MAX_VALUE)));
+    } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
 

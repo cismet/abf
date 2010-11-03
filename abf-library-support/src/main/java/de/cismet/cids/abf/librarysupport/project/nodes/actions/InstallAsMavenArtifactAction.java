@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.netbeans.modules.maven.api.execute.RunUtils;
 import org.netbeans.modules.maven.execute.BeanRunConfig;
 
+import org.openide.filesystems.FileObject;
 import org.openide.nodes.Node;
 import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle;
@@ -49,7 +50,6 @@ import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.SourceContextCookie;
 import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
-import org.openide.filesystems.FileObject;
 
 /**
  * DOCUMENT ME!

@@ -7,8 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.librarysupport.project;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 
 import org.netbeans.api.project.Project;
@@ -16,6 +14,8 @@ import org.netbeans.spi.project.ProjectFactory;
 import org.netbeans.spi.project.ProjectState;
 
 import org.openide.filesystems.FileObject;
+
+import java.io.IOException;
 
 /**
  * DOCUMENT ME!

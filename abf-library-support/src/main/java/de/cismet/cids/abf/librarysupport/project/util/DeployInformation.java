@@ -228,8 +228,8 @@ public final class DeployInformation {
                         provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE)));
             final String passwd = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
             final String destFile = destFilePath.getAbsolutePath()
-                        + System.getProperty("file.separator")    // NOI18N
-                        + srcFile.getName() + ".jar";             // NOI18N
+                        + System.getProperty("file.separator") // NOI18N
+                        + srcFile.getName() + ".jar";          // NOI18N
 
             return new DeployInformation(
                     libCC.getLibrarySupportContext().getBuildXML(),

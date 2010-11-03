@@ -7,20 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.librarysupport;
 
-import de.cismet.cids.abf.librarysupport.project.LibrarySupportProjectNode;
-import de.cismet.cids.abf.librarysupport.project.nodes.actions.DeployChangedJarsAction;
-import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
-import de.cismet.cids.abf.utilities.ModificationStore;
-
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.Action;
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 
 import org.netbeans.api.project.Project;
@@ -31,6 +17,20 @@ import org.openide.modules.ModuleInstall;
 import org.openide.nodes.Node;
 import org.openide.util.NbBundle;
 import org.openide.windows.WindowManager;
+
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.Action;
+import javax.swing.JOptionPane;
+
+import de.cismet.cids.abf.librarysupport.project.LibrarySupportProjectNode;
+import de.cismet.cids.abf.librarysupport.project.nodes.actions.DeployChangedJarsAction;
+import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
+import de.cismet.cids.abf.utilities.ModificationStore;
 
 /**
  * DOCUMENT ME!
@@ -60,8 +60,12 @@ public final class Installer extends ModuleInstall {
                     if (!cleanupRequested) {
                         final int answer = JOptionPane.showConfirmDialog(
                                 WindowManager.getDefault().getMainWindow(),
-                                NbBundle.getMessage(this.getClass(), "Installer.closing().JOptionPane.confirmDialog.message"), // NOI18N
-                                NbBundle.getMessage(this.getClass(), "Installer.closing().JOptionPane.confirmDialog.title"), // NOI18N
+                                NbBundle.getMessage(
+                                    this.getClass(),
+                                    "Installer.closing().JOptionPane.confirmDialog.message"), // NOI18N
+                                NbBundle.getMessage(
+                                    this.getClass(),
+                                    "Installer.closing().JOptionPane.confirmDialog.title"), // NOI18N
                                 JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.QUESTION_MESSAGE);
                         if (answer == JOptionPane.CANCEL_OPTION) {

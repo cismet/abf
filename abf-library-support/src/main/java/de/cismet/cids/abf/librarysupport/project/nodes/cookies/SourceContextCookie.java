@@ -1,55 +1,45 @@
-/*
- * SourceContextCookie.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on 16. August 2007, 10:15
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.librarysupport.project.nodes.cookies;
 
-import java.io.FileNotFoundException;
 import org.openide.filesystems.FileObject;
 import org.openide.nodes.Node;
 
+import java.io.FileNotFoundException;
+
 /**
+ * DOCUMENT ME!
  *
- * @author mscholl
- * @version 1.5
+ * @author   mscholl
+ * @version  1.5
  */
-public interface SourceContextCookie extends Node.Cookie
-{
+public interface SourceContextCookie extends Node.Cookie {
+
+    //~ Methods ----------------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     *
+     * @throws  FileNotFoundException  DOCUMENT ME!
+     */
     FileObject getSourceObject() throws FileNotFoundException;
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
     boolean isSourceObjectObservered();
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  observed  DOCUMENT ME!
+     */
     void setSourceObjectObserved(final boolean observed);
 }
