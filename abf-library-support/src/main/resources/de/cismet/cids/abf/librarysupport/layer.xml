@@ -14,7 +14,7 @@
             </file>
             <file name="de-cismet-cids-abf-librarysupport-project-nodes-actions-InstallAsMavenArtifactAction.instance">
                 <attr name="delegate" methodvalue="org.openide.awt.Actions.inject"/>
-                <attr name="displayName" bundlevalue="de.cismet.cids.abf.librarysupport.project.nodes.actions.Bundle#CTL_InstallAsMavenArtifactAction"/>
+                <attr name="displayName" bundlevalue="de.cismet.cids.abf.librarysupport.project.nodes.actions.Bundle#InstallAsMavenArtifactAction.getName().returnvalue"/>
                 <attr name="injectable" stringvalue="de.cismet.cids.abf.librarysupport.project.nodes.actions.InstallAsMavenArtifactAction"/>
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.context"/>
                 <attr name="noIconInMenu" boolvalue="false"/>
