@@ -61,8 +61,7 @@ public class BrokerLogicalView implements LogicalViewProvider {
                         final FileObject fo = dataObject.getPrimaryFile();
                         final String name = fo.getName();
                         // CVS Folder
-                        if (
-                            fo.isFolder()
+                        if (fo.isFolder()
                                     && ("cvs".equalsIgnoreCase(name)      // NOI18N
                                         || BrokerProjectFactory.PROJECT_DIR.equalsIgnoreCase(name))) {
                             return false;

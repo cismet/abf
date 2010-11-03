@@ -7,10 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.broker;
 
-import java.awt.Image;
-
-import javax.swing.Action;
-
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
 
 import org.openide.nodes.FilterNode;
@@ -19,6 +15,10 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
+
+import java.awt.Image;
+
+import javax.swing.Action;
 
 /**
  * DOCUMENT ME!

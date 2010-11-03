@@ -7,18 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.broker;
 
-import de.cismet.cids.abf.utilities.project.NotifyProperties;
-import de.cismet.cids.abf.utilities.windows.ErrorUtils;
-
-import java.beans.PropertyChangeListener;
-
-import java.io.IOException;
-
-import java.util.Properties;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.ActionProvider;
@@ -29,6 +17,18 @@ import org.openide.filesystems.FileObject;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
+
+import java.beans.PropertyChangeListener;
+
+import java.io.IOException;
+
+import java.util.Properties;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+import de.cismet.cids.abf.utilities.project.NotifyProperties;
+import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 /**
  * DOCUMENT ME!
@@ -120,8 +120,8 @@ public class BrokerProject implements Project {
     private Properties loadProperties() {
         final FileObject fob = projectDir.getFileObject(
                 BrokerProjectFactory.PROJECT_DIR
-                + "/" // NOI18N
-                + BrokerProjectFactory.PROJECT_PROPFILE);
+                        + "/" // NOI18N
+                        + BrokerProjectFactory.PROJECT_PROPFILE);
         final Properties properties = new NotifyProperties(state);
         if (fob != null) {
             try {
