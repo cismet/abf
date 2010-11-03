@@ -46,11 +46,6 @@ import javax.swing.event.ChangeListener;
  */
 public final class EditDistributionVisualPanel1 extends JPanel {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 3196389420902075341L;
-
     //~ Instance fields --------------------------------------------------------
 
     private final EditDistributionWizardPanel1 model;

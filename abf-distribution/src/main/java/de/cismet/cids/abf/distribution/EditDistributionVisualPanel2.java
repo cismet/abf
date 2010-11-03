@@ -92,9 +92,6 @@ public final class EditDistributionVisualPanel2 extends JPanel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 2943797571519240249L;
-
     public static final String DEFAULT_GID_PREFIX = "de.cismet.cids.local"; // NOI18N
 
     private static final String GROUP_AID = "__onlyGroup__"; // NOI18N
@@ -397,11 +394,6 @@ public final class EditDistributionVisualPanel2 extends JPanel {
      */
     private static final class ArtifactTreeRenderer extends DefaultTreeCellRenderer {
 
-        //~ Static fields/initializers -----------------------------------------
-
-        /** Use serialVersionUID for interoperability. */
-        private static final long serialVersionUID = 3807308103024197593L;
-
         //~ Instance fields ----------------------------------------------------
 
         private final transient ImageIcon localIcon = ImageUtilities.loadImageIcon(
@@ -463,11 +455,6 @@ public final class EditDistributionVisualPanel2 extends JPanel {
      */
     private static final class ArtifactListRenderer extends DefaultListRenderer {
 
-        //~ Static fields/initializers -----------------------------------------
-
-        /** Use serialVersionUID for interoperability. */
-        private static final long serialVersionUID = -32124865963647459L;
-
         //~ Instance fields ----------------------------------------------------
 
         private final transient ImageIcon jarIcon = ImageUtilities.loadImageIcon(
@@ -519,11 +506,6 @@ public final class EditDistributionVisualPanel2 extends JPanel {
      * @version  $Revision$, $Date$
      */
     private static final class DnDTree extends JXTree implements DragGestureListener, DragSourceListener {
-
-        //~ Static fields/initializers -----------------------------------------
-
-        /** Use serialVersionUID for interoperability. */
-        private static final long serialVersionUID = -7285926810188790451L;
 
         //~ Instance fields ----------------------------------------------------
 
@@ -615,11 +597,6 @@ public final class EditDistributionVisualPanel2 extends JPanel {
     private static final class DnDList extends JXList implements DropTargetListener,
         DragSourceListener,
         DragGestureListener {
-
-        //~ Static fields/initializers -----------------------------------------
-
-        /** Use serialVersionUID for interoperability. */
-        private static final long serialVersionUID = 8403472095529683012L;
 
         //~ Instance fields ----------------------------------------------------
 

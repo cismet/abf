@@ -47,11 +47,6 @@ import javax.swing.text.PlainDocument;
  */
 public final class EditDistributionVisualPanel3 extends JPanel {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 414959302413068805L;
-
     //~ Instance fields --------------------------------------------------------
 
     private final transient EditDistributionWizardPanel3 model;
@@ -338,11 +333,6 @@ public final class EditDistributionVisualPanel3 extends JPanel {
      */
     private final class NameDocument extends PlainDocument {
 
-        //~ Static fields/initializers -----------------------------------------
-
-        /** Use serialVersionUID for interoperability. */
-        private static final long serialVersionUID = -3802884574992655331L;
-
         //~ Methods ------------------------------------------------------------
 
         @Override
@@ -357,11 +347,6 @@ public final class EditDistributionVisualPanel3 extends JPanel {
      * @version  $Revision$, $Date$
      */
     private final class OutDirDocument extends PlainDocument {
-
-        //~ Static fields/initializers -----------------------------------------
-
-        /** Use serialVersionUID for interoperability. */
-        private static final long serialVersionUID = 3326070235436026926L;
 
         //~ Methods ------------------------------------------------------------
 
