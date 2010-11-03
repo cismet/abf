@@ -61,14 +61,12 @@ public class ClientLogicalView implements LogicalViewProvider {
                         final String name = fo.getName();
                         final String ext = fo.getExt();
                         // CVS Folder
-                        if (
-                            fo.isFolder()
+                        if (fo.isFolder()
                                     && ("cvs".equalsIgnoreCase(name)      // NOI18N
                                         || ClientProjectFactory.PROJECT_DIR.equalsIgnoreCase(name))) {
                             return false;
                         }
-                        if (
-                            fo.isFolder()
+                        if (fo.isFolder()
                                     || "jnlp".equalsIgnoreCase(ext)       // NOI18N
                                     || "cfg".equalsIgnoreCase(ext)        // NOI18N
                                     || "properties".equalsIgnoreCase(ext) // NOI18N

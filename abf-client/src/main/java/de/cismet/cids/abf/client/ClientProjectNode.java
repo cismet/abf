@@ -7,14 +7,14 @@
 ****************************************************/
 package de.cismet.cids.abf.client;
 
-import java.awt.Image;
-
 import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
+
+import java.awt.Image;
 
 /**
  * DOCUMENT ME!

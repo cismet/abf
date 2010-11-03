@@ -7,17 +7,17 @@
 ****************************************************/
 package de.cismet.cids.abf.client;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import java.util.Properties;
-
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ProjectFactory;
 import org.netbeans.spi.project.ProjectState;
 
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import java.util.Properties;
 
 /**
  * DOCUMENT ME!

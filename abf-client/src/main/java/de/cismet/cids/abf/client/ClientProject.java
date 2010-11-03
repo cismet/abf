@@ -7,18 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.client;
 
-import de.cismet.cids.abf.utilities.project.NotifyProperties;
-import de.cismet.cids.abf.utilities.windows.ErrorUtils;
-
-import java.beans.PropertyChangeListener;
-
-import java.io.IOException;
-
-import java.util.Properties;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.ActionProvider;
@@ -29,6 +17,18 @@ import org.openide.filesystems.FileObject;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
+
+import java.beans.PropertyChangeListener;
+
+import java.io.IOException;
+
+import java.util.Properties;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+import de.cismet.cids.abf.utilities.project.NotifyProperties;
+import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 /**
  * DOCUMENT ME!
@@ -86,7 +86,9 @@ public class ClientProject implements Project {
                 result = projectDir.createFolder(WEBINTERFACE_DIR);
             } catch (final IOException ioe) {
                 ErrorUtils.showErrorMessage(
-                    org.openide.util.NbBundle.getMessage(ClientProject.class, "ClientProject.getWebinterfaceFolder(boolean).ErrorUtils.message"), // NOI18N
+                    org.openide.util.NbBundle.getMessage(
+                        ClientProject.class,
+                        "ClientProject.getWebinterfaceFolder(boolean).ErrorUtils.message"), // NOI18N
                     ioe);
             }
         }
@@ -118,15 +120,17 @@ public class ClientProject implements Project {
     private Properties loadProperties() {
         final FileObject fob = projectDir.getFileObject(
                 ClientProjectFactory.PROJECT_DIR
-                + "/" // NOI18N
-                + ClientProjectFactory.PROJECT_PROPFILE);
+                        + "/" // NOI18N
+                        + ClientProjectFactory.PROJECT_PROPFILE);
         final Properties properties = new NotifyProperties(state);
         if (fob != null) {
             try {
                 properties.load(fob.getInputStream());
             } catch (final IOException e) {
                 ErrorUtils.showErrorMessage(
-                    org.openide.util.NbBundle.getMessage(ClientProject.class, "ClientProject.loadProperties().ErrorUtils.message"), // NOI18N
+                    org.openide.util.NbBundle.getMessage(
+                        ClientProject.class,
+                        "ClientProject.loadProperties().ErrorUtils.message"), // NOI18N
                     e);
             }
         }
