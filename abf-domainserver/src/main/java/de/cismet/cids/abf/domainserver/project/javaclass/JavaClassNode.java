@@ -1,56 +1,14 @@
-/*
- * JavaClassNode.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * thorsten.hell@cismet.de
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on 10. Januar 2007, 14:50
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.javaclass;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.ProjectNode;
-import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
-import de.cismet.cids.abf.domainserver.project.nodes.JavaClassManagement;
-import de.cismet.cids.abf.utilities.CidsDistClassLoader;
-import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
-import java.awt.Image;
-import java.beans.PropertyEditor;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import javax.swing.Action;
 import org.apache.log4j.Logger;
+
 import org.openide.ErrorManager;
 import org.openide.actions.DeleteAction;
 import org.openide.nodes.Children;
@@ -61,408 +19,386 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.RequestProcessor;
 import org.openide.util.actions.CallableSystemAction;
 
+import java.awt.Image;
+
+import java.beans.PropertyEditor;
+
+import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.Action;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
+import de.cismet.cids.abf.domainserver.project.nodes.JavaClassManagement;
+import de.cismet.cids.abf.utilities.CidsDistClassLoader;
+
+import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
+
 /**
+ * DOCUMENT ME!
  *
- * @author thorsten.hell@cismet.de
- * @author martin.scholl@cismet.de
- * @version 1.18
+ * @author   thorsten.hell@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  1.18
  */
-public final class JavaClassNode extends ProjectNode
-{
+public final class JavaClassNode extends ProjectNode {
+
+    //~ Static fields/initializers ---------------------------------------------
+
     private static final transient Logger LOG = Logger.getLogger(
-           JavaClassNode.class);
-    
-    public static final String GREEN_HEX = "00C000"; // NOI18N
+            JavaClassNode.class);
+
+    public static final String GREEN_HEX = "00C000";  // NOI18N
     public static final String ORANGE_HEX = "FF8000"; // NOI18N
-    public static final String RED_HEX = "FF0000"; // NOI18N
-    public static final String BLACK_HEX = "000000"; // NOI18N
-    
-    
+    public static final String RED_HEX = "FF0000";    // NOI18N
+    public static final String BLACK_HEX = "000000";  // NOI18N
+
+    //~ Instance fields --------------------------------------------------------
+
     private final transient Image image;
     private transient JavaClass javaClass;
     // must be set to null to be newly computed
     private transient String htmlDisplayName;
     private transient String htmlColor;
-    
-    public JavaClassNode(final JavaClass javaClass, final DomainserverProject 
-            project)
-    {
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new JavaClassNode object.
+     *
+     * @param  javaClass  DOCUMENT ME!
+     * @param  project    DOCUMENT ME!
+     */
+    public JavaClassNode(final JavaClass javaClass, final DomainserverProject project) {
         super(Children.LEAF, project);
         this.javaClass = javaClass;
         image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                + "javaclass.png"); // NOI18N
+                        + "javaclass.png"); // NOI18N
     }
-    
+
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         final String[] parts = javaClass.getQualifier().split("\\."); // NOI18N
-        return parts.length > 0 ? parts[parts.length-1] : getName();
+        return (parts.length > 0) ? parts[parts.length - 1] : getName();
     }
-    
+
     @Override
-    public String getName()
-    {
+    public String getName() {
         return javaClass.getQualifier();
     }
-    
+
     @Override
-    public String getHtmlDisplayName()
-    {
-        if(htmlDisplayName == null)
-        {
-            RequestProcessor.getDefault().post(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    final StringBuffer name = new StringBuffer(getDisplayName(
-                            ));
-                    final CidsDistClassLoader cdcl;
-                    try
-                    {
-                        cdcl = CidsDistClassLoader.getInstance(project.
-                                getProjectDirectory().getParent());
-                    }catch(final Exception e)
-                    {
-                        LOG.error("cids distribution corrupted", e); // NOI18N
-                        name.insert(0, "<font color=\"#\">"); // NOI18N
-                        name.insert(14, BLACK_HEX);
-                        name.append("</font>"); // NOI18N
-                        htmlDisplayName = name.toString();
-                        fireDisplayNameChange(getDisplayName(), 
+    public String getHtmlDisplayName() {
+        if (htmlDisplayName == null) {
+            RequestProcessor.getDefault().post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        final StringBuffer name = new StringBuffer(getDisplayName());
+                        final CidsDistClassLoader cdcl;
+                        try {
+                            cdcl = CidsDistClassLoader.getInstance(project.getProjectDirectory().getParent());
+                        } catch (final Exception e) {
+                            LOG.error("cids distribution corrupted", e); // NOI18N
+                            name.insert(0, "<font color=\"#\">");        // NOI18N
+                            name.insert(14, BLACK_HEX);
+                            name.append("</font>");                      // NOI18N
+                            htmlDisplayName = name.toString();
+                            fireDisplayNameChange(getDisplayName(),
                                 htmlDisplayName);
-                        return;
-                    }
-                    final String qualifier = javaClass.getQualifier();
-                    if(cdcl.isLoadable(qualifier, null))
-                    {
-                        final String type = javaClass.getType();
-                        if(type.equals(JavaClass.Type.UNKNOWN.getType()))
-                        {
-                            htmlColor = ORANGE_HEX;
-                        }else
-                        {    
-                            try
-                            {
-                                final Class c = Class.forName(qualifier, false, 
-                                        cdcl);
-                                try
-                                {
-                                    final Class iface = Class.forName(type, 
-                                            false, cdcl);
-                                    final Object o = c.newInstance();
-                                    if(iface.isInstance(o))
-                                    {
-                                        htmlColor = GREEN_HEX;
-                                    }else
-                                    {
-                                        htmlColor = ORANGE_HEX;
-                                    }
-                                }catch(final ClassNotFoundException ex)
-                                {
-                                    LOG.warn("could not load interface "//NOI18N
-                                            + "that must be " // NOI18N
-                                            + "implemented", // NOI18N
-                                            ex);
-                                    htmlColor = BLACK_HEX;
-                                }catch(final Exception ex)
-                                {
-                                    LOG.warn("could not instantiate " // NOI18N
-                                            + "javaclass: " // NOI18N
-                                            + c.getName(), ex);
-                                    htmlColor = BLACK_HEX;
-                                } 
-                            }catch(final ClassNotFoundException ex)
-                            {
-                                LOG.error("class could not be loaded: "// NOI18N
-                                        + qualifier, ex);
-                                htmlColor = RED_HEX;
-                            }catch(final UnsupportedClassVersionError err)
-                            {
-                                LOG.error("class could not be loaded: "// NOI18N
-                                        + qualifier
-                                        + " -- maybe class was " // NOI18N
-                                        + "compiled with newer jdk", // NOI18N
-                                        err);
-                                htmlColor = BLACK_HEX;
-                            }catch(final Exception e)
-                            {
-                                LOG.error("class could not be loaded: "// NOI18N
-                                        + qualifier, e);
-                                htmlColor = BLACK_HEX;
-                            }
+                            return;
                         }
-                    }else
-                    {
-                        htmlColor = RED_HEX;
+                        final String qualifier = javaClass.getQualifier();
+                        if (cdcl.isLoadable(qualifier, null)) {
+                            final String type = javaClass.getType();
+                            if (type.equals(JavaClass.Type.UNKNOWN.getType())) {
+                                htmlColor = ORANGE_HEX;
+                            } else {
+                                try {
+                                    final Class c = Class.forName(qualifier, false,
+                                            cdcl);
+                                    try {
+                                        final Class iface = Class.forName(type,
+                                                false, cdcl);
+                                        final Object o = c.newInstance();
+                                        if (iface.isInstance(o)) {
+                                            htmlColor = GREEN_HEX;
+                                        } else {
+                                            htmlColor = ORANGE_HEX;
+                                        }
+                                    } catch (final ClassNotFoundException ex) {
+                                        LOG.warn(
+                                            "could not load interface "  // NOI18N
+                                                    + "that must be "    // NOI18N
+                                                    + "implemented",     // NOI18N
+                                            ex);
+                                        htmlColor = BLACK_HEX;
+                                    } catch (final Exception ex) {
+                                        LOG.warn(
+                                            "could not instantiate "     // NOI18N
+                                                    + "javaclass: "      // NOI18N
+                                                    + c.getName(),
+                                            ex);
+                                        htmlColor = BLACK_HEX;
+                                    }
+                                } catch (final ClassNotFoundException ex) {
+                                    LOG.error("class could not be loaded: " // NOI18N
+                                                + qualifier, ex);
+                                    htmlColor = RED_HEX;
+                                } catch (final UnsupportedClassVersionError err) {
+                                    LOG.error(
+                                        "class could not be loaded: "    // NOI18N
+                                                + qualifier
+                                                + " -- maybe class was " // NOI18N
+                                                + "compiled with newer jdk", // NOI18N
+                                        err);
+                                    htmlColor = BLACK_HEX;
+                                } catch (final Exception e) {
+                                    LOG.error("class could not be loaded: " // NOI18N
+                                                + qualifier, e);
+                                    htmlColor = BLACK_HEX;
+                                }
+                            }
+                        } else {
+                            htmlColor = RED_HEX;
+                        }
+                        name.insert(0, "<font color=\"#\">");            // NOI18N
+                        name.insert(14, htmlColor);
+                        name.append("</font>");                          // NOI18N
+                        htmlDisplayName = name.toString();
+                        fireDisplayNameChange(getDisplayName(), htmlDisplayName);
                     }
-                    name.insert(0, "<font color=\"#\">"); // NOI18N
-                    name.insert(14, htmlColor);
-                    name.append("</font>"); // NOI18N
-                    htmlDisplayName = name.toString();
-                    fireDisplayNameChange(getDisplayName(), htmlDisplayName);
-                }
-            });
+                });
         }
         return htmlDisplayName;
     }
-    
+
     @Override
-    public String getShortDescription()
-    {
+    public String getShortDescription() {
         final String tooltip;
-        if(htmlColor == null)
-        {
+        if (htmlColor == null) {
             tooltip = super.getShortDescription();
-        }else if(htmlColor.equals(GREEN_HEX))
-        {
+        } else if (htmlColor.equals(GREEN_HEX)) {
             tooltip = org.openide.util.NbBundle.getMessage(
                     JavaClassNode.class,
-                    "JavaClassNode.getShortDescription().tooltip.classPresentCorrectInterface"); // NOI18N
-        }else if(htmlColor.equals(ORANGE_HEX))
-        {
+                    "JavaClassNode.getShortDescription().tooltip.classPresentCorrectInterface");   // NOI18N
+        } else if (htmlColor.equals(ORANGE_HEX)) {
             tooltip = org.openide.util.NbBundle.getMessage(
                     JavaClassNode.class,
-                    "JavaClassNode.getShortDescription().tooltip.classPresentWrongInterface"); // NOI18N
-        }else if(htmlColor.equals(RED_HEX))
-        {
+                    "JavaClassNode.getShortDescription().tooltip.classPresentWrongInterface");     // NOI18N
+        } else if (htmlColor.equals(RED_HEX)) {
             tooltip = org.openide.util.NbBundle.getMessage(
-                    JavaClassNode.class, "JavaClassNode.getShortDescription().tooltip.classNotPresent"); // NOI18N
-        }else if(htmlColor.equals(BLACK_HEX))
-        {
+                    JavaClassNode.class,
+                    "JavaClassNode.getShortDescription().tooltip.classNotPresent");                // NOI18N
+        } else if (htmlColor.equals(BLACK_HEX)) {
             tooltip = org.openide.util.NbBundle.getMessage(
                     JavaClassNode.class,
                     "JavaClassNode.getShortDescription().tooltip.classNotCheckableCanWorkAnyway"); // NOI18N
-        }else
-        {
+        } else {
             tooltip = super.getShortDescription();
         }
         return tooltip;
     }
-    
+
     @Override
-    public Image getIcon(final int i)
-    {
+    public Image getIcon(final int i) {
         return image;
     }
-    
+
     @Override
-    protected Sheet createSheet()
-    {
+    protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set main = Sheet.createPropertiesSet();
         main.setName(org.openide.util.NbBundle.getMessage(
-                JavaClassNode.class, "JavaClassNode.createSheet().main.name")); // NOI18N
+                JavaClassNode.class,
+                "JavaClassNode.createSheet().main.name"));        // NOI18N
         main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                JavaClassNode.class, "JavaClassNode.createSheet().main.displayName")); // NOI18N
-        try
-        {
+                JavaClassNode.class,
+                "JavaClassNode.createSheet().main.displayName")); // NOI18N
+        try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Id ">
-            final Property idProp = new PropertySupport.Reflection(javaClass, 
-                    Integer.class, "getId", null); // NOI18N
+            final Property idProp = new PropertySupport.Reflection(javaClass,
+                    Integer.class, "getId", null);               // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    JavaClassNode.class, "JavaClassNode.createSheet().idProp.name")); // NOI18N
+                    JavaClassNode.class,
+                    "JavaClassNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Qualifier ">
             final Property qualifierProp = new PropertySupport(
-                    "qualifier", // NOI18N
-                    String.class, 
+                    "qualifier",                                              // NOI18N
+                    String.class,
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "JavaClassNode.createSheet().qualifierProp.classname"), // NOI18N
+                        JavaClassNode.class,
+                        "JavaClassNode.createSheet().qualifierProp.classname"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "JavaClassNode.createSheet().qualifierProp.nameOfClass"), // NOI18N
+                        JavaClassNode.class,
+                        "JavaClassNode.createSheet().qualifierProp.nameOfClass"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return javaClass.getQualifier();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final JavaClass old = javaClass;
-                    try
-                    {
-                        javaClass.setQualifier(object.toString());
-                        javaClass = project.getCidsDataObjectBackend().store(
-                                javaClass);
-                        fireDisplayNameChange(null, getDisplayName());
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store javaclass", e); // NOI18N
-                        javaClass = old;
-                        ErrorManager.getDefault().notify(e);
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return javaClass.getQualifier();
                     }
-                }
-            };//</editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final JavaClass old = javaClass;
+                        try {
+                            javaClass.setQualifier(object.toString());
+                            javaClass = project.getCidsDataObjectBackend().store(
+                                    javaClass);
+                            fireDisplayNameChange(null, getDisplayName());
+                        } catch (final Exception e) {
+                            LOG.error("could not store javaclass", e); // NOI18N
+                            javaClass = old;
+                            ErrorManager.getDefault().notify(e);
+                        }
+                    }
+                };                                                     //</editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Type ">
             final Property typeProp = new PropertySupport(
-                    "type", // NOI18N
+                    "type",                                              // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "JavaClassNode.createSheet().typeProp.type"), // NOI18N
+                        JavaClassNode.class,
+                        "JavaClassNode.createSheet().typeProp.type"),    // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "JavaClassNode.createSheet().typeProp.typeOfClass"), // NOI18N
+                        JavaClassNode.class,
+                        "JavaClassNode.createSheet().typeProp.typeOfClass"), // NOI18N
                     true,
-                    true)
-            {
-                private final PropertyEditor editor = new 
-                        JavaClassTypePropertyEditor();
-                
-                @Override
-                public Object getValue() throws
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    final String type = javaClass.getType();
-                    if(type.equals(JavaClass.Type.TO_STRING.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                JavaClassNode.class,
-                                "JavaClassNode.createSheet().typeProp.getValue().toStringClass"); // NOI18N
-                    }else if(type.equals(JavaClass.Type.RENDERER.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                JavaClassNode.class, "JavaClassNode.createSheet().typeProp.getValue().renderer"); // NOI18N
-                    }else if(type.equals(
-                            JavaClass.Type.SIMPLE_EDITOR.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                JavaClassNode.class,
-                                "JavaClassNode.createSheet().typeProp.getValue().simpleEditor"); // NOI18N
-                    }else if(type.equals(
-                            JavaClass.Type.COMPLEX_EDITOR.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                JavaClassNode.class,
-                                "JavaClassNode.createSheet().typeProp.getValue().complexEditor"); // NOI18N
-                    }else if(type.equals(JavaClass.Type.UNKNOWN.getType()))
-                    {
-                        return org.openide.util.NbBundle.getMessage(
-                                JavaClassNode.class,
-                                "JavaClassNode.createSheet().typeProp.getValue().unknownClass"); // NOI18N
+                    true) {
+
+                    private final PropertyEditor editor = new JavaClassTypePropertyEditor();
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        final String type = javaClass.getType();
+                        if (type.equals(JavaClass.Type.TO_STRING.getType())) {
+                            return org.openide.util.NbBundle.getMessage(
+                                    JavaClassNode.class,
+                                    "JavaClassNode.createSheet().typeProp.getValue().toStringClass"); // NOI18N
+                        } else if (type.equals(JavaClass.Type.RENDERER.getType())) {
+                            return org.openide.util.NbBundle.getMessage(
+                                    JavaClassNode.class,
+                                    "JavaClassNode.createSheet().typeProp.getValue().renderer");      // NOI18N
+                        } else if (type.equals(
+                                        JavaClass.Type.SIMPLE_EDITOR.getType())) {
+                            return org.openide.util.NbBundle.getMessage(
+                                    JavaClassNode.class,
+                                    "JavaClassNode.createSheet().typeProp.getValue().simpleEditor");  // NOI18N
+                        } else if (type.equals(
+                                        JavaClass.Type.COMPLEX_EDITOR.getType())) {
+                            return org.openide.util.NbBundle.getMessage(
+                                    JavaClassNode.class,
+                                    "JavaClassNode.createSheet().typeProp.getValue().complexEditor"); // NOI18N
+                        } else if (type.equals(JavaClass.Type.UNKNOWN.getType())) {
+                            return org.openide.util.NbBundle.getMessage(
+                                    JavaClassNode.class,
+                                    "JavaClassNode.createSheet().typeProp.getValue().unknownClass");  // NOI18N
+                        }
+                        return type;
                     }
-                    return type;
-                }
-                
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    return editor;
-                }
-                
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
+
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        return editor;
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final JavaClass old = javaClass;
-                    try
-                    {
-                        javaClass.setType(object.toString());
-                        javaClass = project.getCidsDataObjectBackend().store(
-                                javaClass);
-                        htmlDisplayName = null;
-                        fireDisplayNameChange(getDisplayName(), null);
-                    }catch(final Exception e)
-                    {
-                        javaClass = old;
-                        LOG.error("could not set notice", e); // NOI18N
-                        ErrorManager.getDefault().notify(e);
+                        InvocationTargetException {
+                        final JavaClass old = javaClass;
+                        try {
+                            javaClass.setType(object.toString());
+                            javaClass = project.getCidsDataObjectBackend().store(
+                                    javaClass);
+                            htmlDisplayName = null;
+                            fireDisplayNameChange(getDisplayName(), null);
+                        } catch (final Exception e) {
+                            javaClass = old;
+                            LOG.error("could not set notice", e); // NOI18N
+                            ErrorManager.getDefault().notify(e);
+                        }
                     }
-                }
-            };//</editor-fold>
+                };                                                //</editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Notice ">
             final Property noticeProp = new PropertySupport(
-                    "notice", // NOI18N
+                    "notice",                                         // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "JavaClassNode.createSheet().noticeProp.notice"), // NOI18N
+                        JavaClassNode.class,
+                        "JavaClassNode.createSheet().noticeProp.notice"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        JavaClassNode.class, "JavaClassNode.createSheet().noticeProp.notice"), // NOI18N
+                        JavaClassNode.class,
+                        "JavaClassNode.createSheet().noticeProp.notice"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return (javaClass.getNotice() == null) ?
-                        org.openide.util.NbBundle.getMessage(
-                            JavaClassNode.class, "JavaClassNode.createSheet().noticeProp.getValue().noNotice") : // NOI18N
-                        javaClass.getNotice();
-                }
-                
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final JavaClass old = javaClass;
-                    try
-                    {
-                        javaClass.setNotice(object.toString());
-                        javaClass = project.getCidsDataObjectBackend().store(
-                                javaClass);
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not set notice", e); // NOI18N
-                        javaClass = old;
-                        ErrorManager.getDefault().notify(e);
+                    true) {
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return (javaClass.getNotice() == null)
+                            ? org.openide.util.NbBundle.getMessage(
+                                JavaClassNode.class,
+                                "JavaClassNode.createSheet().noticeProp.getValue().noNotice") : // NOI18N
+                            javaClass.getNotice();
                     }
-                }
-            };//</editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final JavaClass old = javaClass;
+                        try {
+                            javaClass.setNotice(object.toString());
+                            javaClass = project.getCidsDataObjectBackend().store(
+                                    javaClass);
+                        } catch (final Exception e) {
+                            LOG.error("could not set notice", e); // NOI18N
+                            javaClass = old;
+                            ErrorManager.getDefault().notify(e);
+                        }
+                    }
+                };                                                //</editor-fold>
             main.put(idProp);
             main.put(qualifierProp);
             main.put(typeProp);
             main.put(noticeProp);
             sheet.put(main);
-        }catch(final Exception ex)
-        {
+        } catch (final Exception ex) {
             ErrorManager.getDefault().notify(ex);
         }
         return sheet;
     }
-    
+
     @Override
-    public Action[] getActions(final boolean b)
-    {
-        return new Action[] 
-        {
-            CallableSystemAction.get(DeleteAction.class)
-        };
+    public Action[] getActions(final boolean b) {
+        return new Action[] { CallableSystemAction.get(DeleteAction.class) };
     }
-    
+
     @Override
-    public boolean canDestroy()
-    {
+    public boolean canDestroy() {
         return true;
     }
-    
+
     @Override
-    public void destroy() throws IOException
-    {
-        try
-        {
+    public void destroy() throws IOException {
+        try {
             project.getCidsDataObjectBackend().deleteJavaClass(javaClass);
             ((JavaClassManagement)project.getLookup().lookup(
                     JavaClassManagement.class)).refreshChildren();
-            ((ClassManagement)project.getLookup().lookup(ClassManagement.
-                    class)).refresh();
-        }catch(final Exception e)
-        {
+            ((ClassManagement)project.getLookup().lookup(ClassManagement.class)).refresh();
+        } catch (final Exception e) {
             LOG.error("error during javaclass deletion", e); // NOI18N
             ErrorManager.getDefault().notify(e);
         }

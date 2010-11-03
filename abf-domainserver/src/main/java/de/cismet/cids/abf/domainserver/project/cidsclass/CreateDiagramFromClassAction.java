@@ -7,11 +7,11 @@
 ****************************************************/
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
-import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.nodes.ViewManagement;
-
 import org.openide.util.NbBundle;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
+import de.cismet.cids.abf.domainserver.project.nodes.ViewManagement;
 
 /**
  * DOCUMENT ME!
@@ -20,16 +20,11 @@ import org.openide.util.NbBundle;
  */
 public final class CreateDiagramFromClassAction extends DiagramAction {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 2085923280351303559L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override
     public void performAction() {
-        ClassDiagramTopComponent diagram = ClassDiagramTopComponent.getDefault();
+        final ClassDiagramTopComponent diagram = ClassDiagramTopComponent.getDefault();
         diagram.setDomainserverProject(getDomainserverprojectForSelectedCidsClassNodes());
         diagram.addClasses(getSelectedCidsClassNodes());
         diagram.open();
@@ -39,7 +34,8 @@ public final class CreateDiagramFromClassAction extends DiagramAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(CreateDiagramFromClassAction.class,
+        return NbBundle.getMessage(
+                CreateDiagramFromClassAction.class,
                 "CreateDiagramFromClassAction.getName().returnvalue");
     }
 

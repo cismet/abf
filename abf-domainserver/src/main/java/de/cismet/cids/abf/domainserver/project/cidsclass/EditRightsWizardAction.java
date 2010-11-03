@@ -42,8 +42,6 @@ public final class EditRightsWizardAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 4843357411059143935L;
     private static final transient Logger LOG = Logger.getLogger(EditRightsWizardAction.class);
 
     public static final String PROP_ARRAY_CIDSCLASSES = "__property_array_cidsclasses__"; // NOI18N

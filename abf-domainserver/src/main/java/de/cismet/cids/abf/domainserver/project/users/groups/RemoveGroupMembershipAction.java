@@ -39,15 +39,15 @@ public final class RemoveGroupMembershipAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -1972695855662069770L;
     private static final transient Logger LOG = Logger.getLogger(RemoveGroupMembershipAction.class);
 
     //~ Methods ----------------------------------------------------------------
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(RemoveGroupMembershipAction.class, "RemoveGroupMembershipAction.getName().returnvalue"); // NOI18N
+        return NbBundle.getMessage(
+                RemoveGroupMembershipAction.class,
+                "RemoveGroupMembershipAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -82,8 +82,12 @@ public final class RemoveGroupMembershipAction extends CookieAction {
     protected void performAction(final Node[] nodes) {
         final int answer = JOptionPane.showConfirmDialog(
                 WindowManager.getDefault().getMainWindow(),
-                NbBundle.getMessage(RemoveGroupMembershipAction.class, "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.message"),
-                NbBundle.getMessage(RemoveGroupMembershipAction.class, "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.title"),
+                NbBundle.getMessage(
+                    RemoveGroupMembershipAction.class,
+                    "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.message"),
+                NbBundle.getMessage(
+                    RemoveGroupMembershipAction.class,
+                    "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.title"),
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {
@@ -100,9 +104,9 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                         backend.store(ug);
                     } catch (final RuntimeException e) {
                         LOG.error("could not store usergroup '" + ug // NOI18N
-                            + "' and hence user '" + usr // NOI18N
-                            + "' was not removed", // NOI18N
-                            e);   // NOI18N
+                                    + "' and hence user '" + usr // NOI18N
+                                    + "' was not removed", // NOI18N
+                            e);                            // NOI18N
                         // TODO: notify user
                     }
                     EventQueue.invokeLater(new Runnable() {
@@ -114,9 +118,9 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                             }
                         });
                 } else {
-                    LOG.warn("the usergroup the user '"       // NOI18N
-                        + usr + "' was supposed to be in a group which could not" // NOI18N
-                        + " be found in lookup, nothing is done"); // NOI18N
+                    LOG.warn("the usergroup the user '"                             // NOI18N
+                                + usr + "' was supposed to be in a group which could not" // NOI18N
+                                + " be found in lookup, nothing is done");          // NOI18N
                 }
             }
         }

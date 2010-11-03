@@ -34,9 +34,6 @@ public final class DeleteUserAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 7264500366088496916L;
-
     private static final transient Logger LOG = Logger.getLogger(DeleteUserAction.class);
 
     //~ Methods ----------------------------------------------------------------
@@ -78,8 +75,12 @@ public final class DeleteUserAction extends CookieAction {
     protected void performAction(final Node[] node) {
         final int answer = JOptionPane.showConfirmDialog(
                 WindowManager.getDefault().getMainWindow(),
-                org.openide.util.NbBundle.getMessage(DeleteUserAction.class, "DeleteUserAction.performAction(Node[]).JOptionPane.message"), // NOI18N
-                org.openide.util.NbBundle.getMessage(DeleteUserAction.class, "DeleteUserAction.performAction(Node[]).JOptionPane.title"), // NOI18N
+                org.openide.util.NbBundle.getMessage(
+                    DeleteUserAction.class,
+                    "DeleteUserAction.performAction(Node[]).JOptionPane.message"), // NOI18N
+                org.openide.util.NbBundle.getMessage(
+                    DeleteUserAction.class,
+                    "DeleteUserAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {
@@ -88,7 +89,7 @@ public final class DeleteUserAction extends CookieAction {
                     n.destroy();
                 } catch (final IOException ex) {
                     final String name = n.getCookie(UserContextCookie.class).getUser().getLoginname();
-                    LOG.error("could not delete user: " + name);                                // NOI18N
+                    LOG.error("could not delete user: " + name);                 // NOI18N
                     ErrorManager.getDefault().notify(ex);
                 }
             }

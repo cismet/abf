@@ -25,11 +25,6 @@ import de.cismet.cids.jpa.entity.catalog.CatNode;
  */
 public class InsertLinkAction extends CookieAction {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 2634047435175113521L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override

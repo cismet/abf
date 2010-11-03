@@ -23,11 +23,6 @@ import de.cismet.cids.jpa.entity.catalog.CatNode;
  */
 public class ModifyNodeRightsWizardAction extends NewCatalogNodeWizardAction {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -2186187455043461156L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override

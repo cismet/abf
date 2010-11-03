@@ -1,3 +1,10 @@
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 /*
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License). You may not use this file except in
@@ -18,13 +25,6 @@
  */
 package de.cismet.cids.abf.domainserver.project.cidsclass.graph;
 
-import de.cismet.cids.abf.domainserver.project.cidsclass.CidsClassNode;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Rectangle;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.anchor.Anchor;
 import org.netbeans.api.visual.anchor.AnchorFactory;
@@ -33,18 +33,29 @@ import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.model.ObjectState;
 import org.netbeans.api.visual.model.StateModel;
-import org.openide.util.Utilities;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.SeparatorWidget;
 import org.netbeans.api.visual.widget.Widget;
+
+import org.openide.util.Utilities;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import de.cismet.cids.abf.domainserver.project.cidsclass.CidsClassNode;
 
 /**
  * This class represents a node widget in the VMD plug-in. It implements the minimize ability. It allows to add pin widgets into the widget
@@ -52,11 +63,12 @@ import org.netbeans.api.visual.widget.Widget;
  *
  * @author David Kaspar
  */
+//J-
 public class ClassNodeWidget extends Widget implements StateModel.Listener, MinimizeAbility {
 
     private static final Image IMAGE_EXPAND = Utilities.loadImage ("org/netbeans/modules/visual/resources/vmd-expand.png"); // NOI18N
     private static final Image IMAGE_COLLAPSE = Utilities.loadImage ("org/netbeans/modules/visual/resources/vmd-collapse.png"); // NOI18N
-    
+
     private static final Border BORDER_NODE = new NodeBorder ();
     //private static final Color BORDER_CATEGORY_BACKGROUND = new Color (0xCDDDF8);
     private static final Color BORDER_CATEGORY_BACKGROUND =  java.awt.SystemColor.controlShadow;
@@ -98,7 +110,7 @@ public class ClassNodeWidget extends Widget implements StateModel.Listener, Mini
         header.setBackground (COLOR_SELECTED);
         header.setOpaque (false);
         header.setLayout (LayoutFactory.createHorizontalLayout (LayoutFactory.SerialAlignment.CENTER, 8));
-        
+
         addChild (header);
 
         minimizeWidget = new ImageWidget (scene, IMAGE_COLLAPSE);
@@ -343,7 +355,7 @@ public class ClassNodeWidget extends Widget implements StateModel.Listener, Mini
         label.setCheckClipping (true);
         if (stateModel.getBooleanState ())
             label.setPreferredBounds (new Rectangle ());
-        pinCategoryWidgets.put (categoryDisplayName, label); 
+        pinCategoryWidgets.put (categoryDisplayName, label);
         return label;
     }
 
@@ -389,3 +401,4 @@ public class ClassNodeWidget extends Widget implements StateModel.Listener, Mini
     }
 
 }
+//J+

@@ -75,8 +75,6 @@ public final class ExportClassesAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -2515378214105154848L;
     private static final transient Logger LOG = Logger.getLogger(
             ExportClassesAction.class);
 
@@ -178,10 +176,10 @@ public final class ExportClassesAction extends CookieAction {
         final DomainserverProject project = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
         final Properties p = project.getLookup().lookup(Properties.class);
         if (p == null) {
-            throw new IllegalStateException("project.properties not found");                          // NOI18N
+            throw new IllegalStateException("project.properties not found"); // NOI18N
         }
         final String chooserDir = p.getProperty(FILECHOOSER_DIR, System.getProperty("user.home"));
-        File outDir = new File(chooserDir); // NOI18N
+        File outDir = new File(chooserDir);                                  // NOI18N
         if (!(outDir.exists() && outDir.isDirectory() && outDir.canRead())) {
             outDir = new File(System.getProperty("user.home"));
         }
@@ -1054,6 +1052,8 @@ public final class ExportClassesAction extends CookieAction {
      * @param   preIndent  DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
+     *
+     * @throws  IllegalStateException  DOCUMENT ME!
      */
     private Node createTypeNode(
             final Type type,
@@ -1061,11 +1061,10 @@ public final class ExportClassesAction extends CookieAction {
             final List<String> refList,
             final PrintWriter out,
             final String preIndent) {
-        if(type.getName() == null){
-            throw(new IllegalStateException("Could not find type for Cidsclass "+type.getCidsClass().toString())); //NOI18N
-        }
-        else{
-        out.println(PROCESS + preIndent + type.getName());
+        if (type.getName() == null) {
+            throw (new IllegalStateException("Could not find type for Cidsclass " + type.getCidsClass().toString())); // NOI18N
+        } else {
+            out.println(PROCESS + preIndent + type.getName());
         }
         final Node typeNode = doc.createElementNS(NAMESPACE, CS_TYPE);
         final String id = type.getId().toString();

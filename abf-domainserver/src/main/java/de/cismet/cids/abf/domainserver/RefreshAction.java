@@ -25,11 +25,6 @@ import de.cismet.cids.abf.utilities.Refreshable;
  */
 public final class RefreshAction extends CookieAction {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 9029465562426310703L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override

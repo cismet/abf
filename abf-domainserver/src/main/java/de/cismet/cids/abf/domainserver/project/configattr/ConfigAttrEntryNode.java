@@ -106,19 +106,6 @@ public final class ConfigAttrEntryNode extends ProjectNode {
         getCookieSet().add(new ModifyCookieImpl());
     }
 
-    private final class ModifyCookieImpl implements ModifyCookie {
-
-        @Override
-        public void setModified(boolean modified)
-        {
-            if(modified){
-                getCookieSet().add(saveCookie);
-            } else {
-                getCookieSet().remove(saveCookie);
-            }
-        }
-    }
-
     //~ Methods ----------------------------------------------------------------
 
     @Override
@@ -306,6 +293,25 @@ public final class ConfigAttrEntryNode extends ProjectNode {
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class ModifyCookieImpl implements ModifyCookie {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void setModified(final boolean modified) {
+            if (modified) {
+                getCookieSet().add(saveCookie);
+            } else {
+                getCookieSet().remove(saveCookie);
+            }
+        }
+    }
 
     /**
      * DOCUMENT ME!

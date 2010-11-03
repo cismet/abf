@@ -7,10 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.domainserver.project;
 
-import java.io.IOException;
-
-import java.util.Properties;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
@@ -19,6 +15,10 @@ import org.netbeans.spi.project.ProjectFactory;
 import org.netbeans.spi.project.ProjectState;
 
 import org.openide.filesystems.FileObject;
+
+import java.io.IOException;
+
+import java.util.Properties;
 
 /**
  * DOCUMENT ME!
@@ -69,8 +69,10 @@ public final class DomainserverProjectFactory implements ProjectFactory {
     public boolean isProject(final FileObject projectDirectory) {
         if (LOG.isDebugEnabled()) {
             LOG.debug(
-                "isProject: " + projectDirectory.getPath() + " :: " // NOI18N
-                + (projectDirectory.getFileObject(PROJECT_DIR) != null));
+                "isProject: "
+                        + projectDirectory.getPath()
+                        + " :: " // NOI18N
+                        + (projectDirectory.getFileObject(PROJECT_DIR) != null));
         }
         return projectDirectory.getFileObject(PROJECT_DIR) != null;
     }

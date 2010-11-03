@@ -1,54 +1,14 @@
-/*
- * NewJavaClassWizardAction.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on 8. Januar 2008, 10:01
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.javaclass;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverContext;
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.nodes.JavaClassManagement;
-import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
-import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.EventQueue;
-import java.text.MessageFormat;
-import java.util.Arrays;
-import javax.swing.JComponent;
 import org.apache.log4j.Logger;
+
 import org.openide.DialogDisplayer;
 import org.openide.ErrorManager;
 import org.openide.WizardDescriptor;
@@ -56,31 +16,53 @@ import org.openide.nodes.Node;
 import org.openide.util.HelpCtx;
 import org.openide.util.actions.NodeAction;
 
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.EventQueue;
+
+import java.text.MessageFormat;
+
+import java.util.Arrays;
+
+import javax.swing.JComponent;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverContext;
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.nodes.JavaClassManagement;
+
+import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
+
 /**
+ * DOCUMENT ME!
  *
- * @author martin.scholl@cismet.de
- * @version 1.4
+ * @author   martin.scholl@cismet.de
+ * @version  1.4
  */
-public final class NewJavaClassWizardAction extends NodeAction
-{
+public final class NewJavaClassWizardAction extends NodeAction {
+
+    //~ Static fields/initializers ---------------------------------------------
+
     private static final transient Logger LOG = Logger.getLogger(
             NewJavaClassWizardAction.class);
-    
-    public static final String JAVACLASS_PROPERTY = "javaclassProperty";//NOI18N
-    
+
+    public static final String JAVACLASS_PROPERTY = "javaclassProperty"; // NOI18N
+
+    //~ Instance fields --------------------------------------------------------
+
     private transient WizardDescriptor.Panel[] panels;
-    
+
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    protected void performAction(final Node[] nodes)
-    {
-        final DomainserverProject proj = nodes[0]
-                .getCookie(DomainserverContext.class).getDomainserverProject();
+    protected void performAction(final Node[] nodes) {
+        final DomainserverProject proj = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
         final WizardDescriptor wizard = new WizardDescriptor(getPanels(proj));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent()
         // .getName()
-        wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
+        wizard.setTitleFormat(new MessageFormat("{0}"));                         // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
-                NewJavaClassWizardAction.class, "NewJavaClassWizardAction.performAction(Node[]).wizard.title")); // NOI18N
+                NewJavaClassWizardAction.class,
+                "NewJavaClassWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         final Dialog dialog;
 //        try
 //        {
@@ -95,112 +77,99 @@ public final class NewJavaClassWizardAction extends NodeAction
 //        }
         dialog.setVisible(true);
         dialog.toFront();
-        final boolean cancelled = wizard.getValue() != WizardDescriptor.
-                FINISH_OPTION;
-        if (!cancelled)
-        {
+        final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
+        if (!cancelled) {
             final JavaClass javaClass = (JavaClass)wizard.getProperty(
                     JAVACLASS_PROPERTY);
-            try
-            {
+            try {
                 proj.getCidsDataObjectBackend().store(javaClass);
-            }catch(final Exception ex)
-            {
+            } catch (final Exception ex) {
                 LOG.error("could not store javaclass", ex); // NOI18N
                 ErrorManager.getDefault().notify(ex);
             }
-            final JavaClassManagement jcm = proj.getLookup()
-                    .lookup(JavaClassManagement.class);
-            if(jcm != null)
-            {
-                EventQueue.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        jcm.refreshChildren();
-                    }
-                });
+            final JavaClassManagement jcm = proj.getLookup().lookup(JavaClassManagement.class);
+            if (jcm != null) {
+                EventQueue.invokeLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            jcm.refreshChildren();
+                        }
+                    });
             }
         }
     }
-    
-    private WizardDescriptor.Panel[] getPanels(final DomainserverProject proj)
-    {
-        if (panels == null)
-        {
-            panels = new WizardDescriptor.Panel[] 
-            {
-                new NewJavaClassWizardPanel1(proj)
-            };
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   proj  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    private WizardDescriptor.Panel[] getPanels(final DomainserverProject proj) {
+        if (panels == null) {
+            panels = new WizardDescriptor.Panel[] { new NewJavaClassWizardPanel1(proj) };
             final String[] steps = new String[panels.length];
-            for (int i = 0; i < panels.length; i++)
-            {
+            for (int i = 0; i < panels.length; i++) {
                 final Component c = panels[i].getComponent();
                 // Default step name to component name of panel. Mainly useful
                 // for getting the name of the target chooser to appear in the
                 // list of steps.
                 steps[i] = c.getName();
-                if (c instanceof JComponent)
-                { // assume Swing components
-                    final JComponent jc = (JComponent) c;
+                if (c instanceof JComponent) { // assume Swing components
+                    final JComponent jc = (JComponent)c;
                     // Sets step number of a component
                     jc.putClientProperty(
-                            WizardDescriptor.PROP_CONTENT_SELECTED_INDEX,
-                            Integer.valueOf(i));
+                        WizardDescriptor.PROP_CONTENT_SELECTED_INDEX,
+                        Integer.valueOf(i));
                     // Sets steps names for a panel
                     jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA,
-                            steps);
+                        steps);
                     // Turn on subtitle creation on each step
                     jc.putClientProperty(
-                            WizardDescriptor.PROP_AUTO_WIZARD_STYLE,
-                            Boolean.TRUE);
+                        WizardDescriptor.PROP_AUTO_WIZARD_STYLE,
+                        Boolean.TRUE);
                     // Show steps on the left side with the image on the
                     // background
                     jc.putClientProperty(
-                            WizardDescriptor.PROP_CONTENT_DISPLAYED,
-                            Boolean.TRUE);
+                        WizardDescriptor.PROP_CONTENT_DISPLAYED,
+                        Boolean.TRUE);
                     // Turn on numbering of all steps
                     jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED,
-                            Boolean.TRUE);
+                        Boolean.TRUE);
                 }
             }
         }
         return Arrays.copyOf(panels, panels.length);
     }
-    
+
     // as long as cookieaction does not act as desired
     @Override
-    protected boolean enable(final Node[] nodes)
-    {
-        if(nodes.length != 1)
-        {
+    protected boolean enable(final Node[] nodes) {
+        if (nodes.length != 1) {
             return false;
         }
-        if(nodes[0].getCookie(JavaClassManagementContextCookie.class) == null)
-        {
+        if (nodes[0].getCookie(JavaClassManagementContextCookie.class) == null) {
             return false;
         }
-        return nodes[0].getCookie(DomainserverContext.class)
-                .getDomainserverProject().isConnected();
+        return nodes[0].getCookie(DomainserverContext.class).getDomainserverProject().isConnected();
     }
-    
+
     @Override
-    public String getName()
-    {
+    public String getName() {
         return org.openide.util.NbBundle.getMessage(
-                NewJavaClassWizardAction.class, "NewJavaClassWizardAction.getName().returnvalue"); // NOI18N
+                NewJavaClassWizardAction.class,
+                "NewJavaClassWizardAction.getName().returnvalue"); // NOI18N
     }
-    
+
     @Override
-    public HelpCtx getHelpCtx()
-    {
+    public HelpCtx getHelpCtx() {
         return HelpCtx.DEFAULT_HELP;
     }
 
     @Override
-    protected boolean asynchronous()
-    {
+    protected boolean asynchronous() {
         return false;
     }
 }

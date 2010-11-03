@@ -101,7 +101,6 @@ public class ActionConfigAttrEditor extends ConfigAttrEditor {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         lblKey = new javax.swing.JLabel();
         txtKey = new javax.swing.JTextField();
 
@@ -110,27 +109,26 @@ public class ActionConfigAttrEditor extends ConfigAttrEditor {
         txtKey.setEditable(false);
         txtKey.setText(NbBundle.getMessage(ActionConfigAttrEditor.class, "ActionConfigAttrEditor.txtKey.text")); // NOI18N
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(lblKey)
-                .add(18, 18, 18)
-                .add(txtKey, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(lblKey).add(18, 18, 18).add(
+                    txtKey,
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    316,
+                    Short.MAX_VALUE).addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblKey)
-                    .add(txtKey, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblKey).add(
+                        txtKey,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap(
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    Short.MAX_VALUE)));
+    } // </editor-fold>//GEN-END:initComponents
 
     @Override
     void notifyDataObjectChanged() {

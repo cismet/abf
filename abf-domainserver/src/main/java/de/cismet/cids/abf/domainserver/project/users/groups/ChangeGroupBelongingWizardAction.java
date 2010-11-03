@@ -46,8 +46,6 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -7919012135945692442L;
     private static final transient Logger LOG = Logger.getLogger(
             ChangeGroupBelongingWizardAction.class);
 
@@ -101,7 +99,9 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(ChangeGroupBelongingWizardAction.class, "ChangeGroupBelongingWizardAction.getName()returnvalue"); // NOI18N
+        return NbBundle.getMessage(
+                ChangeGroupBelongingWizardAction.class,
+                "ChangeGroupBelongingWizardAction.getName()returnvalue"); // NOI18N
     }
 
     @Override
@@ -139,8 +139,10 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
                 DomainserverContext.class).getDomainserverProject();
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
-        wizard.setTitleFormat(new MessageFormat("{0}"));                                                     // NOI18N
-        wizard.setTitle(NbBundle.getMessage(ChangeGroupBelongingWizardAction.class, "ChangeGroupBelongingWizardAction.performAction(Node[]).wizard.title")); // NOI18N
+        wizard.setTitleFormat(new MessageFormat("{0}"));                                 // NOI18N
+        wizard.setTitle(NbBundle.getMessage(
+                ChangeGroupBelongingWizardAction.class,
+                "ChangeGroupBelongingWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         wizard.putProperty(USER_PROP, user);
         wizard.putProperty(PROJECT_PROP, project);
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
@@ -153,7 +155,7 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
                 try {
                     project.getCidsDataObjectBackend().store(ug);
                 } catch (final Exception ex) {
-                    LOG.error("could not store usergroup: " + ug.getName(), ex);                             // NOI18N
+                    LOG.error("could not store usergroup: " + ug.getName(), ex);         // NOI18N
                     ErrorManager.getDefault().notify(ex);
                 }
             }

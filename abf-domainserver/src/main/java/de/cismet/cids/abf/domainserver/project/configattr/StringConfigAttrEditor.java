@@ -34,9 +34,10 @@ import org.openide.nodes.Node;
 import org.openide.util.NbBundle;
 import org.openide.util.WeakListeners;
 
+import java.awt.EventQueue;
+
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrValue;
-import java.awt.EventQueue;
 
 /**
  * DOCUMENT ME!
@@ -81,12 +82,10 @@ public class StringConfigAttrEditor extends ConfigAttrEditor {
     }
 
     @Override
-    protected void componentActivated()
-    {
+    protected void componentActivated() {
         super.componentActivated();
         txaValue.requestFocus();
     }
-
 
     /**
      * DOCUMENT ME!
@@ -103,7 +102,6 @@ public class StringConfigAttrEditor extends ConfigAttrEditor {
         }
         txtKey.setText(entry.getKey().getKey());
         txaValue.setText(entry.getValue().getValue());
-
     }
 
     @Override
@@ -112,8 +110,7 @@ public class StringConfigAttrEditor extends ConfigAttrEditor {
     }
 
     @Override
-    ConfigAttrEntry getEditorValue()
-    {
+    ConfigAttrEntry getEditorValue() {
         final ConfigAttrEntry entry = dataObject.getCookie(ConfigAttrEntryCookie.class).getEntry();
 
         final ConfigAttrValue newValue = new ConfigAttrValue();
@@ -132,17 +129,15 @@ public class StringConfigAttrEditor extends ConfigAttrEditor {
     }
 
     @Override
-    void notifyDataObjectChanged()
-    {
+    void notifyDataObjectChanged() {
         EventQueue.invokeLater(new Runnable() {
 
-            @Override
-            public void run()
-            {
-                initValues();
-                setModified(false);
-            }
-        });
+                @Override
+                public void run() {
+                    initValues();
+                    setModified(false);
+                }
+            });
     }
 
     /**
@@ -152,7 +147,6 @@ public class StringConfigAttrEditor extends ConfigAttrEditor {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         lblKey = new javax.swing.JLabel();
         txtKey = new javax.swing.JTextField();
         lblValue = new javax.swing.JLabel();
@@ -169,49 +163,51 @@ public class StringConfigAttrEditor extends ConfigAttrEditor {
         txaValue.setColumns(20);
         txaValue.setRows(5);
         txaValue.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txaValueKeyTyped(evt);
-            }
-        });
+
+                @Override
+                public void keyTyped(final java.awt.event.KeyEvent evt) {
+                    txaValueKeyTyped(evt);
+                }
+            });
         jScrollPane1.setViewportView(txaValue);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
-                        .add(lblKey)
-                        .add(18, 18, 18)
-                        .add(txtKey, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE))
-                    .add(lblValue))
-                .addContainerGap())
-        );
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                        jScrollPane1,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        360,
+                        Short.MAX_VALUE).add(
+                        layout.createSequentialGroup().add(lblKey).add(18, 18, 18).add(
+                            txtKey,
+                            org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                            316,
+                            Short.MAX_VALUE)).add(lblValue)).addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblKey)
-                    .add(txtKey, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(lblValue)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblKey).add(
+                        txtKey,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).add(18, 18, 18).add(lblValue).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    jScrollPane1,
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    190,
+                    Short.MAX_VALUE).addContainerGap()));
+    } // </editor-fold>//GEN-END:initComponents
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void txaValueKeyTyped(final java.awt.event.KeyEvent evt)//GEN-FIRST:event_txaValueKeyTyped
-    {//GEN-HEADEREND:event_txaValueKeyTyped
+    private void txaValueKeyTyped(final java.awt.event.KeyEvent evt) //GEN-FIRST:event_txaValueKeyTyped
+    {                                                                //GEN-HEADEREND:event_txaValueKeyTyped
         txaValue.getDocument().addUndoableEditListener(undoRedo);
-    }//GEN-LAST:event_txaValueKeyTyped
+    }                                                                //GEN-LAST:event_txaValueKeyTyped
 }

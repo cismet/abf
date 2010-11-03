@@ -1,65 +1,14 @@
-/*
- * CidsAttributeNode.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * thorsten.hell@cismet.de
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on 5. Januar 2007, 15:09
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.ProjectNode;
-import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassPropertyEditor;
-import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
-import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
-import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
-import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
-import de.cismet.cids.abf.utilities.windows.ErrorUtils;
-import de.cismet.cids.jpa.entity.cidsclass.Attribute;
-import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
-import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
-import de.cismet.cids.jpa.entity.permission.AttributePermission;
-import de.cismet.cids.jpa.entity.permission.Permission;
-import de.cismet.cids.jpa.entity.user.UserGroup;
-import java.awt.Image;
-import java.beans.PropertyEditor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.Action;
 import org.apache.log4j.Logger;
+
 import org.openide.actions.DeleteAction;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
@@ -69,18 +18,49 @@ import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
 import org.openide.util.actions.CallableSystemAction;
 
+import java.awt.Image;
+
+import java.beans.PropertyEditor;
+
+import java.lang.reflect.InvocationTargetException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Action;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassPropertyEditor;
+import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
+import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
+import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
+import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.utilities.windows.ErrorUtils;
+
+import de.cismet.cids.jpa.entity.cidsclass.Attribute;
+import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
+import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
+import de.cismet.cids.jpa.entity.permission.AttributePermission;
+import de.cismet.cids.jpa.entity.permission.Permission;
+import de.cismet.cids.jpa.entity.user.UserGroup;
+
 /**
+ * DOCUMENT ME!
  *
- * @author thorsten.hell@cismet.de
- * @author martin.scholl@cismet.de
+ * @author   thorsten.hell@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  $Revision$, $Date$
  */
-public final class CidsAttributeNode extends ProjectNode implements
-        CidsClassContextCookie,
-        CidsAttributeContextCookie
-{
+public final class CidsAttributeNode extends ProjectNode implements CidsClassContextCookie, CidsAttributeContextCookie {
+
+    //~ Static fields/initializers ---------------------------------------------
+
     private static final transient Logger LOG = Logger.getLogger(
             CidsAttributeNode.class);
-    
+
+    //~ Instance fields --------------------------------------------------------
+
     private final transient Image attributeImage;
     private final transient Image arrayBadge;
     private final transient Image foreignKeyBadge;
@@ -92,586 +72,554 @@ public final class CidsAttributeNode extends ProjectNode implements
     private transient CidsClass cidsClass;
     private transient Attribute cidsAttribute;
 
-    public CidsAttributeNode(final Attribute cidsAttribute, final CidsClass 
-            cidsClass, final DomainserverProject project)
-    {
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new CidsAttributeNode object.
+     *
+     * @param  cidsAttribute  DOCUMENT ME!
+     * @param  cidsClass      DOCUMENT ME!
+     * @param  project        DOCUMENT ME!
+     */
+    public CidsAttributeNode(final Attribute cidsAttribute,
+            final CidsClass cidsClass,
+            final DomainserverProject project) {
         super(Children.LEAF, project);
         this.cidsClass = cidsClass;
         this.cidsAttribute = cidsAttribute;
         attributeImage = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER + "attribute.png"); // NOI18N
+                DomainserverProject.IMAGE_FOLDER
+                        + "attribute.png");         // NOI18N
         arrayBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                + "badge_array.png"); // NOI18N
+                        + "badge_array.png");       // NOI18N
         foreignKeyBadge = ImageUtilities.loadImage(
                 DomainserverProject.IMAGE_FOLDER
-                + "badge_foreign_key.png"); // NOI18N
+                        + "badge_foreign_key.png"); // NOI18N
         primaryKeyBadge = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER + "badge_key.png"); // NOI18N
+                DomainserverProject.IMAGE_FOLDER
+                        + "badge_key.png");         // NOI18N
         indexBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                + "badge_search.png"); // NOI18N
+                        + "badge_search.png");      // NOI18N
         permResolve = PermissionResolver.getInstance(project);
     }
-    
+
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    public Image getIcon(final int i)
-    {
+    public Image getIcon(final int i) {
         Image ret = attributeImage;
         int count = 0;
-        if(cidsAttribute.isIndexed())
-        {
+        if (cidsAttribute.isIndexed()) {
             ret = ImageUtilities.mergeImages(ret, indexBadge, 16, 8);
             count++;
         }
-        if(cidsClass.getPrimaryKeyField().equals(cidsAttribute.getFieldName()))
-        {
+        if (cidsClass.getPrimaryKeyField().equals(cidsAttribute.getFieldName())) {
             ret = ImageUtilities.mergeImages(ret, primaryKeyBadge, 16, 8);
             count++;
         }
-        if(cidsAttribute.isForeignKey())
-        {
-            if(count == 0)
-            {
+        if (cidsAttribute.isForeignKey()) {
+            if (count == 0) {
                 ret = ImageUtilities.mergeImages(ret, foreignKeyBadge, 16, 8);
-            }else
-            {
+            } else {
                 ret = ImageUtilities.mergeImages(ret, foreignKeyBadge, 16, 0);
             }
             count++;
         }
-        if(cidsAttribute.isArray())
-        {
-            switch(count)
-            {
-                case 0:
+        if (cidsAttribute.isArray()) {
+            switch (count) {
+                case 0: {
                     ret = ImageUtilities.mergeImages(ret, arrayBadge, 16, 8);
                     break;
-                case 1:
+                }
+                case 1: {
                     ret = ImageUtilities.mergeImages(ret, arrayBadge, 16, 0);
                     break;
-                default:
+                }
+                default: {
                     ret = ImageUtilities.mergeImages(ret, arrayBadge, 8, 8);
+                }
             }
         }
         return ret;
     }
-    
+
     /**
      * Gets the programmatic name of this feature.
      *
-     *
-     * @return The programmatic name of the property/method/event
+     * @return  The programmatic name of the property/method/event
      */
     @Override
-    public String getName()
-    {
+    public String getName() {
         return cidsAttribute.getFieldName();
     }
-    
+
     @Override
-    public String getHtmlDisplayName()
-    {
-        if(cidsAttribute.isVisible() == null || cidsAttribute.isVisible())
-        {
+    public String getHtmlDisplayName() {
+        if ((cidsAttribute.isVisible() == null) || cidsAttribute.isVisible()) {
             return "<font color='!textText'>" + getName() + "</font>"; // NOI18N
-        }else
-        {
-            return "<font color='!controlShadow'>" + getName() // NOI18N
-                    + "</font>"; // NOI18N
+        } else {
+            return "<font color='!controlShadow'>" + getName()         // NOI18N
+                        + "</font>";                                   // NOI18N
         }
     }
-    
+
     @Override
-    protected Sheet createSheet()
-    {
+    protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set main = Sheet.createPropertiesSet();
         final Sheet.Set relations = Sheet.createPropertiesSet();
         final Sheet.Set classes = Sheet.createPropertiesSet();
         final Sheet.Set rightAttributes = Sheet.createPropertiesSet();
-        try
-        {
+        try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: CidsAttrID ">
             final Property idProp = new PropertySupport.Reflection(
-                    cidsAttribute, Integer.class, "getId", null); // NOI18N
+                    cidsAttribute,
+                    Integer.class,
+                    "getId",
+                    null);                                           // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().idProp.name")); // NOI18N
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
             final Property nameProp = new PropertySupport(
-                    "name", // NOI18N
+                    "name",                                                 // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().nameProp.attrName"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().nameProp.attrName"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().nameProp.nameOfAttr"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().nameProp.nameOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getName();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getName();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setName(object.toString());
-                        project.getCidsDataObjectBackend().store(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setName(object.toString());
+                            project.getCidsDataObjectBackend().store(
                                 getCidsAttribute());
-                        fireDisplayNameChange(null, object.toString());
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store cidsAttribute name",// NOI18N
+                            fireDisplayNameChange(null, object.toString());
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store cidsAttribute name", // NOI18N
                                 e);
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().nameProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().nameProp.setValue(Object).ErrorUtils.message"),
+                                e); // NOI18N
+                        }
                     }
-                }
-            };// </editor-fold>
+                };                // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: FieldName ">
             final Property fieldnameProp = new PropertySupport(
-                    "fieldname", // NOI18N
+                    "fieldname",                                                      // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().fieldnameProp.fieldName"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().fieldnameProp.fieldName"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().fieldnameProp.fieldNameOfAttr"),//NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().fieldnameProp.fieldNameOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getFieldName();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setFieldName(object.toString());
-                        project.getCidsDataObjectBackend().store(
-                                getCidsAttribute());
-                        refreshInDiagram();
-                        project.getLookup().lookup(SyncManagement.class)
-                                .refresh();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attribute fieldname",//NOI18N
-                                e);
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CidsAttributeNode.class, 
-                                    "CidsAttributeNode.createSheet().fieldnameProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getFieldName();
                     }
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setFieldName(object.toString());
+                            project.getCidsDataObjectBackend().store(
+                                getCidsAttribute());
+                            refreshInDiagram();
+                            project.getLookup().lookup(SyncManagement.class).refresh();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attribute fieldname", // NOI18N
+                                e);
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
+                                org.openide.util.NbBundle.getMessage(
+                                    CidsAttributeNode.class,
+                                    "CidsAttributeNode.createSheet().fieldnameProp.setValue(Object).ErrorUtils.message"),
+                                e); // NOI18N
+                        }
+                    }
+                };                // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: DefaultValue ">
             final Property defaultValueProp = new PropertySupport(
-                    "defaultValue", // NOI18N
+                    "defaultValue",                                                         // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().defaultValueProp.defaultValue"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().defaultValueProp.defaultValue"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, 
+                        CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().defaultValueProp.defaultValueOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getDefaultValue();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getDefaultValue();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setDefaultValue(object.toString());
-                        project.getCidsDataObjectBackend().store(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setDefaultValue(object.toString());
+                            project.getCidsDataObjectBackend().store(
                                 cidsAttribute);
-                        refreshInDiagram();
-                        project.getLookup().lookup(SyncManagement.class)
-                                .refresh();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr default value",// NOI18N
+                            refreshInDiagram();
+                            project.getLookup().lookup(SyncManagement.class).refresh();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr default value", // NOI18N
                                 e);
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().defaultValueProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().defaultValueProp.setValue(Object).ErrorUtils.message"),
+                                e); // NOI18N
+                        }
                     }
-                }
-                
-                @Override
-                public boolean canWrite()
-                {
-                    return cidsAttribute.isOptional();
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public boolean canWrite() {
+                        return cidsAttribute.isOptional();
+                    }
+                }; // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Position ">
             final Property posProp = new PropertySupport(
-                    "pos", // NOI18N
+                    "pos",                                                     // NOI18N
                     Integer.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().posProp.position"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().posProp.position"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().posProp.positionOfAttr"),// NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().posProp.positionOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getPosition();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getPosition();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setPosition((Integer)object);
-                        project.getCidsDataObjectBackend().store(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setPosition((Integer)object);
+                            project.getCidsDataObjectBackend().store(
                                 cidsAttribute);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr position", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr position", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().posProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().posProp.setValue(Object).ErrorUtils.message"),
+                                e);                                        // NOI18N
+                        }
                     }
-                }
-            };// </editor-fold>
+                };                                                         // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Substitute ">
             final Property substituteProp = new PropertySupport(
-                    "substitute", // NOI18N
+                    "substitute",                                                    // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().substituteProp.replace"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().substituteProp.replace"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().substituteProp.replaceOfAttr"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().substituteProp.replaceOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.isSubstitute();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.isSubstitute();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setSubstitute((Boolean)object);
-                        project.getCidsDataObjectBackend().store(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setSubstitute((Boolean)object);
+                            project.getCidsDataObjectBackend().store(
                                 cidsAttribute);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr substitute", e);//NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr substitute", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().substituteProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().substituteProp.setValue(Object).ErrorUtils.message"),
+                                e);                                          // NOI18N
+                        }
                     }
-                }
-                
-                @Override
-                public boolean canWrite()
-                {
-                    return getCidsAttribute().isForeignKey();
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public boolean canWrite() {
+                        return getCidsAttribute().isForeignKey();
+                    }
+                }; // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Optional ">
             final Property optionalProp = new PropertySupport(
-                    "optional", // NOI18N
-                    Boolean.class, 
+                    "optional",                                                      // NOI18N
+                    Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().optionalProp.optional"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().optionalProp.optional"),    // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().optionalProp.optionalTooltip"),//NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().optionalProp.optionalTooltip"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.isOptional();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.isOptional();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setOptional((Boolean)object);
-                        project.getCidsDataObjectBackend().store(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setOptional((Boolean)object);
+                            project.getCidsDataObjectBackend().store(
                                 cidsAttribute);
-                        refreshInDiagram();
-                        project.getLookup().lookup(SyncManagement.class)
-                                .refresh();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr optional", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                            refreshInDiagram();
+                            project.getLookup().lookup(SyncManagement.class).refresh();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr optional", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().optionalProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().optionalProp.setValue(Object).ErrorUtils.message"),
+                                e);                                        // NOI18N
+                        }
                     }
-                }
-            };// </editor-fold>
+                };                                                         // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Visible ">
             final Property visibleProp = new PropertySupport(
-                    "visible", // NOI18N
+                    "visible",                                                     // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().visibleProp.visible"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().visibleProp.visible"),    // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().visibleProp.visibleTooltip"),// NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().visibleProp.visibleTooltip"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.isVisible();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.isVisible();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setVisible((Boolean)object);
-                        project.getCidsDataObjectBackend().store(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setVisible((Boolean)object);
+                            project.getCidsDataObjectBackend().store(
                                 cidsAttribute);
-                        fireDisplayNameChange(null, object.toString());
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr visible", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                            fireDisplayNameChange(null, object.toString());
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr visible", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().visibleProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().visibleProp.setValue(Object).ErrorUtils.message"),
+                                e);                                       // NOI18N
+                        }
                     }
-                }
-            };// </editor-fold>
+                };                                                        // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Indexed ">
             final Property indexedProp = new PropertySupport(
-                    "indexed", // NOI18N
+                    "indexed",                                                     // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().indexedProp.indexed"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().indexedProp.indexed"),    // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().indexedProp.indexedTooltip"),// NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().indexedProp.indexedTooltip"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.isIndexed();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.isIndexed();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setIndexed((Boolean)object);
-                        project.getCidsDataObjectBackend().store(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setIndexed((Boolean)object);
+                            project.getCidsDataObjectBackend().store(
                                 cidsAttribute);
-                        fireOpenedIconChange();
-                        fireIconChange();
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr indexed", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                            fireOpenedIconChange();
+                            fireIconChange();
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr indexed", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().indexedProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().indexedProp.setValue(Object).ErrorUtils.message"),
+                                e);                                       // NOI18N
+                        }
                     }
-                }
-            };// </editor-fold>
+                };                                                        // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Description ">
             final Property descriptionProp = new PropertySupport(
-                    "description", // NOI18N
-                    String.class, 
+                    "description",                                                  // NOI18N
+                    String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().descriptionProp.description"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().descriptionProp.description"), // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().descriptionProp.descOfAttr"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().descriptionProp.descOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getFieldName();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setFieldName(object.toString());
-                        project.getCidsDataObjectBackend().store(
-                                cidsAttribute);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr description", // NOI18N
-                                e);
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CidsAttributeNode.class, 
-                                    "CidsAttributeNode.createSheet().descriptionProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getFieldName();
                     }
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setFieldName(object.toString());
+                            project.getCidsDataObjectBackend().store(
+                                cidsAttribute);
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr description", // NOI18N
+                                e);
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
+                                org.openide.util.NbBundle.getMessage(
+                                    CidsAttributeNode.class,
+                                    "CidsAttributeNode.createSheet().descriptionProp.setValue(Object).ErrorUtils.message"),
+                                e); // NOI18N
+                        }
+                    }
+                };                // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" PropertyGroup: Java Classes ">
             // <editor-fold defaultstate="collapsed" desc=" Create Property: toString ">
-            final JavaClassPropertyEditor toStringPropertyEditor = new 
-                    JavaClassPropertyEditor(project, JavaClass.Type.TO_STRING);
+            final JavaClassPropertyEditor toStringPropertyEditor = new JavaClassPropertyEditor(
+                    project,
+                    JavaClass.Type.TO_STRING);
             final Property toStringProp = new PropertySupport(
-                    "toString", // NOI18N
-                    JavaClass.class, 
+                    "toString",                                                          // NOI18N
+                    JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().toStringProp.toString"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().toStringProp.toString"),        // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().toStringProp.toStringClassOfAttr"),// NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().toStringProp.toStringClassOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getToString();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setToString((JavaClass)object);
-                        project.getCidsDataObjectBackend().store(
-                                cidsClass);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store cidsClass", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                CidsAttributeNode.class,
-                                "CidsAttributeNode.createSheet().toStringProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getToString();
                     }
-                }
-                
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    return toStringPropertyEditor;
-                }
-                
-            };// </editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setToString((JavaClass)object);
+                            project.getCidsDataObjectBackend().store(
+                                cidsClass);
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store cidsClass", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
+                                org.openide.util.NbBundle.getMessage(
+                                    CidsAttributeNode.class,
+                                    "CidsAttributeNode.createSheet().toStringProp.setValue(Object).ErrorUtils.message"),
+                                e);                                    // NOI18N
+                        }
+                    }
+
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        return toStringPropertyEditor;
+                    }
+                }; // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: fromString ">
-//            final JavaClassPropertyEditor fromStringPropertyEditor = new 
+//            final JavaClassPropertyEditor fromStringPropertyEditor = new
 //                    JavaClassPropertyEditor(project, JavaClassPropertyEditor.
 //                    MODE_FROMSTRING);
-//            Property fromStringProp = new PropertySupport("fromString", 
+//            Property fromStringProp = new PropertySupport("fromString",
 //                    JavaClass.class, "fromString", "fromString-Klasse des " +
 //                    "Attributes", true, true)
 //            {
-//                public Object getValue() throws 
+//                public Object getValue() throws
 //                        IllegalAccessException,
 //                        InvocationTargetException
 //                {
@@ -682,7 +630,7 @@ public final class CidsAttributeNode extends ProjectNode implements
 //                        //       no lazy fetching is performed
 //                        if(cidsAttribute.getFromString() != null)
 //                            //zum fetchen gezwungen
-//                            cidsAttribute.getFromString().toString(); 
+//                            cidsAttribute.getFromString().toString();
 //                        val = cidsAttribute.getFromString();
 //                    }
 //                    catch (Throwable e)
@@ -703,8 +651,8 @@ public final class CidsAttributeNode extends ProjectNode implements
 //                    }
 //                    return val;
 //                }
-//                
-//                public void setValue(Object object) throws 
+//
+//                public void setValue(Object object) throws
 //                        IllegalAccessException,
 //                        IllegalArgumentException,
 //                        InvocationTargetException
@@ -727,383 +675,347 @@ public final class CidsAttributeNode extends ProjectNode implements
 //                        ErrorManager.getDefault().notify(t);
 //                    }
 //                }
-//                
+//
 //                public PropertyEditor getPropertyEditor()
 //                {
 //                    return fromStringPropertyEditor;
 //                }
 //            };// </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Editor ">
-            final JavaClassPropertyEditor editorPropertyEditor = new 
-                    JavaClassPropertyEditor(project, JavaClass.Type.
-                    SIMPLE_EDITOR);
+            final JavaClassPropertyEditor editorPropertyEditor = new JavaClassPropertyEditor(
+                    project,
+                    JavaClass.Type.SIMPLE_EDITOR);
             final Property editorProp = new PropertySupport(
-                    "editor", // NOI18N
+                    "editor",                                                        // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().editorProp.editor"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().editorProp.editor"),        // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, 
+                        CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().editorProp.editorClassOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getEditor();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getEditor();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final CidsClass old = cidsClass;
-                    try
-                    {
-                        cidsAttribute.setEditor((JavaClass)object);
-                        // TODO: why is the class object stored here???
-                        //       cannot understand this because the cidsclass is
-                        //       not modified -.-
-                        cidsClass = project.getCidsDataObjectBackend()
-                                .store(cidsClass);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr editor", e); // NOI18N
-                        cidsClass = old;
-                        ErrorUtils.showErrorMessage(
+                        InvocationTargetException {
+                        final CidsClass old = cidsClass;
+                        try {
+                            cidsAttribute.setEditor((JavaClass)object);
+                            // TODO: why is the class object stored here???
+                            // cannot understand this because the cidsclass is
+                            // not modified -.-
+                            cidsClass = project.getCidsDataObjectBackend().store(cidsClass);
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr editor", e); // NOI18N
+                            cidsClass = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().editorProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().editorProp.setValue(Object).ErrorUtils.message"),
+                                e);                                      // NOI18N
+                        }
                     }
-                }
-                
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    return editorPropertyEditor;
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        return editorPropertyEditor;
+                    }
+                }; // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ComplexEditor ">
-            final JavaClassPropertyEditor complexEditorPropertyEditor = new 
-                    JavaClassPropertyEditor(project, JavaClass.Type.
-                    COMPLEX_EDITOR);
+            final JavaClassPropertyEditor complexEditorPropertyEditor = new JavaClassPropertyEditor(
+                    project,
+                    JavaClass.Type.COMPLEX_EDITOR);
             final Property complexEditorProp = new PropertySupport(
-                    "complexeditor", // NOI18N
+                    "complexeditor",                                                          // NOI18N
                     JavaClass.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().complexEditorProp.complexEditor"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().complexEditorProp.complexEditor"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().complexEditorProp.complexEditorOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getComplexEditor();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final CidsClass old = cidsClass;
-                    try
-                    {
-                        cidsAttribute.setComplexEditor((JavaClass)object);
-                        // TODO: why is the class object stored here???
-                        //       cannot understand this because the cidsclass is
-                        //       not modified -.-
-                        cidsClass = project.getCidsDataObjectBackend()
-                                .store(cidsClass);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attr complex editor",//NOI18N
-                                e);
-                        cidsClass = old;
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CidsAttributeNode.class, 
-                                    "CidsAttributeNode.createSheet().complexEditorProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getComplexEditor();
                     }
-                }
-                
-                @Override
-                public PropertyEditor getPropertyEditor()
-                {
-                    return complexEditorPropertyEditor;
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final CidsClass old = cidsClass;
+                        try {
+                            cidsAttribute.setComplexEditor((JavaClass)object);
+                            // TODO: why is the class object stored here???
+                            // cannot understand this because the cidsclass is
+                            // not modified -.-
+                            cidsClass = project.getCidsDataObjectBackend().store(cidsClass);
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attr complex editor", // NOI18N
+                                e);
+                            cidsClass = old;
+                            ErrorUtils.showErrorMessage(
+                                org.openide.util.NbBundle.getMessage(
+                                    CidsAttributeNode.class,
+                                    "CidsAttributeNode.createSheet().complexEditorProp.setValue(Object).ErrorUtils.message"),
+                                e); // NOI18N
+                        }
+                    }
+
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        return complexEditorPropertyEditor;
+                    }
+                }; // </editor-fold>
+
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" PropertyGroup: References ">
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Type ">
             final Property typeProp = new PropertySupport(
-                    "type", // NOI18N
+                    "type",                                                 // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().typeProp.type"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().typeProp.type"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().typeProp.typeOfAttr"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().typeProp.typeOfAttr"), // NOI18N
                     true,
-                    false)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getType().getName();
-                }
+                    false) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getType().getName();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    // read-only
-                }
-            };// </editor-fold>
+                        InvocationTargetException {
+                        // read-only
+                    }
+                }; // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ForeignKeyReference ">
             final Property foreignKeyReferencesToProp = new PropertySupport(
-                    "foreignKeyReferencesTo", // NOI18N
+                    "foreignKeyReferencesTo",                                                            // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.foreignKeyTable"),//NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.foreignKeyTable"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, 
+                        CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.foreignKeyTableOfAttr"), // NOI18N
                     true,
-                    false)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    final Integer fkClass = cidsAttribute.getForeignKeyClass();
-                    if(fkClass != null)
-                    {
-                        final CidsClass c = project.getCidsDataObjectBackend().
-                                getEntity(CidsClass.class, fkClass);
-                        if(c != null)
-                        {
-                            return c.getName();
+                    false) {
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        final Integer fkClass = cidsAttribute.getForeignKeyClass();
+                        if (fkClass != null) {
+                            final CidsClass c = project.getCidsDataObjectBackend().getEntity(CidsClass.class, fkClass);
+                            if (c != null) {
+                                return c.getName();
+                            }
                         }
+                        return null;
                     }
-                    return null;
-                }
-                
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    // read-only
-                }
-            };// </editor-fold>
+                        InvocationTargetException {
+                        // read-only
+                    }
+                }; // </editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ArrayKey ">
             final Property arrayKeyProp = new PropertySupport(
-                    "arraykey", // NOI18N
+                    "arraykey",                                                     // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayKeyProp.arraykey"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().arrayKeyProp.arraykey"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayKeyProp.arrayKeyOfAttr"),// NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().arrayKeyProp.arrayKeyOfAttr"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.getArrayKey();
-                }
-                
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setArrayKey((String)object);
-                        project.getCidsDataObjectBackend().store(cidsAttribute);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attribute", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CidsAttributeNode.class, 
-                                    "CidsAttributeNode.createSheet().arrayKeyProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
-                    }
-                }
-            };// </editor-fold>
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: ForeignKey ">
-            final Property foreignKeyProp = new PropertySupport(
-                    "foreignkey", // NOI18N
-                    Boolean.class, 
-                    org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().foreignKeyProp.foreignKey"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, 
-                        "CidsAttributeNode.createSheet().foreignKeyProp.attrIsForeignKey"), // NOI18N
-                    true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.isForeignKey();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getArrayKey();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setForeignKey((Boolean)object);
-                        project.getCidsDataObjectBackend().store(cidsAttribute);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attribute", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setArrayKey((String)object);
+                            project.getCidsDataObjectBackend().store(cidsAttribute);
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attribute", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().foreignKeyProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                                    "CidsAttributeNode.createSheet().arrayKeyProp.setValue(Object).ErrorUtils.message"),
+                                e);                                    // NOI18N
+                        }
                     }
-                }
-            };// </editor-fold>
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: Array ">
-            final Property arrayProp = new PropertySupport(
-                    "array", // NOI18N
+                };                                                     // </editor-fold>
+
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: ForeignKey ">
+            final Property foreignKeyProp = new PropertySupport(
+                    "foreignkey",                                                       // NOI18N
                     Boolean.class,
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayProp.array"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().foreignKeyProp.foreignKey"),   // NOI18N
                     org.openide.util.NbBundle.getMessage(
-                        CidsAttributeNode.class, "CidsAttributeNode.createSheet().arrayProp.attrIsArray"), // NOI18N
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().foreignKeyProp.attrIsForeignKey"), // NOI18N
                     true,
-                    true)
-            {
-                @Override
-                public Object getValue() throws 
-                        IllegalAccessException,
-                        InvocationTargetException
-                {
-                    return cidsAttribute.isArray();
-                }
+                    true) {
 
-                @Override
-                public void setValue(final Object object) throws 
-                        IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException
-                {
-                    final Attribute old = cidsAttribute;
-                    try
-                    {
-                        cidsAttribute.setArray((Boolean)object);
-                        project.getCidsDataObjectBackend().store(cidsAttribute);
-                        refreshInDiagram();
-                    }catch(final Exception e)
-                    {
-                        LOG.error("could not store attribute", e); // NOI18N
-                        cidsAttribute = old;
-                        ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    CidsAttributeNode.class, 
-                                    "CidsAttributeNode.createSheet().arrayProp.setValue(Object).ErrorUtils.message"), e); // NOI18N
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.isForeignKey();
                     }
-                }
-            };// </editor-fold>
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setForeignKey((Boolean)object);
+                            project.getCidsDataObjectBackend().store(cidsAttribute);
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attribute", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
+                                org.openide.util.NbBundle.getMessage(
+                                    CidsAttributeNode.class,
+                                    "CidsAttributeNode.createSheet().foreignKeyProp.setValue(Object).ErrorUtils.message"),
+                                e);                                    // NOI18N
+                        }
+                    }
+                };                                                     // </editor-fold>
+
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: Array ">
+            final Property arrayProp = new PropertySupport(
+                    "array",                                                  // NOI18N
+                    Boolean.class,
+                    org.openide.util.NbBundle.getMessage(
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().arrayProp.array"),   // NOI18N
+                    org.openide.util.NbBundle.getMessage(
+                        CidsAttributeNode.class,
+                        "CidsAttributeNode.createSheet().arrayProp.attrIsArray"), // NOI18N
+                    true,
+                    true) {
+
+                    @Override
+                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.isArray();
+                    }
+
+                    @Override
+                    public void setValue(final Object object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final Attribute old = cidsAttribute;
+                        try {
+                            cidsAttribute.setArray((Boolean)object);
+                            project.getCidsDataObjectBackend().store(cidsAttribute);
+                            refreshInDiagram();
+                        } catch (final Exception e) {
+                            LOG.error("could not store attribute", e); // NOI18N
+                            cidsAttribute = old;
+                            ErrorUtils.showErrorMessage(
+                                org.openide.util.NbBundle.getMessage(
+                                    CidsAttributeNode.class,
+                                    "CidsAttributeNode.createSheet().arrayProp.setValue(Object).ErrorUtils.message"),
+                                e);                                    // NOI18N
+                        }
+                    }
+                };                                                     // </editor-fold>
+
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Rights ">
-            final List<AttributePermission> allAttributePermissions = new
-                    ArrayList<AttributePermission>(cidsAttribute.
-                    getAttributePermissions());
-            for(final AttributePermission perm : allAttributePermissions)
-            {
+            final List<AttributePermission> allAttributePermissions = new ArrayList<AttributePermission>(
+                    cidsAttribute.getAttributePermissions());
+            for (final AttributePermission perm : allAttributePermissions) {
                 final UserGroup ug = perm.getUserGroup();
                 final String name;
-                if(ProjectUtils.isRemoteGroup(ug, project))
-                {
+                if (ProjectUtils.isRemoteGroup(ug, project)) {
                     name = ug.getName() + "@" + ug.getDomain(); // NOI18N
-                }else
-                {
+                } else {
                     name = ug.getName();
                 }
                 final Property attributePermissionProp = new PropertySupport(
-                        "attributePerm" + perm.getId(), // NOI18N
+                        "attributePerm"
+                                + perm.getId(),                 // NOI18N
                         String.class,
                         name,
-                        "", // NOI18N
+                        "",                                     // NOI18N
                         true,
-                        false)
-                {
-                    @Override
-                    public Object getValue() throws 
-                            IllegalAccessException,
-                            InvocationTargetException
-                    {
-                        final Permission p = perm.getPermission();
-                        String s = permResolve.getPermString(cidsAttribute, p).
-                                getPermissionString();
-                        if(s == null)
-                        {
-                            s = p.getKey();
-                        }
-                        return s;
-                    }
+                        false) {
 
-                    @Override
-                    public void setValue(final Object object) throws 
-                            IllegalAccessException,
+                        @Override
+                        public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                            final Permission p = perm.getPermission();
+                            String s = permResolve.getPermString(cidsAttribute, p).getPermissionString();
+                            if (s == null) {
+                                s = p.getKey();
+                            }
+                            return s;
+                        }
+
+                        @Override
+                        public void setValue(final Object object) throws IllegalAccessException,
                             IllegalArgumentException,
-                            InvocationTargetException
-                    {
-                        // read-only
-                    }
-                };
+                            InvocationTargetException {
+                            // read-only
+                        }
+                    };
                 rightAttributes.put(attributePermissionProp);
-            }// </editor-fold>
-            main.setName("properties"); // NOI18N
-            relations.setName("relations"); // NOI18N
-            classes.setName("java"); // NOI18N
-            rightAttributes.setName("rights"); // NOI18N
+            }                                                                        // </editor-fold>
+            main.setName("properties");                                              // NOI18N
+            relations.setName("relations");                                          // NOI18N
+            classes.setName("java");                                                 // NOI18N
+            rightAttributes.setName("rights");                                       // NOI18N
             main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().main.displayName")); // NOI18N
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.createSheet().main.displayName"));            // NOI18N
             relations.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().relations.displayName")); // NOI18N
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.createSheet().relations.displayName"));       // NOI18N
             classes.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().classes.displayName")); // NOI18N
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.createSheet().classes.displayName"));         // NOI18N
             rightAttributes.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().rightAttributes.displayName")); // NOI18N
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.createSheet().rightAttributes.displayName")); // NOI18N
             main.put(idProp);
             main.put(nameProp);
             main.put(fieldnameProp);
@@ -1126,85 +1038,77 @@ public final class CidsAttributeNode extends ProjectNode implements
             sheet.put(main);
             sheet.put(classes);
             sheet.put(relations);
-            if(rightAttributes.getProperties().length > 0)
-            {
+            if (rightAttributes.getProperties().length > 0) {
                 sheet.put(rightAttributes);
             }
-        }
-        catch (final Exception ex)
-        {
-            LOG.error("could not create property sheet", ex); // NOI18N
+        } catch (final Exception ex) {
+            LOG.error("could not create property sheet", ex);                        // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "CidsAttributeNode.createSheet().ErrorUtils.message"), ex); // NOI18N
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.createSheet().ErrorUtils.message"),
+                ex);                                                                 // NOI18N
         }
         return sheet;
     }
-    
-    void refreshInDiagram()
-    {
+
+    /**
+     * DOCUMENT ME!
+     */
+    void refreshInDiagram() {
         final Node n = getParentNode();
-        if(n instanceof CidsClassNode)
-        {
+        if (n instanceof CidsClassNode) {
             ((CidsClassNode)n).refreshInDiagram();
         }
     }
-    
+
     @Override
-    public Action[] getActions(final boolean b)
-    {
-        return new Action[] 
-        {
-            CallableSystemAction.get(AttributePermissionWizardAction.class),
-            null,
-            CallableSystemAction.get(DeleteAction.class)
-        };
+    public Action[] getActions(final boolean b) {
+        return new Action[] {
+                CallableSystemAction.get(AttributePermissionWizardAction.class),
+                null,
+                CallableSystemAction.get(DeleteAction.class)
+            };
     }
-    
+
     @Override
-    public boolean canDestroy()
-    {
+    public boolean canDestroy() {
         return true;
     }
-    
+
     @Override
-    public void destroy()
-    {
-        try
-        {
+    public void destroy() {
+        try {
             cidsClass.getAttributes().remove(cidsAttribute);
             project.getCidsDataObjectBackend().store(cidsClass);
             cidsAttribute = null;
             // p will always be null -.-
             final Node p = getParentNode();
-            if(p instanceof CidsClassNode)
-            {
+            if (p instanceof CidsClassNode) {
                 ((CidsClassNode)p).refreshChildren();
             }
-        }catch(final Exception e)
-        {
+        } catch (final Exception e) {
             LOG.error("error during deletion", e); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
-                    CidsAttributeNode.class, "CidsAttributeNode.destroy().ErrorUtils.message"), e); // NOI18N
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.destroy().ErrorUtils.message"),
+                e);                                // NOI18N
         }
         project.getLookup().lookup(ClassManagement.class).refresh();
         project.getLookup().lookup(SyncManagement.class).refresh();
     }
 
     @Override
-    public void setCidsAttribute(final Attribute cidsAttribute)
-    {
+    public void setCidsAttribute(final Attribute cidsAttribute) {
         this.cidsAttribute = cidsAttribute;
     }
 
     @Override
-    public Attribute getCidsAttribute()
-    {
+    public Attribute getCidsAttribute() {
         return cidsAttribute;
     }
 
     @Override
-    public CidsClass getCidsClass()
-    {
+    public CidsClass getCidsClass() {
         return cidsClass;
     }
 }

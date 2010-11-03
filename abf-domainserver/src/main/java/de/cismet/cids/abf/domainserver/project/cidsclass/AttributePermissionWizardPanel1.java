@@ -1,116 +1,99 @@
-/*
- * AttributePermissionWizardPanel1.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on ???
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.jpa.backend.service.impl.Backend;
-import de.cismet.cids.jpa.entity.cidsclass.Attribute;
-import java.awt.Component;
-import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 
+import java.awt.Component;
+
+import javax.swing.event.ChangeListener;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+
+import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.entity.cidsclass.Attribute;
+
 /**
+ * DOCUMENT ME!
  *
- * @author martin.scholl@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  $Revision$, $Date$
  */
-public final class AttributePermissionWizardPanel1 implements
-        WizardDescriptor.Panel
-{
+public final class AttributePermissionWizardPanel1 implements WizardDescriptor.Panel {
+
+    //~ Instance fields --------------------------------------------------------
+
     private transient AttributePermissionVisualPanel1 component;
     private transient WizardDescriptor wizard;
     private transient Attribute attr;
     private transient DomainserverProject project;
     private transient Backend backend;
 
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    public Component getComponent()
-    {
-        if (component == null)
-        {
+    public Component getComponent() {
+        if (component == null) {
             component = new AttributePermissionVisualPanel1(this);
         }
         return component;
     }
-    
-    Attribute getCidsAttribute()
-    {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    Attribute getCidsAttribute() {
         return attr;
     }
-    
-    DomainserverProject getProject()
-    {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    DomainserverProject getProject() {
         return project;
     }
-    
-    Backend getBackend()
-    {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    Backend getBackend() {
         return backend;
     }
 
     @Override
-    public HelpCtx getHelp()
-    {
+    public HelpCtx getHelp() {
         return HelpCtx.DEFAULT_HELP;
     }
 
     @Override
-    public boolean isValid()
-    {
+    public boolean isValid() {
         return true;
     }
 
     @Override
-    public void addChangeListener(final ChangeListener l)
-    {
+    public void addChangeListener(final ChangeListener l) {
         // not needed
     }
 
     @Override
-    public void removeChangeListener(final ChangeListener l)
-    {
+    public void removeChangeListener(final ChangeListener l) {
         // not needed
     }
 
     @Override
-    public void readSettings(final Object settings)
-    {
+    public void readSettings(final Object settings) {
         wizard = (WizardDescriptor)settings;
         attr = (Attribute)wizard.getProperty(
                 AttributePermissionWizardAction.ATTRIBUTE_PROP);
@@ -121,10 +104,9 @@ public final class AttributePermissionWizardPanel1 implements
     }
 
     @Override
-    public void storeSettings(final Object settings)
-    {
+    public void storeSettings(final Object settings) {
         wizard = (WizardDescriptor)settings;
-        wizard.putProperty(AttributePermissionWizardAction.ATTRIBUTE_PROP, 
-                component.getCidsAttribute());
+        wizard.putProperty(AttributePermissionWizardAction.ATTRIBUTE_PROP,
+            component.getCidsAttribute());
     }
 }

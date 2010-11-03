@@ -230,7 +230,6 @@ public final class NewEntryVisualPanel1 extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         cboDomain = new javax.swing.JComboBox();
         lblDomain = new javax.swing.JLabel();
         cboUsergroup = new javax.swing.JComboBox();
@@ -238,51 +237,63 @@ public final class NewEntryVisualPanel1 extends JPanel {
         lblUsergroup = new javax.swing.JLabel();
         lblUser = new javax.swing.JLabel();
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDomain, NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblDomain.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblDomain,
+            NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblDomain.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblUsergroup, NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblUsergroup.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblUsergroup,
+            NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblUsergroup.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblUser, NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblUser.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblUser,
+            NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblUser.text")); // NOI18N
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        final javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDomain)
-                    .addComponent(cboDomain, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblUsergroup)
-                    .addComponent(cboUsergroup, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblUser)
-                    .addComponent(cboUser, 0, 234, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+                layout.createSequentialGroup().addContainerGap().addGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(lblDomain)
+                                .addComponent(
+                                    cboDomain,
+                                    javax.swing.GroupLayout.PREFERRED_SIZE,
+                                    109,
+                                    javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(lblUsergroup)
+                                .addComponent(
+                                    cboUsergroup,
+                                    javax.swing.GroupLayout.PREFERRED_SIZE,
+                                    156,
+                                    javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(lblUser)
+                                .addComponent(cboUser, 0, 234, Short.MAX_VALUE)).addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblUsergroup)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboUsergroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblDomain)
-                            .addComponent(lblUser))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cboDomain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+                layout.createSequentialGroup().addGap(29, 29, 29).addGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+                        layout.createSequentialGroup().addComponent(lblUsergroup).addPreferredGap(
+                            javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(
+                            cboUsergroup,
+                            javax.swing.GroupLayout.PREFERRED_SIZE,
+                            javax.swing.GroupLayout.DEFAULT_SIZE,
+                            javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(
+                        layout.createSequentialGroup().addGroup(
+                            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(
+                                lblDomain).addComponent(lblUser)).addPreferredGap(
+                            javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(
+                            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(
+                                cboDomain,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(
+                                cboUser,
+                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)))).addContainerGap(
+                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                    Short.MAX_VALUE)));
+    } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
 

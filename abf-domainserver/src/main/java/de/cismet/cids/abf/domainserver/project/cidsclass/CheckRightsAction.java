@@ -18,6 +18,7 @@ import org.netbeans.api.project.ProjectInformation;
 import org.openide.nodes.Node;
 import org.openide.util.Cancellable;
 import org.openide.util.HelpCtx;
+import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.CookieAction;
 import org.openide.windows.IOProvider;
@@ -32,6 +33,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
@@ -52,8 +54,6 @@ import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 import de.cismet.cids.jpa.entity.common.PermissionAwareEntity;
 import de.cismet.cids.jpa.entity.permission.Permission;
 import de.cismet.cids.jpa.entity.user.UserGroup;
-import java.util.HashMap;
-import org.openide.util.ImageUtilities;
 
 /**
  * DOCUMENT ME!
@@ -61,11 +61,6 @@ import org.openide.util.ImageUtilities;
  * @version  $Revision$, $Date$
  */
 public final class CheckRightsAction extends CookieAction {
-
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -5950608700166813558L;
 
     //~ Instance fields --------------------------------------------------------
 

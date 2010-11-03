@@ -25,11 +25,6 @@ import de.cismet.cids.jpa.entity.catalog.CatNode;
  */
 public class CreateLinkAction extends CookieAction {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -8864866125314813604L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override
@@ -81,7 +76,7 @@ public class CreateLinkAction extends CookieAction {
 
             // don't know why we get to this point as the cookie action should handle this...
             final CatalogNodeContextCookie cncc = nodes[i].getCookie(CatalogNodeContextCookie.class);
-            if(cncc == null){
+            if (cncc == null) {
                 return false;
             }
 

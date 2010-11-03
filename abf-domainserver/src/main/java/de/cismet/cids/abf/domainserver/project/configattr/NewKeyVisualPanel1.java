@@ -23,13 +23,14 @@
  */
 package de.cismet.cids.abf.domainserver.project.configattr;
 
-import de.cismet.cids.jpa.entity.configattr.ConfigAttrKey;
 import org.openide.util.NbBundle;
+import org.openide.util.WeakListeners;
 
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.openide.util.WeakListeners;
+
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrKey;
 
 /**
  * DOCUMENT ME!
@@ -69,7 +70,12 @@ public final class NewKeyVisualPanel1 extends JPanel {
         return NbBundle.getMessage(NewKeyVisualPanel1.class, "NewKeyVisualPanel1.getName().returnValue"); // NOI18N
     }
 
-    ConfigAttrKey getKey(){
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    ConfigAttrKey getKey() {
         final ConfigAttrKey key = new ConfigAttrKey();
         key.setKey(txtKey.getText());
 
@@ -89,35 +95,36 @@ public final class NewKeyVisualPanel1 extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         lblKey = new javax.swing.JLabel();
         txtKey = new javax.swing.JTextField();
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblKey, NbBundle.getMessage(NewKeyVisualPanel1.class, "NewKeyVisualPanel1.lblKey.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblKey,
+            NbBundle.getMessage(NewKeyVisualPanel1.class, "NewKeyVisualPanel1.lblKey.text")); // NOI18N
 
         txtKey.setText(NbBundle.getMessage(NewKeyVisualPanel1.class, "NewKeyVisualPanel1.txtKey.text")); // NOI18N
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        final javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtKey, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-                    .addComponent(lblKey))
-                .addContainerGap())
-        );
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+                layout.createSequentialGroup().addContainerGap().addGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(
+                        txtKey,
+                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                        360,
+                        Short.MAX_VALUE).addComponent(lblKey)).addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblKey)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
+                layout.createSequentialGroup().addContainerGap().addComponent(lblKey).addPreferredGap(
+                    javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(
+                    txtKey,
+                    javax.swing.GroupLayout.PREFERRED_SIZE,
+                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                    javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(
+                    javax.swing.GroupLayout.DEFAULT_SIZE,
+                    Short.MAX_VALUE)));
+    } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
 

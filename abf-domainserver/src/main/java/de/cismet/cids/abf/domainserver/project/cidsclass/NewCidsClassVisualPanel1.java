@@ -465,7 +465,10 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        panCenter.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.panCenter.border.title"))); // NOI18N
+        panCenter.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                org.openide.util.NbBundle.getMessage(
+                    NewCidsClassVisualPanel1.class,
+                    "NewCidsClassVisualPanel1.panCenter.border.title"))); // NOI18N
         panCenter.setLayout(new java.awt.BorderLayout());
 
         panAttr.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -478,46 +481,63 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
 
         jToolBar1.setFloatable(false);
 
-        cmdRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/remove_row.png"))); // NOI18N
+        cmdRemove.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/remove_row.png"))); // NOI18N
         cmdRemove.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdRemoveActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdRemoveActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdRemove);
 
-        cmdUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/up.png"))); // NOI18N
+        cmdUp.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/up.png"))); // NOI18N
         cmdUp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdUpActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdUpActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdUp);
 
-        cmdDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/down.png"))); // NOI18N
+        cmdDown.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/down.png"))); // NOI18N
         cmdDown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdDownActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdDownActionPerformed(evt);
+                }
+            });
         jToolBar1.add(cmdDown);
 
         jtbAttrSync.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(jtbAttrSync, NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.jtbAttrSync.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            jtbAttrSync,
+            NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.jtbAttrSync.text")); // NOI18N
         jtbAttrSync.setFocusable(false);
         jtbAttrSync.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jtbAttrSync.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jtbAttrSync.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtbAttrSyncActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    jtbAttrSyncActionPerformed(evt);
+                }
+            });
         jToolBar1.add(jtbAttrSync);
 
         org.openide.awt.Mnemonics.setLocalizedText(lblSpace1, "          ");
         jToolBar1.add(lblSpace1);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblAttrPolicy, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblAttrPolicy.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblAttrPolicy,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblAttrPolicy.text")); // NOI18N
         jToolBar1.add(lblAttrPolicy);
         jToolBar1.add(cboAttrPolicy);
 
@@ -528,7 +548,10 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         panTypes.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panTypes.setLayout(new java.awt.BorderLayout());
 
-        scpTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.scpTypes.border.title"))); // NOI18N
+        scpTypes.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                org.openide.util.NbBundle.getMessage(
+                    NewCidsClassVisualPanel1.class,
+                    "NewCidsClassVisualPanel1.scpTypes.border.title"))); // NOI18N
 
         scpTypes.setViewportView(lstTypes);
 
@@ -536,63 +559,92 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
 
         jToolBar2.setFloatable(false);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblSortAndFilter, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblSortAndFilter.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblSortAndFilter,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblSortAndFilter.text")); // NOI18N
         jToolBar2.add(lblSortAndFilter);
 
-        togOnlyUserTypes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/datatype.png"))); // NOI18N
+        togOnlyUserTypes.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/datatype.png"))); // NOI18N
         togOnlyUserTypes.setSelected(true);
-        togOnlyUserTypes.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togOnlyUserTypes.tooltip")); // NOI18N
+        togOnlyUserTypes.setToolTipText(org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.togOnlyUserTypes.tooltip"));                            // NOI18N
         togOnlyUserTypes.setFocusPainted(false);
         togOnlyUserTypes.setPreferredSize(new java.awt.Dimension(50, 25));
         togOnlyUserTypes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                togOnlyUserTypesActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    togOnlyUserTypesActionPerformed(evt);
+                }
+            });
         jToolBar2.add(togOnlyUserTypes);
 
-        togOnlyDbTypes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/db_types.png"))); // NOI18N
+        togOnlyDbTypes.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/db_types.png"))); // NOI18N
         togOnlyDbTypes.setSelected(true);
-        togOnlyDbTypes.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togOnlyDbTypes.tooltip")); // NOI18N
+        togOnlyDbTypes.setToolTipText(org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.togOnlyDbTypes.tooltip"));                              // NOI18N
         togOnlyDbTypes.setFocusPainted(false);
         togOnlyDbTypes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                togOnlyDbTypesActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    togOnlyDbTypesActionPerformed(evt);
+                }
+            });
         jToolBar2.add(togOnlyDbTypes);
 
         grpTypeSort.add(togSortedAlpha);
-        togSortedAlpha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/sort_alph.png"))); // NOI18N
-        togSortedAlpha.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togSortedAlpha.tooltip")); // NOI18N
+        togSortedAlpha.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/sort_alph.png"))); // NOI18N
+        togSortedAlpha.setToolTipText(org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.togSortedAlpha.tooltip"));                               // NOI18N
         togSortedAlpha.setFocusPainted(false);
         togSortedAlpha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                togSortedAlphaActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    togSortedAlphaActionPerformed(evt);
+                }
+            });
         jToolBar2.add(togSortedAlpha);
 
         grpTypeSort.add(togSortedLinks);
-        togSortedLinks.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/sort_links.png"))); // NOI18N
+        togSortedLinks.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/sort_links.png"))); // NOI18N
         togSortedLinks.setSelected(true);
-        togSortedLinks.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togSortedLinks.tooltip")); // NOI18N
+        togSortedLinks.setToolTipText(org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.togSortedLinks.tooltip"));                                // NOI18N
         togSortedLinks.setFocusPainted(false);
         togSortedLinks.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                togSortedLinksActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    togSortedLinksActionPerformed(evt);
+                }
+            });
         jToolBar2.add(togSortedLinks);
 
-        togArrayTables.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/array.png"))); // NOI18N
-        togArrayTables.setToolTipText(org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.togArrayTables.tooltip")); // NOI18N
+        togArrayTables.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/array.png"))); // NOI18N
+        togArrayTables.setToolTipText(org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.togArrayTables.tooltip"));                           // NOI18N
         togArrayTables.setFocusPainted(false);
         togArrayTables.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                togArrayTablesActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    togArrayTablesActionPerformed(evt);
+                }
+            });
         jToolBar2.add(togArrayTables);
 
         panTypes.add(jToolBar2, java.awt.BorderLayout.NORTH);
@@ -603,98 +655,144 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
 
         panhead.setLayout(new java.awt.GridBagLayout());
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblClassName, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblClassName.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblClassName,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblClassName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblTableName, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblTableName.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblTableName,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblTableName.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblDesc, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblDesc.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblDesc,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblDesc.text")); // NOI18N
 
         chkSync.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(chkSync, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.chkSync.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            chkSync,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.chkSync.text")); // NOI18N
 
-        org.jdesktop.layout.GroupLayout panClass1Layout = new org.jdesktop.layout.GroupLayout(panClass1);
+        final org.jdesktop.layout.GroupLayout panClass1Layout = new org.jdesktop.layout.GroupLayout(panClass1);
         panClass1.setLayout(panClass1Layout);
         panClass1Layout.setHorizontalGroup(
-            panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(panClass1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(lblClassName)
-                    .add(lblTableName)
-                    .add(lblDesc))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, panClass1Layout.createSequentialGroup()
-                        .add(txtTablename, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(chkSync))
-                    .add(txtDescription, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-                    .add(txtClassname, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 285, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+            panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                panClass1Layout.createSequentialGroup().addContainerGap().add(
+                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(lblClassName).add(
+                        lblTableName).add(lblDesc)).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        panClass1Layout.createSequentialGroup().add(
+                            txtTablename,
+                            org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                            181,
+                            Short.MAX_VALUE).addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED).add(
+                            chkSync)).add(
+                        txtDescription,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        299,
+                        Short.MAX_VALUE).add(
+                        txtClassname,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        285,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap()));
         panClass1Layout.setVerticalGroup(
-            panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(panClass1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblClassName)
-                    .add(txtClassname, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblTableName)
-                    .add(chkSync)
-                    .add(txtTablename, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblDesc)
-                    .add(txtDescription, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+            panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                panClass1Layout.createSequentialGroup().addContainerGap().add(
+                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblClassName).add(
+                        txtClassname,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblTableName).add(
+                        chkSync).add(
+                        txtTablename,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblDesc).add(
+                        txtDescription,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap(
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    Short.MAX_VALUE)));
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         panhead.add(panClass1, gridBagConstraints);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblClassIcon, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblClassIcon.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblClassIcon,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblClassIcon.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblObjectIcon, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblObjectIcon.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblObjectIcon,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblObjectIcon.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblPrimKey, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.lblPrimKey.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblPrimKey,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.lblPrimKey.text")); // NOI18N
 
-        org.jdesktop.layout.GroupLayout panClass2Layout = new org.jdesktop.layout.GroupLayout(panClass2);
+        final org.jdesktop.layout.GroupLayout panClass2Layout = new org.jdesktop.layout.GroupLayout(panClass2);
         panClass2.setLayout(panClass2Layout);
         panClass2Layout.setHorizontalGroup(
-            panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(panClass2Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(lblPrimKey)
-                    .add(lblClassIcon)
-                    .add(lblObjectIcon))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(cboObjectIcons, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, cboClassIcons, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtPrimaryKeyfield, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+            panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                panClass2Layout.createSequentialGroup().addContainerGap().add(
+                    panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(lblPrimKey).add(
+                        lblClassIcon).add(lblObjectIcon)).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false).add(
+                        cboObjectIcons,
+                        0,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        Short.MAX_VALUE).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        cboClassIcons,
+                        0,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        Short.MAX_VALUE).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        txtPrimaryKeyfield,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        105,
+                        Short.MAX_VALUE)).addContainerGap(
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    Short.MAX_VALUE)));
         panClass2Layout.setVerticalGroup(
-            panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(panClass2Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblPrimKey)
-                    .add(txtPrimaryKeyfield, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(cboClassIcons, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(lblClassIcon))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(cboObjectIcons, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(lblObjectIcon))
-                .addContainerGap())
-        );
+            panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                panClass2Layout.createSequentialGroup().addContainerGap().add(
+                    panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblPrimKey).add(
+                        txtPrimaryKeyfield,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(
+                        cboClassIcons,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(lblClassIcon)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    panClass2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(
+                        cboObjectIcons,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(lblObjectIcon)).addContainerGap()));
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -702,16 +800,12 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         panhead.add(panClass2, gridBagConstraints);
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        final org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 0, Short.MAX_VALUE)
-        );
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 0, Short.MAX_VALUE));
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 0, Short.MAX_VALUE)
-        );
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(0, 0, Short.MAX_VALUE));
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -724,30 +818,38 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
 
         panClass3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkType, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.chkType.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            chkType,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.chkType.text")); // NOI18N
         panClass3.add(chkType);
 
-        org.openide.awt.Mnemonics.setLocalizedText(chkIndexed, org.openide.util.NbBundle.getMessage(NewCidsClassVisualPanel1.class, "NewCidsClassVisualPanel1.chkIndexed.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            chkIndexed,
+            org.openide.util.NbBundle.getMessage(
+                NewCidsClassVisualPanel1.class,
+                "NewCidsClassVisualPanel1.chkIndexed.text")); // NOI18N
         panClass3.add(chkIndexed);
 
         add(panClass3, java.awt.BorderLayout.PAGE_END);
-    }// </editor-fold>//GEN-END:initComponents
+    } // </editor-fold>//GEN-END:initComponents
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdDownActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDownActionPerformed
+    private void cmdDownActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdDownActionPerformed
         move(DOWN);
-    }//GEN-LAST:event_cmdDownActionPerformed
+    }                                                                           //GEN-LAST:event_cmdDownActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdRemoveActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRemoveActionPerformed
+    private void cmdRemoveActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdRemoveActionPerformed
         final int selectedRow = tblAttr.getSelectedRow();
         if (selectedRow >= 0) {
             final int modelRow = ((JXTable)tblAttr).convertRowIndexToModel(selectedRow);
@@ -770,7 +872,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
                 model.fireChangeEvent();
             }
         }
-    }//GEN-LAST:event_cmdRemoveActionPerformed
+    }                                                                             //GEN-LAST:event_cmdRemoveActionPerformed
 
     /**
      * DOCUMENT ME!
@@ -806,64 +908,64 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdUpActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdUpActionPerformed
+    private void cmdUpActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdUpActionPerformed
         move(UP);
-    }//GEN-LAST:event_cmdUpActionPerformed
+    }                                                                         //GEN-LAST:event_cmdUpActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void togArrayTablesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togArrayTablesActionPerformed
+    private void togArrayTablesActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_togArrayTablesActionPerformed
         retrieveAndSortTypes();
-    }//GEN-LAST:event_togArrayTablesActionPerformed
+    }                                                                                  //GEN-LAST:event_togArrayTablesActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void togOnlyDbTypesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togOnlyDbTypesActionPerformed
+    private void togOnlyDbTypesActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_togOnlyDbTypesActionPerformed
         retrieveAndSortTypes();
-    }//GEN-LAST:event_togOnlyDbTypesActionPerformed
+    }                                                                                  //GEN-LAST:event_togOnlyDbTypesActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void togOnlyUserTypesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togOnlyUserTypesActionPerformed
+    private void togOnlyUserTypesActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_togOnlyUserTypesActionPerformed
         retrieveAndSortTypes();
-    }//GEN-LAST:event_togOnlyUserTypesActionPerformed
+    }                                                                                    //GEN-LAST:event_togOnlyUserTypesActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void togSortedLinksActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togSortedLinksActionPerformed
+    private void togSortedLinksActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_togSortedLinksActionPerformed
         retrieveAndSortTypes();
-    }//GEN-LAST:event_togSortedLinksActionPerformed
+    }                                                                                  //GEN-LAST:event_togSortedLinksActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void togSortedAlphaActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togSortedAlphaActionPerformed
+    private void togSortedAlphaActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_togSortedAlphaActionPerformed
         retrieveAndSortTypes();
-    }//GEN-LAST:event_togSortedAlphaActionPerformed
+    }                                                                                  //GEN-LAST:event_togSortedAlphaActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void jtbAttrSyncActionPerformed(final java.awt.event.ActionEvent evt)//GEN-FIRST:event_jtbAttrSyncActionPerformed
-    {//GEN-HEADEREND:event_jtbAttrSyncActionPerformed
+    private void jtbAttrSyncActionPerformed(final java.awt.event.ActionEvent evt) //GEN-FIRST:event_jtbAttrSyncActionPerformed
+    {                                                                             //GEN-HEADEREND:event_jtbAttrSyncActionPerformed
         classTableModel.setAttrSync(jtbAttrSync.isSelected());
-    }//GEN-LAST:event_jtbAttrSyncActionPerformed
+    }                                                                             //GEN-LAST:event_jtbAttrSyncActionPerformed
 
     //~ Inner Classes ----------------------------------------------------------
 

@@ -1,3 +1,10 @@
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 /*
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License). You may not use this file except in
@@ -25,6 +32,7 @@ import org.netbeans.api.visual.model.ObjectState;
 import org.netbeans.api.visual.router.Router;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.Scene;
+
 import org.openide.util.Utilities;
 
 import java.awt.*;
@@ -32,55 +40,66 @@ import java.awt.*;
 /**
  * This class represents a connection widget in the VMD plug-in.
  *
- * @author David Kaspar
+ * @author   David Kaspar
+ * @version  $Revision$, $Date$
  */
 public class RelationWidget extends ConnectionWidget {
 
-    private static final PointShape POINT_SHAPE_IMAGE = PointShapeFactory.createImagePointShape (Utilities.loadImage ("org/netbeans/modules/visual/resources/vmd-pin.png")); // NOI18N
+    //~ Static fields/initializers ---------------------------------------------
+
+    private static final PointShape POINT_SHAPE_IMAGE = PointShapeFactory.createImagePointShape(Utilities.loadImage(
+                "org/netbeans/modules/visual/resources/vmd-pin.png")); // NOI18N
 
     private static final Color COLOR_NORMAL = NodeBorder.COLOR_BORDER;
     private static final Color COLOR_HOVERED = Color.BLACK;
-    //private static final Color COLOR_HIGHLIGHTED = new Color (49, 106, 197);
-    private static final Color COLOR_HIGHLIGHTED =  java.awt.SystemColor.controlDkShadow;
+    // private static final Color COLOR_HIGHLIGHTED = new Color (49, 106, 197);
+    private static final Color COLOR_HIGHLIGHTED = java.awt.SystemColor.controlDkShadow;
+
+    //~ Constructors -----------------------------------------------------------
 
     /**
      * Creates a connection widget.
-     * @param scene the scene
-     * @param router
+     *
+     * @param  scene   the scene
+     * @param  router  DOCUMENT ME!
      */
-    public RelationWidget (Scene scene, Router router) {
-        super (scene);
-        setRouter (router);
-        setSourceAnchorShape (AnchorShape.NONE);
-        setTargetAnchorShape (AnchorShape.TRIANGLE_FILLED);
-        setPaintControlPoints (true);
-        setState (ObjectState.createNormal ());
+    public RelationWidget(final Scene scene, final Router router) {
+        super(scene);
+        setRouter(router);
+        setSourceAnchorShape(AnchorShape.NONE);
+        setTargetAnchorShape(AnchorShape.TRIANGLE_FILLED);
+        setPaintControlPoints(true);
+        setState(ObjectState.createNormal());
     }
+
+    //~ Methods ----------------------------------------------------------------
 
     /**
      * Implements the widget-state specific look of the widget.
-     * @param previousState the previous state
-     * @param state the new state
+     *
+     * @param  previousState  the previous state
+     * @param  state          the new state
      */
-    public void notifyStateChanged (ObjectState previousState, ObjectState state) {
-        if (state.isHovered ())
-            setForeground (COLOR_HOVERED);
-        else if (state.isSelected ())
-            setForeground (ClassNodeWidget.COLOR_SELECTED);
-        else if (state.isHighlighted ())
-            setForeground (COLOR_HIGHLIGHTED);
-        else if (state.isFocused ())
-            setForeground (COLOR_HOVERED);
-        else
-            setForeground (COLOR_NORMAL);
-
-        if (state.isSelected ()) {
-            setControlPointShape (PointShape.SQUARE_FILLED_SMALL);
-            setEndPointShape (PointShape.SQUARE_FILLED_BIG);
+    @Override
+    public void notifyStateChanged(final ObjectState previousState, final ObjectState state) {
+        if (state.isHovered()) {
+            setForeground(COLOR_HOVERED);
+        } else if (state.isSelected()) {
+            setForeground(ClassNodeWidget.COLOR_SELECTED);
+        } else if (state.isHighlighted()) {
+            setForeground(COLOR_HIGHLIGHTED);
+        } else if (state.isFocused()) {
+            setForeground(COLOR_HOVERED);
         } else {
-            setControlPointShape (PointShape.NONE);
-            setEndPointShape (POINT_SHAPE_IMAGE);
+            setForeground(COLOR_NORMAL);
+        }
+
+        if (state.isSelected()) {
+            setControlPointShape(PointShape.SQUARE_FILLED_SMALL);
+            setEndPointShape(PointShape.SQUARE_FILLED_BIG);
+        } else {
+            setControlPointShape(PointShape.NONE);
+            setEndPointShape(POINT_SHAPE_IMAGE);
         }
     }
-
 }

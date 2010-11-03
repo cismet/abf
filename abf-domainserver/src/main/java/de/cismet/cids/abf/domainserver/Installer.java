@@ -25,11 +25,6 @@ import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopCo
  */
 public class Installer extends ModuleInstall {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 4627615630086207927L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override
@@ -44,7 +39,7 @@ public class Installer extends ModuleInstall {
                 ((DomainserverProject)p).setConnected(false);
             }
         }
-        
+
         return super.closing();
     }
 }

@@ -1,86 +1,57 @@
-/*
- * AddClassWithRelationsToCurrentDiagramAction.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * thorsten.hell@cismet.de
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on ???
- * 
- */
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
-import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import java.beans.PropertyChangeEvent;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 
+import java.beans.PropertyChangeEvent;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
+
 /**
+ * DOCUMENT ME!
  *
- * @author thorsten.hell@cismet.de
- * @author martin.scholl@cismet.de
+ * @author   thorsten.hell@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  $Revision$, $Date$
  */
-public final class AddClassWithRelationsToCurrentDiagramAction extends 
-        DiagramAction
-{
+public final class AddClassWithRelationsToCurrentDiagramAction extends DiagramAction {
+
+    //~ Methods ----------------------------------------------------------------
+
     @Override
-    public void performAction()
-    {
+    public void performAction() {
         final TopComponent tc = TopComponent.getRegistry().getActivated();
-        if(tc instanceof ClassDiagramTopComponent)
-        {
+        if (tc instanceof ClassDiagramTopComponent) {
             ((ClassDiagramTopComponent)tc).addClassesWithRelations(
-                    getSelectedCidsClassNodes());
+                getSelectedCidsClassNodes());
         }
     }
 
-    public String getName()
-    {
-        return NbBundle.getMessage(AddClassWithRelationsToCurrentDiagramAction.class,
+    @Override
+    public String getName() {
+        return NbBundle.getMessage(
+                AddClassWithRelationsToCurrentDiagramAction.class,
                 "AddClassWithRelationsToCurrentDiagramAction.getName().returnvalue");
     }
 
-    protected String iconResource()
-    {
+    @Override
+    protected String iconResource() {
         return DomainserverProject.IMAGE_FOLDER + "add_class_diagram_with_relations.png";
     }
 
-    public void propertyChange(PropertyChangeEvent evt)
-    {
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt) {
         super.propertyChange(evt);
-        if(lastDiagramTopComponent == null)
-        {
+        if (lastDiagramTopComponent == null) {
             setEnabled(false);
         }
     }
-
 }

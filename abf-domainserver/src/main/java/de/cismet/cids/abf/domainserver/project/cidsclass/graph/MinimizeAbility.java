@@ -1,3 +1,10 @@
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 /*
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License). You may not use this file except in
@@ -21,18 +28,20 @@ package de.cismet.cids.abf.domainserver.project.cidsclass.graph;
 /**
  * This inteface represents an ability to collapse and expand a widget.
  *
- * @author David Kaspar
+ * @author   David Kaspar
+ * @version  $Revision$, $Date$
  */
 public interface MinimizeAbility {
+
+    //~ Methods ----------------------------------------------------------------
 
     /**
      * Collapses the widget.
      */
-    public void collapseWidget ();
+    void collapseWidget();
 
     /**
      * Expands the widget.
      */
-    public void expandWidget ();
-
+    void expandWidget();
 }

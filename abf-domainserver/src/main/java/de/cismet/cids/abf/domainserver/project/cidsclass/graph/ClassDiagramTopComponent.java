@@ -783,15 +783,15 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void chkSaveChangesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSaveChangesActionPerformed
-    }//GEN-LAST:event_chkSaveChangesActionPerformed
+    private void chkSaveChangesActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_chkSaveChangesActionPerformed
+    }                                                                                  //GEN-LAST:event_chkSaveChangesActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdSetViewNameActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSetViewNameActionPerformed
+    private void cmdSetViewNameActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdSetViewNameActionPerformed
         if (LOG.isDebugEnabled()) {
             LOG.debug("asking for new view name");
         }
@@ -804,40 +804,40 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             setViewName(newName);
         }
         ((ViewManagement)project.getLookup().lookup(ViewManagement.class)).refreshChildren();
-    }//GEN-LAST:event_cmdSetViewNameActionPerformed
+    }                                                                                  //GEN-LAST:event_cmdSetViewNameActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomOutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomOutActionPerformed
+    private void cmdZoomOutActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdZoomOutActionPerformed
         scene.setZoomFactor(scene.getZoomFactor() * 0.9);
         scene.revalidate();
         scene.validate();
-    }//GEN-LAST:event_cmdZoomOutActionPerformed
+    }                                                                              //GEN-LAST:event_cmdZoomOutActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomInActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomInActionPerformed
+    private void cmdZoomInActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdZoomInActionPerformed
         scene.setZoomFactor(scene.getZoomFactor() * 1.1);
         scene.revalidate();
         scene.validate();
-    }//GEN-LAST:event_cmdZoomInActionPerformed
+    }                                                                             //GEN-LAST:event_cmdZoomInActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdResetZoomActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetZoomActionPerformed
+    private void cmdResetZoomActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdResetZoomActionPerformed
         scene.setZoomFactor(1);
         scene.revalidate();
         scene.validate();
-    }//GEN-LAST:event_cmdResetZoomActionPerformed
+    }                                                                                //GEN-LAST:event_cmdResetZoomActionPerformed
 
     /**
      * DOCUMENT ME!
@@ -859,18 +859,18 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomToAllActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomToAllActionPerformed
+    private void cmdZoomToAllActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdZoomToAllActionPerformed
         zoomToFit();
-    }//GEN-LAST:event_cmdZoomToAllActionPerformed
+    }                                                                                //GEN-LAST:event_cmdZoomToAllActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdDoLayoutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDoLayoutActionPerformed
+    private void cmdDoLayoutActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdDoLayoutActionPerformed
         scene.layoutScene();
-    }//GEN-LAST:event_cmdDoLayoutActionPerformed
+    }                                                                               //GEN-LAST:event_cmdDoLayoutActionPerformed
 
     /**
      * Gets default instance. Do not use directly: reserved for *.settings files only, i.e. deserialization routines;

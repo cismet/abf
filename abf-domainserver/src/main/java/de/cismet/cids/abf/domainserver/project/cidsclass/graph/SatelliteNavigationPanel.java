@@ -9,6 +9,7 @@ package de.cismet.cids.abf.domainserver.project.cidsclass.graph;
 
 import org.apache.log4j.Logger;
 
+import org.netbeans.spi.navigator.NavigatorLookupHint;
 import org.netbeans.spi.navigator.NavigatorPanel;
 
 import org.openide.util.Lookup;
@@ -16,8 +17,6 @@ import org.openide.windows.TopComponent;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-
-import org.netbeans.spi.navigator.NavigatorLookupHint;
 
 /**
  * DOCUMENT ME!
@@ -72,13 +71,20 @@ public class SatelliteNavigationPanel implements NavigatorPanel {
         return null;
     }
 
+    //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
     static final class SatelliteLookupHint implements NavigatorLookupHint {
 
-    //~ Methods ----------------------------------------------------------------
+        //~ Methods ------------------------------------------------------------
 
-    @Override
-    public String getContentType() {
-        return "cismet/satellite-wiring"; // NOI18N
+        @Override
+        public String getContentType() {
+            return "cismet/satellite-wiring"; // NOI18N
+        }
     }
-}
 }

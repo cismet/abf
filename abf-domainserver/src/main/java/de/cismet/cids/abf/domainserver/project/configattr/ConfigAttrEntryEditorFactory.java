@@ -51,7 +51,7 @@ public final class ConfigAttrEntryEditorFactory {
      */
     public static ConfigAttrEditor createEditor(final Node node) {
         final ConfigAttrEditor editor = getEditor(node);
-        
+
         if (editor == null) {
             final ConfigAttrEntryCookie cookie = node.getCookie(ConfigAttrEntryCookie.class);
             if (Types.CONFIG_ATTR.equals(cookie.getEntry().getType().getAttrType())) {
@@ -93,7 +93,7 @@ public final class ConfigAttrEntryEditorFactory {
 
                 if ((activatedNodes != null) && (activatedNodes.length == 1)) {
                     final ConfigAttrEntryCookie activeCookie = activatedNodes[0].getCookie(ConfigAttrEntryCookie.class);
-                    
+
                     if ((activeCookie != null) && activeCookie.getEntry().equals(cookie.getEntry())) {
                         if (EventQueue.isDispatchThread()) {
                             if (WindowManager.getDefault().isEditorTopComponent(editor)) {

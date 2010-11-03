@@ -45,8 +45,6 @@ public final class NewUserWizardAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = -6212873885891806036L;
     private static final transient Logger LOG = Logger.getLogger(NewUserWizardAction.class);
 
     static final String PROJECT_PROP = "projectProperty";     // NOI18N
@@ -131,8 +129,10 @@ public final class NewUserWizardAction extends CookieAction {
                 DomainserverContext.class);
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
-        wizard.setTitleFormat(new MessageFormat("{0}"));                                      // NOI18N
-        wizard.setTitle(NbBundle.getMessage(NewUserWizardAction.class, "NewUserWizardAction.performAction(Node[]).wizard.title")); // NOI18N
+        wizard.setTitleFormat(new MessageFormat("{0}"));                             // NOI18N
+        wizard.setTitle(NbBundle.getMessage(
+                NewUserWizardAction.class,
+                "NewUserWizardAction.performAction(Node[]).wizard.title"));          // NOI18N
         wizard.putProperty(PROJECT_PROP, cookie.getDomainserverProject());
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
@@ -149,11 +149,11 @@ public final class NewUserWizardAction extends CookieAction {
                     try {
                         backend.store(ug);
                     } catch (final Exception e) {
-                        LOG.error("could not store usergroup: " + ug.getName(), e);           // NOI18N
+                        LOG.error("could not store usergroup: " + ug.getName(), e);  // NOI18N
                     }
                 }
             } catch (final Exception e) {
-                LOG.error("could not store new user: " + newUser.getLoginname(), e);          // NOI18N
+                LOG.error("could not store new user: " + newUser.getLoginname(), e); // NOI18N
                 ErrorManager.getDefault().notify(e);
             } finally {
                 cookie.getDomainserverProject().getLookup().lookup(UserManagement.class).refreshChildren();

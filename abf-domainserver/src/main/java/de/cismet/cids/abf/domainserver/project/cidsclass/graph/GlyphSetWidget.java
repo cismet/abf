@@ -1,3 +1,10 @@
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 /*
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License). You may not use this file except in
@@ -23,7 +30,8 @@ import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
-import java.awt.*;
+import java.awt.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +40,7 @@ import java.util.List;
  *
  * @author David Kaspar
  */
+//J-
 public class GlyphSetWidget extends Widget {
 
     /**
@@ -41,7 +50,7 @@ public class GlyphSetWidget extends Widget {
     public GlyphSetWidget (Scene scene) {
         super (scene);
         setLayout (LayoutFactory.createHorizontalLayout ());
-        
+
     }
 
     /**
@@ -61,3 +70,5 @@ public class GlyphSetWidget extends Widget {
     }
 
 }
+
+//J+

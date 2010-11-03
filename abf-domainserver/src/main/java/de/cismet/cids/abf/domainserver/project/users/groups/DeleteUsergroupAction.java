@@ -35,8 +35,6 @@ public final class DeleteUsergroupAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 1959785591554761172L;
     private static final transient Logger LOG = Logger.getLogger(DeleteUsergroupAction.class);
 
     //~ Methods ----------------------------------------------------------------
@@ -45,8 +43,12 @@ public final class DeleteUsergroupAction extends CookieAction {
     protected void performAction(final Node[] nodes) {
         final int answer = JOptionPane.showConfirmDialog(
                 WindowManager.getDefault().getMainWindow(),
-                org.openide.util.NbBundle.getMessage(DeleteUsergroupAction.class, "DeleteUsergroupAction.performAction(Node[]).JOptionPane.message"), // NOI18N
-                org.openide.util.NbBundle.getMessage(DeleteUsergroupAction.class, "DeleteUsergroupAction.performAction(Node[]).JOptionPane.title"), // NOI18N
+                org.openide.util.NbBundle.getMessage(
+                    DeleteUsergroupAction.class,
+                    "DeleteUsergroupAction.performAction(Node[]).JOptionPane.message"), // NOI18N
+                org.openide.util.NbBundle.getMessage(
+                    DeleteUsergroupAction.class,
+                    "DeleteUsergroupAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {
@@ -59,7 +61,7 @@ public final class DeleteUsergroupAction extends CookieAction {
                     backend.delete(ug);
                     project.getLookup().lookup(UserManagement.class).refreshChildren();
                 } catch (final Exception e) {
-                    LOG.error("could not delete usergroup: " + ug, e);                                    // NOI18N
+                    LOG.error("could not delete usergroup: " + ug, e);                // NOI18N
                 }
             }
         }

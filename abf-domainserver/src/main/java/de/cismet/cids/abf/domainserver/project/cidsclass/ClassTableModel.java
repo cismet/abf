@@ -30,9 +30,6 @@ public final class ClassTableModel extends AbstractTableModel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 4988605589884868092L;
-
     private static final transient Logger LOG = Logger.getLogger(ClassTableModel.class);
 
     public static final int POS = 0;

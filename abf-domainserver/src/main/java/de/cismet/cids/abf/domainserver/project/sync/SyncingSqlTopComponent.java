@@ -1,208 +1,37 @@
-/*
- * SyncingSqlTopComponent.java, encoding: UTF-8
- *
- * Copyright (C) by:
- *
- *----------------------------
- * cismet GmbH
- * Altenkesslerstr. 17
- * Gebaeude D2
- * 66115 Saarbruecken
- * http://www.cismet.de
- *----------------------------
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- * See: http://www.gnu.org/licenses/lgpl.txt
- *
- *----------------------------
- * Author:
- * thorsten.hell@cismet.de
- * martin.scholl@cismet.de
- *----------------------------
- *
- * Created on ???
- *
- */
-
+/***************************************************
+*
+* cismet GmbH, Saarbruecken, Germany
+*
+*              ... and it just works.
+*
+****************************************************/
 package de.cismet.cids.abf.domainserver.project.sync;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
-import java.io.Serializable;
-import javax.swing.JEditorPane;
-import javax.swing.text.EditorKit;
 import org.openide.util.ImageUtilities;
 import org.openide.windows.TopComponent;
 
+import java.io.Serializable;
+
+import javax.swing.JEditorPane;
+import javax.swing.text.EditorKit;
+
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
+
 /**
- * Top component which displays the sql statement to sync meta and live data
+ * Top component which displays the sql statement to sync meta and live data.
  *
- * @author thorsten.hell@cismet.de
- * @author martin.scholl@cismet.de
+ * @author   thorsten.hell@cismet.de
+ * @author   martin.scholl@cismet.de
+ * @version  $Revision$, $Date$
  */
-public final class SyncingSqlTopComponent extends TopComponent
-{
+public final class SyncingSqlTopComponent extends TopComponent {
+
+    //~ Instance fields --------------------------------------------------------
+
     private transient SyncManagement syncManager;
     private transient String preferredComponentId;
     private final transient DomainserverProject project;
-
-    public SyncingSqlTopComponent(final DomainserverProject project)
-    {
-        if(project == null)
-        {
-            throw new IllegalArgumentException(
-                    "project must not be null"); // NOI18N
-        }
-        this.project = project;
-        initComponents();
-        final String name = project.getProjectDirectory().getName();
-        setName(org.openide.util.NbBundle.getMessage(
-                SyncingSqlTopComponent.class, "SyncingSqlTopComponent.name", name)); // NOI18N
-        setIcon(ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                + "classes.png", true)); // NOI18N
-        preferredComponentId = name;
-        txeSql.setContentType("text/x-sql"); // NOI18N
-        final EditorKit kit = JEditorPane.createEditorKitForContentType(
-                "text/x-sql"); // NOI18N
-        kit.install(txeSql);
-        txeSql.setEditorKit(kit);
-    }
-
-    @Override
-    public int getPersistenceType()
-    {
-        return TopComponent.PERSISTENCE_NEVER;
-    }
-
-    @Override
-    public void setEnabled(final boolean b)
-    {
-        super.setEnabled(b);
-        chkPedantic.setEnabled(b);
-        cmdRun.setEnabled(b);
-        txeSql.setEnabled(b);
-    }
-
-    /** replaces this in object stream */
-    @Override
-    public Object writeReplace()
-    {
-        return new ResolvableHelper(preferredComponentId);
-    }
-
-    @Override
-    protected String preferredID()
-    {
-        return preferredComponentId;
-    }
-
-    // NOTE: all this stuff is not really needed since it relates to
-    //       TopComponents persistence
-    // http://blogs.sun.com/geertjan/entry/playing_with_persistence_across_sessions
-    private final class ResolvableHelper implements Serializable
-    {
-        private static final long serialVersionUID = 1L;
-        private final transient String id;
-
-        ResolvableHelper(final String id)
-        {
-            this.id = id;
-        }
-
-        public Object readResolve()
-        {
-            final SyncingSqlTopComponent comp =
-                    new SyncingSqlTopComponent(project);
-            comp.preferredComponentId = id;
-            return comp;
-        }
-    }
-
-    public void setSql(final String sqlScript)
-    {
-        if(sqlScript == null)
-        {
-            txeSql.setText(""); // NOI18N
-        }else
-        {
-            txeSql.setText(sqlScript);
-        }
-    }
-
-    public void setPedantic(final boolean pedantic)
-    {
-        chkPedantic.setSelected(pedantic);
-    }
-
-    // TODO: looser coupling between component and node
-    public void setSyncManager(final SyncManagement syncManager)
-    {
-        this.syncManager = syncManager;
-    }
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        setLayout(new java.awt.BorderLayout());
-
-        jToolBar1.setFloatable(false);
-
-        chkPedantic.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        chkPedantic.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        chkPedantic.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkPedanticActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(chkPedantic);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/pedantic.png"))); // NOI18N
-        jToolBar1.add(jLabel1);
-
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, "    ");
-        jToolBar1.add(jLabel2);
-
-        cmdRun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/run.png"))); // NOI18N
-        cmdRun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdRunActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(cmdRun);
-
-        add(jToolBar1, java.awt.BorderLayout.NORTH);
-
-        txeSql.setEditable(false);
-        scpSQL.setViewportView(txeSql);
-
-        add(scpSQL, java.awt.BorderLayout.CENTER);
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void cmdRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRunActionPerformed
-        syncManager.executeStatements();
-    }//GEN-LAST:event_cmdRunActionPerformed
-
-    private void chkPedanticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkPedanticActionPerformed
-        syncManager.setPedantic(chkPedantic.isSelected());
-    }//GEN-LAST:event_chkPedanticActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final transient javax.swing.JCheckBox chkPedantic = new javax.swing.JCheckBox();
@@ -213,4 +42,203 @@ public final class SyncingSqlTopComponent extends TopComponent
     private final transient javax.swing.JScrollPane scpSQL = new javax.swing.JScrollPane();
     private final transient javax.swing.JEditorPane txeSql = new javax.swing.JEditorPane();
     // End of variables declaration//GEN-END:variables
+
+    //~ Constructors -----------------------------------------------------------
+
+    /**
+     * Creates a new SyncingSqlTopComponent object.
+     *
+     * @param   project  DOCUMENT ME!
+     *
+     * @throws  IllegalArgumentException  DOCUMENT ME!
+     */
+    public SyncingSqlTopComponent(final DomainserverProject project) {
+        if (project == null) {
+            throw new IllegalArgumentException(
+                "project must not be null");     // NOI18N
+        }
+        this.project = project;
+        initComponents();
+        final String name = project.getProjectDirectory().getName();
+        setName(org.openide.util.NbBundle.getMessage(
+                SyncingSqlTopComponent.class,
+                "SyncingSqlTopComponent.name",
+                name));                          // NOI18N
+        setIcon(ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
+                        + "classes.png", true)); // NOI18N
+        preferredComponentId = name;
+        txeSql.setContentType("text/x-sql");     // NOI18N
+        final EditorKit kit = JEditorPane.createEditorKitForContentType(
+                "text/x-sql");                   // NOI18N
+        kit.install(txeSql);
+        txeSql.setEditorKit(kit);
+    }
+
+    //~ Methods ----------------------------------------------------------------
+
+    @Override
+    public int getPersistenceType() {
+        return TopComponent.PERSISTENCE_NEVER;
+    }
+
+    @Override
+    public void setEnabled(final boolean b) {
+        super.setEnabled(b);
+        chkPedantic.setEnabled(b);
+        cmdRun.setEnabled(b);
+        txeSql.setEnabled(b);
+    }
+
+    /**
+     * replaces this in object stream.
+     *
+     * @return  DOCUMENT ME!
+     */
+    @Override
+    public Object writeReplace() {
+        return new ResolvableHelper(preferredComponentId);
+    }
+
+    @Override
+    protected String preferredID() {
+        return preferredComponentId;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  sqlScript  DOCUMENT ME!
+     */
+    public void setSql(final String sqlScript) {
+        if (sqlScript == null) {
+            txeSql.setText(""); // NOI18N
+        } else {
+            txeSql.setText(sqlScript);
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  pedantic  DOCUMENT ME!
+     */
+    public void setPedantic(final boolean pedantic) {
+        chkPedantic.setSelected(pedantic);
+    }
+    /**
+     * TODO: looser coupling between component and node
+     *
+     * @param  syncManager  DOCUMENT ME!
+     */
+    public void setSyncManager(final SyncManagement syncManager) {
+        this.syncManager = syncManager;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
+     * content of this method is always regenerated by the Form Editor.
+     */
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        setLayout(new java.awt.BorderLayout());
+
+        jToolBar1.setFloatable(false);
+
+        chkPedantic.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        chkPedantic.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        chkPedantic.addActionListener(new java.awt.event.ActionListener() {
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    chkPedanticActionPerformed(evt);
+                }
+            });
+        jToolBar1.add(chkPedantic);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/pedantic.png"))); // NOI18N
+        jToolBar1.add(jLabel1);
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, "    ");
+        jToolBar1.add(jLabel2);
+
+        cmdRun.setIcon(new javax.swing.ImageIcon(
+                getClass().getResource("/de/cismet/cids/abf/domainserver/images/run.png"))); // NOI18N
+        cmdRun.addActionListener(new java.awt.event.ActionListener() {
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cmdRunActionPerformed(evt);
+                }
+            });
+        jToolBar1.add(cmdRun);
+
+        add(jToolBar1, java.awt.BorderLayout.NORTH);
+
+        txeSql.setEditable(false);
+        scpSQL.setViewportView(txeSql);
+
+        add(scpSQL, java.awt.BorderLayout.CENTER);
+    } // </editor-fold>//GEN-END:initComponents
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void cmdRunActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdRunActionPerformed
+        syncManager.executeStatements();
+    }                                                                          //GEN-LAST:event_cmdRunActionPerformed
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void chkPedanticActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_chkPedanticActionPerformed
+        syncManager.setPedantic(chkPedantic.isSelected());
+    }                                                                               //GEN-LAST:event_chkPedanticActionPerformed
+
+    //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * NOTE: all this stuff is not really needed since it relates to TopComponents persistence
+     * http://blogs.sun.com/geertjan/entry/playing_with_persistence_across_sessions
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class ResolvableHelper implements Serializable {
+
+        //~ Static fields/initializers -----------------------------------------
+
+        private static final long serialVersionUID = 1L;
+
+        //~ Instance fields ----------------------------------------------------
+
+        private final transient String id;
+
+        //~ Constructors -------------------------------------------------------
+
+        /**
+         * Creates a new ResolvableHelper object.
+         *
+         * @param  id  DOCUMENT ME!
+         */
+        ResolvableHelper(final String id) {
+            this.id = id;
+        }
+
+        //~ Methods ------------------------------------------------------------
+
+        /**
+         * DOCUMENT ME!
+         *
+         * @return  DOCUMENT ME!
+         */
+        public Object readResolve() {
+            final SyncingSqlTopComponent comp = new SyncingSqlTopComponent(project);
+            comp.preferredComponentId = id;
+            return comp;
+        }
+    }
 }

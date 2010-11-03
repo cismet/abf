@@ -59,7 +59,9 @@ public final class ViewManagement extends ProjectNode implements ConnectionListe
         super(Children.LEAF, project);
         project.addConnectionListener(this);
         image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "class_management.png"); // NOI18N
-        setDisplayName(org.openide.util.NbBundle.getMessage(ViewManagement.class, "ViewManagement.ViewManagement(DomainserverProject).displayName"));    // NOI18N
+        setDisplayName(org.openide.util.NbBundle.getMessage(
+                ViewManagement.class,
+                "ViewManagement.ViewManagement(DomainserverProject).displayName"));                  // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -184,15 +186,15 @@ final class ViewManagementChildren extends Children.Keys {
                                     }
                                 });
                         } catch (final Exception ex) {
-                            LOG.error("could not create diagrams", ex); // NOI18N
+                            LOG.error("could not create diagrams", ex);               // NOI18N
                             ErrorUtils.showErrorMessage(
                                 org.openide.util.NbBundle.getMessage(
                                     ViewManagementChildren.class,
-                                    "ViewManagement.addNotify().ErrorUtils.message"),       // NOI18N
+                                    "ViewManagement.addNotify().ErrorUtils.message"), // NOI18N
                                 ex);
                         }
                     }
-                }, getClass().getSimpleName() + "::addNotifyRunner");   // NOI18N
+                }, getClass().getSimpleName() + "::addNotifyRunner");                 // NOI18N
         t.start();
     }
 }

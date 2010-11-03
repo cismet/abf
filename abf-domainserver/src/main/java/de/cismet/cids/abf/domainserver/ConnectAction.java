@@ -28,20 +28,19 @@ import de.cismet.cids.abf.utilities.ConnectionListener;
  */
 public final class ConnectAction extends CookieAction {
 
-    //~ Static fields/initializers ---------------------------------------------
-
-    /** Use serialVersionUID for interoperability. */
-    private static final long serialVersionUID = 8552885133594513530L;
-
     //~ Methods ----------------------------------------------------------------
 
     @Override
     public String getName() {
         final Connectable c = getConnectable();
         if ((c != null) && c.isConnected()) {
-            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "ConnectAction.getName().returnvalue.disconnect"); // NOI18N
+            return org.openide.util.NbBundle.getMessage(
+                    ConnectAction.class,
+                    "ConnectAction.getName().returnvalue.disconnect"); // NOI18N
         } else {
-            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "ConnectAction.getName().returnvalue.connect");    // NOI18N
+            return org.openide.util.NbBundle.getMessage(
+                    ConnectAction.class,
+                    "ConnectAction.getName().returnvalue.connect");    // NOI18N
         }
     }
 
