@@ -8,13 +8,15 @@
 package de.cismet.cids.abf.registry.messaging;
 
 import Sirius.server.registry.rmplugin.exception.UnableToSendMessageException;
-
-import de.cismet.cids.abf.registry.cookie.RMUserCookie;
-
 import Sirius.server.registry.rmplugin.util.RMUser;
 
-import de.cismet.cids.abf.registry.RegistryProject;
-import de.cismet.cids.abf.registry.cookie.RegistryProjectCookie;
+import org.apache.log4j.Logger;
+
+import org.openide.nodes.Node;
+import org.openide.util.HelpCtx;
+import org.openide.util.NbBundle;
+import org.openide.util.actions.CookieAction;
+import org.openide.windows.WindowManager;
 
 import java.rmi.RemoteException;
 
@@ -25,13 +27,9 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
-
-import org.openide.nodes.Node;
-import org.openide.util.HelpCtx;
-import org.openide.util.NbBundle;
-import org.openide.util.actions.CookieAction;
-import org.openide.windows.WindowManager;
+import de.cismet.cids.abf.registry.RegistryProject;
+import de.cismet.cids.abf.registry.cookie.RMUserCookie;
+import de.cismet.cids.abf.registry.cookie.RegistryProjectCookie;
 
 /**
  * DOCUMENT ME!
@@ -98,9 +96,9 @@ public final class SendMessageAction extends CookieAction {
                                     SendMessageAction.class,
                                     "SendMessageAction.performAction(Node[]).messageFromAdmin")); // NOI18N
                 } catch (final RemoteException ex) {
-                    LOG.error("could not send message", ex);  // NOI18N
+                    LOG.error("could not send message", ex);                                      // NOI18N
                 } catch (final UnableToSendMessageException ex) {
-                    LOG.error("could not send message", ex);  // NOI18N
+                    LOG.error("could not send message", ex);                                      // NOI18N
                 }
             }
         }

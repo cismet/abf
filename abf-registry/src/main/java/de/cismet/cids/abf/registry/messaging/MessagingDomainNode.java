@@ -7,16 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.registry.messaging;
 
-import de.cismet.cids.abf.registry.cookie.RMUserCookieImpl;
-import de.cismet.cids.abf.registry.RegistryProject;
-import de.cismet.cids.abf.registry.cookie.RegistryProjectCookieImpl;
-
-import java.awt.Image;
-
-import java.io.IOException;
-
-import javax.swing.Action;
-
 import org.apache.log4j.Logger;
 
 import org.openide.nodes.AbstractNode;
@@ -24,6 +14,16 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.actions.CallableSystemAction;
+
+import java.awt.Image;
+
+import java.io.IOException;
+
+import javax.swing.Action;
+
+import de.cismet.cids.abf.registry.RegistryProject;
+import de.cismet.cids.abf.registry.cookie.RMUserCookieImpl;
+import de.cismet.cids.abf.registry.cookie.RegistryProjectCookieImpl;
 
 /**
  * DOCUMENT ME!

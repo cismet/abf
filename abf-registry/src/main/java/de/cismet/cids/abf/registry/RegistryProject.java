@@ -9,9 +9,20 @@ package de.cismet.cids.abf.registry;
 
 import Sirius.server.registry.rmplugin.interfaces.RMForwarder;
 
-import de.cismet.cids.abf.utilities.Connectable;
-import de.cismet.cids.abf.utilities.ConnectionListener;
-import de.cismet.cids.abf.utilities.project.NotifyProperties;
+import org.apache.log4j.Logger;
+
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
+import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectInformation;
+import org.netbeans.spi.project.ActionProvider;
+import org.netbeans.spi.project.ProjectState;
+import org.netbeans.spi.project.ui.LogicalViewProvider;
+
+import org.openide.filesystems.FileObject;
+import org.openide.util.ImageUtilities;
+import org.openide.util.Lookup;
+import org.openide.util.lookup.Lookups;
 
 import java.beans.PropertyChangeListener;
 
@@ -31,20 +42,9 @@ import java.util.Set;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
-
-import org.netbeans.api.progress.ProgressHandle;
-import org.netbeans.api.progress.ProgressHandleFactory;
-import org.netbeans.api.project.Project;
-import org.netbeans.api.project.ProjectInformation;
-import org.netbeans.spi.project.ActionProvider;
-import org.netbeans.spi.project.ProjectState;
-import org.netbeans.spi.project.ui.LogicalViewProvider;
-
-import org.openide.filesystems.FileObject;
-import org.openide.util.ImageUtilities;
-import org.openide.util.Lookup;
-import org.openide.util.lookup.Lookups;
+import de.cismet.cids.abf.utilities.Connectable;
+import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.project.NotifyProperties;
 
 /**
  * DOCUMENT ME!
@@ -125,10 +125,10 @@ public class RegistryProject implements Project, Connectable {
                 result = projectDir.createFolder(WEBINTERFACE_DIR);
             } catch (final IOException ioe) {
                 final String message = "cannot create web " // NOI18N
-                    + "interface dir '"                     // NOI18N
-                    + WEBINTERFACE_DIR
-                    + "' in folder: "                       // NOI18N
-                    + projectDir;
+                            + "interface dir '"             // NOI18N
+                            + WEBINTERFACE_DIR
+                            + "' in folder: "               // NOI18N
+                            + projectDir;
                 LOG.error(message, ioe);
                 throw new IllegalStateException(message, ioe);
             }
@@ -152,19 +152,19 @@ public class RegistryProject implements Project, Connectable {
                     public void run() {
                         try {
                             messageForwarder = (RMForwarder)Naming.lookup(
-                                    "rmi://"                                 // NOI18N
-                                    + runtimeProps.getProperty("registryIP") // NOI18N
-                                    + ":1099/RMRegistryServer");             // NOI18N
+                                    "rmi://"                                         // NOI18N
+                                            + runtimeProps.getProperty("registryIP") // NOI18N
+                                            + ":1099/RMRegistryServer");             // NOI18N
                         } catch (final NotBoundException ex) {
-                            final String message = "rmi server not running"; // NOI18N
+                            final String message = "rmi server not running";         // NOI18N
                             LOG.error(message, ex);
                             throw new IllegalStateException(message, ex);
                         } catch (final MalformedURLException ex) {
-                            final String message = "server url not valid";   // NOI18N
+                            final String message = "server url not valid";           // NOI18N
                             LOG.error(message, ex);
                             throw new IllegalStateException(message, ex);
                         } catch (final RemoteException ex) {
-                            final String message = "could not connect to server"; // NOI18N
+                            final String message = "could not connect to server";    // NOI18N
                             LOG.error(message, ex);
                             throw new IllegalStateException(message, ex);
                         } finally {
@@ -207,8 +207,8 @@ public class RegistryProject implements Project, Connectable {
     private Properties loadProperties() {
         final FileObject fob = projectDir.getFileObject(
                 RegistryProjectFactory.PROJECT_DIR
-                + "/" // NOI18N
-                + RegistryProjectFactory.PROJECT_PROPFILE);
+                        + "/" // NOI18N
+                        + RegistryProjectFactory.PROJECT_PROPFILE);
         final Properties properties = new NotifyProperties(state);
         if (fob != null) {
             try {

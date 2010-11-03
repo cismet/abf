@@ -7,20 +7,7 @@
 ****************************************************/
 package de.cismet.cids.abf.registry.messaging;
 
-import de.cismet.cids.abf.registry.cookie.RMUserCookie;
-
 import Sirius.server.registry.rmplugin.util.RMUser;
-
-import de.cismet.cids.abf.registry.RegistryProject;
-import de.cismet.cids.abf.registry.cookie.RegistryProjectCookieImpl;
-import de.cismet.cids.abf.utilities.ConnectionListener;
-
-import java.awt.Image;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 
@@ -29,6 +16,18 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.actions.CallableSystemAction;
+
+import java.awt.Image;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.Action;
+
+import de.cismet.cids.abf.registry.RegistryProject;
+import de.cismet.cids.abf.registry.cookie.RMUserCookie;
+import de.cismet.cids.abf.registry.cookie.RegistryProjectCookieImpl;
+import de.cismet.cids.abf.utilities.ConnectionListener;
 
 /**
  * DOCUMENT ME!
@@ -58,7 +57,7 @@ public class MessagingNode extends AbstractNode implements ConnectionListener, R
     public MessagingNode(final RegistryProject registryProject) {
         super(Children.LEAF);
         this.registryProject = registryProject;
-        icon = ImageUtilities.loadImage(RegistryProject.IMAGE_FOLDER + "allUsers.png");                 // NOI18N
+        icon = ImageUtilities.loadImage(RegistryProject.IMAGE_FOLDER + "allUsers.png");                         // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(MessagingNode.class, "MessagingNode.displayName")); // NOI18N
         registryProject.addConnectionListener(this);
         getCookieSet().add(new RegistryProjectCookieImpl(registryProject));

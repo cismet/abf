@@ -7,9 +7,9 @@
 ****************************************************/
 package de.cismet.cids.abf.registry.cookie;
 
-import de.cismet.cids.abf.registry.RegistryProject;
-
 import org.openide.nodes.Node;
+
+import de.cismet.cids.abf.registry.RegistryProject;
 
 /**
  * DOCUMENT ME!

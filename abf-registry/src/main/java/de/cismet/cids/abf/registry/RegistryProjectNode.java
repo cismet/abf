@@ -7,18 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.registry;
 
-import de.cismet.cids.abf.registry.messaging.MessagingNode;
-import de.cismet.cids.abf.utilities.ConnectionListener;
-import de.cismet.cids.abf.utilities.nodes.ConnectAction;
-
-import java.awt.Image;
-
-import java.text.MessageFormat;
-
-import java.util.ArrayList;
-
-import javax.swing.Action;
-
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
 
 import org.openide.actions.FileSystemAction;
@@ -34,6 +22,18 @@ import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
+
+import java.awt.Image;
+
+import java.text.MessageFormat;
+
+import java.util.ArrayList;
+
+import javax.swing.Action;
+
+import de.cismet.cids.abf.registry.messaging.MessagingNode;
+import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.nodes.ConnectAction;
 
 /**
  * DOCUMENT ME!
@@ -64,9 +64,9 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
         this.project = project;
         icon = ImageUtilities.loadImage(RegistryProject.IMAGE_FOLDER + "registry.png"); // NOI18N
         htmlTemplate = "<font color='!textText'>"                                       // NOI18N
-            + project.getProjectDirectory().getName()
-            + "</font><font color='!controlShadow'> "                                   // NOI18N
-            + "[cidsRegistry] {0}</font>";                                              // NOI18N
+                    + project.getProjectDirectory().getName()
+                    + "</font><font color='!controlShadow'> "                           // NOI18N
+                    + "[cidsRegistry] {0}</font>";                                      // NOI18N
         project.addConnectionListener(this);
     }
 
