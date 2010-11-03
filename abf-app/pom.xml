@@ -81,6 +81,12 @@
             <type>nbm</type>
             <version>3.0-RC2-SNAPSHOT</version>
         </dependency>
+<!--        <dependency>
+            <groupId>de.cismet.cids.abf</groupId>
+            <artifactId>abf-l10n-de</artifactId>
+            <type>nbm</type>
+            <version>3.0-RC2-SNAPSHOT</version>
+        </dependency>-->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-broker</artifactId>
@@ -99,6 +105,12 @@
             <type>nbm</type>
             <version>3.0-RC2-SNAPSHOT</version>
         </dependency>
+        <!--dependency>
+            <groupId>de.cismet.cids.abf</groupId>
+            <artifactId>abf-distribution</artifactId>
+            <type>nbm</type>
+            <version>3.0-RC2-SNAPSHOT</version>
+        </dependency-->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-domainserver</artifactId>
