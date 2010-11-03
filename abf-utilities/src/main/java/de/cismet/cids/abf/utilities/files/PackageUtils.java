@@ -7,10 +7,10 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities.files;
 
-import java.io.File;
-
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
+
+import java.io.File;
 
 /**
  * DOCUMENT ME!

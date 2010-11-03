@@ -7,15 +7,15 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities.nodes;
 
-import de.cismet.cids.abf.utilities.UtilityCommons;
-
-import java.awt.Image;
-
 import org.apache.log4j.Logger;
 
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.util.ImageUtilities;
+
+import java.awt.Image;
+
+import de.cismet.cids.abf.utilities.UtilityCommons;
 
 /**
  * Very very simple node icon animation.

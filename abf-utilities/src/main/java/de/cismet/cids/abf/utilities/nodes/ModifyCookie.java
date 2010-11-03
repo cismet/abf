@@ -5,29 +5,24 @@
 *              ... and it just works.
 *
 ****************************************************/
-package de.cismet.cids.abf.utilities;
+package de.cismet.cids.abf.utilities.nodes;
 
-import java.util.EventListener;
+import org.openide.nodes.Node;
 
 /**
  * DOCUMENT ME!
  *
- * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
-public interface ConnectionListener extends EventListener {
+public interface ModifyCookie extends Node.Cookie {
 
     //~ Methods ----------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
      *
-     * @param  isConnected  DOCUMENT ME!
+     * @param  modified  DOCUMENT ME!
      */
-    void connectionStatusChanged(final boolean isConnected);
-    /**
-     * DOCUMENT ME!
-     */
-    void connectionStatusIndeterminate();
+    void setModified(final boolean modified);
 }

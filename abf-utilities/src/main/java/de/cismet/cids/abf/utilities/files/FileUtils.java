@@ -7,6 +7,9 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities.files;
 
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -19,9 +22,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
 
 /**
  * DOCUMENT ME!
@@ -124,8 +124,8 @@ public final class FileUtils {
             default: {
                 final String[] allMetaEntries =
                     new String[MAC_META_ENTRIES.length
-                        + UNIX_META_ENTRIES.length
-                        + WINDOWS_META_ENTRIES.length];
+                                + UNIX_META_ENTRIES.length
+                                + WINDOWS_META_ENTRIES.length];
                 int i = -1;
                 for (final String s : MAC_META_ENTRIES) {
                     allMetaEntries[++i] = s;
@@ -380,19 +380,25 @@ public final class FileUtils {
      */
     public static void deleteContent(final File srcDir, final boolean recursive) throws IOException {
         if (!srcDir.isDirectory()) {
-            throw new IOException("source dir is not a directory");                                            // NOI18N
+            throw new IOException("source dir is not a directory"); // NOI18N
         }
         for (final File f : srcDir.listFiles()) {
             if (f.isFile()) {
                 if (!f.delete()) {
                     throw new IOException(
-                        "could not delete file: " + f.getAbsolutePath() + File.pathSeparator + f.getName());   // NOI18N
+                        "could not delete file: "
+                                + f.getAbsolutePath()
+                                + File.pathSeparator
+                                + f.getName());                     // NOI18N
                 }
             } else if (f.isDirectory() && recursive) {
                 deleteContent(f, recursive);
                 if (!f.delete()) {
                     throw new IOException(
-                        "could not delete folder: " + f.getAbsolutePath() + File.pathSeparator + f.getName()); // NOI18N
+                        "could not delete folder: "
+                                + f.getAbsolutePath()
+                                + File.pathSeparator
+                                + f.getName());                     // NOI18N
                 }
             }
         }
@@ -407,12 +413,15 @@ public final class FileUtils {
      */
     public static void deleteDir(final File srcDir) throws IOException {
         if (!srcDir.isDirectory()) {
-            throw new IOException("source dir is not a directory");                                            // NOI18N
+            throw new IOException("source dir is not a directory"); // NOI18N
         }
         deleteContent(srcDir, true);
         if (!srcDir.delete()) {
             throw new IOException(
-                "could not delete file: " + srcDir.getAbsolutePath() + File.pathSeparator + srcDir.getName()); // NOI18N
+                "could not delete file: "
+                        + srcDir.getAbsolutePath()
+                        + File.pathSeparator
+                        + srcDir.getName());                        // NOI18N
         }
     }
 
@@ -445,7 +454,7 @@ public final class FileUtils {
      * @throws  IOException  DOCUMENT ME!
      */
     public static void extractJar(final FileObject jar, final FileObject dest, final FileFilter filter)
-        throws IOException {
+            throws IOException {
         extractJar(FileUtil.toFile(jar), FileUtil.toFile(dest), filter);
     }
 
@@ -512,6 +521,36 @@ public final class FileUtils {
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    public static final class JarFilter implements FileFilter {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public boolean accept(final File file) {
+            return getExt(file).equalsIgnoreCase("jar"); // NOI18N
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    public static final class DirAndJarFilter implements FileFilter {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public boolean accept(final File file) {
+            return file.isDirectory() || getExt(file).equalsIgnoreCase("jar"); // NOI18N
+        }
+    }
 
     /**
      * DOCUMENT ME!

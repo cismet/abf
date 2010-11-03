@@ -7,6 +7,8 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities;
 
+import java.util.Comparator;
+
 import de.cismet.cids.jpa.entity.catalog.CatNode;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 import de.cismet.cids.jpa.entity.cidsclass.Icon;
@@ -18,8 +20,6 @@ import de.cismet.cids.jpa.entity.permission.Permission;
 import de.cismet.cids.jpa.entity.permission.Policy;
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
-
-import java.util.Comparator;
 
 /**
  * DOCUMENT ME!

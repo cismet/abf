@@ -7,9 +7,9 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities.project;
 
-import java.util.Properties;
-
 import org.netbeans.spi.project.ProjectState;
+
+import java.util.Properties;
 
 /**
  * DOCUMENT ME!

@@ -7,17 +7,17 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities.windows;
 
-import de.cismet.cids.abf.utilities.UtilityCommons;
-
-import java.awt.Dialog;
-import java.awt.EventQueue;
-import java.awt.Image;
-
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.util.HelpCtx;
 import org.openide.util.ImageUtilities;
 import org.openide.windows.WindowManager;
+
+import java.awt.Dialog;
+import java.awt.EventQueue;
+import java.awt.Image;
+
+import de.cismet.cids.abf.utilities.UtilityCommons;
 
 /**
  * DOCUMENT ME!
@@ -44,7 +44,12 @@ public final class ErrorUtils {
      * @param  t        DOCUMENT ME!
      */
     public static void showErrorMessage(final String message, final Throwable t) {
-        showErrorMessage(message, org.openide.util.NbBundle.getMessage(ErrorUtils.class, "ErrorUtils.showErrorMessage(String,Throwable).defaultmessage"), t); // NOI18N
+        showErrorMessage(
+            message,
+            org.openide.util.NbBundle.getMessage(
+                ErrorUtils.class,
+                "ErrorUtils.showErrorMessage(String,Throwable).defaultmessage"),
+            t); // NOI18N
     }
 
     /**

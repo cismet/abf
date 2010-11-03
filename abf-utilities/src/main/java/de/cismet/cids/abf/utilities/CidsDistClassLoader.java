@@ -7,6 +7,12 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities;
 
+import org.apache.log4j.Logger;
+
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileStateInvalidException;
+import org.openide.filesystems.FileUtil;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -19,12 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.apache.log4j.Logger;
-
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileStateInvalidException;
-import org.openide.filesystems.FileUtil;
 
 /**
  * This Class is able the load all classes of libraries in a cidsDistribution. Additionally it has a class cache to
@@ -246,10 +246,10 @@ public final class CidsDistClassLoader extends URLClassLoader {
             if (classes == null) {
                 LOG.warn(
                     "you provided a jar in the jarClassPath array that could not be found in the " // NOI18N
-                    + "cids distribution libraries");                                              // NOI18N
+                            + "cids distribution libraries");                                      // NOI18N
                 break;
             }
-            for (String clazz : classes) {
+            for (final String clazz : classes) {
                 if (className.equals(clazz)) {
                     return true;
                 }

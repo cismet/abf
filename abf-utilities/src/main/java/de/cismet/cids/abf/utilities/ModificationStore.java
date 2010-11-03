@@ -7,6 +7,8 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,8 +18,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
 
 /**
  * DOCUMENT ME!

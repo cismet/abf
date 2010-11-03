@@ -7,6 +7,8 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities.windows;
 
+import org.apache.log4j.Logger;
+
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Image;
@@ -24,8 +26,6 @@ import java.net.URI;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
-import org.apache.log4j.Logger;
 
 /**
  * DOCUMENT ME!
@@ -83,23 +83,27 @@ public class ErrorPanel extends javax.swing.JPanel {
      * DOCUMENT ME!
      */
     private void init() {
-        tbpErrorMessage.setTitleAt(0, org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.tbpErrorMessage.titleAt0")); // NOI18N
-        tbpErrorMessage.setTitleAt(1, org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.tbpErrorMessage.titleAt1"));   // NOI18N
+        tbpErrorMessage.setTitleAt(
+            0,
+            org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.tbpErrorMessage.titleAt0")); // NOI18N
+        tbpErrorMessage.setTitleAt(
+            1,
+            org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.tbpErrorMessage.titleAt1")); // NOI18N
         txaMessage.setEditable(false);
         txaMessage.setLineWrap(true);
         txaMessage.setText(message);
-        lblLink.setText(org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.lblLink.text"));           // NOI18N
+        lblLink.setText(org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.lblLink.text")); // NOI18N
         lblLink.addMouseListener(new LinkAdapter());
         final StringBuffer stacktrace = new StringBuffer();
         for (final StackTraceElement ste : error.getStackTrace()) {
-            stacktrace.append(ste.toString()).append("<br>");                                                 // NOI18N
+            stacktrace.append(ste.toString()).append("<br>");                                               // NOI18N
         }
         lblError.setText(
-            "<html><font color=#FF0000>"                                                                      // NOI18N
-            + error.toString()
-            + "</font><br><br><b>STACKTRACE:</b><br>"                                                         // NOI18N
-            + stacktrace.toString()
-            + "</html>");                                                                                     // NOI18N
+            "<html><font color=#FF0000>"                                                                    // NOI18N
+                    + error.toString()
+                    + "</font><br><br><b>STACKTRACE:</b><br>"                                               // NOI18N
+                    + stacktrace.toString()
+                    + "</html>");                                                                           // NOI18N
         lblError.addMouseListener(
             new MouseAdapter() {
 
@@ -117,7 +121,9 @@ public class ErrorPanel extends javax.swing.JPanel {
                     if (e.isPopupTrigger()) {
                         final JPopupMenu popup = new JPopupMenu();
                         final JMenuItem item = new JMenuItem(
-                                org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.lblError.MouseAdapter.maybePopup(MouseEvent).item.text")); // NOI18N
+                                org.openide.util.NbBundle.getMessage(
+                                    ErrorPanel.class,
+                                    "ErrorPanel.lblError.MouseAdapter.maybePopup(MouseEvent).item.text")); // NOI18N
                         item.addActionListener(
                             new ActionListener() {
 
@@ -151,7 +157,6 @@ public class ErrorPanel extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         setMaximumSize(new java.awt.Dimension(300, 300));
 
         pnlMessage.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.background"));
@@ -162,22 +167,23 @@ public class ErrorPanel extends javax.swing.JPanel {
 
         lblLink.setText("jLabel1");
 
-        org.jdesktop.layout.GroupLayout pnlMessageLayout = new org.jdesktop.layout.GroupLayout(pnlMessage);
+        final org.jdesktop.layout.GroupLayout pnlMessageLayout = new org.jdesktop.layout.GroupLayout(pnlMessage);
         pnlMessage.setLayout(pnlMessageLayout);
         pnlMessageLayout.setHorizontalGroup(
-            pnlMessageLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(pnlMessageLayout.createSequentialGroup()
-                .add(lblLink)
-                .addContainerGap())
-            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
-        );
+            pnlMessageLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                pnlMessageLayout.createSequentialGroup().add(lblLink).addContainerGap()).add(
+                jScrollPane2,
+                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                429,
+                Short.MAX_VALUE));
         pnlMessageLayout.setVerticalGroup(
-            pnlMessageLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, pnlMessageLayout.createSequentialGroup()
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(lblLink))
-        );
+            pnlMessageLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                org.jdesktop.layout.GroupLayout.TRAILING,
+                pnlMessageLayout.createSequentialGroup().add(
+                    jScrollPane2,
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    148,
+                    Short.MAX_VALUE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(lblLink)));
 
         tbpErrorMessage.addTab("tab1", pnlMessage);
 
@@ -185,42 +191,51 @@ public class ErrorPanel extends javax.swing.JPanel {
         lblError.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jScrollPane1.setViewportView(lblError);
 
-        org.jdesktop.layout.GroupLayout pnlErrorLayout = new org.jdesktop.layout.GroupLayout(pnlError);
+        final org.jdesktop.layout.GroupLayout pnlErrorLayout = new org.jdesktop.layout.GroupLayout(pnlError);
         pnlError.setLayout(pnlErrorLayout);
         pnlErrorLayout.setHorizontalGroup(
-            pnlErrorLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
-        );
+            pnlErrorLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                jScrollPane1,
+                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                429,
+                Short.MAX_VALUE));
         pnlErrorLayout.setVerticalGroup(
-            pnlErrorLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-        );
+            pnlErrorLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                jScrollPane1,
+                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                172,
+                Short.MAX_VALUE));
 
         tbpErrorMessage.addTab("tab2", pnlError);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(lblImage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(tbpErrorMessage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    lblImage,
+                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                    79,
+                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    tbpErrorMessage,
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    450,
+                    Short.MAX_VALUE).addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(tbpErrorMessage, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
-                        .add(47, 47, 47)
-                        .add(lblImage, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(45, 45, 45))))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                        tbpErrorMessage,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        218,
+                        Short.MAX_VALUE).add(
+                        layout.createSequentialGroup().add(47, 47, 47).add(
+                            lblImage,
+                            org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                            126,
+                            org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(45, 45, 45)))));
+    } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
 
@@ -236,7 +251,9 @@ public class ErrorPanel extends javax.swing.JPanel {
         // TODO: use Desktop API when switching to Java 1.6
         @Override
         public void mouseClicked(final MouseEvent me) {
-            final String url = org.openide.util.NbBundle.getMessage(ErrorPanel.class, "ErrorPanel.LinkAdapter.mouseClicked(MouseEvent).url"); // NOI18N
+            final String url = org.openide.util.NbBundle.getMessage(
+                    ErrorPanel.class,
+                    "ErrorPanel.LinkAdapter.mouseClicked(MouseEvent).url");                                    // NOI18N
             final String osName = System.getProperty("os.name");                                               // NOI18N
             try {
                 if (Desktop.isDesktopSupported()) {

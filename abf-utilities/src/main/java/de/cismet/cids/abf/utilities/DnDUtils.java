@@ -7,7 +7,13 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities;
 
-import de.cismet.cids.abf.utilities.files.FileUtils;
+import org.apache.log4j.Logger;
+
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.nodes.Node;
+import org.openide.nodes.NodeTransfer;
+import org.openide.util.datatransfer.PasteType;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -23,13 +29,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
-import org.openide.nodes.Node;
-import org.openide.nodes.NodeTransfer;
-import org.openide.util.datatransfer.PasteType;
+import de.cismet.cids.abf.utilities.files.FileUtils;
 
 /**
  * DOCUMENT ME!
@@ -350,7 +350,7 @@ public class DnDUtils {
                 LOG.debug("copy: " + (DnDConstants.ACTION_COPY == action)); // NOI18N
                 LOG.debug("link: " + (DnDConstants.ACTION_LINK == action)); // NOI18N
                 LOG.debug("copy or move: "                                  // NOI18N
-                    + (DnDConstants.ACTION_COPY_OR_MOVE == action));
+                            + (DnDConstants.ACTION_COPY_OR_MOVE == action));
             }
         }
     }

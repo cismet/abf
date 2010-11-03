@@ -7,15 +7,15 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities.nodes;
 
-import de.cismet.cids.abf.utilities.UtilityCommons;
-import de.cismet.cids.abf.utilities.Connectable;
-import de.cismet.cids.abf.utilities.ConnectionListener;
-
 import org.openide.nodes.Node;
 import org.openide.util.HelpCtx;
 import org.openide.util.RequestProcessor;
 import org.openide.util.actions.CookieAction;
 import org.openide.windows.TopComponent;
+
+import de.cismet.cids.abf.utilities.Connectable;
+import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.UtilityCommons;
 
 /**
  * DOCUMENT ME!
@@ -35,9 +35,13 @@ public final class ConnectAction extends CookieAction {
     public String getName() {
         final Connectable c = getConnectable();
         if ((c != null) && c.isConnected()) {
-            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "ConnectAction.getName().returnvalue.disconnect"); // NOI18N
+            return org.openide.util.NbBundle.getMessage(
+                    ConnectAction.class,
+                    "ConnectAction.getName().returnvalue.disconnect"); // NOI18N
         } else {
-            return org.openide.util.NbBundle.getMessage(ConnectAction.class, "ConnectAction.getName().returnvalue.connect");    // NOI18N
+            return org.openide.util.NbBundle.getMessage(
+                    ConnectAction.class,
+                    "ConnectAction.getName().returnvalue.connect");    // NOI18N
         }
     }
 
@@ -138,17 +142,16 @@ public final class ConnectAction extends CookieAction {
 
         @Override
         public void connectionStatusChanged(final boolean isConnected) {
-            RequestProcessor.getDefault()
-                    .post(
-                        new Runnable() {
+            RequestProcessor.getDefault().post(
+                new Runnable() {
 
-                            @Override
-                            public void run() {
-                                c.removeConnectionListener(ConnL.this); // TODO ConcurrentModificationException REFACTOR
-                                                                        // THIS ACTION !!!
-                            }
-                        },
-                        100);
+                    @Override
+                    public void run() {
+                        c.removeConnectionListener(ConnL.this); // TODO ConcurrentModificationException REFACTOR
+                                                                // THIS ACTION !!!
+                    }
+                },
+                100);
             refreshUI();
         }
 

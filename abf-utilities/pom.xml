@@ -93,6 +93,7 @@
                         <publicPackage>javax.*</publicPackage>
                         <publicPackage>org.apache.*</publicPackage>
                         <publicPackage>org.dom4j.*</publicPackage>
+                        <publicPackage>org.jdom.*</publicPackage>
                         <publicPackage>org.hibernate.*</publicPackage>
                         <publicPackage>org.jaxen.*</publicPackage>
                         <publicPackage>org.jdesktop.*</publicPackage>
