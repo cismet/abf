@@ -323,7 +323,7 @@ public final class SourceFolderNode extends ProjectNode implements SourceContext
             super.setName(newName);
         } catch (final IOException ex) {
             LOG.error("rename failed: " + sourceDir.getName() // NOI18N
-                        + " to " + newName, ex);              // NOI18N
+                        + " to " + newName, ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
         } finally {
             if ((lock != null) && lock.isValid()) {
