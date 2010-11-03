@@ -7,6 +7,24 @@
 ****************************************************/
 package de.cismet.cids.abf.cidsjavatemplate;
 
+import org.apache.log4j.Logger;
+
+import org.netbeans.api.project.ProjectManager;
+import org.netbeans.spi.project.ui.support.ProjectChooser;
+import org.netbeans.spi.project.ui.templates.support.Templates;
+
+import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileLock;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.util.NbBundle;
+import org.openide.xml.XMLUtil;
+
+import org.w3c.dom.NodeList;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import java.awt.Component;
 
 import java.io.BufferedInputStream;
@@ -32,24 +50,6 @@ import java.util.zip.ZipInputStream;
 
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
-
-import org.apache.log4j.Logger;
-
-import org.netbeans.api.project.ProjectManager;
-import org.netbeans.spi.project.ui.support.ProjectChooser;
-import org.netbeans.spi.project.ui.templates.support.Templates;
-
-import org.openide.WizardDescriptor;
-import org.openide.filesystems.FileLock;
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
-import org.openide.util.NbBundle;
-import org.openide.xml.XMLUtil;
-
-import org.w3c.dom.NodeList;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * DOCUMENT ME!
@@ -97,7 +97,9 @@ public final class CidsJavaTemplateWizardIterator implements WizardDescriptor.In
      * @return  DOCUMENT ME!
      */
     private String[] createSteps() {
-        return new String[] { NbBundle.getMessage(CidsJavaTemplateWizardIterator.class, "CidsJavaTemplateWizardPanel.component.name") }; // NOI18N
+        return new String[] {
+                NbBundle.getMessage(CidsJavaTemplateWizardIterator.class, "CidsJavaTemplateWizardPanel.component.name")
+            }; // NOI18N
     }
 
     @Override
@@ -488,7 +490,8 @@ public final class CidsJavaTemplateWizardIterator implements WizardDescriptor.In
         final String[] paths = {
                 localPath.substring(
                     0,
-                    localPath.length() - File.separator.length()),
+                    localPath.length()
+                            - File.separator.length()),
                 extPath,
                 intPath
             };
@@ -512,7 +515,9 @@ public final class CidsJavaTemplateWizardIterator implements WizardDescriptor.In
             final File[] jarFiles = libDir.listFiles(jarFilter);
             for (final File jar : jarFiles) {
                 p.setProperty(fileRef + jar.getName(),
-                    path + File.separator + jar.getName());
+                    path
+                            + File.separator
+                            + jar.getName());
                 classPath.append(":${")                                                                // NOI18N
                 .append(fileRef).append(jar.getName()).append('}');                                    // NOI18N
             }

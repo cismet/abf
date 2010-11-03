@@ -7,6 +7,11 @@
 ****************************************************/
 package de.cismet.cids.abf.cidsjavatemplate;
 
+import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
+import org.openide.util.HelpCtx;
+import org.openide.util.NbBundle;
+
 import java.awt.Component;
 
 import java.io.File;
@@ -17,11 +22,6 @@ import java.util.Set;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.openide.WizardDescriptor;
-import org.openide.WizardValidationException;
-import org.openide.util.HelpCtx;
-import org.openide.util.NbBundle;
 
 /**
  * Panel just asking for basic info.
@@ -53,7 +53,9 @@ public final class CidsJavaTemplateWizardPanel implements WizardDescriptor.Panel
     public Component getComponent() {
         if (component == null) {
             component = new CidsJavaTemplatePanelVisual(this);
-            component.setName(NbBundle.getMessage(CidsJavaTemplateWizardPanel.class, "CidsJavaTemplateWizardPanel.component.name")); // NOI18N
+            component.setName(NbBundle.getMessage(
+                    CidsJavaTemplateWizardPanel.class,
+                    "CidsJavaTemplateWizardPanel.component.name")); // NOI18N
         }
         return component;
     }

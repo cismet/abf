@@ -7,6 +7,12 @@
 ****************************************************/
 package de.cismet.cids.abf.cidsjavatemplate;
 
+import org.netbeans.spi.project.ui.support.ProjectChooser;
+
+import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
+import org.openide.filesystems.FileUtil;
+
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -14,12 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-
-import org.netbeans.spi.project.ui.support.ProjectChooser;
-
-import org.openide.WizardDescriptor;
-import org.openide.WizardValidationException;
-import org.openide.filesystems.FileUtil;
 
 /**
  * DOCUMENT ME!
@@ -91,75 +91,102 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         lblProjectName.setLabelFor(txtProjectName);
-        org.openide.awt.Mnemonics.setLocalizedText(lblProjectName, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.lblProjectName.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblProjectName,
+            org.openide.util.NbBundle.getMessage(
+                CidsJavaTemplatePanelVisual.class,
+                "CidsJavaTemplatePanelVisual.lblProjectName.text")); // NOI18N
 
         lblDistLocation.setLabelFor(txtDistLocation);
-        org.openide.awt.Mnemonics.setLocalizedText(lblDistLocation, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.lblDistLocation.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblDistLocation,
+            org.openide.util.NbBundle.getMessage(
+                CidsJavaTemplatePanelVisual.class,
+                "CidsJavaTemplatePanelVisual.lblDistLocation.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(btnBrowse, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.btnBrowse.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            btnBrowse,
+            org.openide.util.NbBundle.getMessage(
+                CidsJavaTemplatePanelVisual.class,
+                "CidsJavaTemplatePanelVisual.btnBrowse.text")); // NOI18N
         btnBrowse.setActionCommand("BROWSE");
         btnBrowse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBrowseActionPerformed(evt);
-            }
-        });
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    btnBrowseActionPerformed(evt);
+                }
+            });
 
         lblProjectFolder.setLabelFor(txtProjectFolder);
-        org.openide.awt.Mnemonics.setLocalizedText(lblProjectFolder, org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.lblProjectFolder.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblProjectFolder,
+            org.openide.util.NbBundle.getMessage(
+                CidsJavaTemplatePanelVisual.class,
+                "CidsJavaTemplatePanelVisual.lblProjectFolder.text")); // NOI18N
 
         txtProjectFolder.setEditable(false);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(lblProjectName)
-                    .add(lblDistLocation)
-                    .add(lblProjectFolder))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtProjectName, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtDistLocation, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, txtProjectFolder, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(btnBrowse)
-                .addContainerGap())
-        );
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(lblProjectName).add(
+                        lblDistLocation).add(lblProjectFolder)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        txtProjectName,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        127,
+                        Short.MAX_VALUE).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        txtDistLocation,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        127,
+                        Short.MAX_VALUE).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        txtProjectFolder,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        127,
+                        Short.MAX_VALUE)).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(btnBrowse)
+                            .addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblProjectName)
-                    .add(txtProjectName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblDistLocation)
-                    .add(txtDistLocation, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(btnBrowse))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lblProjectFolder)
-                    .add(txtProjectFolder, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(213, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblProjectName).add(
+                        txtProjectName,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblDistLocation).add(
+                        txtDistLocation,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(btnBrowse)).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblProjectFolder).add(
+                        txtProjectFolder,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap(213, Short.MAX_VALUE)));
+    } // </editor-fold>//GEN-END:initComponents
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void btnBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseActionPerformed
+    private void btnBrowseActionPerformed(final java.awt.event.ActionEvent evt) {                          //GEN-FIRST:event_btnBrowseActionPerformed
         final JFileChooser chooser = new JFileChooser();
         FileUtil.preventFileChooserSymlinkTraversal(chooser, null);
         chooser.setDialogTitle(
-            org.openide.util.NbBundle.getMessage(CidsJavaTemplatePanelVisual.class, "CidsJavaTemplatePanelVisual.btnBrowseActionPerformed(ActionEvent).chooser.dialogTitle")); // NOI18N
+            org.openide.util.NbBundle.getMessage(
+                CidsJavaTemplatePanelVisual.class,
+                "CidsJavaTemplatePanelVisual.btnBrowseActionPerformed(ActionEvent).chooser.dialogTitle")); // NOI18N
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         final String path = this.txtDistLocation.getText();
         if (path.length() > 0) {
@@ -174,7 +201,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                     choosen).getAbsolutePath());
         }
         panel.fireChangeEvent();
-    }//GEN-LAST:event_btnBrowseActionPerformed
+    }                                                                                                      //GEN-LAST:event_btnBrowseActionPerformed
 
     @Override
     public void addNotify() {
@@ -196,8 +223,8 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidDirectoryNameProperty"));       // NOI18N
-            return false;                              // Display name not specified
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidDirectoryNameProperty"));     // NOI18N
+            return false;                                                                                                      // Display name not specified
         }
         final File f = FileUtil.normalizeFile(new File(txtDistLocation.getText()).getAbsoluteFile());
         if (!f.isDirectory()) {
@@ -205,7 +232,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidProjectFolderProperty")); // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidProjectFolderProperty"));     // NOI18N
             return false;
         }
         final File destFolder = FileUtil.normalizeFile(new File(txtProjectFolder.getText()).getAbsoluteFile());
@@ -226,7 +253,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidProjectFolderProperty")); // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.invalidProjectFolderProperty"));     // NOI18N
             return false;
         }
 
@@ -237,10 +264,10 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     CidsJavaTemplatePanelVisual.class,
-                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.projectFolderExistsNonEmptyProperty"));                    // NOI18N
+                    "CidsJavaTemplatePanelVisual.valid(WizardDescriptor).wizardDescriptor.projectFolderExistsNonEmptyProperty")); // NOI18N
             return false;
         }
-        wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, ""); // NOI18N
+        wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, "");                                                    // NOI18N
         return true;
     }
 
@@ -264,14 +291,12 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
      */
     void read(final WizardDescriptor settings) {
         File distLocation = (File)settings.getProperty("projdir"); // NOI18N
-        if (
-            (distLocation == null)
+        if ((distLocation == null)
                     || (distLocation.getParentFile() == null)
                     || !distLocation.getParentFile().isDirectory()) {
             distLocation = ProjectChooser.getProjectsFolder();
             // should be subdir of distribution
-            if (
-                distLocation.getName().equals("java")                            // NOI18N
+            if (distLocation.getName().equals("java")                            // NOI18N
                         && distLocation.getParentFile().getName().equals("src")) // NOI18N
             {
                 distLocation = distLocation.getParentFile().getParentFile().getParentFile().getParentFile();
@@ -356,7 +381,7 @@ public final class CidsJavaTemplatePanelVisual extends JPanel implements Documen
             .append(File.separatorChar).append("java")    // NOI18N
             .append(File.separatorChar);
             txtProjectFolder.setText(projectFolder + path.toString()
-                + projectName);
+                        + projectName);
         }
         panel.fireChangeEvent();                          // Notify that the panel changed
     }
