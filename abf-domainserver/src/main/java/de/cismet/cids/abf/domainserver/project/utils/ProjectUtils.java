@@ -14,6 +14,7 @@ import org.openide.filesystems.FileUtil;
 import java.awt.Image;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -33,8 +34,12 @@ public final class ProjectUtils {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            ProjectUtils.class);
+    private static final transient Logger LOG = Logger.getLogger(ProjectUtils.class);
+
+    public static final String LOCAL_DOMAIN_NAME = "LOCAL";       // NOI18N
+    public static final String PROP_SERVER_DOMAIN = "serverName"; // NOI18N
+    public static final String PROP_ICON_DIR = "iconDirectory";   // NOI18N
+    public static final String PROP_FILE_SEP = "fileSeparator";   // NOI18N
 
     //~ Constructors -----------------------------------------------------------
 
@@ -55,25 +60,25 @@ public final class ProjectUtils {
      * @return  DOCUMENT ME!
      */
     public static Image getImageForIconAndProject(final Icon icon, final DomainserverProject project) {
-        String iconDir = project.getRuntimeProps().get("iconDirectory").toString(); // NOI18N
-        // maybe use of FileObject would be nicer, but as long as one cannot
-        // ensure that the iconDir does not contain . or .. the use of
-        // FileObject is not recommended. That is because MasterFileObject
-        // cannot handle these paths correctely at least when trying to resolve
-        // a FileObject using the getFileObject method
-        final File baseFile = FileUtil.toFile(project.getProjectDirectory());
-        final String internalSeparator = project.getRuntimeProps().get(
-                "fileSeparator").toString();   // NOI18N
-        iconDir = iconDir.replace(internalSeparator, File.separator);
-        final File imageFile = new File(baseFile, iconDir + File.separator
-                        + icon.getFileName());
         try {
+            // maybe use of FileObject would be nicer, but as long as one cannot
+            // ensure that the iconDir does not contain . or .. the use of
+            // FileObject is not recommended. That is because MasterFileObject
+            // cannot handle these paths correctely at least when trying to resolve
+            // a FileObject using the getFileObject method
+            final File baseFile = FileUtil.toFile(project.getProjectDirectory());
+            final String internalSeparator = project.getRuntimeProps().getProperty(PROP_FILE_SEP);
+            final String iconDir = project.getRuntimeProps()
+                        .getProperty(PROP_ICON_DIR)
+                        .replace(internalSeparator, File.separator);
+            final File imageFile = new File(baseFile, iconDir + File.separator + icon.getFileName());
+
             return ImageIO.read(imageFile);
         } catch (final Exception ex) {
-            LOG.warn("image retrieval failed:" // NOI18N
-                        + icon.getFileName(), ex);
+            LOG.warn("image retrieval failed:" + icon.getFileName(), ex); // NOI18N
+
+            return null;
         }
-        return null;
     }
 
     /**
@@ -83,12 +88,26 @@ public final class ProjectUtils {
      * @param   p   DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
+     *
+     * @throws  IllegalStateException  DOCUMENT ME!
      */
     public static boolean isRemoteGroup(final UserGroup ug, final DomainserverProject p) {
         final Domain d = ug.getDomain();
-        final String domainname = p.getRuntimeProps().getProperty(
-                "serverName");                         // NOI18N
-        return !(d.getName().equalsIgnoreCase("LOCAL") // NOI18N
-                        || d.getName().equalsIgnoreCase(domainname));
+
+        assert d != null : "domain cannot be null for given usergroup: " + ug; // NOI18N
+
+        final String ugDomainName = d.getName();
+
+        if (ugDomainName == null) {
+            throw new IllegalStateException("domainname of usergroup is null: " + ug); // NOI18N
+        }
+
+        final String domainname = p.getRuntimeProps().getProperty(PROP_SERVER_DOMAIN);
+
+        if (domainname == null) {
+            throw new IllegalStateException("domainname of server is null"); // NOI18N
+        }
+
+        return !(LOCAL_DOMAIN_NAME.equals(ugDomainName) || domainname.equals(ugDomainName));
     }
 }
