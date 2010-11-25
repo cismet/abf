@@ -75,6 +75,19 @@ public class NameValidatorTest {
         return new Throwable().getStackTrace()[1].getMethodName();
     }
 
+    @Test
+    public void testIsPackage(){
+        final NameValidator val = new NameValidator(NameValidator.NAME_PACKAGE);
+        assertTrue(val.isValid("jfioaekl"));
+        assertTrue(val.isValid("fj____ekaljfaoei_fjoarijfioadjf_ioajeiojafioaefijroaubnasd_vjnx"));
+        assertTrue(val.isValid("fdjaskldjfla.djfkaljdkflae"));
+        assertTrue(val.isValid("fjdkasld.jfoiejdfkl.aj___kdlfjaekal.jadk_lfjkajlej.jfkd_lajfeklajfl"));
+        assertTrue(val.isValid("fjd4532sld.jfoiejdfkl953.aj___kdlfjaekal.jadk_lfjkajlej.jfkd_lajfe75e6lajfl"));
+        assertFalse(val.isValid("fjdkaäfejklfjd"));
+        assertFalse(val.isValid("39jkdl"));
+        assertFalse(val.isValid("fejkalsdf.9jfdklsa"));
+    }
+
     /**
      * DOCUMENT ME!
      */

@@ -33,7 +33,7 @@ public class NameValidator {
      * character "_" in any combination.
      */
     public static final int NAME_PACKAGE = 1;
-    static final String NAME_PACKAGE_REGEX = "[a-z][\\w]*"; // NOI18N
+    static final String NAME_PACKAGE_REGEX = "[a-z][\\w]*(\\.[a-z][\\w]*)*"; // NOI18N
 
     /**
      * This type is to check a String whether it suffices high security name pattern.<br/>
