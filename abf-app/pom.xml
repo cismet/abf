@@ -81,12 +81,6 @@
             <type>nbm</type>
             <version>3.0-RC2-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>
-            <groupId>de.cismet.cids.abf</groupId>
-            <artifactId>abf-l10n-de</artifactId>
-            <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
-        </dependency>-->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-broker</artifactId>
@@ -158,7 +152,7 @@
                 <version>2.4.3</version>
                 <executions>
                     <execution>
-                        <id>add-rcp-i18n</id>
+                        <id>add-rcp-l10n</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -167,7 +161,7 @@
                             <outputDirectory>${basedir}/target/cidsabf</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/src/main/i18n</directory>
+                                    <directory>${basedir}/src/main/l10n</directory>
                                 </resource>
                             </resources>
                         </configuration>
