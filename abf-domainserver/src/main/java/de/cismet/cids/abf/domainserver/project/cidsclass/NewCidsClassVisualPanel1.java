@@ -353,7 +353,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
      */
     private void syncTablename() {
         if (chkSync.isSelected()) {
-            txtTablename.setText(txtClassname.getText().toUpperCase());
+            txtTablename.setText(ProjectUtils.toDBCompatibleString(txtClassname.getText()).toUpperCase());
         }
         syncClass();
     }

@@ -109,4 +109,26 @@ public final class ProjectUtils {
 
         return !(LOCAL_DOMAIN_NAME.equals(ugDomainName) || domainname.equals(ugDomainName));
     }
+
+    // TODO: move to commons
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   string  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public static String toDBCompatibleString(final String string) {
+        String rep = string;
+        rep = rep.replace("ä", "ae"); // NOI18N
+        rep = rep.replace("ö", "oe"); // NOI18N
+        rep = rep.replace("ü", "ue"); // NOI18N
+        rep = rep.replace("Ä", "AE"); // NOI18N
+        rep = rep.replace("Ö", "OE"); // NOI18N
+        rep = rep.replace("Ü", "UE"); // NOI18N
+        rep = rep.replace("ß", "ss"); // NOI18N
+        rep = rep.replace(" ", "_");  // NOI18N
+
+        return rep;
+    }
 }

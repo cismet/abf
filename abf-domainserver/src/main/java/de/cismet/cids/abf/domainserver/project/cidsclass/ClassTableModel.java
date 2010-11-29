@@ -14,6 +14,7 @@ import javax.persistence.NoResultException;
 import javax.swing.table.AbstractTableModel;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 
 import de.cismet.cids.jpa.entity.cidsclass.Attribute;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
@@ -267,7 +268,7 @@ public final class ClassTableModel extends AbstractTableModel {
                     // sync fieldname if it is not set already
                     final String fieldname = (String)getValueAt(row, FIELD_NAME);
                     if ((fieldname == null) || fieldname.isEmpty() || sync) {
-                        attr.setFieldName(((String)aValue).toLowerCase());
+                        attr.setFieldName(ProjectUtils.toDBCompatibleString(((String)aValue).toLowerCase()));
                     }
                     break;
                 }

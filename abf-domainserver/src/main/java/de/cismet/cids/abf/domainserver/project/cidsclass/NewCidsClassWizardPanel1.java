@@ -8,16 +8,13 @@
 package de.cismet.cids.abf.domainserver.project.cidsclass;
 
 import org.openide.WizardDescriptor;
+import org.openide.util.ChangeSupport;
 import org.openide.util.HelpCtx;
 
 import java.awt.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -39,12 +36,13 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel {
 
     // TODO: eventually medium validator must not be used because only highly
     // "secure" names are provided
-    private final transient Set<ChangeListener> listeners;
     private final transient NameValidator highValidator;
     private transient NewCidsClassVisualPanel1 component;
     private transient WizardDescriptor wizard;
     private transient DomainserverProject project;
     private transient CidsClass cidsClass;
+
+    private final transient ChangeSupport changeSupport;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -52,7 +50,7 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel {
      * Creates a new NewCidsClassWizardPanel1 object.
      */
     public NewCidsClassWizardPanel1() {
-        listeners = new HashSet<ChangeListener>(1);
+        changeSupport = new ChangeSupport(this);
         highValidator = new NameValidator(NameValidator.SCHEMA_HIGH);
     }
 
@@ -95,30 +93,22 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel {
         final CidsClass cc = component.getCidsClass();
         final String ccName = cc.getName();
         final String ctName = cc.getTableName();
-        if ((ccName == null) || "".equals(ccName.trim()))                                                           // NOI18N
-        {
+        if ((ccName == null) || "".equals(ccName.trim())) {                                        // NOI18N
             wizard.putProperty(
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     NewCidsClassWizardPanel1.class,
-                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.nameNotValid"));                  // NOI18N
+                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.nameNotValid")); // NOI18N
+
             return false;
         }
-        if (!highValidator.isValid(ccName)) {
+        if ((ctName == null) || "".equals(ctName.trim())) {                                                // NOI18N
             wizard.putProperty(
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     NewCidsClassWizardPanel1.class,
-                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.classNameInvalid"));              // NOI18N
-            return false;
-        }
-        if ((ctName == null) || "".equals(ctName.trim()))                                                           // NOI18N
-        {
-            wizard.putProperty(
-                WizardDescriptor.PROP_ERROR_MESSAGE,
-                org.openide.util.NbBundle.getMessage(
-                    NewCidsClassWizardPanel1.class,
-                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.tableW/ONameNotValid"));          // NOI18N
+                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.tableW/ONameNotValid")); // NOI18N
+
             return false;
         }
         if (!highValidator.isValid(ctName)) {
@@ -126,18 +116,19 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel {
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     NewCidsClassWizardPanel1.class,
-                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.tableNameNotValid"));             // NOI18N
+                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.tableNameNotValid")); // NOI18N
+
             return false;
         }
         for (final Attribute a : cc.getAttributes()) {
             final String name = a.getFieldName();
-            if ((name == null) || "".equals(name.trim()))                                                           // NOI18N
-            {
+            if ((name == null) || "".equals(name.trim())) {                                                       // NOI18N
                 wizard.putProperty(
                     WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassWizardPanel1.class,
-                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.attrW/OFieldnameInvalid"));   // NOI18N
+                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.attrW/OFieldnameInvalid")); // NOI18N
+
                 return false;
             }
             if (!highValidator.isValid(name)) {
@@ -145,8 +136,9 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel {
                     WizardDescriptor.PROP_ERROR_MESSAGE,
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassWizardPanel1.class,
-                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.attrFieldnameNotValid",
-                        name));                                                                                     // NOI18N
+                        "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.attrFieldnameNotValid", // NOI18N
+                        name));
+
                 return false;
             }
             if (names.contains(name)) {
@@ -155,54 +147,44 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel {
                     org.openide.util.NbBundle.getMessage(
                         NewCidsClassWizardPanel1.class,
                         "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.duplAttrFieldNamesInvalid")); // NOI18N
+
                 return false;
             }
             names.add(name);
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);
+
         return true;
     }
 
     @Override
     public final void addChangeListener(final ChangeListener l) {
-        synchronized (listeners) {
-            listeners.add(l);
-        }
+        changeSupport.addChangeListener(l);
     }
+
     @Override
     public final void removeChangeListener(final ChangeListener l) {
-        synchronized (listeners) {
-            listeners.remove(l);
-        }
+        changeSupport.removeChangeListener(l);
     }
+
     /**
      * DOCUMENT ME!
      */
     protected final void fireChangeEvent() {
-        final Iterator<ChangeListener> it;
-        synchronized (listeners) {
-            it = new HashSet<ChangeListener>(listeners).iterator();
-        }
-        final ChangeEvent ev = new ChangeEvent(this);
-        while (it.hasNext()) {
-            it.next().stateChanged(ev);
-        }
+        changeSupport.fireChange();
     }
 
     @Override
     public void readSettings(final Object settings) {
         wizard = (WizardDescriptor)settings;
-        project = (DomainserverProject)wizard.getProperty(
-                NewCidsClassWizardAction.PROJECT_PROP);
-        cidsClass = (CidsClass)wizard.getProperty(
-                NewCidsClassWizardAction.CIDS_CLASS_PROP);
+        project = (DomainserverProject)wizard.getProperty(NewCidsClassWizardAction.PROJECT_PROP);
+        cidsClass = (CidsClass)wizard.getProperty(NewCidsClassWizardAction.CIDS_CLASS_PROP);
         component.init();
     }
 
     @Override
     public void storeSettings(final Object settings) {
         wizard = (WizardDescriptor)settings;
-        wizard.putProperty(NewCidsClassWizardAction.CIDS_CLASS_PROP,
-            component.getCidsClass());
+        wizard.putProperty(NewCidsClassWizardAction.CIDS_CLASS_PROP, component.getCidsClass());
     }
 }
