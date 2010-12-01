@@ -15,6 +15,7 @@ import org.openide.actions.CopyAction;
 import org.openide.actions.CutAction;
 import org.openide.actions.DeleteAction;
 import org.openide.actions.PasteAction;
+import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.nodes.Node.Property;
@@ -23,6 +24,7 @@ import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.RequestProcessor;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.datatransfer.PasteType;
 import org.openide.windows.WindowManager;
@@ -63,13 +65,13 @@ import javax.swing.plaf.metal.MetalIconFactory;
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.PolicyPropertyEditor;
+import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassPropertyEditor;
 import de.cismet.cids.abf.domainserver.project.nodes.CatalogManagement;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
-import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.backend.service.impl.Backend;
@@ -137,6 +139,7 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
     transient Refreshable parent;
 
     private final transient PermissionResolver permResolve;
+    private final RequestProcessor refreshProcessor;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -152,14 +155,9 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
         this.catNode = catNode;
         this.parent = parent;
         permResolve = PermissionResolver.getInstance(project);
+        refreshProcessor = new RequestProcessor("refreshprocessor", 5);
         setDisplayName(catNode.getName());
-        EventQueue.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    refresh();
-                }
-            });
+        refresh();
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -252,49 +250,66 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
     }
 
     @Override
-    public void refresh() {
-        if (project.isConnected()) {
-            catNode.setIsLeaf(project.getCidsDataObjectBackend().isLeaf(catNode, true));
-            final Children c = getChildren();
-            if (catNode.isLeaf()
-                        && ((catNode.getDynamicChildren() == null)
-                            || NULL.equalsIgnoreCase(catNode.getDynamicChildren()))) {
-                EventQueue.invokeLater(new Runnable() {
+    public final void refresh() {
+        refreshProcessor.execute(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            setChildren(Children.LEAF);
+                @Override
+                public void run() {
+                    if (project.isConnected()) {
+                        catNode.setIsLeaf(project.getCidsDataObjectBackend().isLeaf(catNode, true));
+                        final Children c = getChildren();
+                        if (catNode.isLeaf()
+                                    && ((catNode.getDynamicChildren() == null)
+                                        || NULL.equalsIgnoreCase(catNode.getDynamicChildren()))) {
+                            setChildrenEDT(Children.LEAF);
+                        } else if (c instanceof CatalogNodeChildren) {
+                            if ((catNode.getDynamicChildren() == null)
+                                        || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
+                                ((ProjectChildren)c).refreshByNotify();
+                            } else {
+                                setChildrenEDT(new DynamicCatalogNodeChildren(catNode, project));
+                            }
+                        } else if (c instanceof DynamicCatalogNodeChildren) {
+                            if ((catNode.getDynamicChildren() == null)
+                                        || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
+                                setChildrenEDT(new CatalogNodeChildren(catNode, project));
+                            } else {
+                                ((ProjectChildren)c).refreshByNotify();
+                            }
+                        } else if (c == Children.LEAF) {
+                            if (catNode.getDynamicChildren() == null) {
+                                setChildrenEDT(new CatalogNodeChildren(catNode, project));
+                            } else {
+                                setChildrenEDT(new DynamicCatalogNodeChildren(catNode, project));
+                            }
                         }
-                    });
-            } else if (c instanceof CatalogNodeChildren) {
-                if ((catNode.getDynamicChildren() == null) || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
-                    ((CatalogNodeChildren)c).refreshAll();
-                } else {
-                    setChildren(new DynamicCatalogNodeChildren(catNode, project));
+                        // TODO: fire property change to display possibly changed rights
+                        // firePropertySetsChange(null, getPropertySets());
+                        // TODO: as long as i did not find out about the mechanism to fire
+                        // an appropriate property change and/or how to register an
+                        // appropriate listener at the right place if this is necessary,
+                        // this workaround is acceptable
+                        setSheet(createSheet());
+                    } else {
+                        setChildrenEDT(Children.LEAF);
+                    }
                 }
-            } else if (c instanceof DynamicCatalogNodeChildren) {
-                if ((catNode.getDynamicChildren() == null) || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
-                    setChildren(new CatalogNodeChildren(catNode, project));
-                } else {
-                    ((DynamicCatalogNodeChildren)c).refreshAll();
+            });
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  children  DOCUMENT ME!
+     */
+    private void setChildrenEDT(final Children children) {
+        EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    setChildren(children);
                 }
-            } else if (c == Children.LEAF) {
-                if (catNode.getDynamicChildren() == null) {
-                    setChildren(new CatalogNodeChildren(catNode, project));
-                } else {
-                    setChildren(new DynamicCatalogNodeChildren(catNode, project));
-                }
-            }
-            // TODO: fire property change to display possibly changed rights
-            // firePropertySetsChange(null, getPropertySets());
-            // TODO: as long as i did not find out about the mechanism to fire
-            // an appropriate property change and/or how to register an
-            // appropriate listener at the right place if this is necessary,
-            // this workaround is acceptable
-            setSheet(createSheet());
-        } else {
-            setChildren(Children.LEAF);
-        }
+            });
     }
 
     @Override
@@ -755,8 +770,7 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
                     }
                 }; // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeObjectSet ">
-            final Map<String, String> objectInfo = project.getCidsDataObjectBackend()
-                        .getSimpleObjectInformation(catNode);
+            final Map<String, String> objectInfo = null; // project.getCidsDataObjectBackend().getSimpleObjectInformation(catNode);
             final HashSet<Property> objectProps = new HashSet<Property>();
             if (objectInfo != null) {
                 for (final Iterator<Entry<String, String>> entries = objectInfo.entrySet().iterator();
@@ -1251,7 +1265,7 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
  *
  * @version  $Revision$, $Date$
  */
-final class CatalogNodeChildren extends Children.Keys {
+final class CatalogNodeChildren extends ProjectChildren {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -1260,7 +1274,6 @@ final class CatalogNodeChildren extends Children.Keys {
     //~ Instance fields --------------------------------------------------------
 
     private final transient CatNode catNode;
-    private final transient DomainserverProject project;
     private final transient CatalogManagement catalogManagement;
 
     //~ Constructors -----------------------------------------------------------
@@ -1272,7 +1285,7 @@ final class CatalogNodeChildren extends Children.Keys {
      * @param  project  DOCUMENT ME!
      */
     public CatalogNodeChildren(final CatNode node, final DomainserverProject project) {
-        this.project = project;
+        super(project);
         this.catNode = node;
         catalogManagement = project.getLookup().lookup(CatalogManagement.class);
     }
@@ -1280,89 +1293,50 @@ final class CatalogNodeChildren extends Children.Keys {
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    protected Node[] createNodes(final Object key) {
-        if (key instanceof LoadingNode) {
-            return new Node[] { (LoadingNode)key };
-        }
+    protected Node[] createUserNodes(final Object key) {
         if (key instanceof CatNode) {
             final CatNode node = (CatNode)key;
             final CatalogNode cn = new CatalogNode(node, project, (Refreshable)getNode());
             catalogManagement.addOpenNode(node, cn);
             return new Node[] { cn };
+        } else if (key instanceof Node) {
+            return new Node[] { (Node)key };
         } else {
             return new Node[] {};
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     */
-    void refreshAll() {
-        addNotify();
-    }
-
     @Override
-    protected void addNotify() {
-        final Thread builder = new Thread(new ChildrenBuilder());
-        setKeys(new Object[] { new LoadingNode() });
-        builder.start();
-    }
-
-    //~ Inner Classes ----------------------------------------------------------
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @version  $Revision$, $Date$
-     */
-    final class ChildrenBuilder implements Runnable {
-
-        //~ Methods ------------------------------------------------------------
-
-        @Override
-        public void run() {
-            try {
-                final List<CatNode> l = project.getCidsDataObjectBackend().getNodeChildren(catNode);
-                Collections.sort(l, new Comparators.CatNodes());
-                EventQueue.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            setKeys(l);
-                        }
-                    });
-            } catch (final ObjectNotFoundException ex) {
-                final CatNode node = new CatNode();
-                node.setName(NbBundle.getMessage(
-                        ChildrenBuilder.class,
-                        "CatalogNode.ChildrenBuilder.run().node.errorName"));                                   // NOI18N
-                node.setNodeType("none");                                                                       // NOI18N
-                node.setIsLeaf(true);
-                node.setIsRoot(false);
-                node.setId(-1);
-                if (catNode.getCidsClass() == null) {
-                    ErrorUtils.showErrorMessage(
-                        NbBundle.getMessage(
-                            ChildrenBuilder.class,
-                            "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckDB.message"),   // NOI18N
-                        ex);
-                } else {
-                    ErrorUtils.showErrorMessage(
-                        NbBundle.getMessage(
-                            ChildrenBuilder.class,
-                            "CatalogNode.ChildrenBuilder.run().ErrorUtils.dataInconsistencyCheckTable.message", // NOI18N
-                            catNode.getCidsClass().getTableName()),
-                        ex);
-                }
-                LOG.error("data inconsistency", ex);                                                            // NOI18N
-                EventQueue.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            setKeys(new Object[] { node });
-                        }
-                    });
+    protected void threadedNotify() throws IOException {
+        try {
+            final List<CatNode> l = project.getCidsDataObjectBackend().getNodeChildren(catNode);
+            Collections.sort(l, new Comparators.CatNodes());
+            setKeysEDT(l);
+        } catch (final ObjectNotFoundException ex) {
+            final CatNode node = new CatNode();
+            node.setName(NbBundle.getMessage(
+                    CatalogNodeChildren.class,
+                    "CatalogNode.ChildrenBuilder.threadedNotify().node.errorName"));                                   // NOI18N
+            node.setNodeType("none");                                                                                  // NOI18N
+            node.setIsLeaf(true);
+            node.setIsRoot(false);
+            node.setId(-1);
+            if (catNode.getCidsClass() == null) {
+                ErrorUtils.showErrorMessage(
+                    NbBundle.getMessage(
+                        CatalogNodeChildren.class,
+                        "CatalogNode.ChildrenBuilder.threadedNotify().ErrorUtils.dataInconsistencyCheckDB.message"),   // NOI18N
+                    ex);
+            } else {
+                ErrorUtils.showErrorMessage(
+                    NbBundle.getMessage(
+                        CatalogNodeChildren.class,
+                        "CatalogNode.ChildrenBuilder.threadedNotify().ErrorUtils.dataInconsistencyCheckTable.message", // NOI18N
+                        catNode.getCidsClass().getTableName()),
+                    ex);
             }
+            LOG.error("data inconsistency", ex);                                                                       // NOI18N
+            setKeysEDT(new Object[] { node });
         }
     }
 }
@@ -1372,7 +1346,7 @@ final class CatalogNodeChildren extends Children.Keys {
  *
  * @version  $Revision$, $Date$
  */
-final class DynamicCatalogNodeChildren extends Children.Keys {
+final class DynamicCatalogNodeChildren extends ProjectChildren {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -1380,9 +1354,7 @@ final class DynamicCatalogNodeChildren extends Children.Keys {
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient DomainserverProject project;
     private final transient CatNode parentNode;
-    private transient LoadingNode loadingNode;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -1393,173 +1365,147 @@ final class DynamicCatalogNodeChildren extends Children.Keys {
      * @param  project  DOCUMENT ME!
      */
     public DynamicCatalogNodeChildren(final CatNode node, final DomainserverProject project) {
+        super(project);
         this.parentNode = node;
-        this.project = project;
     }
 
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    protected Node[] createNodes(final Object object) {
-        if (object instanceof LoadingNode) {
-            return new Node[] { (LoadingNode)object };
-        } else if (object instanceof CatNode) {
-            final CatNode catNode = (CatNode)object;
+    protected Node[] createUserNodes(final Object o) {
+        if (o instanceof CatNode) {
+            final CatNode catNode = (CatNode)o;
             return new Node[] { new CatalogNode(catNode, project, (Refreshable)getNode()) };
         } else {
-            return new Node[] {};
+            final AbstractNode node = new AbstractNode(Children.LEAF);
+            node.setName(o.toString());
+            return new Node[] { node };
+        }
+    }
+
+    @Override
+    protected void threadedNotify() throws IOException {
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getConnection(project.getRuntimeProps());
+        } catch (final SQLException ex) {
+            LOG.error("could not connect to database", ex);                                 // NOI18N
+            setKeysEDT(
+                new Object[] {
+                    NbBundle.getMessage(
+                        DynamicCatalogNodeChildren.class,
+                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().duringConToDB") // NOI18N
+                });
+
+            return;
+        }
+
+        ResultSet set = null;
+        try {
+            set = con.createStatement().executeQuery(parentNode.getDynamicChildren());
+        } catch (final SQLException ex) {
+            LOG.error("could not fetch resultset", ex);                                         // NOI18N
+            setKeysEDT(
+                new Object[] {
+                    NbBundle.getMessage(
+                        DynamicCatalogNodeChildren.class,
+                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryUnsuccessful") // NOI18N
+                });
+            refresh();
+            try {
+                set.close();
+                con.close();
+            } catch (final SQLException sqle) {
+                LOG.warn("could not close connection", sqle);                                   // NOI18N
+            }
+
+            return;
+        }
+
+        try {
+            final List<CatNode> catNodes = new LinkedList<CatNode>();
+            final HashMap<Integer, CidsClass> classCache = new HashMap<Integer, CidsClass>();
+            while (set.next()) {
+                final CatNode c = new CatNode();
+                c.setName(set.getString("name"));                                                   // NOI18N
+                c.setDynamicChildren(set.getString("dynamic_children"));                            // NOI18N
+                c.setSqlSort(set.getBoolean("sql_sort"));                                           // NOI18N
+                try {
+                    c.setId(set.getInt("id"));                                                      // NOI18N
+                } catch (final SQLException ex) {
+                    LOG.warn("id could not be set", ex);                                            // NOI18N
+                }
+                try {
+                    c.setObjectId(set.getInt("object_id"));                                         // NOI18N
+                } catch (final SQLException ex) {
+                    LOG.warn("object_id could not be set", ex);                                     // NOI18N
+                }
+                try {
+                    c.setNodeType(set.getString("node_type"));                                      // NOI18N
+                } catch (final SQLException ex) {
+                    LOG.warn("node_type could not be set", ex);                                     // NOI18N
+                }
+                try {
+                    final int classId = set.getInt("class_id");                                     // NOI18N
+                    final CidsClass clazz;
+                    if (classCache.containsKey(classId)) {
+                        clazz = classCache.get(classId);
+                    } else {
+                        clazz = project.getCidsDataObjectBackend().getEntity(CidsClass.class, classId);
+                        classCache.put(classId, clazz);
+                    }
+                    c.setCidsClass(clazz);
+                } catch (final NoResultException ex) {
+                    LOG.warn("cidsclass could not be set", ex);                                     // NOI18N
+                } catch (final SQLException ex) {
+                    LOG.warn("cidsclass could not be set", ex);                                     // NOI18N
+                }
+                try {
+                    final URL url = getURL(set.getString("url"));                                   // NOI18N
+                    c.setUrl(url);
+                } catch (final SQLException ex) {
+                    LOG.warn("url could not be set", ex);                                           // NOI18N
+                }
+                c.setIsLeaf(true);
+                catNodes.add(c);
+            }
+            if ((parentNode.getSqlSort() == null) || !parentNode.getSqlSort()) {
+                Collections.sort(catNodes, new Comparators.CatNodes());
+            }
+            setKeysEDT(catNodes);
+        } catch (final SQLException ex) {
+            LOG.error("could not evaluate resultset", ex);                                          // NOI18N
+            setKeysEDT(
+                new Object[] {
+                    NbBundle.getMessage(
+                        DynamicCatalogNodeChildren.class,
+                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryResultEvaluation") // NOI18N
+                });
+        } finally {
+            try {
+                set.close();
+                con.close();
+            } catch (final SQLException sqle) {
+                LOG.warn("could not close connection", sqle);                                       // NOI18N
+            }
         }
     }
 
     /**
      * DOCUMENT ME!
+     *
+     * @param   s  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
      */
-    void refreshAll() {
-        addNotify();
-    }
-
-    @Override
-    protected void addNotify() {
-        loadingNode = new LoadingNode();
-        setKeys(new Object[] { loadingNode });
-        refresh();
-        final Backend backend = project.getCidsDataObjectBackend();
-        final Thread t = new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Connection con = null;
-                        try {
-                            con = DatabaseConnection.getConnection(project.getRuntimeProps());
-                        } catch (final SQLException ex) {
-                            LOG.error("could not connect to database", ex);                                 // NOI18N
-                            setKeys(
-                                new Object[] {
-                                    NbBundle.getMessage(
-                                        DynamicCatalogNodeChildren.class,
-                                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().duringConToDB") // NOI18N
-                                });
-                            refresh();
-                            if (loadingNode != null) {
-                                loadingNode.dispose();
-                                loadingNode = null;
-                            }
-
-                            return;
-                        }
-                        ResultSet set = null;
-                        try {
-                            set = con.createStatement().executeQuery(parentNode.getDynamicChildren());
-                        } catch (final SQLException ex) {
-                            LOG.error("could not fetch resultset", ex);                                         // NOI18N
-                            setKeys(
-                                new Object[] {
-                                    NbBundle.getMessage(
-                                        DynamicCatalogNodeChildren.class,
-                                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryUnsuccessful") // NOI18N
-                                });
-                            refresh();
-                            if (loadingNode != null) {
-                                loadingNode.dispose();
-                                loadingNode = null;
-                            }
-                            try {
-                                set.close();
-                                con.close();
-                            } catch (final SQLException sqle) {
-                                LOG.warn("could not close connection", sqle);                                   // NOI18N
-                            }
-
-                            return;
-                        }
-                        try {
-                            final List<CatNode> nodes = new LinkedList<CatNode>();
-                            final HashMap<Integer, CidsClass> classCache = new HashMap<Integer, CidsClass>();
-                            while (set.next()) {
-                                final CatNode c = new CatNode();
-                                c.setName(set.getString("name"));                                                   // NOI18N
-                                c.setDynamicChildren(set.getString("dynamic_children"));                            // NOI18N
-                                c.setSqlSort(set.getBoolean("sql_sort"));                                           // NOI18N
-                                try {
-                                    c.setId(set.getInt("id"));                                                      // NOI18N
-                                } catch (final SQLException ex) {
-                                    LOG.warn("id could not be set", ex);                                            // NOI18N
-                                }
-                                try {
-                                    c.setObjectId(set.getInt("object_id"));                                         // NOI18N
-                                } catch (final SQLException ex) {
-                                    LOG.warn("object_id could not be set", ex);                                     // NOI18N
-                                }
-                                try {
-                                    c.setNodeType(set.getString("node_type"));                                      // NOI18N
-                                } catch (final SQLException ex) {
-                                    LOG.warn("node_type could not be set", ex);                                     // NOI18N
-                                }
-                                try {
-                                    final int classId = set.getInt("class_id");                                     // NOI18N
-                                    final CidsClass clazz;
-                                    if (classCache.containsKey(classId)) {
-                                        clazz = classCache.get(classId);
-                                    } else {
-                                        clazz = backend.getEntity(CidsClass.class, classId);
-                                        classCache.put(classId, clazz);
-                                    }
-                                    c.setCidsClass(clazz);
-                                } catch (final NoResultException ex) {
-                                    LOG.warn("cidsclass could not be set", ex);                                     // NOI18N
-                                } catch (final SQLException ex) {
-                                    LOG.warn("cidsclass could not be set", ex);                                     // NOI18N
-                                }
-                                try {
-                                    final URL url = getURL(set.getString("url"));                                   // NOI18N
-                                    c.setUrl(url);
-                                } catch (final SQLException ex) {
-                                    LOG.warn("url could not be set", ex);                                           // NOI18N
-                                }
-                                c.setIsLeaf(true);
-                                nodes.add(c);
-                            }
-                            if ((parentNode.getSqlSort() == null) || !parentNode.getSqlSort()) {
-                                Collections.sort(nodes, new Comparators.CatNodes());
-                            }
-                            setKeys(nodes);
-                            refresh();
-                        } catch (final SQLException ex) {
-                            LOG.error("could not evaluate resultset", ex);                                          // NOI18N
-                            setKeys(
-                                new Object[] {
-                                    NbBundle.getMessage(
-                                        DynamicCatalogNodeChildren.class,
-                                        "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryResultEvaluation") // NOI18N
-                                });
-                            refresh();
-                            return;
-                        } finally {
-                            if (loadingNode != null) {
-                                loadingNode.dispose();
-                                loadingNode = null;
-                            }
-                            try {
-                                set.close();
-                                con.close();
-                            } catch (final SQLException sqle) {
-                                LOG.warn("could not close connection", sqle);                                       // NOI18N
-                            }
-                        }
-                    }
-
-                    private URL getURL(final String s) {
-                        final URL url = new URL();
-                        url.setObjectName(s);
-                        final URLBase base = new URLBase();
-                        base.setPath("");           // NOI18N
-                        base.setProtocolPrefix(""); // NOI18N
-                        base.setServer("");         // NOI18N
-                        url.setUrlbase(base);
-                        return url;
-                    }
-                });
-        t.setPriority(7);
-        t.start();
+    private URL getURL(final String s) {
+        final URL url = new URL();
+        url.setObjectName(s);
+        final URLBase base = new URLBase();
+        base.setPath("");           // NOI18N
+        base.setProtocolPrefix(""); // NOI18N
+        base.setServer("");         // NOI18N
+        url.setUrlbase(base);
+        return url;
     }
 }

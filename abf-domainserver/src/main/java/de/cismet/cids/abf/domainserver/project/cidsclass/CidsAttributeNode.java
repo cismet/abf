@@ -16,6 +16,7 @@ import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 
 import java.awt.Image;
@@ -56,8 +57,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            CidsAttributeNode.class);
+    private static final transient Logger LOG = Logger.getLogger(CidsAttributeNode.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -87,19 +87,11 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
         super(Children.LEAF, project);
         this.cidsClass = cidsClass;
         this.cidsAttribute = cidsAttribute;
-        attributeImage = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER
-                        + "attribute.png");         // NOI18N
-        arrayBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "badge_array.png");       // NOI18N
-        foreignKeyBadge = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER
-                        + "badge_foreign_key.png"); // NOI18N
-        primaryKeyBadge = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER
-                        + "badge_key.png");         // NOI18N
-        indexBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "badge_search.png");      // NOI18N
+        attributeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute.png");          // NOI18N
+        arrayBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_array.png");            // NOI18N
+        foreignKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_foreign_key.png"); // NOI18N
+        primaryKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_key.png");         // NOI18N
+        indexBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_search.png");           // NOI18N
         permResolve = PermissionResolver.getInstance(project);
     }
 
@@ -140,6 +132,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                 }
             }
         }
+
         return ret;
     }
 
@@ -156,10 +149,9 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
     @Override
     public String getHtmlDisplayName() {
         if ((cidsAttribute.isVisible() == null) || cidsAttribute.isVisible()) {
-            return "<font color='!textText'>" + getName() + "</font>"; // NOI18N
+            return "<font color='!textText'>" + getName() + "</font>";      // NOI18N
         } else {
-            return "<font color='!controlShadow'>" + getName()         // NOI18N
-                        + "</font>";                                   // NOI18N
+            return "<font color='!controlShadow'>" + getName() + "</font>"; // NOI18N
         }
     }
 
@@ -175,9 +167,9 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property idProp = new PropertySupport.Reflection(
                     cidsAttribute,
                     Integer.class,
-                    "getId",
-                    null);                                           // NOI18N
-            idProp.setName(org.openide.util.NbBundle.getMessage(
+                    "getId", // NOI18N
+                    null);
+            idProp.setName(NbBundle.getMessage(
                     CidsAttributeNode.class,
                     "CidsAttributeNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
@@ -185,10 +177,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property nameProp = new PropertySupport(
                     "name",                                                 // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().nameProp.attrName"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().nameProp.nameOfAttr"), // NOI18N
                     true,
@@ -215,10 +207,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 e);
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().nameProp.setValue(Object).ErrorUtils.message"),
-                                e); // NOI18N
+                                    "CidsAttributeNode.createSheet().nameProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
                 };                // </editor-fold>
@@ -227,10 +219,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property fieldnameProp = new PropertySupport(
                     "fieldname",                                                      // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().fieldnameProp.fieldName"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().fieldnameProp.fieldNameOfAttr"), // NOI18N
                     true,
@@ -257,22 +249,23 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 e);
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().fieldnameProp.setValue(Object).ErrorUtils.message"),
-                                e); // NOI18N
+                                    "CidsAttributeNode.createSheet().fieldnameProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                // </editor-fold>
+                };
+            // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: DefaultValue ">
             final Property defaultValueProp = new PropertySupport(
                     "defaultValue",                                                         // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().defaultValueProp.defaultValue"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().defaultValueProp.defaultValueOfAttr"), // NOI18N
                     true,
@@ -299,10 +292,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 e);
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().defaultValueProp.setValue(Object).ErrorUtils.message"),
-                                e); // NOI18N
+                                    "CidsAttributeNode.createSheet().defaultValueProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
 
@@ -316,10 +309,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property posProp = new PropertySupport(
                     "pos",                                                     // NOI18N
                     Integer.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().posProp.position"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().posProp.positionOfAttr"), // NOI18N
                     true,
@@ -341,25 +334,25 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 cidsAttribute);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attr position", e); // NOI18N
+                            LOG.error("could not store attr position", e);                                          // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().posProp.setValue(Object).ErrorUtils.message"),
-                                e);                                        // NOI18N
+                                    "CidsAttributeNode.createSheet().posProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                                                         // </editor-fold>
+                };                                                                                                  // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Substitute ">
             final Property substituteProp = new PropertySupport(
                     "substitute",                                                    // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().substituteProp.replace"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().substituteProp.replaceOfAttr"), // NOI18N
                     true,
@@ -381,13 +374,13 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 cidsAttribute);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attr substitute", e); // NOI18N
+                            LOG.error("could not store attr substitute", e);                                               // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().substituteProp.setValue(Object).ErrorUtils.message"),
-                                e);                                          // NOI18N
+                                    "CidsAttributeNode.createSheet().substituteProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
 
@@ -401,10 +394,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property optionalProp = new PropertySupport(
                     "optional",                                                      // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().optionalProp.optional"),    // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().optionalProp.optionalTooltip"), // NOI18N
                     true,
@@ -427,25 +420,25 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                             refreshInDiagram();
                             project.getLookup().lookup(SyncManagement.class).refresh();
                         } catch (final Exception e) {
-                            LOG.error("could not store attr optional", e); // NOI18N
+                            LOG.error("could not store attr optional", e);                                               // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().optionalProp.setValue(Object).ErrorUtils.message"),
-                                e);                                        // NOI18N
+                                    "CidsAttributeNode.createSheet().optionalProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                                                         // </editor-fold>
+                };                                                                                                       // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Visible ">
             final Property visibleProp = new PropertySupport(
                     "visible",                                                     // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().visibleProp.visible"),    // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().visibleProp.visibleTooltip"), // NOI18N
                     true,
@@ -468,25 +461,25 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                             fireDisplayNameChange(null, object.toString());
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attr visible", e); // NOI18N
+                            LOG.error("could not store attr visible", e);                                               // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().visibleProp.setValue(Object).ErrorUtils.message"),
-                                e);                                       // NOI18N
+                                    "CidsAttributeNode.createSheet().visibleProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                                                        // </editor-fold>
+                };                                                                                                      // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Indexed ">
             final Property indexedProp = new PropertySupport(
                     "indexed",                                                     // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().indexedProp.indexed"),    // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().indexedProp.indexedTooltip"), // NOI18N
                     true,
@@ -510,25 +503,35 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                             fireIconChange();
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attr indexed", e); // NOI18N
+                            LOG.error("could not store attr indexed", e);                                               // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().indexedProp.setValue(Object).ErrorUtils.message"),
-                                e);                                       // NOI18N
+                                    "CidsAttributeNode.createSheet().indexedProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                                                        // </editor-fold>
+                };                                                                                                      // </editor-fold>
 
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: Extension Attribtue ">
+/*            final Property extensionProp = new PropertySupport.Reflection(
+                    cidsAttribute,
+                    Boolean.class,
+                    "getExtensionAttr", // NOI18N
+                    "setExtensionAttr"); // NOI18N
+            extensionProp.setName(NbBundle.getMessage(
+                    CidsAttributeNode.class,
+                    "CidsAttributeNode.createSheet().extensionProp.name")); // NOI18N */
+            // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Description ">
             final Property descriptionProp = new PropertySupport(
                     "description",                                                  // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().descriptionProp.description"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().descriptionProp.descOfAttr"), // NOI18N
                     true,
@@ -554,10 +557,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 e);
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().descriptionProp.setValue(Object).ErrorUtils.message"),
-                                e); // NOI18N
+                                    "CidsAttributeNode.createSheet().descriptionProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
                 };                // </editor-fold>
@@ -570,10 +573,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property toStringProp = new PropertySupport(
                     "toString",                                                          // NOI18N
                     JavaClass.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().toStringProp.toString"),        // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().toStringProp.toStringClassOfAttr"), // NOI18N
                     true,
@@ -595,13 +598,13 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 cidsClass);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store cidsClass", e); // NOI18N
+                            LOG.error("could not store cidsClass", e);                                                   // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().toStringProp.setValue(Object).ErrorUtils.message"),
-                                e);                                    // NOI18N
+                                    "CidsAttributeNode.createSheet().toStringProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
 
@@ -688,10 +691,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property editorProp = new PropertySupport(
                     "editor",                                                        // NOI18N
                     JavaClass.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().editorProp.editor"),        // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().editorProp.editorClassOfAttr"), // NOI18N
                     true,
@@ -715,13 +718,13 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                             cidsClass = project.getCidsDataObjectBackend().store(cidsClass);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attr editor", e); // NOI18N
+                            LOG.error("could not store attr editor", e);                                               // NOI18N
                             cidsClass = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().editorProp.setValue(Object).ErrorUtils.message"),
-                                e);                                      // NOI18N
+                                    "CidsAttributeNode.createSheet().editorProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
 
@@ -738,10 +741,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property complexEditorProp = new PropertySupport(
                     "complexeditor",                                                          // NOI18N
                     JavaClass.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().complexEditorProp.complexEditor"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().complexEditorProp.complexEditorOfAttr"), // NOI18N
                     true,
@@ -769,10 +772,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 e);
                             cidsClass = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().complexEditorProp.setValue(Object).ErrorUtils.message"),
-                                e); // NOI18N
+                                    "CidsAttributeNode.createSheet().complexEditorProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
 
@@ -788,10 +791,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property typeProp = new PropertySupport(
                     "type",                                                 // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().typeProp.type"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().typeProp.typeOfAttr"), // NOI18N
                     true,
@@ -814,10 +817,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property foreignKeyReferencesToProp = new PropertySupport(
                     "foreignKeyReferencesTo",                                                            // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.foreignKeyTable"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.foreignKeyTableOfAttr"), // NOI18N
                     true,
@@ -847,10 +850,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             final Property arrayKeyProp = new PropertySupport(
                     "arraykey",                                                     // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().arrayKeyProp.arraykey"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().arrayKeyProp.arrayKeyOfAttr"), // NOI18N
                     true,
@@ -871,25 +874,25 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                             project.getCidsDataObjectBackend().store(cidsAttribute);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attribute", e); // NOI18N
+                            LOG.error("could not store attribute", e);                                                   // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().arrayKeyProp.setValue(Object).ErrorUtils.message"),
-                                e);                                    // NOI18N
+                                    "CidsAttributeNode.createSheet().arrayKeyProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                                                     // </editor-fold>
+                };                                                                                                       // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ForeignKey ">
             final Property foreignKeyProp = new PropertySupport(
                     "foreignkey",                                                       // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().foreignKeyProp.foreignKey"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().foreignKeyProp.attrIsForeignKey"), // NOI18N
                     true,
@@ -910,25 +913,25 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                             project.getCidsDataObjectBackend().store(cidsAttribute);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attribute", e); // NOI18N
+                            LOG.error("could not store attribute", e);                                                     // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().foreignKeyProp.setValue(Object).ErrorUtils.message"),
-                                e);                                    // NOI18N
+                                    "CidsAttributeNode.createSheet().foreignKeyProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                                                     // </editor-fold>
+                };                                                                                                         // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Array ">
             final Property arrayProp = new PropertySupport(
                     "array",                                                  // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().arrayProp.array"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().arrayProp.attrIsArray"), // NOI18N
                     true,
@@ -949,16 +952,16 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                             project.getCidsDataObjectBackend().store(cidsAttribute);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attribute", e); // NOI18N
+                            LOG.error("could not store attribute", e);                                                // NOI18N
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsAttributeNode.class,
-                                    "CidsAttributeNode.createSheet().arrayProp.setValue(Object).ErrorUtils.message"),
-                                e);                                    // NOI18N
+                                    "CidsAttributeNode.createSheet().arrayProp.setValue(Object).ErrorUtils.message"), // NOI18N
+                                e);
                         }
                     }
-                };                                                     // </editor-fold>
+                };                                                                                                    // </editor-fold>
 
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Rights ">
@@ -973,8 +976,8 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                     name = ug.getName();
                 }
                 final Property attributePermissionProp = new PropertySupport(
-                        "attributePerm"
-                                + perm.getId(),                 // NOI18N
+                        "attributePerm"                         // NOI18N
+                                + perm.getId(),
                         String.class,
                         name,
                         "",                                     // NOI18N
@@ -1004,16 +1007,16 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             relations.setName("relations");                                          // NOI18N
             classes.setName("java");                                                 // NOI18N
             rightAttributes.setName("rights");                                       // NOI18N
-            main.setDisplayName(org.openide.util.NbBundle.getMessage(
+            main.setDisplayName(NbBundle.getMessage(
                     CidsAttributeNode.class,
                     "CidsAttributeNode.createSheet().main.displayName"));            // NOI18N
-            relations.setDisplayName(org.openide.util.NbBundle.getMessage(
+            relations.setDisplayName(NbBundle.getMessage(
                     CidsAttributeNode.class,
                     "CidsAttributeNode.createSheet().relations.displayName"));       // NOI18N
-            classes.setDisplayName(org.openide.util.NbBundle.getMessage(
+            classes.setDisplayName(NbBundle.getMessage(
                     CidsAttributeNode.class,
                     "CidsAttributeNode.createSheet().classes.displayName"));         // NOI18N
-            rightAttributes.setDisplayName(org.openide.util.NbBundle.getMessage(
+            rightAttributes.setDisplayName(NbBundle.getMessage(
                     CidsAttributeNode.class,
                     "CidsAttributeNode.createSheet().rightAttributes.displayName")); // NOI18N
             main.put(idProp);
@@ -1043,10 +1046,10 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             }
         } catch (final Exception ex) {
             LOG.error("could not create property sheet", ex);                        // NOI18N
-            ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
+            ErrorUtils.showErrorMessage(NbBundle.getMessage(
                     CidsAttributeNode.class,
-                    "CidsAttributeNode.createSheet().ErrorUtils.message"),
-                ex);                                                                 // NOI18N
+                    "CidsAttributeNode.createSheet().ErrorUtils.message"),           // NOI18N
+                ex);
         }
         return sheet;
     }
@@ -1087,11 +1090,11 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                 ((CidsClassNode)p).refreshChildren();
             }
         } catch (final Exception e) {
-            LOG.error("error during deletion", e); // NOI18N
-            ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
+            LOG.error("error during deletion", e);                     // NOI18N
+            ErrorUtils.showErrorMessage(NbBundle.getMessage(
                     CidsAttributeNode.class,
-                    "CidsAttributeNode.destroy().ErrorUtils.message"),
-                e);                                // NOI18N
+                    "CidsAttributeNode.destroy().ErrorUtils.message"), // NOI18N
+                e);
         }
         project.getLookup().lookup(ClassManagement.class).refresh();
         project.getLookup().lookup(SyncManagement.class).refresh();

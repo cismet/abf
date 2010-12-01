@@ -35,6 +35,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers.UserGroupListRenderer;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers.UserListRenderer;
 import de.cismet.cids.abf.utilities.Comparators;
@@ -185,7 +186,7 @@ public final class NewEntryVisualPanel1 extends JPanel {
 
         Domain localDomain = null;
         for (final Domain domain : domains) {
-            if ("LOCAL".equals(domain.getName())) { // NOI18N
+            if (ProjectUtils.LOCAL_DOMAIN_NAME.equals(domain.getName())) { // NOI18N
                 localDomain = domain;
                 break;
             }
@@ -202,7 +203,7 @@ public final class NewEntryVisualPanel1 extends JPanel {
 
         cboUsergroup.addItem(UserGroup.NO_GROUP);
         for (final UserGroup ug : usergroups) {
-            if (localDomain.equals(ug.getDomain())) {
+            if (!ProjectUtils.isRemoteGroup(ug, model.getProject())) {
                 cboUsergroup.addItem(ug);
             }
         }

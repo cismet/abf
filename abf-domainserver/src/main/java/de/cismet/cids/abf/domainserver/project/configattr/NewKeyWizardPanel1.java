@@ -88,6 +88,7 @@ public class NewKeyWizardPanel1 implements WizardDescriptor.Panel {
             return true;
         } else {
             wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);
+            wizard.putProperty(WizardDescriptor.PROP_WARNING_MESSAGE, null);
             return true;
         }
     }

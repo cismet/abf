@@ -13,10 +13,12 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 
-import java.awt.EventQueue;
 import java.awt.Image;
+
+import java.io.IOException;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,12 +28,12 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.nodes.CatalogManagement;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
-import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.entity.catalog.CatNode;
@@ -42,9 +44,7 @@ import de.cismet.cids.jpa.entity.catalog.CatNode;
  * @author   martin.scholl@cismet.de
  * @version  1.12
  */
-public final class NavigatorNodeManagement extends ProjectNode implements NavigatorNodeManagementContextCookie,
-    ConnectionListener,
-    Refreshable {
+public final class NavigatorNodeManagement extends ProjectNode implements NavigatorNodeManagementContextCookie {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -53,6 +53,8 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
     //~ Instance fields --------------------------------------------------------
 
     private final transient Image nodeImage;
+
+    private final transient ConnectionListener connL;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -67,25 +69,13 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
         setDisplayName(NbBundle.getMessage(
                 NavigatorNodeManagement.class,
                 "NavigatorNodeManagement.<init>(DomainserverProject).nodeDisplayName"));     // NOI18N
-        project.addConnectionListener(this);
-        getCookieSet().add(this);
+        connL = new ConnectionListenerImpl();
+        project.addConnectionListener(WeakListeners.create(ConnectionListener.class, connL, project));
+        getCookieSet().add(new RefreshableImpl());
+        getCookieSet().add((NavigatorNodeManagementContextCookie)this);
     }
 
     //~ Methods ----------------------------------------------------------------
-
-    @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        if (isConnected) {
-            setChildren(new NavigatorNodeManagementChildren());
-        } else {
-            setChildren(Children.LEAF);
-        }
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        // not needed
-    }
 
     @Override
     public Image getOpenedIcon(final int i) {
@@ -95,15 +85,6 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
     @Override
     public Image getIcon(final int i) {
         return nodeImage;
-    }
-
-    @Override
-    public void refresh() {
-        if (project.isConnected()) {
-            ((NavigatorNodeManagementChildren)getChildren()).refreshAll();
-        } else {
-            setChildren(Children.LEAF);
-        }
     }
 
     @Override
@@ -122,85 +103,104 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
      *
      * @version  $Revision$, $Date$
      */
-    private final class NavigatorNodeManagementChildren extends Children.Keys {
+    private final class RefreshableImpl implements Refreshable {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void refresh() {
+            if (project.isConnected()) {
+                ((ProjectChildren)getChildren()).refreshByNotify();
+            } else {
+                setChildren(Children.LEAF);
+            }
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class ConnectionListenerImpl implements ConnectionListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void connectionStatusChanged(final boolean isConnected) {
+            if (isConnected) {
+                setChildren(new NavigatorNodeManagementChildren(project));
+            } else {
+                setChildren(Children.LEAF);
+            }
+        }
+
+        @Override
+        public void connectionStatusIndeterminate() {
+            // not needed
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private static final class NavigatorNodeManagementChildren extends ProjectChildren {
 
         //~ Instance fields ----------------------------------------------------
 
         private final transient CatalogManagement catalogManagement;
-        private transient LoadingNode loadingNode;
 
         //~ Constructors -------------------------------------------------------
 
         /**
          * Creates a new NavigatorNodeManagementChildren object.
+         *
+         * @param  project  DOCUMENT ME!
          */
-        public NavigatorNodeManagementChildren() {
+        public NavigatorNodeManagementChildren(final DomainserverProject project) {
+            super(project);
             catalogManagement = project.getLookup().lookup(CatalogManagement.class);
         }
 
         //~ Methods ------------------------------------------------------------
 
         @Override
-        protected Node[] createNodes(final Object key) {
-            if (key instanceof LoadingNode) {
-                return new Node[] { (LoadingNode)key };
+        protected Node[] createUserNodes(final Object o) {
+            if (o instanceof CatNode) {
+                final CatNode catNode = (CatNode)o;
+                final CatalogNode cn = new CatalogNode(catNode, project, getNode().getCookie(Refreshable.class));
+                catalogManagement.addOpenNode(catNode, cn);
+
+                return new Node[] { cn };
+            } else {
+                return new Node[] {};
             }
-            final CatNode catNode = (CatNode)key;
-            final CatalogNode cn = new CatalogNode(catNode, project, (Refreshable)getNode());
-            catalogManagement.addOpenNode(catNode, cn);
-
-            return new Node[] { cn };
-        }
-
-        /**
-         * DOCUMENT ME!
-         */
-        void refreshAll() {
-            addNotify();
         }
 
         @Override
-        protected void addNotify() {
-            loadingNode = new LoadingNode();
-            setKeys(new Object[] { loadingNode });
-            refresh();
-            final Thread t = new Thread(new Runnable() {
+        protected void threadedNotify() throws IOException {
+            try {
+                final List<CatNode> rootNodes = project.getCidsDataObjectBackend().getRootNodes();
+                final ListIterator<CatNode> it = rootNodes.listIterator();
+                while (it.hasNext()) {
+                    if (CatNode.Type.CLASS.getType().equals(it.next().getNodeType())) {
+                        it.remove();
+                    }
+                }
 
-                        @Override
-                        public void run() {
-                            try {
-                                final List<CatNode> rootNodes = project.getCidsDataObjectBackend().getRootNodes();
-                                final ListIterator<CatNode> it = rootNodes.listIterator();
-                                while (it.hasNext()) {
-                                    if (CatNode.Type.CLASS.getType().equals(it.next().getNodeType())) {
-                                        it.remove();
-                                    }
-                                }
-
-                                Collections.sort(rootNodes, new Comparators.CatNodes());
-                                EventQueue.invokeLater(new Runnable() {
-
-                                        @Override
-                                        public void run() {
-                                            setKeys(rootNodes);
-                                        }
-                                    });
-                            } catch (final Exception ex) {
-                                LOG.error("NavNodeManChildren: catnode creation failed", ex);       // NOI18N
-                                ErrorUtils.showErrorMessage(
-                                    NbBundle.getMessage(
-                                        NavigatorNodeManagement.class,
-                                        "NavigatorNodeManagementChildren.addNotify().t.run().exc"), // NOI18N
-                                    ex);
-                            } finally {
-                                if (loadingNode != null) {
-                                    loadingNode.dispose();
-                                    loadingNode = null;
-                                }
-                            }
-                        }
-                    }, getClass().getSimpleName() + "::addNotifyRunner");                           // NOI18N
-            t.start();
+                Collections.sort(rootNodes, new Comparators.CatNodes());
+                setKeysEDT(rootNodes);
+            } catch (final Exception ex) {
+                LOG.error("NavNodeManChildren: catnode creation failed", ex);       // NOI18N
+                ErrorUtils.showErrorMessage(
+                    NbBundle.getMessage(
+                        NavigatorNodeManagement.class,
+                        "NavigatorNodeManagementChildren.addNotify().t.run().exc"), // NOI18N
+                    ex);
+                setKeysEDT(ex);
+            }
         }
     }
 }
