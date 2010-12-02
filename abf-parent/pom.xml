@@ -232,6 +232,7 @@
                     <configuration>
                         <preparationGoals>clean install</preparationGoals>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <arguments>-Djalopy.skip=true</arguments>
                     </configuration>
                 </plugin>
             </plugins>
