@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.0-RC2-SNAPSHOT</version>
+        <version>2.9</version>
     </parent>
 
     <artifactId>abf-app</artifactId>
-    <version>3.0-RC2-SNAPSHOT</version>
+    <version>2.9</version>
     <packaging>nbm-application</packaging>
 
     <name>ABF Application</name>
@@ -79,61 +79,61 @@
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-branding</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-broker</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-cids-java-template</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-client</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <!--dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-distribution</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency-->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-domainserver</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-library-support</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-registry</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-update-center</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
             <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
+            <version>2.9</version>
         </dependency>
     </dependencies>
 
