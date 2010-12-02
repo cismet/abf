@@ -232,6 +232,7 @@
                     <configuration>
                         <preparationGoals>clean install</preparationGoals>
                         <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <!-- jalopy compile interferes with the release plugin so it must be deactivated -->
                         <arguments>-Djalopy.skip=true</arguments>
                     </configuration>
                 </plugin>
