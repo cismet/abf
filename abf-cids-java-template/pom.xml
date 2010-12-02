@@ -5,20 +5,20 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>2.9</version>
+        <version>2.9.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>abf-cids-java-template</artifactId>
-    <version>2.9</version>
+    <version>2.9.1-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF cids Java Template</name>
     <description>A NetBeans Java project template to create Java projects with library support of a cidsDistribution</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-2.9/abf-cids-java-template</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-2.9/abf-cids-java-template</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-2.9/abf-cids-java-template</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-cids-java-template/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-cids-java-template/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-cids-java-template/</url>
     </scm>
 
     <dependencies>
