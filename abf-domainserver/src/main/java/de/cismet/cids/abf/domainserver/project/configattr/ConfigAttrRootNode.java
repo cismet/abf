@@ -152,11 +152,12 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
             final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
             if (!cancelled) {
                 final ConfigAttrEntry newEntry = (ConfigAttrEntry)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRY);
-                project.getCidsDataObjectBackend().store(newEntry);
+                project.getCidsDataObjectBackend().storeEntry(newEntry);
                 addNodeListener(nodeL);
                 getCookie(Refreshable.class).refresh();
             }
         }
+
         /**
          * DOCUMENT ME!
          *
@@ -191,6 +192,7 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
 
             return panels;
         }
+
         /**
          * DOCUMENT ME!
          *
