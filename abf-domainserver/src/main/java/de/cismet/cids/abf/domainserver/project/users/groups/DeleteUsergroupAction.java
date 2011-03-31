@@ -59,7 +59,7 @@ public final class DeleteUsergroupAction extends CookieAction {
                     final Backend backend = project.getCidsDataObjectBackend();
                     ug = n.getCookie(UserGroupContextCookie.class).getUserGroup();
                     backend.delete(ug);
-                    project.getLookup().lookup(UserManagement.class).refreshChildren();
+                    project.getLookup().lookup(UserManagement.class).refresh();
                 } catch (final Exception e) {
                     LOG.error("could not delete usergroup: " + ug, e);                // NOI18N
                 }

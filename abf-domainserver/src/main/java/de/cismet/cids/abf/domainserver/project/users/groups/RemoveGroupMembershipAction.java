@@ -15,7 +15,7 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.CookieAction;
 import org.openide.windows.WindowManager;
 
-import java.awt.EventQueue;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -23,7 +23,6 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserContextCookie;
-import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.backend.service.impl.Backend;
 import de.cismet.cids.jpa.entity.user.User;
@@ -84,17 +83,16 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                 WindowManager.getDefault().getMainWindow(),
                 NbBundle.getMessage(
                     RemoveGroupMembershipAction.class,
-                    "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.message"),
+                    "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.message"), // NOI18N
                 NbBundle.getMessage(
                     RemoveGroupMembershipAction.class,
-                    "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.title"),
+                    "RemoveGroupMembershipAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {
             for (final Node n : nodes) {
                 final DomainserverProject project = n.getCookie(DomainserverContext.class).getDomainserverProject();
                 final Backend backend = project.getCidsDataObjectBackend();
-                final UserManagement userManagement = project.getLookup().lookup(UserManagement.class);
                 final UserGroupNode ugn = n.getParentNode().getLookup().lookup(UserGroupNode.class);
                 final User usr = n.getCookie(UserContextCookie.class).getUser();
                 if (ugn != null) {
@@ -103,24 +101,17 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                     try {
                         backend.store(ug);
                     } catch (final RuntimeException e) {
-                        LOG.error("could not store usergroup '" + ug // NOI18N
-                                    + "' and hence user '" + usr // NOI18N
-                                    + "' was not removed", // NOI18N
-                            e);                            // NOI18N
+                        LOG.error("could not store usergroup '" + ug                        // NOI18N
+                                    + "' and hence user '" + usr                            // NOI18N
+                                    + "' was not removed",                                  // NOI18N
+                            e);
                         // TODO: notify user
                     }
-                    EventQueue.invokeLater(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                n.getCookie(Refreshable.class).refresh();
-                                userManagement.refreshUser(usr);
-                            }
-                        });
+                    project.getLookup().lookup(UserManagement.class).refreshGroups(Arrays.asList(ug));
                 } else {
-                    LOG.warn("the usergroup the user '"                             // NOI18N
-                                + usr + "' was supposed to be in a group which could not" // NOI18N
-                                + " be found in lookup, nothing is done");          // NOI18N
+                    LOG.warn("the usergroup the user '"                                     // NOI18N
+                                + usr + "' was supposed to be in a group which could not"   // NOI18N
+                                + " be found in lookup, nothing is done");                  // NOI18N
                 }
             }
         }

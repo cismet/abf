@@ -21,10 +21,12 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupContextCookie;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.entity.user.User;
+import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
  * DOCUMENT ME!
@@ -32,7 +34,20 @@ import de.cismet.cids.jpa.entity.user.User;
  * @author   martin.scholl@cismet.de
  * @version  1.11
  */
-public final class AllUsersNode extends ProjectNode implements Refreshable {
+public final class AllUsersNode extends ProjectNode implements Refreshable, UserGroupContextCookie {
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    public static final UserGroup ALL_GROUP;
+
+    static {
+        ALL_GROUP = new UserGroup();
+        ALL_GROUP.setName("all"); // NOI18N
+        ALL_GROUP.setId(Integer.MIN_VALUE);
+        ALL_GROUP.setUsers(null);
+        ALL_GROUP.setDescription(null);
+        ALL_GROUP.setDomain(null);
+    }
 
     //~ Instance fields --------------------------------------------------------
 
@@ -47,11 +62,8 @@ public final class AllUsersNode extends ProjectNode implements Refreshable {
      */
     public AllUsersNode(final DomainserverProject project) {
         super(new AllUsersChildren(project), project);
-        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "all_users.png");   // NOI18N
-        setDisplayName(org.openide.util.NbBundle.getMessage(
-                AllUsersNode.class,
-                "AllUsersNode.displayName")); // NOI18N
+        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "all_users.png");             // NOI18N
+        setDisplayName(org.openide.util.NbBundle.getMessage(AllUsersNode.class, "AllUsersNode.displayName")); // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -74,6 +86,11 @@ public final class AllUsersNode extends ProjectNode implements Refreshable {
     @Override
     public void refresh() {
         ((AllUsersChildren)getChildren()).refreshAll();
+    }
+
+    @Override
+    public UserGroup getUserGroup() {
+        return ALL_GROUP;
     }
 }
 

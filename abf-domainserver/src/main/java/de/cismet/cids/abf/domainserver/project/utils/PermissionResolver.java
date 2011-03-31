@@ -605,8 +605,8 @@ public final class PermissionResolver {
     private Result evaluatePerms(final Policy policy, final Permission p) {
         final Result r = result.get();
         if (p == null) {
-            if (LOG.isInfoEnabled()) {
-                LOG.info("permission is null, no permission string attached"); // NOI18N
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("permission is null, no permission string attached"); // NOI18N
             }
             return r;
         }

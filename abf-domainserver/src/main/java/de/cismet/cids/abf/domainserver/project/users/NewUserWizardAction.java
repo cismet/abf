@@ -125,15 +125,15 @@ public final class NewUserWizardAction extends CookieAction {
 
     @Override
     protected void performAction(final Node[] nodes) {
-        final DomainserverContext cookie = nodes[0].getCookie(
-                DomainserverContext.class);
+        final DomainserverContext cookie = nodes[0].getCookie(DomainserverContext.class);
+        final DomainserverProject project = cookie.getDomainserverProject();
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wizard.setTitleFormat(new MessageFormat("{0}"));                             // NOI18N
         wizard.setTitle(NbBundle.getMessage(
                 NewUserWizardAction.class,
                 "NewUserWizardAction.performAction(Node[]).wizard.title"));          // NOI18N
-        wizard.putProperty(PROJECT_PROP, cookie.getDomainserverProject());
+        wizard.putProperty(PROJECT_PROP, project);
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
@@ -141,7 +141,7 @@ public final class NewUserWizardAction extends CookieAction {
         if (!cancelled) {
             User newUser = (User)wizard.getProperty(USER_PROP);
             final List<UserGroup> ugs = (List<UserGroup>)wizard.getProperty(USERGROUP_PROP);
-            final Backend backend = cookie.getDomainserverProject().getCidsDataObjectBackend();
+            final Backend backend = project.getCidsDataObjectBackend();
             try {
                 newUser = backend.store(newUser);
                 for (final UserGroup ug : ugs) {
@@ -156,7 +156,7 @@ public final class NewUserWizardAction extends CookieAction {
                 LOG.error("could not store new user: " + newUser.getLoginname(), e); // NOI18N
                 ErrorManager.getDefault().notify(e);
             } finally {
-                cookie.getDomainserverProject().getLookup().lookup(UserManagement.class).refreshChildren();
+                project.getLookup().lookup(UserManagement.class).refreshGroups(ugs);
             }
         }
     }

@@ -192,6 +192,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
         @Override
         public void refresh() {
             if (Children.LEAF.equals(getChildren()) || !(getChildren() instanceof ProjectChildren)) {
+                setChildren(Children.LEAF);
                 setChildren(new ConfigAttrKeyNodeChildren(key, type, project));
             } else {
                 ((ProjectChildren)getChildren()).refreshByNotify();

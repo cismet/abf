@@ -18,7 +18,6 @@ import org.openide.windows.WindowManager;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -95,20 +94,8 @@ public final class DeleteLockAction extends NodeAction {
                     "DeleteLockAction.performAction(Node[]).ErrorUtils.atLeastOneLockUndeleteableError.title"),
                 e);                                                                      // NOI18N
         } finally {
-            try {
-                if (set != null) {
-                    set.close();
-                }
-            } catch (final SQLException e) {
-                LOG.warn("could not close resultset", e);                                // NOI18N
-            }
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (final SQLException e) {
-                LOG.warn("could not close connection", e);                               // NOI18N
-            }
+            DatabaseConnection.closeResultSet(set);
+            DatabaseConnection.closeConnection(con);
         }
     }
 
@@ -176,26 +163,15 @@ public final class DeleteLockAction extends NodeAction {
             RequestProcessor.getDefault().post(task);
             con = task.get(300, TimeUnit.MILLISECONDS);
             set = con.createStatement().executeQuery(DomainserverProject.STMT_READ_LOCKS);
+
             return set.next();
         } catch (final Exception e) {
             LOG.warn("could not check for locks", e); // NOI18N
             // possibly notify the user
             return false;
         } finally {
-            try {
-                if (set != null) {
-                    set.close();
-                }
-            } catch (final SQLException e) {
-                LOG.warn("could not close set", e); // NOI18N
-            }
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (final SQLException e) {
-                LOG.warn("could not close connection", e); // NOI18N
-            }
+            DatabaseConnection.closeResultSet(set);
+            DatabaseConnection.closeConnection(con);
         }
     }
 }

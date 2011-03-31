@@ -11,13 +11,13 @@ import org.apache.log4j.Logger;
 
 import org.openide.ErrorManager;
 import org.openide.actions.DeleteAction;
-import org.openide.nodes.Children;
 import org.openide.nodes.Index;
 import org.openide.nodes.Node;
 import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
@@ -28,6 +28,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import java.beans.PropertyEditor;
+
+import java.io.IOException;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -45,6 +47,7 @@ import javax.swing.event.ChangeListener;
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.PolicyPropertyEditor;
+import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
 import de.cismet.cids.abf.domainserver.project.icons.IconPropertyEditor;
@@ -100,9 +103,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
     public CidsClassNode(final CidsClass cidsClass, final DomainserverProject project) {
         super(new CidsClassNodeChildren(cidsClass, project), project);
         this.cidsClass = cidsClass;
-        defaultClassImage = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER
-                        + "class.png"); // NOI18N
+        defaultClassImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "class.png"); // NOI18N
         permResolve = PermissionResolver.getInstance(project);
         getCookieSet().add((CidsClassNodeChildren)getChildren());
         getCookieSet().add(this);
@@ -160,7 +161,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                     Integer.class,
                     "getId", // NOI18N
                     null);
-            idProp.setName(org.openide.util.NbBundle.getMessage(
+            idProp.setName(NbBundle.getMessage(
                     CidsClassNode.class,
                     "CidsClassNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
@@ -168,10 +169,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property nameProp = new PropertySupport(
                     "name",                                              // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().nameProp.classname"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().nameProp.nameOfClass"), // NOI18N
                     true,
@@ -205,10 +206,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property tablenameProp = new PropertySupport(
                     "tablename",                                              // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().tablenameProp.tablename"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().tablenameProp.nameOfTable"), // NOI18N
                     true,
@@ -242,10 +243,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property primaryKeyFieldProp = new PropertySupport(
                     "primaryKeyField",                                                            // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().primaryKeyFieldProp.fieldnameOfPrimKEy"),    // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().primaryKeyFieldProp.fieldnameOfPrimKeyOfTable"), // NOI18N
                     true,
@@ -279,10 +280,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property indexedProp = new PropertySupport(
                     "indexed",                                                     // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().indexedProp.inSearchIndex"),  // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().indexedProp.addedToSearchIndex"), // NOI18N
                     true,
@@ -316,10 +317,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property arraylinkProp = new PropertySupport(
                     "arrayLink",                                                    // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().arraylinkProp.arrayclass"),    // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().arraylinkProp.classIsArrayclass"), // NOI18N
                     true,
@@ -353,10 +354,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property descriptionProp = new PropertySupport(
                     "description",                                                     // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().descriptionProp.description"),    // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().descriptionProp.descriptionOfClass"), // NOI18N
                     true,
@@ -390,10 +391,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property policyProp = new PropertySupport(
                     "classPolicy",                                                     // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().policyProp.classPolicy"),         // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().policyProp.basicPolicyOnClassLevel"), // NOI18N
                     true,
@@ -437,7 +438,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                         } catch (final Exception ex) {
                             LOG.error("policy could not be changed", ex);                                          // NOI18N
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsClassNode.class,
                                     "CidsClassNode.createSheet().policyProp.setValue(Object).ErrorUtils.message"), // NOI18N
                                 ex);
@@ -458,10 +459,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property attrPolicyProp = new PropertySupport(
                     "attrPolicy",                                                          // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().attrPolicyProp.attrPolicy"),          // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().attrPolicyProp.basicPolicyForRightEval"), // NOI18N
                     true,
@@ -510,7 +511,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                         } catch (final Exception ex) {
                             LOG.error("policy could not be changed", ex);                                              // NOI18N
                             ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
+                                NbBundle.getMessage(
                                     CidsClassNode.class,
                                     "CidsClassNode.createSheet().attrPolicyProp.setValue(Object).ErrorUtils.message"), // NOI18N
                                 ex);
@@ -532,10 +533,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property classIconProp = new PropertySupport(
                     "classIcon",                                              // NOI18N
                     Icon.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().classIconProp.classIcon"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().classIconProp.iconOfClass"), // NOI18N
                     true,
@@ -575,10 +576,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property objectIconProp = new PropertySupport(
                     "objectIcon",                                              // NOI18N
                     Icon.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().objectIconProp.objectIcon"), // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().objectIconProp.iconOfClass"), // NOI18N
                     true,
@@ -619,10 +620,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property toStringProp = new PropertySupport(
                     "toString",                                                       // NOI18N
                     JavaClass.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().toStringProp.toString"),         // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().toStringProp.toStringClassOfClass"), // NOI18N
                     true,
@@ -641,10 +642,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                         if (object == null) {
                             final int answer = JOptionPane.showConfirmDialog(
                                     WindowManager.getDefault().getMainWindow(),
-                                    org.openide.util.NbBundle.getMessage(
+                                    NbBundle.getMessage(
                                         CidsClassNode.class,
                                         "CidsClassNode.setValue(Object).JOptionPane.message"), // NOI18N
-                                    org.openide.util.NbBundle.getMessage(
+                                    NbBundle.getMessage(
                                         CidsClassNode.class,
                                         "CidsClassNode.setValue(Object).JOptionPane.title"), // NOI18N
                                     JOptionPane.YES_NO_OPTION,
@@ -679,10 +680,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property editorProp = new PropertySupport(
                     "editor",                                                     // NOI18N
                     JavaClass.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().editorProp.editor"),         // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().editorProp.editorClassOfClass"), // NOI18N
                     true,
@@ -723,10 +724,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             final Property rendererProp = new PropertySupport(
                     "rendererProp",                                                   // NOI18N
                     JavaClass.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().rendererProp.renderer"),         // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         CidsClassNode.class,
                         "CidsClassNode.createSheet().rendererProp.rendererClassOfClass"), // NOI18N
                     true,
@@ -769,7 +770,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                                 + classAttr.getAttrKey(),                              // NOI18N
                         String.class,
                         classAttr.getAttrKey(),
-                        org.openide.util.NbBundle.getMessage(
+                        NbBundle.getMessage(
                                     CidsClassNode.class,
                                     "CidsClassNode.createSheet().classAttrProp.classAttr") // NOI18N
                                 + classAttr.getAttrKey(),
@@ -845,19 +846,19 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             classes.setName("java");                                             // NOI18N
             classAttributes.setName("classattributes");                          // NOI18N
             rightAttributes.setName("rights");                                   // NOI18N
-            main.setDisplayName(org.openide.util.NbBundle.getMessage(
+            main.setDisplayName(NbBundle.getMessage(
                     CidsClassNode.class,
                     "CidsClassNode.createSheet().main.displayName"));            // NOI18N
-            icons.setDisplayName(org.openide.util.NbBundle.getMessage(
+            icons.setDisplayName(NbBundle.getMessage(
                     CidsClassNode.class,
                     "CidsClassNode.createSheet().icons.displayName"));           // NOI18N
-            classes.setDisplayName(org.openide.util.NbBundle.getMessage(
+            classes.setDisplayName(NbBundle.getMessage(
                     CidsClassNode.class,
                     "CidsClassNode.createSheet().classes.displayName"));         // NOI18N
-            classAttributes.setDisplayName(org.openide.util.NbBundle.getMessage(
+            classAttributes.setDisplayName(NbBundle.getMessage(
                     CidsClassNode.class,
                     "CidsClassNode.createSheet().classAttributes.displayName")); // NOI18N
-            rightAttributes.setDisplayName(org.openide.util.NbBundle.getMessage(
+            rightAttributes.setDisplayName(NbBundle.getMessage(
                     CidsClassNode.class,
                     "CidsClassNode.createSheet().rightAttributes.displayName")); // NOI18N
             main.put(idProp);
@@ -934,10 +935,10 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                     public void run() {
                         JOptionPane.showMessageDialog(
                             WindowManager.getDefault().getMainWindow(),
-                            org.openide.util.NbBundle.getMessage(
+                            NbBundle.getMessage(
                                 CidsClassNode.class,
                                 "CidsClassNode.destroy().JOptionPane.message"), // NOI18N
-                            org.openide.util.NbBundle.getMessage(
+                            NbBundle.getMessage(
                                 CidsClassNode.class,
                                 "CidsClassNode.destroy().JOptionPane.title"), // NOI18N
                             JOptionPane.INFORMATION_MESSAGE);
@@ -952,7 +953,9 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
 
                     @Override
                     public void run() {
+                        ClassDiagramTopComponent.classDestroyed(cidsClass);
                         project.getLookup().lookup(ClassManagement.class).refresh();
+                        project.getLookup().lookup(TypeManagement.class).refresh();
                         project.getLookup().lookup(SyncManagement.class).refresh();
                     }
                 });
@@ -990,7 +993,6 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
         fireOpenedIconChange();
         // as long as the props will not be refreshed...
         setSheet(createSheet());
-        project.getLookup().lookup(TypeManagement.class).refreshChildren();
     }
 }
 
@@ -999,16 +1001,14 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
  *
  * @version  $Revision$, $Date$
  */
-final class CidsClassNodeChildren extends Children.Keys implements Index {
+final class CidsClassNodeChildren extends ProjectChildren implements Index {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            CidsClassNodeChildren.class);
+    private static final transient Logger LOG = Logger.getLogger(CidsClassNodeChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient DomainserverProject project;
     private final transient Index indexSupport;
     private transient CidsClass cidsClass;
     private transient boolean doReorder;
@@ -1021,9 +1021,8 @@ final class CidsClassNodeChildren extends Children.Keys implements Index {
      * @param  cidsClass  DOCUMENT ME!
      * @param  project    DOCUMENT ME!
      */
-    public CidsClassNodeChildren(final CidsClass cidsClass,
-            final DomainserverProject project) {
-        this.project = project;
+    public CidsClassNodeChildren(final CidsClass cidsClass, final DomainserverProject project) {
+        super(project);
         this.cidsClass = cidsClass;
         this.doReorder = false;
         indexSupport = new IndexSupport();
@@ -1031,113 +1030,14 @@ final class CidsClassNodeChildren extends Children.Keys implements Index {
 
     //~ Methods ----------------------------------------------------------------
 
-    @Override
-    protected Node[] createNodes(final Object object) {
-        if (object instanceof Attribute) {
-            final CidsAttributeNode can = new CidsAttributeNode(
-                    (Attribute)object,
-                    cidsClass,
-                    project);
-            return new Node[] { can };
-        } else {
-            return new Node[] {};
-        }
-    }
-
     /**
      * DOCUMENT ME!
      *
      * @param  cidsClass  DOCUMENT ME!
      */
     void setCidsClass(final CidsClass cidsClass) {
-        if (LOG.isInfoEnabled()) {
-            LOG.info("setting cidsclass");  // NOI18N
-        }
         this.cidsClass = cidsClass;
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("resetting keys");    // NOI18N
-        }
-        setKeys(new Object[0]);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("calling addNotify"); // NOI18N
-        }
-        addNotify();
-    }
-
-    @Override
-    protected void addNotify() {
-        final Thread t = new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            final LinkedList<Attribute> childs = new LinkedList(
-                                    cidsClass.getAttributes());
-                            doReorder = false;
-                            final Comparator comp = new Comparator() {
-
-                                    @Override
-                                    public int compare(final Object o1, final Object o2) {
-                                        final Attribute a1 = (Attribute)o1;
-                                        final Attribute a2 = (Attribute)o2;
-                                        if ((a1.getPosition() != null)
-                                                    && (a2.getPosition() != null)) {
-                                            final int comp = a1.getPosition().compareTo(
-                                                    a2.getPosition());
-                                            if (comp != 0) {
-                                                return comp;
-                                            }
-                                            doReorder = true;
-                                            return a1.getName().compareTo(a2.getName());
-                                        } else if ((a1.getPosition() == null)
-                                                    && (a2.getPosition() != null)) {
-                                            doReorder = true;
-                                            return 1;
-                                        } else if ((a1.getPosition() != null)
-                                                    && (a2.getPosition() == null)) {
-                                            doReorder = true;
-                                            return -1;
-                                        } else {
-                                            doReorder = true;
-                                            return a1.getName().compareTo(a2.getName());
-                                        }
-                                    }
-
-                                    @Override
-                                    public boolean equals(final Object obj) {
-                                        return false;
-                                    }
-                                };
-                            Collections.sort(childs, comp);
-                            try {
-                                if (doReorder) {
-                                    for (int i = 0; i < childs.size(); ++i) {
-                                        final Attribute a = childs.get(i);
-                                        if ((a.getPosition() == null)
-                                                    || !a.getPosition().equals(i)) {
-                                            a.setPosition(i);
-                                            project.getCidsDataObjectBackend().store(a);
-                                        }
-                                    }
-                                    Collections.sort(childs, comp);
-                                }
-                            } catch (final Exception e) {
-                                LOG.warn("error during reorder", e); // NOI18N
-                                ErrorManager.getDefault().notify(e);
-                            }
-                            EventQueue.invokeLater(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        setKeys(childs);
-                                    }
-                                });
-                        } catch (final Exception ex) {
-                            LOG.error("could not create children", ex); // NOI18N
-                        }
-                    }
-                }, getClass().getSimpleName() + "::addNotifyRunner");   // NOI18N
-        t.start();
+        refreshByNotify();
     }
 
     @Override
@@ -1205,6 +1105,77 @@ final class CidsClassNodeChildren extends Children.Keys implements Index {
             LOG.debug("exchange"); // NOI18N
         }
         indexSupport.exchange(x, y);
+    }
+
+    @Override
+    protected Node[] createUserNodes(final Object o) {
+        if (o instanceof Attribute) {
+            return new Node[] { new CidsAttributeNode((Attribute)o, cidsClass, project) };
+        } else {
+            return new Node[] {};
+        }
+    }
+
+    @Override
+    protected void threadedNotify() throws IOException {
+        try {
+            final LinkedList<Attribute> children = new LinkedList(cidsClass.getAttributes());
+            doReorder = false;
+            final Comparator comp = new Comparator() {
+
+                    @Override
+                    public int compare(final Object o1, final Object o2) {
+                        final Attribute a1 = (Attribute)o1;
+                        final Attribute a2 = (Attribute)o2;
+
+                        if ((a1.getPosition() != null) && (a2.getPosition() != null)) {
+                            final int comp = a1.getPosition().compareTo(a2.getPosition());
+
+                            if (comp == 0) {
+                                doReorder = true;
+                                return a1.getName().compareTo(a2.getName());
+                            } else {
+                                return comp;
+                            }
+                        } else if ((a1.getPosition() == null) && (a2.getPosition() != null)) {
+                            doReorder = true;
+                            return 1;
+                        } else if ((a1.getPosition() != null) && (a2.getPosition() == null)) {
+                            doReorder = true;
+                            return -1;
+                        } else {
+                            doReorder = true;
+                            return a1.getName().compareTo(a2.getName());
+                        }
+                    }
+
+                    @Override
+                    public boolean equals(final Object obj) {
+                        return false;
+                    }
+                };
+
+            Collections.sort(children, comp);
+            try {
+                if (doReorder) {
+                    for (int i = 0; i < children.size(); ++i) {
+                        final Attribute a = children.get(i);
+                        if ((a.getPosition() == null) || !a.getPosition().equals(i)) {
+                            a.setPosition(i);
+                            project.getCidsDataObjectBackend().store(a);
+                        }
+                    }
+                    Collections.sort(children, comp);
+                }
+            } catch (final Exception e) {
+                LOG.warn("error during reorder", e); // NOI18N
+                ErrorManager.getDefault().notify(e);
+            }
+
+            setKeysEDT(children);
+        } catch (final Exception ex) {
+            LOG.error("could not create children", ex); // NOI18N
+        }
     }
 
     //~ Inner Classes ----------------------------------------------------------

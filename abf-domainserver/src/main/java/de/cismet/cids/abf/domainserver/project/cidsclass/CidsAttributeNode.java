@@ -33,10 +33,10 @@ import javax.swing.Action;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassPropertyEditor;
-import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.entity.cidsclass.Attribute;
@@ -87,6 +87,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
         super(Children.LEAF, project);
         this.cidsClass = cidsClass;
         this.cidsAttribute = cidsAttribute;
+        setName(cidsAttribute.getFieldName());
         attributeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute.png");          // NOI18N
         arrayBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_array.png");            // NOI18N
         foreignKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_foreign_key.png"); // NOI18N
@@ -134,16 +135,6 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
         }
 
         return ret;
-    }
-
-    /**
-     * Gets the programmatic name of this feature.
-     *
-     * @return  The programmatic name of the property/method/event
-     */
-    @Override
-    public String getName() {
-        return cidsAttribute.getFieldName();
     }
 
     @Override
@@ -1057,7 +1048,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
     /**
      * DOCUMENT ME!
      */
-    void refreshInDiagram() {
+    private void refreshInDiagram() {
         final Node n = getParentNode();
         if (n instanceof CidsClassNode) {
             ((CidsClassNode)n).refreshInDiagram();
@@ -1084,19 +1075,26 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             cidsClass.getAttributes().remove(cidsAttribute);
             project.getCidsDataObjectBackend().store(cidsClass);
             cidsAttribute = null;
-            // p will always be null -.-
+
             final Node p = getParentNode();
-            if (p instanceof CidsClassNode) {
-                ((CidsClassNode)p).refreshChildren();
+            if (p == null) {
+                throw new IllegalStateException("parent is not set: " + p);                              // NOI18N
+            } else {
+                final Refreshable refreshable = p.getCookie(Refreshable.class);
+                if (refreshable == null) {
+                    throw new IllegalStateException("parent does not provide Refreshable cookie: " + p); // NOI18N
+                } else {
+                    refreshable.refresh();
+                }
             }
         } catch (final Exception e) {
-            LOG.error("error during deletion", e);                     // NOI18N
+            LOG.error("error during deletion", e);                                                       // NOI18N
             ErrorUtils.showErrorMessage(NbBundle.getMessage(
                     CidsAttributeNode.class,
-                    "CidsAttributeNode.destroy().ErrorUtils.message"), // NOI18N
+                    "CidsAttributeNode.destroy().ErrorUtils.message"),                                   // NOI18N
                 e);
         }
-        project.getLookup().lookup(ClassManagement.class).refresh();
+        // we don't need to refresh the class management since it won't be affected by this change
         project.getLookup().lookup(SyncManagement.class).refresh();
     }
 

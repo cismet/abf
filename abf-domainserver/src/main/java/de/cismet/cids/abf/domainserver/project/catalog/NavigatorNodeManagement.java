@@ -32,6 +32,7 @@ import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.nodes.CatalogManagement;
 import de.cismet.cids.abf.utilities.Comparators;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
@@ -109,10 +110,12 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
 
         @Override
         public void refresh() {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("refresh requested", new Throwable("cause")); // NOI18N
+            }
+
             if (project.isConnected()) {
                 ((ProjectChildren)getChildren()).refreshByNotify();
-            } else {
-                setChildren(Children.LEAF);
             }
         }
     }
@@ -127,17 +130,12 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
         //~ Methods ------------------------------------------------------------
 
         @Override
-        public void connectionStatusChanged(final boolean isConnected) {
-            if (isConnected) {
-                setChildren(new NavigatorNodeManagementChildren(project));
+        public void connectionStatusChanged(final ConnectionEvent event) {
+            if (event.isConnected() && !event.isIndeterminate()) {
+                setChildrenEDT(new NavigatorNodeManagementChildren(project));
             } else {
-                setChildren(Children.LEAF);
+                setChildrenEDT(Children.LEAF);
             }
-        }
-
-        @Override
-        public void connectionStatusIndeterminate() {
-            // not needed
         }
     }
 

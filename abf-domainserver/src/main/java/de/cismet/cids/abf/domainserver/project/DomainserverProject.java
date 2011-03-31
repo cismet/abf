@@ -52,19 +52,18 @@ import java.text.MessageFormat;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.catalog.CatalogNodeContextCookie;
 import de.cismet.cids.abf.utilities.Connectable;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.ConnectionSupport;
 import de.cismet.cids.abf.utilities.project.NotifyProperties;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
@@ -86,8 +85,7 @@ public final class DomainserverProject implements Project, Connectable {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            DomainserverProject.class);
+    private static final transient Logger LOG = Logger.getLogger(DomainserverProject.class);
 
     public static final String IMAGE_FOLDER = "de/cismet/cids/abf/domainserver/images/"; // NOI18N
 
@@ -132,7 +130,7 @@ public final class DomainserverProject implements Project, Connectable {
     private final transient FileObject projectDir;
     private final transient LogicalViewProvider logicalView;
     private final transient ProjectState state;
-    private final transient Set<ConnectionListener> listeners;
+    private final transient ConnectionSupport connectionSupport;
     private transient volatile boolean connectionInProgress;
 
     private transient Lookup lkp;
@@ -161,7 +159,7 @@ public final class DomainserverProject implements Project, Connectable {
         this.projectDir = projectDir;
         this.state = state;
         logicalView = new DomainserverLogicalView(this);
-        listeners = new HashSet<ConnectionListener>();
+        connectionSupport = new ConnectionSupport();
         connectionInProgress = false;
         final FileObject fob = getProjectDirectory().getFileObject(
                 RUNTIME_PROPS);
@@ -302,6 +300,26 @@ public final class DomainserverProject implements Project, Connectable {
      * DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
+     *
+     * @throws  IllegalStateException  DOCUMENT ME!
+     */
+    public FileObject getDistRoot() {
+        FileObject current = projectDir.getParent();
+        while (current != null) {
+            if (current.getFileObject("lib/cidsLibBase") != null) { // NOI18N
+                return current;
+            } else {
+                current = current.getParent();
+            }
+        }
+
+        throw new IllegalStateException("cannot locate dist root"); // NOI18N
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
      */
     FileObject getWebinterfaceFolder() {
         FileObject result = projectDir.getFileObject(WEBINTERFACE_DIR);
@@ -331,8 +349,8 @@ public final class DomainserverProject implements Project, Connectable {
                         new Info(),               // Project information implementation
                         logicalView,              // Logical view of project implementation
                     });
-            return lkp;
         }
+
         return lkp;
     }
 
@@ -344,8 +362,7 @@ public final class DomainserverProject implements Project, Connectable {
     void addLookup(final Lookup lookup) {
         // TODO: investigate: while why did we do that
         if (lookup != null) {
-            lkp = new ProxyLookup(
-                    new Lookup[] { getLookup(), lookup });
+            lkp = new ProxyLookup(new Lookup[] { getLookup(), lookup });
         }
     }
 
@@ -378,6 +395,7 @@ public final class DomainserverProject implements Project, Connectable {
         }
         return projectProps;
     }
+
     /**
      * TODO: clean file write
      */
@@ -502,7 +520,7 @@ public final class DomainserverProject implements Project, Connectable {
                         initPolicies();
                         if (!acquireLock()) {
                             connectionInProgress = false;
-                            fireConnectionStatusChanged(!connected);
+                            fireConnectionStatusChanged();
                             return;
                         }
                         try {
@@ -518,28 +536,27 @@ public final class DomainserverProject implements Project, Connectable {
                                         "DomainserverProject.setConnected().ErrorUtils.unknownErrorMessage"),
                                     e); // NOI18N
                             }
+
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug("new Backend(runtimeProps)"); // NOI18N
                             }
+
                             backend = new Backend(runtimeProps);
                             connectionInProgress = false;
-                            diffAccessor = new DiffAccessor(runtimeProps,
-                                    backend);
-                            fireConnectionStatusChanged(isConnected());
+                            diffAccessor = new DiffAccessor(runtimeProps, backend);
+                            fireConnectionStatusChanged();
+
                             if (LOG.isDebugEnabled()) {
-                                LOG.debug("setConnected(" // NOI18N
-                                            + connected
-                                            + ") = " // NOI18N
-                                            + isConnected());
+                                LOG.debug("setConnected(" + connected + ") = " + isConnected()); // NOI18N
                             }
+
                             final List<Icon> list = backend.getAllEntities(Icon.class);
                             Icon backup = null;
                             for (final Icon ic : list) {
                                 if (backup == null) {
                                     backup = ic;
                                 }
-                                if (ic.getName().toLowerCase().startsWith("array")) // NOI18N
-                                {
+                                if (ic.getName().toLowerCase().startsWith("array")) {             // NOI18N
                                     setArrayIcon(ic);
                                 }
                             }
@@ -553,8 +570,9 @@ public final class DomainserverProject implements Project, Connectable {
                                 org.openide.util.NbBundle.getMessage(
                                     DomainserverProject.class,
                                     "DomainserverProject.setConnected().ErrorUtils.connectionError"),
-                                e);     // NOI18N
-                            fireConnectionStatusChanged(isConnected());
+                                e);                                                               // NOI18N
+                            backend = null;
+                            fireConnectionStatusChanged();
                             connectionInProgress = false;
                         }
                     }
@@ -568,23 +586,20 @@ public final class DomainserverProject implements Project, Connectable {
                     backend.close();
                 }
             } catch (final Exception e) {
-                LOG.error("could not close backend", e); // NOI18N
+                LOG.error("could not close backend", e);                                          // NOI18N
                 ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                         DomainserverProject.class,
                         "DomainserverProject.setConnected().ErrorUtils.closeDBConnection"),
-                    e);                 // NOI18N
+                    e);                                                                           // NOI18N
             }
             diffAccessor.freeResources();
             diffAccessor = null;
             backend = null;
             // free resources
-            System.gc();
-            fireConnectionStatusChanged(isConnected());
+            fireConnectionStatusChanged();
+
             if (LOG.isDebugEnabled()) {
-                LOG.debug("setConnected(" // NOI18N
-                            + connected
-                            + ") = " // NOI18N
-                            + isConnected());
+                LOG.debug("setConnected(" + connected + ") = " + isConnected()); // NOI18N
             }
         }
     }
@@ -674,20 +689,14 @@ public final class DomainserverProject implements Project, Connectable {
             } catch (final SQLException ex) {
                 LOG.warn("could not rollback statements", ex);                                   // NOI18N
             } finally {
-                try {
-                    if (stmt != null) {
-                        stmt.close();
-                    }
-                    con.close();
-                } catch (final SQLException e) {
-                    LOG.warn("could not close connection", e);                                   // NOI18N
-                }
-            }                                                                                    // </editor-fold>
+                DatabaseConnection.closeStatement(stmt);
+                DatabaseConnection.closeConnection(con);
+            }
+            // </editor-fold>
             return false;
         }
         if (stmt == null) {
-            throw new IllegalStateException(
-                "statement must not be null");                                                   // NOI18N
+            throw new IllegalStateException("statement must not be null");                       // NOI18N
         }
         ResultSet set = null;
         try {
@@ -697,13 +706,11 @@ public final class DomainserverProject implements Project, Connectable {
             set = stmt.executeQuery(STMT_READ_LOCKS);
             // if set.next() delivers a row a lock is already acquired
             if (set.next()) {
-                final String when =
-                    set.getString("user_string")                        // NOI18N
-                    .replace(LOCK_PREFIX, "");                          // NOI18N
+                final String when = set.getString("user_string").replace(LOCK_PREFIX, ""); // NOI18N
                 final Date date = new Date(Long.valueOf(when));
-                final String who = set.getString("additional_info");    // NOI18N
+                final String who = set.getString("additional_info");                       // NOI18N
                 if (LOG.isInfoEnabled()) {
-                    LOG.info("lock aquired by " + who + " on " + date); // NOI18N
+                    LOG.info("lock aquired by " + who + " on " + date);                    // NOI18N
                 }
                 EventQueue.invokeLater(new Runnable() {
 
@@ -723,26 +730,31 @@ public final class DomainserverProject implements Project, Connectable {
                         }
                     });
                 stmt.execute(STMT_COMMIT);
+
                 return false;
             } else {
                 final String user = System.getProperty("user.name"); // NOI18N
-                String host = "unknown"; // NOI18N
+                String host = "unknown";                             // NOI18N
+
                 try {
                     host = InetAddress.getLocalHost().getHostName();
                 } catch (final UnknownHostException e) {
                     LOG.warn("could not resolve host name", e); // NOI18N
                 }
+
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("writing lock"); // NOI18N
                 }
+
                 final String who = user + "@" + host; // NOI18N
-                final String update = MessageFormat.format(STMT_ACQUIRE_LOCK,
-                        generateNonce(), who);
+                final String update = MessageFormat.format(STMT_ACQUIRE_LOCK, generateNonce(), who);
                 stmt.executeUpdate(update);
                 stmt.execute(STMT_COMMIT);
+
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("successfully locked"); // NOI18N
                 }
+
                 return true;
             }
         } catch (final SQLException sqle) {
@@ -770,16 +782,9 @@ public final class DomainserverProject implements Project, Connectable {
             }                                                                               // </editor-fold>
             return false;
         } finally {
-            // <editor-fold defaultstate="collapsed" desc=" Cleanup ">
-            try {
-                if (set != null) {
-                    set.close();
-                }
-                stmt.close();
-                con.close();
-            } catch (final SQLException sqle) {
-                LOG.warn("could not cleanup connection", sqle); // NOI18N
-            }                                                   // </editor-fold>
+            DatabaseConnection.closeResultSet(set);
+            DatabaseConnection.closeStatement(stmt);
+            DatabaseConnection.closeConnection(con);
         }
     }
 
@@ -901,16 +906,12 @@ public final class DomainserverProject implements Project, Connectable {
 
     @Override
     public void addConnectionListener(final ConnectionListener cl) {
-        synchronized (listeners) {
-            listeners.add(cl);
-        }
+        connectionSupport.addConnectionListener(cl);
     }
 
     @Override
     public void removeConnectionListener(final ConnectionListener cl) {
-        synchronized (listeners) {
-            listeners.remove(cl);
-        }
+        connectionSupport.addConnectionListener(cl);
     }
 
     /**
@@ -926,6 +927,7 @@ public final class DomainserverProject implements Project, Connectable {
     public boolean isConnectionInProgress() {
         return connectionInProgress;
     }
+
     /**
      * TODO: refactor and delete
      *
@@ -1004,24 +1006,24 @@ public final class DomainserverProject implements Project, Connectable {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param  newStatus  DOCUMENT ME!
      */
-    protected void fireConnectionStatusChanged(final boolean newStatus) {
-        handle.finish();
-        final Iterator<ConnectionListener> it;
-        synchronized (listeners) {
-            it = new HashSet<ConnectionListener>(listeners).iterator();
-        }
-        while (it.hasNext()) {
-            it.next().connectionStatusChanged(newStatus);
-        }
+    private void fireConnectionStatusChanged() {
+        EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    handle.finish();
+                }
+            });
+
+        final ConnectionEvent event = new ConnectionEvent(this, isConnected(), isConnectionInProgress());
+        connectionSupport.fireConnectionStatusChanged(event);
     }
 
     /**
      * DOCUMENT ME!
      */
-    protected void fireConnectionStatusIndeterminate() {
+    private void fireConnectionStatusIndeterminate() {
         if (isConnected()) {
             handle = ProgressHandleFactory.createHandle(
                     org.openide.util.NbBundle.getMessage(
@@ -1035,15 +1037,18 @@ public final class DomainserverProject implements Project, Connectable {
                         "DomainserverProject.fireConnectionStatusIndeterminate().handle.connectToDomainserver", // NOI18N
                         getProjectDirectory().getName()));
         }
-        handle.start();
-        handle.switchToIndeterminate();
-        final Iterator<ConnectionListener> it;
-        synchronized (listeners) {
-            it = new HashSet<ConnectionListener>(listeners).iterator();
-        }
-        while (it.hasNext()) {
-            it.next().connectionStatusIndeterminate();
-        }
+
+        EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    handle.start();
+                    handle.switchToIndeterminate();
+                }
+            });
+
+        final ConnectionEvent event = new ConnectionEvent(this, isConnected(), isConnectionInProgress());
+        connectionSupport.fireConnectionStatusChanged(event);
     }
 
     //~ Inner Classes ----------------------------------------------------------
@@ -1094,8 +1099,7 @@ public final class DomainserverProject implements Project, Connectable {
          * Creates a new Info object.
          */
         Info() {
-            icon = new ImageIcon(ImageUtilities.loadImage(IMAGE_FOLDER
-                                + "domainserver.png")); // NOI18N
+            icon = new ImageIcon(ImageUtilities.loadImage(IMAGE_FOLDER + "domainserver.png")); // NOI18N
         }
 
         //~ Methods ------------------------------------------------------------

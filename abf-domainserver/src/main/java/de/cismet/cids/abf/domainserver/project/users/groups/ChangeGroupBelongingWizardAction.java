@@ -19,7 +19,6 @@ import org.openide.util.actions.CookieAction;
 
 import java.awt.Component;
 import java.awt.Dialog;
-import java.awt.EventQueue;
 
 import java.text.MessageFormat;
 
@@ -159,15 +158,7 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
                     ErrorManager.getDefault().notify(ex);
                 }
             }
-            EventQueue.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        final UserManagement um = project.getLookup().lookup(UserManagement.class);
-                        um.refreshChildren();
-                        um.refreshUser(user);
-                    }
-                });
+            project.getLookup().lookup(UserManagement.class).refreshGroups(groups);
         }
     }
 

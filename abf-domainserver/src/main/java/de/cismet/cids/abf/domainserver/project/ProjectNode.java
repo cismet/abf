@@ -10,6 +10,8 @@ package de.cismet.cids.abf.domainserver.project;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 
+import java.awt.EventQueue;
+
 /**
  * DOCUMENT ME!
  *
@@ -41,5 +43,20 @@ public abstract class ProjectNode extends AbstractNode implements DomainserverCo
     @Override
     public DomainserverProject getDomainserverProject() {
         return project;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  children  DOCUMENT ME!
+     */
+    protected void setChildrenEDT(final Children children) {
+        EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    setChildren(children);
+                }
+            });
     }
 }

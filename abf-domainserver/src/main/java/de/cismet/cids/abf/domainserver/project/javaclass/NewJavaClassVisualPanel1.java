@@ -137,8 +137,7 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements ExplorerMa
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("init cdcl");        // NOI18N
                         }
-                        final CidsDistClassLoader cdcl = CidsDistClassLoader.getInstance(
-                                project.getProjectDirectory().getParent());
+                        final CidsDistClassLoader cdcl = CidsDistClassLoader.getInstance(project.getDistRoot());
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("cdcl initialized"); // NOI18N
                         }
@@ -281,17 +280,17 @@ public final class NewJavaClassVisualPanel1 extends JPanel implements ExplorerMa
      * @throws  IllegalStateException  DOCUMENT ME!
      */
     private void loadManifests() {
-        final FileObject lib = project.getProjectDirectory().getParent().getFileObject("lib"); // NOI18N
+        final FileObject lib = project.getDistRoot().getFileObject("lib"); // NOI18N
         if (lib == null) {
-            throw new IllegalStateException("could not locate lib dir");                       // NOI18N
+            throw new IllegalStateException("could not locate lib dir");   // NOI18N
         }
         final List<FileObject> manDirs = new LinkedList<FileObject>();
         final Enumeration<? extends FileObject> dirs = lib.getFolders(true);
         while (dirs.hasMoreElements()) {
             final FileObject fo = dirs.nextElement();
-            if (fo.getName().startsWith("starter"))                                            // NOI18N
+            if (fo.getName().startsWith("starter"))                        // NOI18N
             {
-                final FileObject manDir = fo.getFileObject("src/plain");                       // NOI18N
+                final FileObject manDir = fo.getFileObject("src/plain");   // NOI18N
                 if (manDir != null) {
                     manDirs.add(manDir);
                 }

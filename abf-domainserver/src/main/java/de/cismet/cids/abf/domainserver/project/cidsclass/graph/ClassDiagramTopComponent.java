@@ -16,6 +16,7 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.DefaultElement;
 
+import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.action.WidgetAction;
@@ -31,7 +32,6 @@ import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
-import org.openide.util.Utilities;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
@@ -1213,6 +1213,43 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         allClasses.remove(cidsClassNode);
         widget.removeFromParent();
         addRelations();
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  cidsClass  DOCUMENT ME!
+     */
+    public void removeClassWidget(final CidsClass cidsClass) {
+        final String domainServerName = project.getLookup().lookup(ProjectInformation.class).getName();
+        final String widgetName = cidsClass.getId() + "@" + domainServerName; // NOI18N
+        final ClassNodeWidget widget = classNodeWidgets.get(widgetName);
+
+        if (widget == null) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("could not find widget for class: " + cidsClass); // NOI18N
+            }
+        } else {
+            removeClassWidget(widget);
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  cidsClass  DOCUMENT ME!
+     */
+    public static void classDestroyed(final CidsClass cidsClass) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("removing cids class from all diagramms: " + cidsClass);
+        }
+
+        final Set opened = TopComponent.getRegistry().getOpened();
+        for (final Object o : opened) {
+            if (o instanceof ClassDiagramTopComponent) {
+                ((ClassDiagramTopComponent)o).removeClassWidget(cidsClass);
+            }
+        }
     }
 
     /**

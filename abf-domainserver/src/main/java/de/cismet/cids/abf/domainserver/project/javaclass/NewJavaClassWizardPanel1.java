@@ -123,7 +123,6 @@ public final class NewJavaClassWizardPanel1 implements WizardDescriptor.Panel {
     @Override
     public void storeSettings(final Object settings) {
         wizard = (WizardDescriptor)settings;
-        wizard.putProperty(NewJavaClassWizardAction.JAVACLASS_PROPERTY,
-            component.getJavaClass());
+        wizard.putProperty(NewJavaClassWizardAction.JAVACLASS_PROPERTY, component.getJavaClass());
     }
 }

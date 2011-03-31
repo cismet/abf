@@ -29,7 +29,6 @@ import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.datatransfer.PasteType;
 import org.openide.windows.WindowManager;
 
-import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.datatransfer.Transferable;
 
@@ -155,7 +154,7 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
         this.catNode = catNode;
         this.parent = parent;
         permResolve = PermissionResolver.getInstance(project);
-        refreshProcessor = new RequestProcessor("refreshprocessor", 5);
+        refreshProcessor = new RequestProcessor("refreshprocessor", 5); // NOI18N
         setDisplayName(catNode.getName());
         refresh();
     }
@@ -215,9 +214,7 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
             if (parent instanceof CatalogNode) {
                 final CatalogNode parentNode = (CatalogNode)parent;
                 try {
-                    if (project.getCidsDataObjectBackend().deleteNode(
-                                    parentNode.catNode,
-                                    catNode)) {
+                    if (project.getCidsDataObjectBackend().deleteNode(parentNode.catNode, catNode)) {
                         project.getLookup().lookup(CatalogManagement.class).destroyedNode(catNode, this);
                     } else {
                         project.getLookup().lookup(CatalogManagement.class).removedNode(catNode, this);
@@ -256,7 +253,13 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
                 @Override
                 public void run() {
                     if (project.isConnected()) {
-                        catNode.setIsLeaf(project.getCidsDataObjectBackend().isLeaf(catNode, true));
+                        final CatNode parent = getParent();
+                        if ((parent == null) || (parent.getDynamicChildren() == null)) {
+                            catNode.setIsLeaf(project.getCidsDataObjectBackend().isLeaf(catNode, true));
+                        } else {
+                            catNode.setIsLeaf(catNode.getDynamicChildren() == null);
+                        }
+
                         final Children c = getChildren();
                         if (catNode.isLeaf()
                                     && ((catNode.getDynamicChildren() == null)
@@ -293,21 +296,6 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
                     } else {
                         setChildrenEDT(Children.LEAF);
                     }
-                }
-            });
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  children  DOCUMENT ME!
-     */
-    private void setChildrenEDT(final Children children) {
-        EventQueue.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    setChildren(children);
                 }
             });
     }
@@ -770,7 +758,12 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
                     }
                 }; // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: NodeObjectSet ">
-            final Map<String, String> objectInfo = null; // project.getCidsDataObjectBackend().getSimpleObjectInformation(catNode);
+            final Map<String, String> objectInfo;
+            if(CatNode.Type.OBJECT.getType().equals(catNode.getNodeType())){
+                objectInfo = project.getCidsDataObjectBackend().getSimpleObjectInformation(catNode);
+            } else {
+                objectInfo = null;
+            }
             final HashSet<Property> objectProps = new HashSet<Property>();
             if (objectInfo != null) {
                 for (final Iterator<Entry<String, String>> entries = objectInfo.entrySet().iterator();
@@ -1412,12 +1405,9 @@ final class DynamicCatalogNodeChildren extends ProjectChildren {
                         "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryUnsuccessful") // NOI18N
                 });
             refresh();
-            try {
-                set.close();
-                con.close();
-            } catch (final SQLException sqle) {
-                LOG.warn("could not close connection", sqle);                                   // NOI18N
-            }
+
+            DatabaseConnection.closeResultSet(set);
+            DatabaseConnection.closeConnection(con);
 
             return;
         }
@@ -1482,12 +1472,8 @@ final class DynamicCatalogNodeChildren extends ProjectChildren {
                         "CatalogNode.DynamicCatalogNodeChildren.addNotify().queryResultEvaluation") // NOI18N
                 });
         } finally {
-            try {
-                set.close();
-                con.close();
-            } catch (final SQLException sqle) {
-                LOG.warn("could not close connection", sqle);                                       // NOI18N
-            }
+            DatabaseConnection.closeResultSet(set);
+            DatabaseConnection.closeConnection(con);
         }
     }
 

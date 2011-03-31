@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
+import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 
 import java.awt.EventQueue;
@@ -28,6 +29,7 @@ import de.cismet.cids.abf.domainserver.project.icons.IconManagementContextCookie
 import de.cismet.cids.abf.domainserver.project.icons.IconNode;
 import de.cismet.cids.abf.domainserver.project.icons.NewIconAction;
 import de.cismet.cids.abf.utilities.Comparators;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
@@ -58,7 +60,7 @@ public final class IconManagement extends ProjectNode implements ConnectionListe
         super(Children.LEAF, project);
         image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
                         + "icons.png"); // NOI18N
-        project.addConnectionListener(this);
+        project.addConnectionListener(WeakListeners.create(ConnectionListener.class, this, project));
         getCookieSet().add(this);
         setDisplayName(org.openide.util.NbBundle.getMessage(
                 IconManagement.class,
@@ -78,17 +80,12 @@ public final class IconManagement extends ProjectNode implements ConnectionListe
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        if (isConnected) {
-            setChildren(new IconManagementChildren(project));
+    public void connectionStatusChanged(final ConnectionEvent event) {
+        if (event.isConnected() && !event.isIndeterminate()) {
+            setChildrenEDT(new IconManagementChildren(project));
         } else {
-            setChildren(Children.LEAF);
+            setChildrenEDT(Children.LEAF);
         }
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        // do nothing
     }
 
     @Override

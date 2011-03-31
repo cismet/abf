@@ -2,6 +2,6 @@
 <nbm>
     <author>martin.scholl@cismet.de</author>
     <moduleType>eager</moduleType>
-    <codeNameBase>de.cismet.cids.abf.domainserver/1</codeNameBase>
+    <codeNameBase>de.cismet.cids.abf.domainserver/3</codeNameBase>
     <cluster>cidsabf</cluster>
 </nbm>

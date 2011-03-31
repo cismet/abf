@@ -43,6 +43,7 @@ import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.nodes.LoadingNode;
@@ -79,7 +80,7 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
     public ConfigAttrRootNode(final Types type, final DomainserverProject project) {
         super(Children.LEAF, project);
         this.type = type;
-        connL = new ConnLImpl();
+        connL = new ConnL();
         project.addConnectionListener(WeakListeners.create(ConnectionListener.class, connL, project));
         getCookieSet().add(new RefreshableImpl());
     }
@@ -296,8 +297,12 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
 
         @Override
         public void refresh() {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("requesting refresh", new Throwable("trace")); // NOI18N
+            }
+
             if (Children.LEAF.equals(getChildren()) || !(getChildren() instanceof ProjectChildren)) {
-                setChildren(new GenericConfigAttrRootNodeChildren(type, project));
+                setChildrenEDT(new GenericConfigAttrRootNodeChildren(type, project));
             } else {
                 ((ProjectChildren)getChildren()).refreshByNotify();
             }
@@ -309,22 +314,17 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
      *
      * @version  $Revision$, $Date$
      */
-    private final class ConnLImpl implements ConnectionListener {
+    private final class ConnL implements ConnectionListener {
 
         //~ Methods ------------------------------------------------------------
 
         @Override
-        public void connectionStatusChanged(final boolean isConnected) {
-            if (isConnected) {
-                setChildren(new GenericConfigAttrRootNodeChildren(type, project));
+        public void connectionStatusChanged(final ConnectionEvent event) {
+            if (event.isConnected() && !event.isIndeterminate()) {
+                setChildrenEDT(new GenericConfigAttrRootNodeChildren(type, project));
             } else {
-                setChildren(Children.LEAF);
+                setChildrenEDT(Children.LEAF);
             }
-        }
-
-        @Override
-        public void connectionStatusIndeterminate() {
-            // do nothing
         }
     }
 

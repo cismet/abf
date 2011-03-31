@@ -15,6 +15,7 @@ import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 
 import java.awt.Image;
@@ -31,6 +32,7 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.ChangeGroupBelongingWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.groups.RemoveGroupMembershipAction;
 import de.cismet.cids.abf.utilities.Refreshable;
@@ -48,8 +50,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            UserNode.class);
+    private static final transient Logger LOG = Logger.getLogger(UserNode.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -68,10 +69,8 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public UserNode(final User user, final DomainserverProject project) {
         super(Children.LEAF, project);
         this.user = user;
-        userImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "user.png");  // NOI18N
-        adminImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "admin.png"); // NOI18N
+        userImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "user.png");   // NOI18N
+        adminImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "admin.png"); // NOI18N
         getCookieSet().add(this);
     }
 
@@ -155,8 +154,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                         final User old = user;
                         try {
                             user.setLoginname(object.toString());
-                            user = (User)project.getCidsDataObjectBackend().store(
-                                    user);
+                            user = project.getCidsDataObjectBackend().store(user);
                         } catch (final Exception ex) {
                             LOG.error("could not store user", ex); // NOI18N
                             user = old;
@@ -192,8 +190,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                         try {
                             user.setPassword(object.toString());
                             user.setLastPwdChange(Calendar.getInstance().getTime());
-                            user = (User)project.getCidsDataObjectBackend().store(
-                                    user);
+                            user = project.getCidsDataObjectBackend().store(user);
                         } catch (final Exception ex) {
                             LOG.error("could not store user", ex); // NOI18N
                             user = old;
@@ -229,8 +226,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                         final User old = user;
                         try {
                             user.setAdmin((Boolean)object);
-                            user = (User)project.getCidsDataObjectBackend().store(
-                                    user);
+                            user = project.getCidsDataObjectBackend().store(user);
                         } catch (final Exception ex) {
                             LOG.error("could not store user", ex); // NOI18N
                             user = old;
@@ -272,8 +268,8 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                         // not needed
                     }
                 };                                                         // </editor-fold>
-            setAdditionalInfo.setName("zusatz");                           // NOI18N
-            setAdditionalInfo.setDisplayName(org.openide.util.NbBundle.getMessage(
+            setAdditionalInfo.setName("addition");                         // NOI18N
+            setAdditionalInfo.setDisplayName(NbBundle.getMessage(
                     UserNode.class,
                     "UserNode.createSheet().additionalInfo.displayName")); // NOI18N
             set.put(nameProp);
@@ -302,6 +298,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             return false;
         }
         final UserNode un = (UserNode)object;
+
         return user.getId().equals(un.user.getId());
     }
 
@@ -309,6 +306,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public int hashCode() {
         int hash = 5;
         hash = (59 * hash) + ((this.user == null) ? 0 : this.user.hashCode());
+
         return hash;
     }
 
@@ -316,9 +314,9 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public Action[] getActions(final boolean b) {
         Action removeGrpMbrShip = null;
         if (!(getParentNode() instanceof AllUsersNode)) {
-            removeGrpMbrShip = CallableSystemAction.get(
-                    RemoveGroupMembershipAction.class);
+            removeGrpMbrShip = CallableSystemAction.get(RemoveGroupMembershipAction.class);
         }
+
         return new Action[] {
                 CallableSystemAction.get(ChangeGroupBelongingWizardAction.class),
                 removeGrpMbrShip,
@@ -331,12 +329,12 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public void destroy() throws IOException {
         try {
             project.getCidsDataObjectBackend().delete(user);
-            super.destroy();
         } catch (final Exception ex) {
-            LOG.error("could not delete user", ex);         // NOI18N
-            throw new IOException("could not delete user: " // NOI18N
-                        + ex.getMessage(), ex);
+            final String message = "could not delete user: " + user; // NOI18N
+            LOG.error(message, ex);
+            throw new IOException(message, ex);
         }
+        project.getLookup().lookup(UserManagement.class).refreshGroups(user.getUserGroups());
     }
 
     // returns false to ensure a user can only be deleted by deleteuseraction
@@ -348,9 +346,8 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     @Override
     public void refresh() {
-        user = project.getCidsDataObjectBackend().getEntity(
-                User.class,
-                user.getId());
+        user = project.getCidsDataObjectBackend().getEntity(User.class, user.getId());
+
         setSheet(createSheet());
     }
 }

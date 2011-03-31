@@ -15,6 +15,7 @@ import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 import java.awt.Image;
 
@@ -42,8 +43,7 @@ public final class TypeNode extends ProjectNode {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            TypeNode.class);
+    private static final transient Logger LOG = Logger.getLogger(TypeNode.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -61,8 +61,7 @@ public final class TypeNode extends ProjectNode {
     public TypeNode(final Type type, final DomainserverProject project) {
         super(Children.LEAF, project);
         this.type = type;
-        defaultImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "datatype.png"); // NOI18N
+        defaultImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "datatype.png"); // NOI18N
         setName(type.getName());
         setDisplayName(type.getName());
     }
@@ -292,12 +291,8 @@ public final class TypeNode extends ProjectNode {
                     }
                 }; // </editor-fold>
             // </editor-fold>
-            main.setName(org.openide.util.NbBundle.getMessage(
-                    TypeNode.class,
-                    "TypeNode.createSheet().main.name"));        // NOI18N
-            main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                    TypeNode.class,
-                    "TypeNode.createSheet().main.displayName")); // NOI18N
+            main.setName(NbBundle.getMessage(TypeNode.class, "TypeNode.createSheet().main.name"));               // NOI18N
+            main.setDisplayName(NbBundle.getMessage(TypeNode.class, "TypeNode.createSheet().main.displayName")); // NOI18N
             main.put(idProp);
             main.put(nameProp);
             main.put(descriptionProp);
@@ -307,7 +302,7 @@ public final class TypeNode extends ProjectNode {
             main.put(rendererProp);
             sheet.put(main);
         } catch (final Exception ex) {
-            LOG.error("could not create propertysheet", ex);     // NOI18N
+            LOG.error("could not create propertysheet", ex);                                                     // NOI18N
             ErrorManager.getDefault().notify(ex);
         }
         return sheet;

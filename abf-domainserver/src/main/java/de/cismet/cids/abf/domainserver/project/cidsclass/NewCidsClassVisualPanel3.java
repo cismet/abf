@@ -11,7 +11,18 @@ import org.apache.log4j.Logger;
 
 import org.jdesktop.swingx.JXTable;
 
+import org.openide.util.NbBundle;
 import org.openide.util.RequestProcessor;
+import org.openide.util.WeakListeners;
+
+import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.io.IOException;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SortOrder;
@@ -47,11 +59,23 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            NewCidsClassVisualPanel3.class);
+    private static final transient Logger LOG = Logger.getLogger(NewCidsClassVisualPanel3.class);
 
     private static final int KEY = 0;
     private static final int VALUE = 1;
+
+    private static final URI WIKI_URI;
+
+    static {
+        URI uri = null;
+        try {
+            uri = new URI("http://wiki.cismet.de"); // NOI18N
+        } catch (final URISyntaxException e) {
+            LOG.error("illegal uri: " + uri, e);    // NOI18N
+        }
+
+        WIKI_URI = uri;
+    }
 
     //~ Instance fields --------------------------------------------------------
 
@@ -60,9 +84,13 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
     private transient ClassAttrTableModel tableModel;
     private transient FutureTask<Type> typeCache;
 
+    private final transient ActionListener hypL;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final transient javax.swing.JButton cmdNewClassAttr = new javax.swing.JButton();
     private final transient javax.swing.JButton cmdRemoveClassAttr = new javax.swing.JButton();
+    private final transient org.jdesktop.swingx.JXHyperlink hypAvailableAttrs = new org.jdesktop.swingx.JXHyperlink();
+    private final transient javax.swing.JLabel lblAvailableAttributes = new javax.swing.JLabel();
     private final transient javax.swing.JScrollPane scpClassAttr = new javax.swing.JScrollPane();
     private final transient javax.swing.JTable tblClassAttr = new JXTable();
     private final transient javax.swing.JToolBar tboClassAttr = new javax.swing.JToolBar();
@@ -77,7 +105,10 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
      */
     public NewCidsClassVisualPanel3(final NewCidsClassWizardPanel3 model) {
         this.model = model;
+        this.hypL = new HyperlinkListener();
+
         initComponents();
+
         final JXTable classAttrTable = (JXTable)tblClassAttr;
         classAttrTable.setAutoStartEditOnKeyStroke(true);
         classAttrTable.setTerminateEditOnFocusLost(true);
@@ -94,6 +125,8 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
                     model.fireChangeEvent();
                 }
             });
+
+        hypAvailableAttrs.addActionListener(WeakListeners.create(ActionListener.class, hypL, hypAvailableAttrs));
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -111,6 +144,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
                     public Type call() throws Exception {
                         final Backend b = model.getProject().getCidsDataObjectBackend();
                         final List<Type> types = b.getAllEntities(Type.class);
+
                         return types.get(0);
                     }
                 });
@@ -119,9 +153,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
 
     @Override
     public String getName() {
-        return org.openide.util.NbBundle.getMessage(
-                NewCidsClassVisualPanel3.class,
-                "NewCidsClassVisualPanel3.getName().returnvalue"); // NOI18N
+        return NbBundle.getMessage(NewCidsClassVisualPanel3.class, "NewCidsClassVisualPanel3.getName().returnvalue"); // NOI18N
     }
 
     /**
@@ -135,6 +167,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
         for (final ClassAttribute ca : tableModel.cas) {
             set.add(ca);
         }
+
         return cidsClass;
     }
 
@@ -144,12 +177,29 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        setLayout(new java.awt.GridBagLayout());
+
         scpClassAttr.setBorder(javax.swing.BorderFactory.createTitledBorder(
                 org.openide.util.NbBundle.getMessage(
                     NewCidsClassVisualPanel3.class,
                     "NewCidsClassVisualPanel3.scpClassAttr.border.title"))); // NOI18N
         scpClassAttr.setPreferredSize(new java.awt.Dimension(130, 296));
         scpClassAttr.setViewportView(tblClassAttr);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 584;
+        gridBagConstraints.ipady = 230;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(scpClassAttr, gridBagConstraints);
 
         tboClassAttr.setFloatable(false);
 
@@ -175,38 +225,41 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
             });
         tboClassAttr.add(cmdRemoveClassAttr);
 
-        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                org.jdesktop.layout.GroupLayout.TRAILING,
-                layout.createSequentialGroup().addContainerGap().add(
-                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING).add(
-                        org.jdesktop.layout.GroupLayout.LEADING,
-                        tboClassAttr,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        615,
-                        Short.MAX_VALUE).add(
-                        org.jdesktop.layout.GroupLayout.LEADING,
-                        scpClassAttr,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        615,
-                        Short.MAX_VALUE)).addContainerGap()));
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                layout.createSequentialGroup().addContainerGap().add(
-                    tboClassAttr,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                    25,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
-                    org.jdesktop.layout.LayoutStyle.RELATED).add(
-                    scpClassAttr,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                    281,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap(
-                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                    Short.MAX_VALUE)));
-    } // </editor-fold>//GEN-END:initComponents
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 391;
+        gridBagConstraints.ipady = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(tboClassAttr, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(
+            hypAvailableAttrs,
+            NbBundle.getMessage(NewCidsClassVisualPanel3.class, "NewCidsClassVisualPanel3.hypAvailableAttrs.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(hypAvailableAttrs, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblAvailableAttributes,
+            NbBundle.getMessage(
+                NewCidsClassVisualPanel3.class,
+                "NewCidsClassVisualPanel3.lblAvailableAttributes.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblAvailableAttributes, gridBagConstraints);
+    }                                                                     // </editor-fold>//GEN-END:initComponents
 
     /**
      * DOCUMENT ME!
@@ -229,33 +282,35 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
                     NewCidsClassVisualPanel3.class,
                     "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).InterruptedException.ErrorUtils.title"),   // NOI18N
                 ex);
+
             return;
         } catch (final ExecutionException ex) {
-            LOG.error("error during type loading", ex);                                                                              // NOI18N
+            LOG.error("error during type loading", ex);                                                                            // NOI18N
             ErrorUtils.showErrorMessage(
                 org.openide.util.NbBundle.getMessage(
                     NewCidsClassVisualPanel3.class,
-                    "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).ExecutionException.ErrorUtils.message"),   // NOI18N
+                    "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).ExecutionException.ErrorUtils.message"), // NOI18N
                 org.openide.util.NbBundle.getMessage(
                     NewCidsClassVisualPanel3.class,
-                    "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).ExecutionException.ErrorUtils.title"),     // NOI18N
+                    "NewCidsClassVisualPanel3.cmdNewClassAttrActionPerformed(ActionEvent).ExecutionException.ErrorUtils.title"),   // NOI18N
                 ex);
+
             return;
         }
-        ca.setAttrValue("");                                                                                                         // NOI18N
+        ca.setAttrValue("");                            // NOI18N
         tableModel.addClassAttribute(ca);
         model.fireChangeEvent();
         final JXTable jxt = (JXTable)tblClassAttr;
         jxt.setSortOrder(0, SortOrder.ASCENDING);
         for (int i = 0; i < tableModel.getRowCount(); ++i) {
-            if ("".equals(tableModel.getValueAt(i, 0)))                                                                              // NOI18N
+            if ("".equals(tableModel.getValueAt(i, 0))) // NOI18N
             {
                 tblClassAttr.requestFocus();
                 tblClassAttr.editCellAt(jxt.convertRowIndexToView(i), 0);
                 break;
             }
         }
-    }                                                                                                                                //GEN-LAST:event_cmdNewClassAttrActionPerformed
+    }                                                   //GEN-LAST:event_cmdNewClassAttrActionPerformed
 
     /**
      * DOCUMENT ME!
@@ -271,15 +326,9 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
             final int rc = tblClassAttr.getRowCount();
             if (rc > 0) {
                 if ((rc - 1) >= selectedRow) {
-                    table.getSelectionModel().setSelectionInterval(
-                        selectedRow,
-                        selectedRow);
+                    table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
                 } else {
-                    table.getSelectionModel().setSelectionInterval(
-                        rc
-                                - 1,
-                        rc
-                                - 1);
+                    table.getSelectionModel().setSelectionInterval(rc - 1, rc - 1);
                 }
             }
         }
@@ -287,6 +336,48 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
     }                                                                                      //GEN-LAST:event_cmdRemoveClassAttrActionPerformed
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class HyperlinkListener implements ActionListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(WIKI_URI);
+                } catch (final IOException ex) {
+                    LOG.error("cannot open uri", ex);                                                       // NOI18N
+                    JOptionPane.showMessageDialog(
+                        NewCidsClassVisualPanel3.this,
+                        NbBundle.getMessage(
+                                    NewCidsClassVisualPanel3.class,
+                                    "HyperlinkListener.actionPerformed(ActionEvent).cannotGotoURL.message") // NOI18N
+                                + WIKI_URI,
+                        NbBundle.getMessage(
+                            NewCidsClassVisualPanel3.class,
+                            "HyperlinkListener.actionPerformed(ActionEvent).cannotGotoURL.title"),          // NOI18N
+                        JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(
+                    NewCidsClassVisualPanel3.this,
+                    NbBundle.getMessage(
+                                NewCidsClassVisualPanel3.class,
+                                "HyperlinkListener.actionPerformed(ActionEvent).cannotOpenBrowser.message") // NOI18N
+                            + WIKI_URI,
+                    NbBundle.getMessage(
+                        NewCidsClassVisualPanel3.class,
+                        "HyperlinkListener.actionPerformed(ActionEvent).cannotOpenBrowser.title"),          // NOI18N
+                    JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
 
     /**
      * DOCUMENT ME!
@@ -323,9 +414,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
                     return cas.get(row).getAttrValue();
                 }
                 default: {
-                    throw new IllegalArgumentException(
-                        "unknown column: "
-                                + column); // NOI18N
+                    throw new IllegalArgumentException("unknown column: " + column); // NOI18N
                 }
             }
         }
@@ -354,9 +443,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
                             "NewCidsClassVisualPanel3.ClassAttrTableModel.getColumnName(int).column2"); // NOI18N
                 }
                 default: {
-                    throw new IllegalArgumentException(
-                        "unknown column: "
-                                + column);                                                              // NOI18N
+                    throw new IllegalArgumentException("unknown column: " + column);                    // NOI18N
                 }
             }
         }
@@ -372,8 +459,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
         }
 
         @Override
-        public void setValueAt(final Object aValue, final int row,
-                final int column) {
+        public void setValueAt(final Object aValue, final int row, final int column) {
             if (aValue instanceof String) {
                 switch (column) {
                     case KEY: {
@@ -385,9 +471,7 @@ public final class NewCidsClassVisualPanel3 extends JPanel {
                         break;
                     }
                     default: {
-                        throw new IllegalArgumentException(
-                            "unknown column: "
-                                    + column); // NOI18N
+                        throw new IllegalArgumentException("unknown column: " + column); // NOI18N
                     }
                 }
             }

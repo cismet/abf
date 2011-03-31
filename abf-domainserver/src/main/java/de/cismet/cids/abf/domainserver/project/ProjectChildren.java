@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 
 /**
@@ -52,6 +51,7 @@ public abstract class ProjectChildren extends Children.Keys {
      * @param  project  DOCUMENT ME!
      */
     public ProjectChildren(final DomainserverProject project) {
+        super(true);
         this.project = project;
         this.nodeL = new NodeListenerImpl();
     }
@@ -60,6 +60,10 @@ public abstract class ProjectChildren extends Children.Keys {
 
     @Override
     protected void addNotify() {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("addNotify caller debug, initialized: " + isInitialized(), new Throwable("trace: " + this)); // NOI18N
+        }
+
         final LoadingNode loadingNode = new LoadingNode();
         if (!isInitialized()) {
             setKeys(new Object[] { loadingNode });
@@ -146,21 +150,10 @@ public abstract class ProjectChildren extends Children.Keys {
      * DOCUMENT ME!
      */
     public void refreshByNotify() {
-        final Node[] before = getNodes();
         addNotify();
-        // We refresh the nodes that were already present before the notify, too. This is to propagate the refresh to
-        // all sub nodes
-        for (final Node node : getNodes()) {
-            for (final Node old : before) {
-                if (node.equals(old)) {
-                    final Refreshable cookie = node.getCookie(Refreshable.class);
-                    if (cookie != null) {
-                        cookie.refresh();
-                    }
-                    break;
-                }
-            }
-        }
+        // we do not refresh the already present nodes anymore since we don't want all sub-objects to query the db for
+        // changes. it is decided that the user has to use the ABF to do any db changes or he is responsible for data
+        // consistency to himself.
     }
 
     //~ Inner Classes ----------------------------------------------------------
@@ -181,7 +174,10 @@ public abstract class ProjectChildren extends Children.Keys {
          */
         @Override
         public void nodeDestroyed(final NodeEvent ev) {
-            refreshByNotify();
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("node destroyed, event: " + ev + " || refreshByNotify: " + ProjectChildren.this);
+            }
+//            refreshByNotify();
         }
     }
 }

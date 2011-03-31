@@ -4,7 +4,7 @@
     <folder name="Actions">
         <folder name="Domainserver">
             <attr name="position" intvalue="100"/>
-            <file name="de-cismet-cids-abf-domainserver-ConnectAction.instance">
+            <file name="de-cismet-cids-abf-utilities-nodes-ConnectAction.instance">
                 <attr name="position" intvalue="100"/>
             </file>
             <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.instance">
@@ -39,7 +39,6 @@
                 <attr name="position" intvalue="150"/>
             </file>
         </folder>
-        <file name="Repository_hidden"/>
         <folder name="Usermanagement">
             <attr name="position" intvalue="300"/>
             <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance">
@@ -70,8 +69,8 @@
         <folder name="Domainserver.instance">
             <attr name="position" intvalue="100"/>
             <attr name="SystemFileSystem.localizingBundle" stringvalue="de.cismet.cids.abf.domainserver.Bundle"/>
-            <file name="de-cismet-cids-abf-domainserver-ConnectAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-ConnectAction.instance"/>
+            <file name="de-cismet-cids-abf-utilities-nodes-ConnectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-utilities-nodes-ConnectAction.instance"/>
                 <attr name="position" intvalue="200"/>
             </file>
             <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.shadow">
@@ -186,8 +185,8 @@
         </folder>
         <folder name="Domainserver">
             <attr name="position" intvalue="100"/>
-            <file name="de-cismet-cids-abf-domainserver-ConnectAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-ConnectAction.instance"/>
+            <file name="de-cismet-cids-abf-utilities-nodes-ConnectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-utilities-nodes-ConnectAction.instance"/>
                 <attr name="position" intvalue="100"/>
             </file>
             <file name="de-cismet-cids-abf-domainserver-DeleteLockAction.shadow">

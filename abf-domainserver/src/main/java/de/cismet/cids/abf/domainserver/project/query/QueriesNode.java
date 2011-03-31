@@ -18,7 +18,7 @@ import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
-import org.openide.util.RequestProcessor;
+import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 
 import java.awt.Dialog;
@@ -35,6 +35,7 @@ import javax.swing.Action;
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
 
@@ -71,14 +72,13 @@ public final class QueriesNode extends ProjectNode implements ConnectionListener
      */
     public QueriesNode(final DomainserverProject project) {
         super(Children.LEAF, project);
-        project.addConnectionListener(this);
+        project.addConnectionListener(WeakListeners.create(ConnectionListener.class, this, project));
         getCookieSet().add(this);
         refreshActionAllowed = false;
-        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "search.png");                               // NOI18N
+        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "search.png"); // NOI18N
         setName(org.openide.util.NbBundle.getMessage(
                 QueriesNode.class,
-                "QueriesNode.QueriesNode(DomainserverProject).name")); // NOI18N
+                "QueriesNode.QueriesNode(DomainserverProject).name"));                         // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -97,17 +97,12 @@ public final class QueriesNode extends ProjectNode implements ConnectionListener
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        if (isConnected) {
-            setChildren(new QueriesNodeChildren());
+    public void connectionStatusChanged(final ConnectionEvent event) {
+        if (event.isConnected() && !event.isIndeterminate()) {
+            setChildrenEDT(new QueriesNodeChildren());
         } else {
-            setChildren(Children.LEAF);
+            setChildrenEDT(Children.LEAF);
         }
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        // not needed
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.windows.IOProvider;
 import org.openide.windows.InputOutput;
@@ -47,6 +48,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.sync.SyncAction;
 import de.cismet.cids.abf.domainserver.project.sync.SyncingSqlTopComponent;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
@@ -127,7 +129,7 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
         inProgress = false;
         hasErrors = false;
         pedantic = false;
-        project.addConnectionListener(this);
+        project.addConnectionListener(WeakListeners.create(ConnectionListener.class, this, project));
         getCookieSet().add(new OpenCookie() {
 
                 @Override
@@ -200,8 +202,8 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        if (isConnected) {
+    public void connectionStatusChanged(final ConnectionEvent event) {
+        if (event.isConnected() && !event.isIndeterminate()) {
             refresh();
         } else {
             allStatementGroups = new PSQLStatementGroup[0];
@@ -211,11 +213,6 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
             fireDisplayNameChange(null, getDisplayName());
             getTopComponent().setSql(getSqlScriptFromGroups());
         }
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        // do nothing
     }
 
     @Override

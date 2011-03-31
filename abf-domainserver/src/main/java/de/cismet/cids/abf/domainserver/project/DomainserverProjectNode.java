@@ -11,16 +11,20 @@ import org.apache.log4j.Logger;
 
 import org.netbeans.spi.project.ui.support.CommonProjectActions;
 
+import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
-import org.openide.loaders.DataObjectNotFoundException;
-import org.openide.nodes.FilterNode;
+import org.openide.loaders.DataObject;
+import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
+import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 
+import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 
@@ -30,7 +34,6 @@ import java.text.MessageFormat;
 
 import javax.swing.Action;
 
-import de.cismet.cids.abf.domainserver.ConnectAction;
 import de.cismet.cids.abf.domainserver.DeleteLockAction;
 import de.cismet.cids.abf.domainserver.project.nodes.CatalogManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
@@ -42,7 +45,9 @@ import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.TypeManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.ViewManagement;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.nodes.ConnectAction;
 
 /**
  * DOCUMENT ME!
@@ -51,14 +56,14 @@ import de.cismet.cids.abf.utilities.ConnectionListener;
  * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
-public final class DomainserverProjectNode extends FilterNode implements ConnectionListener, DomainserverContext {
+public final class DomainserverProjectNode extends AbstractNode implements ConnectionListener, DomainserverContext {
 
     //~ Static fields/initializers ---------------------------------------------
 
     private static final transient Logger LOG = Logger.getLogger(DomainserverProjectNode.class);
 
     private static final String NODE_NAME_PATTERN =
-        "<font color=''!textText''>{0}</font><font color=''!controlShadow''> [cidsDomainserver] {1}</font>"; // NOI18N
+        "<font color=\"!textText\">{0}</font><font color=\"!controlShadow\"> [cidsDomainserver] {1}</font>"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
@@ -70,24 +75,17 @@ public final class DomainserverProjectNode extends FilterNode implements Connect
     /**
      * Creates a new DomainserverProjectNode object.
      *
-     * @param   node     DOCUMENT ME!
-     * @param   project  DOCUMENT ME!
-     *
-     * @throws  DataObjectNotFoundException  DOCUMENT ME!
+     * @param  project  DOCUMENT ME!
      */
-    public DomainserverProjectNode(final Node node, final DomainserverProject project)
-            throws DataObjectNotFoundException {
-        super(node, new Children(node), new ProxyLookup(
-                new Lookup[] { Lookups.singleton(project), node.getLookup() }));
+    public DomainserverProjectNode(final DomainserverProject project) {
+        super(new DomainserverProjectNodeChildren(project), Lookups.singleton(project));
+
         this.project = project;
-        project.setDomainserverProjectNode(this);
-        project.addConnectionListener(this);
         final UserManagement userManagement = new UserManagement(project);
         final ViewManagement viewManagement = new ViewManagement(project);
         final ClassManagement classManagement = new ClassManagement(project);
         final TypeManagement typeManagement = new TypeManagement(project);
-        final JavaClassManagement javaClassManagement = new JavaClassManagement(
-                project);
+        final JavaClassManagement javaClassManagement = new JavaClassManagement(project);
         final IconManagement iconManagement = new IconManagement(project);
         final CatalogManagement catManagement = new CatalogManagement(project);
         final QueryManagement queryManagement = new QueryManagement(project);
@@ -111,24 +109,11 @@ public final class DomainserverProjectNode extends FilterNode implements Connect
                             syncManagement
                         })
                 }));
-        getChildren().add(
-            new Node[] {
-                userManagement,
-                classManagement,
-                viewManagement,
-                catManagement,
-                typeManagement,
-                configAttrManagement,
-                javaClassManagement,
-                iconManagement,
-                queryManagement,
-                syncManagement
-            });
-        domainserverImage = ImageUtilities.loadImage(
-                DomainserverProject.IMAGE_FOLDER
-                        + "domainserver.png"); // NOI18N
+        domainserverImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "domainserver.png"); // NOI18N
         setName(project.getProjectDirectory().getName());
         setShortDescription(FileUtil.toFile(project.getProjectDirectory()).getAbsolutePath());
+        project.setDomainserverProjectNode(this);
+        project.addConnectionListener(WeakListeners.create(ConnectionListener.class, this, project));
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -144,8 +129,25 @@ public final class DomainserverProjectNode extends FilterNode implements Connect
     }
 
     @Override
+    public String getDisplayName() {
+        return getName() + " [" + getStatus() + "]"; // NOI18N
+    }
+
+    // NOTE: it seems that html display names are not shown for a project's root node if the project is under version
+    // control. so the display name is a fallback
+    @Override
     public String getHtmlDisplayName() {
+        return MessageFormat.format(NODE_NAME_PATTERN, getName(), getStatus());
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    private String getStatus() {
         final String status;
+
         // TODO: maybe the status messages could be made better
         if (project.isConnectionInProgress()) {
             if (project.isConnected()) {
@@ -168,19 +170,20 @@ public final class DomainserverProjectNode extends FilterNode implements Connect
                         "DomainserverProjectNode.getHtmlDisplayName().status.disconnected"); // NOI18N
             }
         }
-        return MessageFormat.format(NODE_NAME_PATTERN, getName(), status);
+
+        return status;
     }
 
     @Override
     public Action[] getActions(final boolean b) {
-        final Action closeAction = new ProjectCloseHookAction(
-                CommonProjectActions.closeProjectAction());
+        final Action closeAction = new ProjectCloseHookAction(CommonProjectActions.closeProjectAction());
         final Action deleteLockAction;
         if (project.isConnected() || project.isConnectionInProgress()) {
             deleteLockAction = null;
         } else {
             deleteLockAction = CallableSystemAction.get(DeleteLockAction.class);
         }
+
         return new Action[] {
                 CallableSystemAction.get(ConnectAction.class),
                 deleteLockAction,
@@ -193,13 +196,14 @@ public final class DomainserverProjectNode extends FilterNode implements Connect
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        fireDisplayNameChange(null, null);
-    }
+    public void connectionStatusChanged(final ConnectionEvent event) {
+        EventQueue.invokeLater(new Runnable() {
 
-    @Override
-    public void connectionStatusIndeterminate() {
-        fireDisplayNameChange(null, null);
+                @Override
+                public void run() {
+                    fireDisplayNameChange(null, null);
+                }
+            });
     }
 
     @Override
@@ -208,6 +212,70 @@ public final class DomainserverProjectNode extends FilterNode implements Connect
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private static final class DomainserverProjectNodeChildren extends Children.Keys {
+
+        //~ Instance fields ----------------------------------------------------
+
+        private final transient DomainserverProject project;
+
+        //~ Constructors -------------------------------------------------------
+
+        /**
+         * Creates a new DomainserverProjectNodeChildren object.
+         *
+         * @param  project  DOCUMENT ME!
+         */
+        public DomainserverProjectNodeChildren(final DomainserverProject project) {
+            this.project = project;
+        }
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        protected Node[] createNodes(final Object key) {
+            if (key instanceof Node) {
+                return new Node[] { (Node)key };
+            } else {
+                throw new IllegalStateException("illegal key received"); // NOI18N
+            }
+        }
+
+        @Override
+        protected void addNotify() {
+            final Node runtimeNode;
+            try {
+                final FileObject runtimeFO = project.getProjectDirectory().getFileObject("runtime.properties"); // NOI18N
+                final DataObject runtimeDO = DataObject.find(runtimeFO);
+                runtimeNode = runtimeDO.getNodeDelegate();
+            } catch (final Exception e) {
+                final String message = "cannot create project view";                                            // NOI18N
+                LOG.error(message, e);
+                throw new IllegalStateException(message, e);
+            }
+
+            final Lookup lkp = project.getLookup();
+            final UserManagement um = lkp.lookup(UserManagement.class);
+            final ClassManagement cm = lkp.lookup(ClassManagement.class);
+            final ViewManagement vm = lkp.lookup(ViewManagement.class);
+            final CatalogManagement catm = lkp.lookup(CatalogManagement.class);
+            final TypeManagement tm = lkp.lookup(TypeManagement.class);
+            final ConfigAttrManagement cam = lkp.lookup(ConfigAttrManagement.class);
+            final JavaClassManagement jcm = lkp.lookup(JavaClassManagement.class);
+            final IconManagement im = lkp.lookup(IconManagement.class);
+            final QueryManagement qm = lkp.lookup(QueryManagement.class);
+            final SyncManagement sm = lkp.lookup(SyncManagement.class);
+
+            final Node[] n = new Node[] { runtimeNode, um, cm, vm, catm, tm, cam, jcm, im, qm, sm };
+
+            setKeys(n);
+        }
+    }
 
     /**
      * DOCUMENT ME!

@@ -12,10 +12,12 @@ import org.apache.log4j.Logger;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
+import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 
-import java.awt.EventQueue;
 import java.awt.Image;
+
+import java.io.IOException;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,12 +25,15 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassManagementContextCookie;
 import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassNode;
 import de.cismet.cids.abf.domainserver.project.javaclass.NewJavaClassWizardAction;
 import de.cismet.cids.abf.utilities.Comparators;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
@@ -41,7 +46,8 @@ import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
  * @version  $Revision$, $Date$
  */
 public final class JavaClassManagement extends ProjectNode implements ConnectionListener,
-    JavaClassManagementContextCookie {
+    JavaClassManagementContextCookie,
+    Refreshable {
 
     //~ Instance fields --------------------------------------------------------
 
@@ -56,9 +62,8 @@ public final class JavaClassManagement extends ProjectNode implements Connection
      */
     public JavaClassManagement(final DomainserverProject project) {
         super(Children.LEAF, project);
-        project.addConnectionListener(this);
-        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "java.png");                                                        // NOI18N
+        project.addConnectionListener(WeakListeners.create(ConnectionListener.class, this, project));
+        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "java.png");  // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(
                 JavaClassManagement.class,
                 "JavaClassManagement.JavaClassManagement(DomainserverProject).displayName")); // NOI18N
@@ -77,17 +82,12 @@ public final class JavaClassManagement extends ProjectNode implements Connection
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        if (project.isConnected()) {
-            setChildren(new JavaClassManagementChildren(project));
+    public void connectionStatusChanged(final ConnectionEvent event) {
+        if (event.isConnected() && !event.isIndeterminate()) {
+            setChildrenEDT(new JavaClassManagementChildren(project));
         } else {
-            setChildren(Children.LEAF);
+            setChildrenEDT(Children.LEAF);
         }
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        // not needed
     }
 
     @Override
@@ -98,10 +98,11 @@ public final class JavaClassManagement extends ProjectNode implements Connection
     /**
      * DOCUMENT ME!
      */
-    public void refreshChildren() {
+    @Override
+    public void refresh() {
         final Children ch = getChildren();
-        if (ch instanceof JavaClassManagementChildren) {
-            ((JavaClassManagementChildren)ch).refreshAll();
+        if (ch instanceof ProjectChildren) {
+            ((ProjectChildren)ch).refreshByNotify();
         }
     }
 }
@@ -111,16 +112,11 @@ public final class JavaClassManagement extends ProjectNode implements Connection
  *
  * @version  $Revision$, $Date$
  */
-final class JavaClassManagementChildren extends Children.Keys {
+final class JavaClassManagementChildren extends ProjectChildren {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            JavaClassManagementChildren.class);
-
-    //~ Instance fields --------------------------------------------------------
-
-    private final transient DomainserverProject project;
+    private static final transient Logger LOG = Logger.getLogger(JavaClassManagementChildren.class);
 
     //~ Constructors -----------------------------------------------------------
 
@@ -130,54 +126,33 @@ final class JavaClassManagementChildren extends Children.Keys {
      * @param  project  DOCUMENT ME!
      */
     public JavaClassManagementChildren(final DomainserverProject project) {
-        this.project = project;
+        super(project);
     }
 
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    protected Node[] createNodes(final Object object) {
-        if (object instanceof JavaClass) {
-            return new Node[] { new JavaClassNode((JavaClass)object, project) };
+    protected Node[] createUserNodes(final Object o) {
+        if (o instanceof JavaClass) {
+            return new Node[] { new JavaClassNode((JavaClass)o, project) };
         } else {
             return new Node[] {};
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     */
-    void refreshAll() {
-        addNotify();
-    }
-
     @Override
-    protected void addNotify() {
-        final Thread t = new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            final List<JavaClass> allClasses = project.getCidsDataObjectBackend()
-                                        .getAllEntities(JavaClass.class);
-                            Collections.sort(allClasses, new Comparators.JavaClasses());
-                            EventQueue.invokeLater(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        setKeys(allClasses);
-                                    }
-                                });
-                        } catch (final Exception ex) {
-                            LOG.error("could not load javaclasses", ex); // NOI18N
-                            ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    JavaClassManagement.class,
-                                    "JavaClassManagement.addNotify().ErrorUtils.message"),
-                                ex);                                     // NOI18N
-                        }
-                    }
-                }, getClass().getSimpleName() + "::addNotifyRunner");    // NOI18N
-        t.start();
+    protected void threadedNotify() throws IOException {
+        try {
+            final List<JavaClass> allClasses = project.getCidsDataObjectBackend().getAllEntities(JavaClass.class);
+            Collections.sort(allClasses, new Comparators.JavaClasses());
+            setKeysEDT(allClasses);
+        } catch (final Exception ex) {
+            LOG.error("could not load javaclasses", ex);                   // NOI18N
+            ErrorUtils.showErrorMessage(
+                org.openide.util.NbBundle.getMessage(
+                    JavaClassManagement.class,
+                    "JavaClassManagement.addNotify().ErrorUtils.message"), // NOI18N
+                ex);
+        }
     }
 }

@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
 /**
  * DOCUMENT ME!
@@ -30,6 +29,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
  * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
+// TODO: why not rely on destroy solely?
 public final class DeleteUserAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
@@ -75,10 +75,10 @@ public final class DeleteUserAction extends CookieAction {
     protected void performAction(final Node[] node) {
         final int answer = JOptionPane.showConfirmDialog(
                 WindowManager.getDefault().getMainWindow(),
-                org.openide.util.NbBundle.getMessage(
+                NbBundle.getMessage(
                     DeleteUserAction.class,
                     "DeleteUserAction.performAction(Node[]).JOptionPane.message"), // NOI18N
-                org.openide.util.NbBundle.getMessage(
+                NbBundle.getMessage(
                     DeleteUserAction.class,
                     "DeleteUserAction.performAction(Node[]).JOptionPane.title"), // NOI18N
                 JOptionPane.YES_NO_OPTION,
@@ -93,8 +93,6 @@ public final class DeleteUserAction extends CookieAction {
                     ErrorManager.getDefault().notify(ex);
                 }
             }
-            final DomainserverProject p = node[0].getCookie(DomainserverContext.class).getDomainserverProject();
-            p.getLookup().lookup(UserManagement.class).refreshChildren();
         }
     }
 

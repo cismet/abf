@@ -16,6 +16,7 @@ import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.util.RequestProcessor;
 import org.openide.util.actions.CallableSystemAction;
 
@@ -48,13 +49,14 @@ public final class JavaClassNode extends ProjectNode {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            JavaClassNode.class);
+    private static final transient Logger LOG = Logger.getLogger(JavaClassNode.class);
 
     public static final String GREEN_HEX = "00C000";  // NOI18N
     public static final String ORANGE_HEX = "FF8000"; // NOI18N
     public static final String RED_HEX = "FF0000";    // NOI18N
     public static final String BLACK_HEX = "000000";  // NOI18N
+
+    private static final RequestProcessor PROCESSOR = new RequestProcessor(JavaClassNode.class.getName(), 5);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -75,8 +77,7 @@ public final class JavaClassNode extends ProjectNode {
     public JavaClassNode(final JavaClass javaClass, final DomainserverProject project) {
         super(Children.LEAF, project);
         this.javaClass = javaClass;
-        image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "javaclass.png"); // NOI18N
+        image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "javaclass.png"); // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -84,6 +85,7 @@ public final class JavaClassNode extends ProjectNode {
     @Override
     public String getDisplayName() {
         final String[] parts = javaClass.getQualifier().split("\\."); // NOI18N
+
         return (parts.length > 0) ? parts[parts.length - 1] : getName();
     }
 
@@ -95,86 +97,9 @@ public final class JavaClassNode extends ProjectNode {
     @Override
     public String getHtmlDisplayName() {
         if (htmlDisplayName == null) {
-            RequestProcessor.getDefault().post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        final StringBuffer name = new StringBuffer(getDisplayName());
-                        final CidsDistClassLoader cdcl;
-                        try {
-                            cdcl = CidsDistClassLoader.getInstance(project.getProjectDirectory().getParent());
-                        } catch (final Exception e) {
-                            LOG.error("cids distribution corrupted", e); // NOI18N
-                            name.insert(0, "<font color=\"#\">");        // NOI18N
-                            name.insert(14, BLACK_HEX);
-                            name.append("</font>");                      // NOI18N
-                            htmlDisplayName = name.toString();
-                            fireDisplayNameChange(getDisplayName(),
-                                htmlDisplayName);
-                            return;
-                        }
-                        final String qualifier = javaClass.getQualifier();
-                        if (cdcl.isLoadable(qualifier, null)) {
-                            final String type = javaClass.getType();
-                            if (type.equals(JavaClass.Type.UNKNOWN.getType())) {
-                                htmlColor = ORANGE_HEX;
-                            } else {
-                                try {
-                                    final Class c = Class.forName(qualifier, false,
-                                            cdcl);
-                                    try {
-                                        final Class iface = Class.forName(type,
-                                                false, cdcl);
-                                        final Object o = c.newInstance();
-                                        if (iface.isInstance(o)) {
-                                            htmlColor = GREEN_HEX;
-                                        } else {
-                                            htmlColor = ORANGE_HEX;
-                                        }
-                                    } catch (final ClassNotFoundException ex) {
-                                        LOG.warn(
-                                            "could not load interface "  // NOI18N
-                                                    + "that must be "    // NOI18N
-                                                    + "implemented",     // NOI18N
-                                            ex);
-                                        htmlColor = BLACK_HEX;
-                                    } catch (final Exception ex) {
-                                        LOG.warn(
-                                            "could not instantiate "     // NOI18N
-                                                    + "javaclass: "      // NOI18N
-                                                    + c.getName(),
-                                            ex);
-                                        htmlColor = BLACK_HEX;
-                                    }
-                                } catch (final ClassNotFoundException ex) {
-                                    LOG.error("class could not be loaded: " // NOI18N
-                                                + qualifier, ex);
-                                    htmlColor = RED_HEX;
-                                } catch (final UnsupportedClassVersionError err) {
-                                    LOG.error(
-                                        "class could not be loaded: "    // NOI18N
-                                                + qualifier
-                                                + " -- maybe class was " // NOI18N
-                                                + "compiled with newer jdk", // NOI18N
-                                        err);
-                                    htmlColor = BLACK_HEX;
-                                } catch (final Exception e) {
-                                    LOG.error("class could not be loaded: " // NOI18N
-                                                + qualifier, e);
-                                    htmlColor = BLACK_HEX;
-                                }
-                            }
-                        } else {
-                            htmlColor = RED_HEX;
-                        }
-                        name.insert(0, "<font color=\"#\">");            // NOI18N
-                        name.insert(14, htmlColor);
-                        name.append("</font>");                          // NOI18N
-                        htmlDisplayName = name.toString();
-                        fireDisplayNameChange(getDisplayName(), htmlDisplayName);
-                    }
-                });
+            PROCESSOR.post(new HtmlNameLoader());
         }
+
         return htmlDisplayName;
     }
 
@@ -214,12 +139,9 @@ public final class JavaClassNode extends ProjectNode {
     protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set main = Sheet.createPropertiesSet();
-        main.setName(org.openide.util.NbBundle.getMessage(
-                JavaClassNode.class,
-                "JavaClassNode.createSheet().main.name"));        // NOI18N
-        main.setDisplayName(org.openide.util.NbBundle.getMessage(
-                JavaClassNode.class,
-                "JavaClassNode.createSheet().main.displayName")); // NOI18N
+        main.setName(NbBundle.getMessage(JavaClassNode.class, "JavaClassNode.createSheet().main.name"));               // NOI18N
+        main.setDisplayName(NbBundle.getMessage(JavaClassNode.class, "JavaClassNode.createSheet().main.displayName")); // NOI18N
+
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Id ">
             final Property idProp = new PropertySupport.Reflection(javaClass,
@@ -378,6 +300,7 @@ public final class JavaClassNode extends ProjectNode {
         } catch (final Exception ex) {
             ErrorManager.getDefault().notify(ex);
         }
+
         return sheet;
     }
 
@@ -395,12 +318,87 @@ public final class JavaClassNode extends ProjectNode {
     public void destroy() throws IOException {
         try {
             project.getCidsDataObjectBackend().deleteJavaClass(javaClass);
-            ((JavaClassManagement)project.getLookup().lookup(
-                    JavaClassManagement.class)).refreshChildren();
-            ((ClassManagement)project.getLookup().lookup(ClassManagement.class)).refresh();
+            project.getLookup().lookup(JavaClassManagement.class).refresh();
+            project.getLookup().lookup(ClassManagement.class).refresh();
         } catch (final Exception e) {
             LOG.error("error during javaclass deletion", e); // NOI18N
             ErrorManager.getDefault().notify(e);
+        }
+    }
+
+    //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class HtmlNameLoader implements Runnable {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void run() {
+            final StringBuilder name = new StringBuilder(getDisplayName());
+            final CidsDistClassLoader cdcl;
+            try {
+                cdcl = CidsDistClassLoader.getInstance(project.getDistRoot());
+            } catch (final Exception e) {
+                LOG.error("cids distribution corrupted", e); // NOI18N
+                name.insert(0, "<font color=\"#\">");        // NOI18N
+                name.insert(14, BLACK_HEX);
+                name.append("</font>");                      // NOI18N
+                htmlDisplayName = name.toString();
+                fireDisplayNameChange(getDisplayName(), htmlDisplayName);
+
+                return;
+            }
+            final String qualifier = javaClass.getQualifier();
+            if (cdcl.isLoadable(qualifier, null)) {
+                final String type = javaClass.getType();
+                if (type.equals(JavaClass.Type.UNKNOWN.getType())) {
+                    htmlColor = ORANGE_HEX;
+                } else {
+                    try {
+                        final Class c = Class.forName(qualifier, false, cdcl);
+                        try {
+                            final Class iface = Class.forName(type, false, cdcl);
+                            final Object o = c.newInstance();
+                            if (iface.isInstance(o)) {
+                                htmlColor = GREEN_HEX;
+                            } else {
+                                htmlColor = ORANGE_HEX;
+                            }
+                        } catch (final ClassNotFoundException ex) {
+                            LOG.warn("could not load interface  that must be  implemented", ex); // NOI18N
+                            htmlColor = BLACK_HEX;
+                        } catch (final Exception ex) {
+                            LOG.warn("could not instantiate javaclass: " + c.getName(), ex);     // NOI18N
+                            htmlColor = BLACK_HEX;
+                        }
+                    } catch (final ClassNotFoundException ex) {
+                        LOG.error("class could not be loaded: " + qualifier, ex);                // NOI18N
+                        htmlColor = RED_HEX;
+                    } catch (final UnsupportedClassVersionError err) {
+                        LOG.error(
+                            "class could not be loaded: "
+                                    + qualifier
+                                    + " -- maybe class was compiled with newer jdk",             // NOI18N
+                            err);
+                        htmlColor = BLACK_HEX;
+                    } catch (final Exception e) {
+                        LOG.error("class could not be loaded: " + qualifier, e);                 // NOI18N
+                        htmlColor = BLACK_HEX;
+                    }
+                }
+            } else {
+                htmlColor = RED_HEX;
+            }
+            name.insert(0, "<font color=\"#\">");                                                // NOI18N
+            name.insert(14, htmlColor);
+            name.append("</font>");                                                              // NOI18N
+            htmlDisplayName = name.toString();
+            fireDisplayNameChange(getDisplayName(), htmlDisplayName);
         }
     }
 }

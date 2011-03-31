@@ -32,6 +32,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
+import de.cismet.cids.abf.domainserver.project.nodes.TypeManagement;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.backend.service.impl.Backend;
@@ -205,22 +206,19 @@ public class NewCidsClassWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            CidsClass newClass = (CidsClass)wizard.getProperty(
-                    CIDS_CLASS_PROP);
-            final String name = newClass.getName();
+            CidsClass newClass = (CidsClass)wizard.getProperty(CIDS_CLASS_PROP);
             try {
                 newClass = backend.store(newClass);
-                // this may only be the case if cidsclass != null so message of
-                // npe is appropriate
+                // this may only be the case if cidsclass != null
                 if (type == null) {
                     throw new IllegalStateException("type must exist!"); // NOI18N
                 }
                 type.setComplexType(true);
-                type.setName(name);
+                type.setName(newClass.getName());
                 type.setCidsClass(newClass);
                 backend.store(type);
             } catch (final Exception e) {
-                LOG.error("could not store cidsclass: " + name, e);      // NOI18N
+                LOG.error("could not store cidsclass: " + newClass, e);  // NOI18N
                 ErrorManager.getDefault().notify(e);
             }
             if (cidsClass == null) {
@@ -228,6 +226,7 @@ public class NewCidsClassWizardAction extends CookieAction {
             } else {
                 node.getCookie(Refreshable.class).refresh();
             }
+            project.getLookup().lookup(TypeManagement.class).refresh();
             project.getLookup().lookup(SyncManagement.class).refresh();
         }
     }
@@ -238,6 +237,7 @@ public class NewCidsClassWizardAction extends CookieAction {
             return false;
         }
         final DomainserverContext dcc = node[0].getCookie(DomainserverContext.class);
+
         return dcc.getDomainserverProject().isConnected();
     }
 }

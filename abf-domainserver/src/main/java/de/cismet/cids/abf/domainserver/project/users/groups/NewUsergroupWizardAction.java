@@ -77,23 +77,15 @@ public final class NewUsergroupWizardAction extends CookieAction {
                 if (c instanceof JComponent) { // assume Swing components
                     final JComponent jc = (JComponent)c;
                     // Sets step number of a component
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_CONTENT_SELECTED_INDEX,
-                        Integer.valueOf(i));
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, Integer.valueOf(i));
                     // Sets steps names for a panel
-                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA,
-                        steps);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                     // Turn on subtitle creation on each step
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_AUTO_WIZARD_STYLE,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                     // Show steps on the left side
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_CONTENT_DISPLAYED,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                     // Turn on numbering of all steps
-                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
                 }
             }
         }
@@ -138,23 +130,24 @@ public final class NewUsergroupWizardAction extends CookieAction {
         final DomainserverProject project = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
-        wizard.setTitleFormat(new MessageFormat("{0}"));       // NOI18N
-        wizard.setTitle("Neue Benutzergruppe");
+        wizard.setTitleFormat(new MessageFormat("{0}"));                         // NOI18N
+        wizard.setTitle(NbBundle.getMessage(
+                NewUsergroupWizardAction.class,
+                "NewUsergroupWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         wizard.putProperty(PROJECT_PROP, project);
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            final UserGroup newGroup = (UserGroup)wizard.getProperty(
-                    USERGROUP_PROP);
+            final UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
             try {
                 project.getCidsDataObjectBackend().store(newGroup);
             } catch (final Exception e) {
-                LOG.error("could not store new usergroup", e); // NOI18N
+                LOG.error("could not store new usergroup", e);                   // NOI18N
                 ErrorManager.getDefault().notify(e);
             }
-            project.getLookup().lookup(UserManagement.class).refreshChildren();
+            project.getLookup().lookup(UserManagement.class).refresh();
         }
     }
 
@@ -163,12 +156,12 @@ public final class NewUsergroupWizardAction extends CookieAction {
         if (!super.enable(nodes)) {
             return false;
         }
-        final DomainserverContext dc = nodes[0].getCookie(
-                DomainserverContext.class);
+        final DomainserverContext dc = nodes[0].getCookie(DomainserverContext.class);
         if (dc == null) {
             LOG.warn("domainservercontext is null"); // NOI18N
             return false;
         }
+
         return dc.getDomainserverProject().isConnected();
     }
 }

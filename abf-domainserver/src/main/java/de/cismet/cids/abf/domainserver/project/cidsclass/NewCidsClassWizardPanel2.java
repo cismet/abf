@@ -25,7 +25,7 @@ import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
  * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
-public class NewCidsClassWizardPanel2 implements WizardDescriptor.Panel {
+public class NewCidsClassWizardPanel2 implements WizardDescriptor.Panel, WizardDescriptor.FinishablePanel {
 
     //~ Instance fields --------------------------------------------------------
 
@@ -97,5 +97,10 @@ public class NewCidsClassWizardPanel2 implements WizardDescriptor.Panel {
         wizard = (WizardDescriptor)settings;
         cidsClass.setClassPermissions(component.getPermissions());
         wizard.putProperty(NewCidsClassWizardAction.CIDS_CLASS_PROP, cidsClass);
+    }
+
+    @Override
+    public boolean isFinishPanel() {
+        return true;
     }
 }

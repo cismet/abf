@@ -53,8 +53,7 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            UserGroupNode.class);
+    private static final transient Logger LOG = Logger.getLogger(UserGroupNode.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -73,10 +72,8 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     public UserGroupNode(final UserGroup userGroup, final DomainserverProject project) {
         super(new UserGroupNodeChildren(userGroup, project), project);
         this.userGroup = userGroup;
-        group = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "group.png");       // NOI18N
-        remotegroup = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "remotegroup.png"); // NOI18N
+        group = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "group.png");             // NOI18N
+        remotegroup = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "remotegroup.png"); // NOI18N
         getCookieSet().add(this);
     }
 
@@ -321,8 +318,6 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
         return new Action[] {
                 newUser,
                 null,
-                // CallableSystemAction.get(DeleteUserAction.class),
-                // CallableSystemAction.get(NewUsergroupWizardAction.class),
                 CallableSystemAction.get(DeleteUsergroupAction.class)
             };
     }

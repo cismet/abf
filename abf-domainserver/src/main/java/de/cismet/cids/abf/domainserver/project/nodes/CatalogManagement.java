@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
+import org.openide.util.WeakListeners;
 
 import java.awt.Image;
 
@@ -25,6 +26,7 @@ import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.catalog.CatalogNode;
 import de.cismet.cids.abf.domainserver.project.catalog.ClassNodeManagement;
 import de.cismet.cids.abf.domainserver.project.catalog.NavigatorNodeManagement;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
 
@@ -41,8 +43,7 @@ public final class CatalogManagement extends ProjectNode implements ConnectionLi
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            CatalogManagement.class);
+    private static final transient Logger LOG = Logger.getLogger(CatalogManagement.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -59,12 +60,11 @@ public final class CatalogManagement extends ProjectNode implements ConnectionLi
     public CatalogManagement(final DomainserverProject project) {
         super(new CatalogManagementChildren(project), project);
         openNodesCache = new HashMap<CatNode, HashSet<CatalogNode>>();
-        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "tree.png");                                                    // NOI18N
+        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "tree.png"); // NOI18N
         setDisplayName(org.openide.util.NbBundle.getMessage(
                 CatalogManagement.class,
-                "CatalogManagement.CatalogManagement(DomainserverProject).displayName")); // NOI18N
-        project.addConnectionListener(this);
+                "CatalogManagement.CatalogManagement(DomainserverProject).displayName"));    // NOI18N
+        project.addConnectionListener(WeakListeners.create(ConnectionListener.class, this, project));
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -130,8 +130,7 @@ public final class CatalogManagement extends ProjectNode implements ConnectionLi
                 final CatalogNode cn = (CatalogNode)n;
                 removedNode(cn.getCatNode(), cn);
             } else {
-                LOG.warn("error during node removal, node was " // NOI18N
-                            + "not instanceof CatalogNode: " + n); // NOI18N
+                LOG.warn("error during node removal, node was not instanceof CatalogNode: " + n); // NOI18N
             }
         }
     }
@@ -176,17 +175,12 @@ public final class CatalogManagement extends ProjectNode implements ConnectionLi
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        if (!isConnected) {
+    public void connectionStatusChanged(final ConnectionEvent event) {
+        if (!event.isConnected()) {
             synchronized (openNodesCache) {
                 openNodesCache.clear();
             }
         }
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        // not needed
     }
 }
 
