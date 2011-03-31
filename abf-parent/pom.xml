@@ -10,7 +10,7 @@
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf</artifactId>
-    <version>3.0</version>
+    <version>3.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>ABF</name>
@@ -40,9 +40,9 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0/abf-parent</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0/abf-parent</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.0/abf-parent</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-parent/</url>
     </scm>
 
     <properties>
