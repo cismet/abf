@@ -2,7 +2,7 @@
 <nbm>
     <author>martin.scholl@cismet.de</author>
     <moduleType>eager</moduleType>
-    <codeNameBase>de.cismet.cids.abf.librarysupport/1</codeNameBase>
+    <codeNameBase>de.cismet.cids.abf.librarysupport/3</codeNameBase>
     <cluster>cidsabf</cluster>
     <!--
         this dependency has to be declared explicitely to be able to use maven api
