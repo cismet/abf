@@ -69,6 +69,7 @@ public class BrokerLogicalView implements LogicalViewProvider {
                         if ("properties".equalsIgnoreCase(fo.getExt())) { // NOI18N
                             return true;
                         }
+                        
                         return false;
                     }
                 });

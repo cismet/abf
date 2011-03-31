@@ -92,6 +92,7 @@ public class BrokerProject implements Project {
                     ioe);
             }
         }
+
         return result;
     }
 
@@ -107,8 +108,8 @@ public class BrokerProject implements Project {
                         new Info(),               // Project information implementation
                         logicalView,              // Logical view of project implementation
                     });
-            return lkp;
         }
+
         return lkp;
     }
 
@@ -134,6 +135,7 @@ public class BrokerProject implements Project {
                     e);
             }
         }
+        
         return properties;
     }
 
