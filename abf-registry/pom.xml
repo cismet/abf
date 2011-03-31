@@ -5,11 +5,11 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>2.9.1-SNAPSHOT</version>
+        <version>3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>abf-registry</artifactId>
-    <version>2.9.1-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF cids Registry</name>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>2.9.1-SNAPSHOT</version>
+            <version>3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids</groupId>
@@ -74,6 +74,10 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-projectapi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
         <!-- END of nbm-required declaration -->
     </dependencies>

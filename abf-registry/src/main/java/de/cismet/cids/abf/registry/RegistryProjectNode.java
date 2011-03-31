@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.registry.messaging.MessagingNode;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.nodes.ConnectAction;
 
@@ -58,9 +59,7 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
      * @param  project  DOCUMENT ME!
      */
     public RegistryProjectNode(final RegistryProject project) {
-        super(
-            new RegistryProjectChildren(project),
-            new ProxyLookup(new Lookup[] { Lookups.singleton(project) }));
+        super(new RegistryProjectChildren(project), new ProxyLookup(new Lookup[] { Lookups.singleton(project) }));
         this.project = project;
         icon = ImageUtilities.loadImage(RegistryProject.IMAGE_FOLDER + "registry.png"); // NOI18N
         htmlTemplate = "<font color='!textText'>"                                       // NOI18N
@@ -127,13 +126,12 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
-        fireDisplayNameChange(null, null);
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        setDisplayName(project.getProjectDirectory().getName() + " ..."); // NOI18N
+    public void connectionStatusChanged(final ConnectionEvent event) {
+        if (event.isIndeterminate()) {
+            setDisplayName(project.getProjectDirectory().getName() + " ..."); // NOI18N
+        } else {
+            fireDisplayNameChange(null, null);
+        }
     }
 
     @Override

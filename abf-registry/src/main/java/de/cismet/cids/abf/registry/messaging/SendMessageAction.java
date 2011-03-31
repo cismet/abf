@@ -20,7 +20,7 @@ import org.openide.windows.WindowManager;
 
 import java.rmi.RemoteException;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -66,7 +66,7 @@ public final class SendMessageAction extends CookieAction {
 
     @Override
     protected void performAction(final Node[] nodes) {
-        final Map<RMUser, RegistryProject> map = new Hashtable<RMUser, RegistryProject>();
+        final Map<RMUser, RegistryProject> map = new HashMap<RMUser, RegistryProject>();
         for (final Node node : nodes) {
             final Set<RMUser> users = node.getCookie(RMUserCookie.class).getRMUsers();
             final RegistryProject project = node.getCookie(RegistryProjectCookie.class).getProject();
@@ -76,7 +76,7 @@ public final class SendMessageAction extends CookieAction {
         }
         final String message = JOptionPane.showInputDialog(
                 WindowManager.getDefault().getMainWindow(),
-                org.openide.util.NbBundle.getMessage(
+                NbBundle.getMessage(
                     SendMessageAction.class,
                     "SendMessageAction.performAction(Node[]).message",
                     map.size()));

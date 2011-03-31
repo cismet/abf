@@ -27,6 +27,7 @@ import javax.swing.Action;
 import de.cismet.cids.abf.registry.RegistryProject;
 import de.cismet.cids.abf.registry.cookie.RMUserCookie;
 import de.cismet.cids.abf.registry.cookie.RegistryProjectCookieImpl;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 
 /**
@@ -79,7 +80,7 @@ public class MessagingNode extends AbstractNode implements ConnectionListener, R
      * DOCUMENT ME!
      */
     public void refreshChildren() {
-        if (registryProject.isConnected()) {
+        if (registryProject.isConnected() && !registryProject.isConnectionInProgress()) {
             setChildren(new MessagingChildren(registryProject));
             try {
                 registryProject.getMessageForwarder().logCurrentRegistry();
@@ -92,13 +93,8 @@ public class MessagingNode extends AbstractNode implements ConnectionListener, R
     }
 
     @Override
-    public void connectionStatusChanged(final boolean isConnected) {
+    public void connectionStatusChanged(final ConnectionEvent event) {
         refreshChildren();
-    }
-
-    @Override
-    public void connectionStatusIndeterminate() {
-        // not needed
     }
 
     @Override

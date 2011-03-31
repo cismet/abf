@@ -46,8 +46,7 @@ public class MessagingDomainNode extends AbstractNode {
      * @param  domain           DOCUMENT ME!
      * @param  registryProject  DOCUMENT ME!
      */
-    public MessagingDomainNode(final String domain,
-            final RegistryProject registryProject) {
+    public MessagingDomainNode(final String domain, final RegistryProject registryProject) {
         super(new MessagingDomainChildren(domain, registryProject));
         icon = ImageUtilities.loadImage(RegistryProject.IMAGE_FOLDER + "domainserver.png"); // NOI18N
         setDisplayName(domain);

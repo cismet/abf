@@ -24,6 +24,8 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.Lookups;
 
+import java.awt.EventQueue;
+
 import java.beans.PropertyChangeListener;
 
 import java.io.IOException;
@@ -34,16 +36,15 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import de.cismet.cids.abf.utilities.Connectable;
+import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.ConnectionSupport;
 import de.cismet.cids.abf.utilities.project.NotifyProperties;
 
 /**
@@ -69,7 +70,7 @@ public class RegistryProject implements Project, Connectable {
     private final transient ProjectState state;
     private final transient LogicalViewProvider logicalView;
     private final transient Properties runtimeProps;
-    private final transient Set<ConnectionListener> listeners;
+    private final transient ConnectionSupport connectionSupport;
 
     private transient Lookup lkp;
     private transient RMForwarder messageForwarder;
@@ -99,7 +100,7 @@ public class RegistryProject implements Project, Connectable {
             throw new IllegalStateException(message, e);
         }
         logicalView = new RegistryLogicalView(this);
-        listeners = new HashSet<ConnectionListener>(1);
+        connectionSupport = new ConnectionSupport();
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -133,6 +134,7 @@ public class RegistryProject implements Project, Connectable {
                 throw new IllegalStateException(message, ioe);
             }
         }
+
         return result;
     }
 
@@ -169,7 +171,7 @@ public class RegistryProject implements Project, Connectable {
                             throw new IllegalStateException(message, ex);
                         } finally {
                             connectionInProgress = false;
-                            fireConnectionStatusChanged(isConnected());
+                            fireConnectionStatusChanged();
                         }
                     }
                 };
@@ -177,7 +179,7 @@ public class RegistryProject implements Project, Connectable {
         } else {
             messageForwarder = null;
             connectionInProgress = false;
-            fireConnectionStatusChanged(isConnected());
+            fireConnectionStatusChanged();
         }
     }
 
@@ -224,32 +226,28 @@ public class RegistryProject implements Project, Connectable {
 
     @Override
     public void addConnectionListener(final ConnectionListener cl) {
-        synchronized (listeners) {
-            listeners.add(cl);
-        }
+        connectionSupport.addConnectionListener(cl);
     }
 
     @Override
     public void removeConnectionListener(final ConnectionListener cl) {
-        synchronized (listeners) {
-            listeners.remove(cl);
-        }
+        connectionSupport.removeConnectionListener(cl);
     }
 
     /**
      * DOCUMENT ME!
-     *
-     * @param  newStatus  DOCUMENT ME!
      */
-    protected void fireConnectionStatusChanged(final boolean newStatus) {
-        handle.finish();
-        final Iterator<ConnectionListener> it;
-        synchronized (listeners) {
-            it = new HashSet<ConnectionListener>(listeners).iterator();
-        }
-        while (it.hasNext()) {
-            it.next().connectionStatusChanged(newStatus);
-        }
+    protected void fireConnectionStatusChanged() {
+        EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    handle.finish();
+                }
+            });
+
+        final ConnectionEvent event = new ConnectionEvent(state, isConnected(), isConnectionInProgress());
+        connectionSupport.fireConnectionStatusChanged(event);
     }
 
     /**
@@ -269,15 +267,18 @@ public class RegistryProject implements Project, Connectable {
                         "RegistryProject.handle.message.connectToRegistry", // NOI18N
                         runtimeProps.getProperty("registryIP"))); // NOI18N
         }
-        handle.start();
-        handle.switchToIndeterminate();
-        final Iterator<ConnectionListener> it;
-        synchronized (listeners) {
-            it = new HashSet<ConnectionListener>(listeners).iterator();
-        }
-        while (it.hasNext()) {
-            it.next().connectionStatusIndeterminate();
-        }
+
+        EventQueue.invokeLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    handle.start();
+                    handle.switchToIndeterminate();
+                }
+            });
+
+        final ConnectionEvent event = new ConnectionEvent(state, isConnected(), isConnectionInProgress());
+        connectionSupport.fireConnectionStatusChanged(event);
     }
 
     /**

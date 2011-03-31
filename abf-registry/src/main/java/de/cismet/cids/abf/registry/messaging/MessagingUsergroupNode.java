@@ -125,6 +125,7 @@ class MessagingUsergroupChildren extends Children.Keys {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("no RMUser"); // NOI18N
             }
+
             return new Node[] {};
         }
     }

@@ -49,6 +49,7 @@ public class RMUserCookieImpl implements RMUserCookie {
                 users.addAll(cookie.getRMUsers());
             }
         }
+
         return users;
     }
 }

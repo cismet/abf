@@ -9,14 +9,6 @@ package de.cismet.cids.abf.registry;
 
 import org.netbeans.spi.project.ui.LogicalViewProvider;
 
-import org.openide.ErrorManager;
-import org.openide.filesystems.FileObject;
-import org.openide.loaders.DataFilter;
-import org.openide.loaders.DataFolder;
-import org.openide.loaders.DataObject;
-import org.openide.loaders.DataObjectNotFoundException;
-import org.openide.nodes.AbstractNode;
-import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 
 /**

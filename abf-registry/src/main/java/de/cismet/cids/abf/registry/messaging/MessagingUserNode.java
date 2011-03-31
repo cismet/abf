@@ -81,6 +81,7 @@ public class MessagingUserNode extends AbstractNode implements RMUserCookie {
     public Set<RMUser> getRMUsers() {
         final Set<RMUser> users = new HashSet<RMUser>(1);
         users.add(user);
+
         return users;
     }
 
@@ -130,6 +131,7 @@ public class MessagingUserNode extends AbstractNode implements RMUserCookie {
         } catch (final Exception ex) {
             LOG.warn("could not create property sheet", ex);                                                       // NOI18N
         }
+
         return sheet;
     }
 }
