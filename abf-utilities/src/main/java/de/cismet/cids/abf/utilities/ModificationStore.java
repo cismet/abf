@@ -61,6 +61,7 @@ public final class ModificationStore extends Observable {
         if (store == null) {
             store = new ModificationStore();
         }
+
         return store;
     }
 
@@ -72,20 +73,22 @@ public final class ModificationStore extends Observable {
      *
      * @throws  IllegalArgumentException  DOCUMENT ME!
      */
-    public void putModification(final String whoWasModified,
-            final String whatHasBeenDone) {
+    public void putModification(final String whoWasModified, final String whatHasBeenDone) {
         if (whoWasModified == null) {
-            throw new IllegalArgumentException("whoWasModified must not be null");          // NOI18N
+            throw new IllegalArgumentException("whoWasModified must not be null"); // NOI18N
         }
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("putModification for: " + whoWasModified + " :: " + whatHasBeenDone); // NOI18N
         }
+
         synchronized (modifications) {
             if (modifications.get(whoWasModified) == null) {
                 modifications.put(whoWasModified, new HashSet<String>());
             }
             modifications.get(whoWasModified).add(whatHasBeenDone);
         }
+
         setChanged();
         notifyObservers();
     }
@@ -104,14 +107,16 @@ public final class ModificationStore extends Observable {
         } else if ((newName == null) || (newName.length() == 0)) {
             throw new IllegalArgumentException("newName must not be null or empty: " + newName); // NOI18N
         }
+
         if (LOG.isDebugEnabled()) {
-            LOG.debug("renameElement: " + oldName + " --> " + newName);                          // NOI18N
+            LOG.debug("renameElement: " + oldName + " --> " + newName); // NOI18N
         }
+
         synchronized (modifications) {
             final HashSet<String> mods = modifications.get(oldName);
             if (mods == null) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("no modifications present, putting new default mod");              // NOI18N
+                    LOG.debug("no modifications present, putting new default mod"); // NOI18N
                 }
                 putModification(newName, MOD_CHANGED);
             } else {
@@ -127,11 +132,11 @@ public final class ModificationStore extends Observable {
      * @param  whoWasModified  DOCUMENT ME!
      * @param  theModToRemove  DOCUMENT ME!
      */
-    public void removeModification(final String whoWasModified,
-            final String theModToRemove) {
+    public void removeModification(final String whoWasModified, final String theModToRemove) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("removeModification for: " + whoWasModified + " :: " + theModToRemove); // NOI18N
         }
+
         synchronized (modifications) {
             final HashSet<String> mods = modifications.get(whoWasModified);
             if (mods != null) {
@@ -141,6 +146,7 @@ public final class ModificationStore extends Observable {
                 }
             }
         }
+
         setChanged();
         notifyObservers();
     }
@@ -154,6 +160,7 @@ public final class ModificationStore extends Observable {
         if (LOG.isDebugEnabled()) {
             LOG.debug("removeAllModification for mod: " + theModToRemove); // NOI18N
         }
+
         synchronized (modifications) {
             final Iterator<String> it = modifications.keySet().iterator();
             while (it.hasNext()) {
@@ -174,6 +181,7 @@ public final class ModificationStore extends Observable {
         if (who == null) {
             throw new IllegalArgumentException("who must not be null"); // NOI18N
         }
+
         synchronized (modifications) {
             for (final String s : who) {
                 removeModification(s, theModToRemove);
@@ -191,25 +199,24 @@ public final class ModificationStore extends Observable {
      */
     public void removeAllModificationsInContext(final String context, final String theMod) {
         if (context == null) {
-            throw new IllegalArgumentException("context must not be null");                 // NOI18N
+            throw new IllegalArgumentException("context must not be null"); // NOI18N
         }
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("removeAllModificationsInContext for: " + context + " :: " + theMod); // NOI18N
         }
+
         final List<String> toRemove = new ArrayList<String>();
 
         synchronized (modifications) {
             final Iterator<String> it = modifications.keySet().iterator();
             while (it.hasNext()) {
                 final String key = it.next();
-                if (key.contains(context)
-                            && modifications.get(key).contains(theMod)) {
+                if (key.contains(context) && modifications.get(key).contains(theMod)) {
                     toRemove.add(key);
                 }
             }
-            removeAllModifications(
-                toRemove.toArray(new String[toRemove.size()]),
-                theMod);
+            removeAllModifications(toRemove.toArray(new String[toRemove.size()]), theMod);
         }
     }
 
@@ -224,6 +231,7 @@ public final class ModificationStore extends Observable {
         if (LOG.isDebugEnabled()) {
             LOG.debug("getModifications for: " + whoWasModified); // NOI18N
         }
+
         return modifications.get(whoWasModified);
     }
 
@@ -239,21 +247,23 @@ public final class ModificationStore extends Observable {
      */
     public boolean anyModifiedInContext(final String context, final String theModification) {
         if (context == null) {
-            throw new IllegalArgumentException("context must not be null");               // NOI18N
+            throw new IllegalArgumentException("context must not be null"); // NOI18N
         }
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("anyModifiedInContext for: " + context + " :: " + theModification); // NOI18N
         }
+
         synchronized (modifications) {
             final Iterator<String> it = modifications.keySet().iterator();
             while (it.hasNext()) {
                 final String key = it.next();
-                if (key.contains(context)
-                            && modifications.get(key).contains(theModification)) {
+                if (key.contains(context) && modifications.get(key).contains(theModification)) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -271,6 +281,7 @@ public final class ModificationStore extends Observable {
         if (who == null) {
             throw new IllegalArgumentException("who must not be null"); // NOI18N
         }
+
         synchronized (modifications) {
             for (final String s : who) {
                 final HashSet<String> mod = modifications.get(s);
@@ -279,6 +290,7 @@ public final class ModificationStore extends Observable {
                 }
             }
         }
+
         return false;
     }
 
@@ -294,16 +306,18 @@ public final class ModificationStore extends Observable {
         if (LOG.isDebugEnabled()) {
             LOG.debug("wasModified for: " + whoWasModified + " :: " + theModification); // NOI18N
         }
+
         final HashSet<String> mods = modifications.get(whoWasModified);
         if (mods != null) {
             return mods.contains(theModification);
         }
+
         return false;
     }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer(150);
+        final StringBuilder sb = new StringBuilder(150);
         sb.append("=============================\nModifcationStore:\n");                  // NOI18N
         for (final Iterator<Entry<String, HashSet<String>>> it = modifications.entrySet().iterator(); it.hasNext();) {
             final Entry<String, HashSet<String>> entry = it.next();
@@ -316,6 +330,7 @@ public final class ModificationStore extends Observable {
             sb.deleteCharAt(sb.length() - 1).deleteCharAt(sb.length() - 1).append(";\n"); // NOI18N
         }
         sb.append("=============================\n");                                     // NOI18N
+
         return sb.toString();
     }
 }

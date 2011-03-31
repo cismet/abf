@@ -82,6 +82,7 @@ public final class CidsTypeTransferable implements Transferable {
     public DataFlavor[] getTransferDataFlavors() {
         final DataFlavor[] flavors = new DataFlavor[1];
         flavors[0] = CIDS_TYPE_FLAVOR;
+
         return flavors;
     }
 }

@@ -7,7 +7,6 @@
 ****************************************************/
 package de.cismet.cids.abf.utilities;
 
-import org.junit.Ignore;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -93,7 +92,6 @@ public class NameValidatorTest {
      */
     @Test
     public void testIsValid_String() {
-//        assertTrue(NameValidator.isValid("ab", 8));
         testNameHighValidator();
         testSchemaHighValidator();
     }
@@ -125,7 +123,4 @@ public class NameValidatorTest {
         assertFalse(val.isValid("aDs.df924j5l.sdas"));
         assertFalse(val.isValid("aDsdf924j5l.5sdas"));
     }
-
-    // we don't need this test as it would test the very same stuff as the other method;
-// public void testIsValid_String_int()
 }

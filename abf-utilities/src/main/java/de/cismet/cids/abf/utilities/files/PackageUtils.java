@@ -50,6 +50,7 @@ public final class PackageUtils {
         if (srcRoot.equals(pakkage)) {
             return ROOT_PACKAGE;
         }
+
         return pakkage.getPath().replace(srcRoot.getPath(), "").substring(1).replace("/", "."); // NOI18N
     }
 
@@ -63,12 +64,14 @@ public final class PackageUtils {
      */
     public static String toRelativePath(final String pakkage, final boolean systemDependant) {
         if (pakkage.equals(ROOT_PACKAGE)) {
-            return "";                                   // NOI18N
+            return ""; // NOI18N
         }
+
         if (systemDependant) {
             return pakkage.replace(".", File.separator); // NOI18N
         }
-        return pakkage.replace(".", "/");                // NOI18N
+
+        return pakkage.replace(".", "/"); // NOI18N
     }
 
     /**
@@ -93,9 +96,11 @@ public final class PackageUtils {
                 srcPath = separator + srcPath;
             }
         }
+
         if (pakkage.equals(ROOT_PACKAGE)) {
             return srcPath;
         }
+
         return srcPath + separator + toRelativePath(pakkage, true);
     }
 

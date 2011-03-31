@@ -72,26 +72,29 @@ public class DnDUtils {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("uri list flavor not supported by this transferable"); // NOI18N
             }
+
             return null;
         }
+
         try {
             final String data = (String)t.getTransferData(URI_LIST_FLAVOR);
             if (data == null) {
-                throw new IOException("received null as transfer data");         // NOI18N
+                throw new IOException("received null as transfer data"); // NOI18N
             }
-            final String[] lines = data.split("\\r\\n");                         // NOI18N
+            final String[] lines = data.split("\\r\\n");                 // NOI18N
             final ArrayList<File> list = new ArrayList<File>(lines.length);
             for (final String uri : lines) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("line: " + uri);                                   // NOI18N
+                    LOG.debug("line: " + uri);                           // NOI18N
                 }
-                if (uri.startsWith("#"))                                         // NOI18N
+                if (uri.startsWith("#"))                                 // NOI18N
                 {
                     // it is just a comment
                     continue;
                 }
                 list.add(new File(new URI(uri)));
             }
+
             return list;
         } catch (final URISyntaxException ex) {
             LOG.error("invalid URI", ex);                                                                // NOI18N
@@ -102,6 +105,7 @@ public class DnDUtils {
         } catch (final IOException ex) {
             LOG.warn("could not retrieve data from transferable", ex);                                   // NOI18N
         }
+
         return null;
     }
 
@@ -130,12 +134,13 @@ public class DnDUtils {
             } else {
                 throw new IOException("cannot receive transferable data due to unknown data flavor"); // NOI18N
             }
+
             return fileList;
         } catch (final UnsupportedFlavorException e) {
-            LOG.error("could not get filelist", e);                                                   // NOI18N
-            throw new IOException("unsupported flavor despite flavor support", e);                    // NOI18N
+            LOG.error("could not get filelist", e);                                // NOI18N
+            throw new IOException("unsupported flavor despite flavor support", e); // NOI18N
         } catch (final IOException e) {
-            LOG.error("could not get filelist", e);                                                   // NOI18N
+            LOG.error("could not get filelist", e);                                // NOI18N
             throw e;
         }
     }
@@ -163,6 +168,7 @@ public class DnDUtils {
         } else if (!folder.canWrite()) {
             throw new IOException("cannot write to package folder: " + folder); // NOI18N
         }
+
         return check;
     }
 
@@ -175,8 +181,7 @@ public class DnDUtils {
      *
      * @return  DOCUMENT ME!
      */
-    public static boolean acceptFiles(final List files, final File folder,
-            final int action) {
+    public static boolean acceptFiles(final List files, final File folder, final int action) {
         boolean accept = true;
         for (final Object file : files) {
             try {
@@ -189,6 +194,7 @@ public class DnDUtils {
                 break;
             }
         }
+
         return accept;
     }
 
@@ -227,6 +233,7 @@ public class DnDUtils {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("action unknown, default to copy action"); // NOI18N
                 }
+
                 final List<File> fileList = DnDUtils.getFileList(t);
                 final int action;
                 // default to copy mode if action not determinable
@@ -236,13 +243,15 @@ public class DnDUtils {
                 } else {
                     action = NodeTransfer.MOVE;
                 }
+
                 final File dir = FileUtil.toFile(targetFolder);
                 for (final File f : fileList) {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug("received file: " + f);                                // NOI18N
+                        LOG.debug("received file: " + f); // NOI18N
                     }
                     checkFile(f, dir, action);
                 }
+
                 for (final File f : fileList) {
                     File outFile = new File(dir, f.getName());
                     String name = FileUtils.getName(f);
@@ -256,6 +265,7 @@ public class DnDUtils {
                     // issue
                     FileUtil.copyFile(FileUtil.toFileObject(f), targetFolder, name);
                 }
+
                 // means that it is move action but we cannot simply move
                 // the fileobject because that causes a deadlock in the
                 // masterfilesystem
@@ -270,6 +280,7 @@ public class DnDUtils {
                 LOG.error("could not paste files", e); // NOI18N
                 throw e;
             }
+
             return null;
         }
     }
@@ -310,6 +321,7 @@ public class DnDUtils {
                 if (LOG.isDebugEnabled()) {
                     whichAction();
                 }
+
                 final List<File> fileList = DnDUtils.getFileList(t);
                 final File dir = FileUtil.toFile(targetFolder);
                 for (final File f : fileList) {
@@ -338,6 +350,7 @@ public class DnDUtils {
                 LOG.error("could not paste files", e);                                   // NOI18N
                 throw e;
             }
+
             return null;
         }
 

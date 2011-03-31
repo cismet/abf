@@ -37,8 +37,7 @@ public class ErrorPanel extends javax.swing.JPanel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            ErrorPanel.class);
+    private static final transient Logger LOG = Logger.getLogger(ErrorPanel.class);
 
     //~ Instance fields --------------------------------------------------------
 

@@ -23,11 +23,7 @@ public interface ConnectionListener extends EventListener {
     /**
      * DOCUMENT ME!
      *
-     * @param  isConnected  DOCUMENT ME!
+     * @param  event  DOCUMENT ME!
      */
-    void connectionStatusChanged(final boolean isConnected);
-    /**
-     * DOCUMENT ME!
-     */
-    void connectionStatusIndeterminate();
+    void connectionStatusChanged(final ConnectionEvent event);
 }

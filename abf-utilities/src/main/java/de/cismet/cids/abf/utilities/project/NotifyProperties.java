@@ -51,6 +51,7 @@ public class NotifyProperties extends Properties {
         if (((result == null) != (val == null)) || ((result != null) && (val != null) && !val.equals(result))) {
             state.markModified();
         }
+
         return result;
     }
 }

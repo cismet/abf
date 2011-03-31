@@ -173,7 +173,8 @@ public class NameValidator {
             LOG.error(message, ex);
             throw new IllegalArgumentException(message, ex);
         }
-        LOG.error("validation type not known: " + valType);      // NOI18N
+
+        LOG.error("validation type not known: " + valType);                          // NOI18N
         throw new IllegalArgumentException("validation type not known: " + valType); // NOI18N
     }
 }

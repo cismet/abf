@@ -176,11 +176,13 @@ public final class CidsDistClassLoader extends URLClassLoader {
      */
     public Map<String, String[]> getHits(final String part) {
         this.part = part;
-        if (part.isEmpty()) // NOI18N
-        {
+
+        if (part.isEmpty()) {
             return classCache;
         }
+
         computeHits();
+
         return map;
     }
 
@@ -191,21 +193,25 @@ public final class CidsDistClassLoader extends URLClassLoader {
         if (Thread.interrupted()) {
             return;
         }
+
         map = new HashMap<String, String[]>();
         final ArrayList<String> list = new ArrayList<String>(5);
         for (final String jar : classCache.keySet()) {
             if (Thread.interrupted()) {
                 return;
             }
+
             list.clear();
             for (final String clazz : classCache.get(jar)) {
                 if (Thread.interrupted()) {
                     return;
                 }
+
                 if (clazz.contains(part)) {
                     list.add(clazz.substring(0, clazz.indexOf(EXT_CLASS)));
                 }
             }
+
             if (!list.isEmpty()) {
                 map.put(jar, list.toArray(new String[list.size()]));
             }
@@ -227,20 +233,23 @@ public final class CidsDistClassLoader extends URLClassLoader {
      */
     public boolean isLoadable(final String name, final String[] jarClassPath) {
         if (name == null) {
-            throw new IllegalArgumentException("name must not be null");                           // NOI18N
+            throw new IllegalArgumentException("name must not be null"); // NOI18N
         }
+
         final String[] jcp;
         if (jarClassPath == null) {
             jcp = classCache.keySet().toArray(new String[0]);
         } else {
             jcp = jarClassPath;
         }
+
         final String className;
         if (name.endsWith(EXT_CLASS)) {
             className = name;
         } else {
             className = name + EXT_CLASS;
         }
+
         for (final String jar : jcp) {
             final String[] classes = classCache.get(jar);
             if (classes == null) {
@@ -255,6 +264,7 @@ public final class CidsDistClassLoader extends URLClassLoader {
                 }
             }
         }
+
         return false;
     }
 
@@ -271,9 +281,11 @@ public final class CidsDistClassLoader extends URLClassLoader {
                 final CidsDistClassLoader newLoader = new CidsDistClassLoader(fo);
                 INSTANCES.remove(fo);
                 INSTANCES.put(fo, newLoader);
+
                 return newLoader;
             }
         }
+
         return null;
     }
 
@@ -292,6 +304,7 @@ public final class CidsDistClassLoader extends URLClassLoader {
             loader = new CidsDistClassLoader(distRoot);
             INSTANCES.put(distRoot, loader);
         }
+
         return loader;
     }
 

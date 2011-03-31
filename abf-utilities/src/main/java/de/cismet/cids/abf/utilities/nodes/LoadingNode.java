@@ -79,7 +79,7 @@ public class LoadingNode extends AbstractNode {
 
     //~ Instance fields --------------------------------------------------------
 
-    final transient Thread loadingThread;
+    private final transient Thread loadingThread;
 
     private transient int counter;
     private transient boolean process;

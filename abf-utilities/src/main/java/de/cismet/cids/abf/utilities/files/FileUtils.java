@@ -23,6 +23,8 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+// TODO: use FileUtils in cismet commons
+
 /**
  * DOCUMENT ME!
  *
@@ -136,6 +138,7 @@ public final class FileUtils {
                 for (final String s : WINDOWS_META_ENTRIES) {
                     allMetaEntries[++i] = s;
                 }
+
                 return allMetaEntries;
             }
         }
@@ -155,6 +158,7 @@ public final class FileUtils {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -185,7 +189,7 @@ public final class FileUtils {
      */
     public static String getName(final File file) {
         final String nameExt = file.getName();
-        final int index = nameExt.lastIndexOf('.'); // NOI18N
+        final int index = nameExt.lastIndexOf('.');
         if (index == -1) {
             return nameExt;
         } else {
@@ -202,9 +206,9 @@ public final class FileUtils {
      */
     public static String getExt(final File file) {
         final String nameExt = file.getName();
-        final int index = nameExt.lastIndexOf('.'); // NOI18N
+        final int index = nameExt.lastIndexOf('.');
         if (index == -1) {
-            return "";                              // NOI18N
+            return ""; // NOI18N
         } else {
             return nameExt.substring(index + 1, nameExt.length());
         }
@@ -265,6 +269,7 @@ public final class FileUtils {
                 return false;
             }
         }
+
         return true;
     }
     /**
@@ -436,11 +441,11 @@ public final class FileUtils {
         final Enumeration<? extends FileObject> e = dir.getData(true);
         while (e.hasMoreElements()) {
             final FileObject fo = e.nextElement();
-            if ("class".equalsIgnoreCase(fo.getExt())) // NOI18N
-            {
+            if ("class".equalsIgnoreCase(fo.getExt())) { // NOI18N
                 return true;
             }
         }
+
         return false;
     }
 
