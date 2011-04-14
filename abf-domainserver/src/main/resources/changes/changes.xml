@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
     <body>
-        <release version="3.0" date="2011-03-31" description="Official 3.0 release" >
-            <action dev="Martin Scholl" type="update" issue="--">Official 3.0 release</action>
+        <release version="3.0.1" date="2011-04-14" description="3.0.1 release" >
+            <action dev="Martin Scholl" type="update" issue="2024">Introduce backend cache to overcome very slow backend issues</action>
         </release>
     </body>
 </document>
