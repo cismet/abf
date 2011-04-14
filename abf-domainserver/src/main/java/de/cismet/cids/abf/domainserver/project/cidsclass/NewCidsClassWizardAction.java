@@ -35,7 +35,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.TypeManagement;
 import de.cismet.cids.abf.utilities.Refreshable;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 import de.cismet.cids.jpa.entity.cidsclass.Type;
 

@@ -38,9 +38,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -59,7 +58,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.cidsclass.Attribute;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 import de.cismet.cids.jpa.entity.cidsclass.ClassAttribute;
@@ -321,22 +320,22 @@ public final class ImportClassesAction extends CookieAction {
         final NodeList classlist = doc.getElementsByTagNameNS(NAMESPACE, CS_CLASS);
         final List<CidsClass> classes = new ArrayList<CidsClass>(classlist.getLength());
         final Map<Class<? extends CommonEntity>, Map<Integer, ? extends CommonEntity>> refcache =
-            new Hashtable<Class<? extends CommonEntity>, Map<Integer, ? extends CommonEntity>>();
-        refcache.put(CidsClass.class, new Hashtable<Integer, CidsClass>());
-        refcache.put(Icon.class, new Hashtable<Integer, Icon>());
-        refcache.put(JavaClass.class, new Hashtable<Integer, JavaClass>());
-        refcache.put(Policy.class, new Hashtable<Integer, Policy>());
-        refcache.put(Attribute.class, new Hashtable<Integer, Attribute>());
-        refcache.put(ClassAttribute.class, new Hashtable<Integer, ClassAttribute>());
-        refcache.put(Type.class, new Hashtable<Integer, Type>());
-        final Map<String, Set<Attribute>> attrCache = new Hashtable<String, Set<Attribute>>();
-        final Map<CidsClass, Set<ClassAttribute>> classAttrCache = new Hashtable<CidsClass, Set<ClassAttribute>>();
+            new HashMap<Class<? extends CommonEntity>, Map<Integer, ? extends CommonEntity>>();
+        refcache.put(CidsClass.class, new HashMap<Integer, CidsClass>());
+        refcache.put(Icon.class, new HashMap<Integer, Icon>());
+        refcache.put(JavaClass.class, new HashMap<Integer, JavaClass>());
+        refcache.put(Policy.class, new HashMap<Integer, Policy>());
+        refcache.put(Attribute.class, new HashMap<Integer, Attribute>());
+        refcache.put(ClassAttribute.class, new HashMap<Integer, ClassAttribute>());
+        refcache.put(Type.class, new HashMap<Integer, Type>());
+        final Map<String, Set<Attribute>> attrCache = new HashMap<String, Set<Attribute>>();
+        final Map<CidsClass, Set<ClassAttribute>> classAttrCache = new HashMap<CidsClass, Set<ClassAttribute>>();
         io.getOut()
                 .println(NbBundle.getMessage(
                         ImportClassesAction.class,
                         "ImportClassesAction.importClasses(Backend,File,InputOutput,ProgressHandle).createCacheBrackets")); // NOI18N
         final Map<Class<? extends CommonEntity>, List<? extends CommonEntity>> typecache = getTypeCache(backend);
-        final Map<Integer, CidsClass> foreignKeyCache = new Hashtable<Integer, CidsClass>();
+        final Map<Integer, CidsClass> foreignKeyCache = new HashMap<Integer, CidsClass>();
         EventQueue.invokeLater(new Runnable() {
 
                 @Override
@@ -373,22 +372,17 @@ public final class ImportClassesAction extends CookieAction {
         /*
          * save Icons
          */
-        final Hashtable<Integer, Icon> iconsMap = (Hashtable<Integer, Icon>)refcache.get(Icon.class);
-        final Enumeration icons = iconsMap.elements();
-
-        while (icons.hasMoreElements()) {
-            backend.store((Icon)icons.nextElement());
+        final HashMap<Integer, Icon> iconsMap = (HashMap<Integer, Icon>)refcache.get(Icon.class);
+        for (final Icon i : iconsMap.values()) {
+            backend.store(i);
         }
 
         /*
          * save JavaClasses
          */
-        final Hashtable<String, JavaClass> jcStringMap = new Hashtable<String, JavaClass>();
-        final Hashtable<Integer, JavaClass> jcMap = (Hashtable<Integer, JavaClass>)refcache.get(JavaClass.class);
-        final Enumeration<JavaClass> javaClasses = jcMap.elements();
-
-        while (javaClasses.hasMoreElements()) {
-            final JavaClass jc = javaClasses.nextElement();
+        final HashMap<String, JavaClass> jcStringMap = new HashMap<String, JavaClass>();
+        final HashMap<Integer, JavaClass> jcMap = (HashMap<Integer, JavaClass>)refcache.get(JavaClass.class);
+        for (final JavaClass jc : jcMap.values()) {
             final String qualifier = jc.getQualifier();
             jcStringMap.put(qualifier, backend.store(jc));
         }
@@ -396,11 +390,9 @@ public final class ImportClassesAction extends CookieAction {
         /*
          * save Policies
          */
-        final Hashtable<Integer, Policy> policyMap = (Hashtable<Integer, Policy>)refcache.get(Policy.class);
-        final Enumeration policies = policyMap.elements();
-
-        while (policies.hasMoreElements()) {
-            backend.store((Policy)policies.nextElement());
+        final HashMap<Integer, Policy> policyMap = (HashMap<Integer, Policy>)refcache.get(Policy.class);
+        for (final Policy p : policyMap.values()) {
+            backend.store(p);
         }
 
         /*
@@ -472,7 +464,7 @@ public final class ImportClassesAction extends CookieAction {
      */
     private Map<Class<? extends CommonEntity>, List<? extends CommonEntity>> getTypeCache(final Backend backend) {
         final Map<Class<? extends CommonEntity>, List<? extends CommonEntity>> cache =
-            new Hashtable<Class<? extends CommonEntity>, List<? extends CommonEntity>>();
+            new HashMap<Class<? extends CommonEntity>, List<? extends CommonEntity>>();
 
         cache.put(CidsClass.class, backend.getAllEntities(CidsClass.class));
         cache.put(Type.class, backend.getAllEntities(Type.class));
@@ -755,7 +747,7 @@ public final class ImportClassesAction extends CookieAction {
             final Map<String, Set<Attribute>> attrCache,
             final Map<CidsClass, Set<ClassAttribute>> classAttrCache,
             final Map<Integer, CidsClass> foreignKeyCache) {
-        final Hashtable<Integer, CidsClass> cidsClasses = (Hashtable<Integer, CidsClass>)refcache.get(CidsClass.class);
+        final HashMap<Integer, CidsClass> cidsClasses = (HashMap<Integer, CidsClass>)refcache.get(CidsClass.class);
         final NodeList children = node.getChildNodes();
         // search for the name first, not efficient but user will get more appropriate info of what is going on
         String classname = null;
@@ -1036,7 +1028,7 @@ public final class ImportClassesAction extends CookieAction {
             final PrintWriter out,
             final String preIndent) {
         final String indent = preIndent + "\t"; // NOI18N
-        final Hashtable<Integer, Icon> iconList = (Hashtable<Integer, Icon>)refcache.get(Icon.class);
+        final HashMap<Integer, Icon> iconList = (HashMap<Integer, Icon>)refcache.get(Icon.class);
         final Icon icon = new Icon();
 
         final NodeList children = n.getChildNodes();
@@ -1097,7 +1089,7 @@ public final class ImportClassesAction extends CookieAction {
             final PrintWriter out,
             final String preIndent) {
         final String indent = preIndent + "\t"; // NOI18N
-        final Hashtable<Integer, JavaClass> javaClassesList = (Hashtable<Integer, JavaClass>)refcache.get(
+        final HashMap<Integer, JavaClass> javaClassesList = (HashMap<Integer, JavaClass>)refcache.get(
                 JavaClass.class);
 
         final JavaClass jc = new JavaClass();
@@ -1168,7 +1160,7 @@ public final class ImportClassesAction extends CookieAction {
             final PrintWriter out,
             final String preIndent) {
         final String indent = preIndent + "\t"; // NOI18N
-        final Hashtable<Integer, Type> typeList = (Hashtable<Integer, Type>)refcache.get(Type.class);
+        final HashMap<Integer, Type> typeList = (HashMap<Integer, Type>)refcache.get(Type.class);
 
         final Type type = new Type();
         final NodeList children = n.getChildNodes();
@@ -1250,7 +1242,7 @@ public final class ImportClassesAction extends CookieAction {
             final PrintWriter out,
             final String preIndent) {
         final String indent = preIndent + "\t"; // NOI18N
-        final Hashtable<Integer, Policy> policyList = (Hashtable<Integer, Policy>)refcache.get(Policy.class);
+        final HashMap<Integer, Policy> policyList = (HashMap<Integer, Policy>)refcache.get(Policy.class);
         final Policy policy = new Policy();
         Integer id = null;
         final NodeList children = n.getChildNodes();
@@ -1307,7 +1299,7 @@ public final class ImportClassesAction extends CookieAction {
             final Map<CidsClass, Set<ClassAttribute>> classAttrCache,
             final Map<Integer, CidsClass> foreignKeyCache) {
         final String indent = preIndent + "\t"; // NOI18N
-        final Hashtable<Integer, Attribute> attributeList = (Hashtable<Integer, Attribute>)refcache.get(
+        final HashMap<Integer, Attribute> attributeList = (HashMap<Integer, Attribute>)refcache.get(
                 Attribute.class);
         final Attribute attr = new Attribute();
         final NodeList children = n.getChildNodes();
@@ -1576,7 +1568,7 @@ public final class ImportClassesAction extends CookieAction {
             final Map<CidsClass, Set<ClassAttribute>> classAttrCache,
             final Map<Integer, CidsClass> foreignKeyCache) {
         final String indent = preIndent + "\t"; // NOI18N
-        final Hashtable<Integer, ClassAttribute> csAttrList = (Hashtable<Integer, ClassAttribute>)refcache.get(
+        final HashMap<Integer, ClassAttribute> csAttrList = (HashMap<Integer, ClassAttribute>)refcache.get(
                 ClassAttribute.class);
         final ClassAttribute csAttr = new ClassAttribute();
         final NodeList children = n.getChildNodes();

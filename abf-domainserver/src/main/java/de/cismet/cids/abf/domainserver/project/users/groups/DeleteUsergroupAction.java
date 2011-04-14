@@ -21,7 +21,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 // TODO: why is a separate action used, destroy would probably be sufficient

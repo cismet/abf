@@ -68,7 +68,7 @@ import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.domainserver.project.view.ViewNode;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.cidsclass.Attribute;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 

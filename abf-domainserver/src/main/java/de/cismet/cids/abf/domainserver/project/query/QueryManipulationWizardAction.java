@@ -25,7 +25,7 @@ import javax.swing.JComponent;
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.utilities.Refreshable;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.query.Query;
 
 /**

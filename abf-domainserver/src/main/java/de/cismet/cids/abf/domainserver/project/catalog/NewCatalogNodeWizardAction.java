@@ -32,7 +32,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.CatalogManagement;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.catalog.CatNode;
 import de.cismet.cids.jpa.entity.common.Domain;
 import de.cismet.cids.jpa.entity.permission.NodePermission;

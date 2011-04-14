@@ -24,8 +24,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +46,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.common.URL;
 import de.cismet.cids.jpa.entity.common.URLBase;
 
@@ -108,7 +108,7 @@ public class URLEditorPanel extends javax.swing.JPanel implements TableModelList
         deletedRows = new ArrayList<Integer>();
         addedRows = new ArrayList<Integer>();
         editedRows = new ArrayList<Integer>();
-        originalBases = new Hashtable<Integer, URLBase>();
+        originalBases = new HashMap<Integer, URLBase>();
         listeners = new HashSet<ChangeListener>();
         init();
         EventQueue.invokeLater(new Runnable() {

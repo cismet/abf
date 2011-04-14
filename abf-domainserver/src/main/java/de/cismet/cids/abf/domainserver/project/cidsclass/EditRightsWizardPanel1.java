@@ -14,7 +14,7 @@ import java.awt.Component;
 
 import javax.swing.event.ChangeListener;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 
 /**

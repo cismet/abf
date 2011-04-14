@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
 
 import de.cismet.cids.abf.utilities.Comparators;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.permission.Policy;
 
 /**

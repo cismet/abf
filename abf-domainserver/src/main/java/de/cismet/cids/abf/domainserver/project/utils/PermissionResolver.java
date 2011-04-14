@@ -14,13 +14,12 @@ import org.openide.util.NbBundle;
 import java.text.MessageFormat;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.catalog.CatNode;
 import de.cismet.cids.jpa.entity.cidsclass.Attribute;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
@@ -103,7 +102,7 @@ public final class PermissionResolver {
         PERM_STRING_UNSUPPORTED_PERMISSION = NbBundle.getMessage(
                 PermissionResolver.class,
                 "PermissionResolver.PERM_STRING_UNSUPPORTED_PERMISSION"); // NOI18N
-        MAP = new Hashtable<DomainserverProject, PermissionResolver>();
+        MAP = new HashMap<DomainserverProject, PermissionResolver>();
     }
 
     //~ Instance fields --------------------------------------------------------

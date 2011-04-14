@@ -9,13 +9,12 @@ package de.cismet.cids.abf.domainserver.project;
 
 import org.apache.log4j.Logger;
 
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
+
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
-import org.openide.nodes.NodeAdapter;
-import org.openide.nodes.NodeEvent;
-import org.openide.nodes.NodeListener;
-import org.openide.util.WeakListeners;
 
 import java.awt.EventQueue;
 
@@ -41,7 +40,9 @@ public abstract class ProjectChildren extends Children.Keys {
     //~ Instance fields --------------------------------------------------------
 
     protected final transient DomainserverProject project;
-    protected final transient NodeListener nodeL;
+
+    private final transient Object lock;
+    private boolean refreshInProgress;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -53,7 +54,7 @@ public abstract class ProjectChildren extends Children.Keys {
     public ProjectChildren(final DomainserverProject project) {
         super(true);
         this.project = project;
-        this.nodeL = new NodeListenerImpl();
+        this.lock = new Object();
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -70,15 +71,39 @@ public abstract class ProjectChildren extends Children.Keys {
         }
         final Thread loader = new Thread(new Runnable() {
 
+                    private final transient ProgressHandle handle = ProgressHandleFactory.createHandle(
+                            "Refreshing children: " // NOI18N
+                                    + ProjectChildren.this.getNode().getDisplayName());
+
                     @Override
                     public void run() {
                         try {
+                            EventQueue.invokeLater(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        handle.start();
+                                        handle.switchToIndeterminate();
+                                    }
+                                });
+
                             threadedNotify();
+
+                            EventQueue.invokeLater(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        handle.finish();
+                                    }
+                                });
                         } catch (final Exception e) {
                             LOG.error("could not generate keys", e); // NOI18N
                             setKeysEDT(e);
                         } finally {
                             loadingNode.dispose();
+                            synchronized (lock) {
+                                refreshInProgress = false;
+                            }
                         }
                     }
                 });
@@ -98,9 +123,6 @@ public abstract class ProjectChildren extends Children.Keys {
             created = new Node[] { (Node)o };
         } else {
             created = createUserNodes(o);
-            for (final Node node : created) {
-                node.addNodeListener(WeakListeners.create(NodeListener.class, nodeL, node));
-            }
         }
 
         return created;
@@ -150,34 +172,16 @@ public abstract class ProjectChildren extends Children.Keys {
      * DOCUMENT ME!
      */
     public void refreshByNotify() {
+        synchronized (lock) {
+            if (refreshInProgress) {
+                return;
+            } else {
+                refreshInProgress = true;
+            }
+        }
         addNotify();
         // we do not refresh the already present nodes anymore since we don't want all sub-objects to query the db for
         // changes. it is decided that the user has to use the ABF to do any db changes or he is responsible for data
         // consistency to himself.
-    }
-
-    //~ Inner Classes ----------------------------------------------------------
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @version  $Revision$, $Date$
-     */
-    private final class NodeListenerImpl extends NodeAdapter {
-
-        //~ Methods ------------------------------------------------------------
-
-        /**
-         * DOCUMENT ME!
-         *
-         * @param  ev  DOCUMENT ME!
-         */
-        @Override
-        public void nodeDestroyed(final NodeEvent ev) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("node destroyed, event: " + ev + " || refreshByNotify: " + ProjectChildren.this);
-            }
-//            refreshByNotify();
-        }
     }
 }

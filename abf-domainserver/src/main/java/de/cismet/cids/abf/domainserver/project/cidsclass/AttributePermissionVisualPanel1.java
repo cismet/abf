@@ -40,7 +40,7 @@ import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers;
 import de.cismet.cids.abf.utilities.CidsUserGroupTransferable;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.cidsclass.Attribute;
 import de.cismet.cids.jpa.entity.permission.AttributePermission;
 import de.cismet.cids.jpa.entity.permission.Permission;
@@ -252,7 +252,7 @@ public final class AttributePermissionVisualPanel1 extends JPanel {
                 }
             }
         }
-    } //GEN-LAST:event_cmdRemoveActionPerformed
+    }                                                                             //GEN-LAST:event_cmdRemoveActionPerformed
 
     //~ Inner Classes ----------------------------------------------------------
 

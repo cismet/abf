@@ -40,7 +40,7 @@ import de.cismet.cids.abf.domainserver.project.utils.Renderers.UserGroupListRend
 import de.cismet.cids.abf.domainserver.project.utils.Renderers.UserListRenderer;
 import de.cismet.cids.abf.utilities.Comparators;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.common.Domain;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrType;

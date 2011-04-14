@@ -67,7 +67,8 @@ import de.cismet.cids.abf.utilities.ConnectionSupport;
 import de.cismet.cids.abf.utilities.project.NotifyProperties;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
+import de.cismet.cids.jpa.backend.service.impl.BackendFactory;
 import de.cismet.cids.jpa.entity.cidsclass.Icon;
 
 import de.cismet.diff.DiffAccessor;
@@ -161,8 +162,7 @@ public final class DomainserverProject implements Project, Connectable {
         logicalView = new DomainserverLogicalView(this);
         connectionSupport = new ConnectionSupport();
         connectionInProgress = false;
-        final FileObject fob = getProjectDirectory().getFileObject(
-                RUNTIME_PROPS);
+        final FileObject fob = getProjectDirectory().getFileObject(RUNTIME_PROPS);
         fob.addFileChangeListener(new FileChangeListener() {
 
                 @Override
@@ -225,8 +225,8 @@ public final class DomainserverProject implements Project, Connectable {
      */
     private void initPolicies() {
         if (runtimeProps == null) {
-            LOG.warn("could not init policies due to missing" // NOI18N
-                        + "runtime properties");         // NOI18N
+            LOG.warn("could not init policies due to missing runtime properties"); // NOI18N
+
             return;
         }
         serverPolicy = runtimeProps.getProperty(PROP_POLICY_SERVER);
@@ -236,59 +236,58 @@ public final class DomainserverProject implements Project, Connectable {
         if ((serverPolicy == null) || (classNodePolicy == null)
                     || (orgNodePolicy == null)
                     || (attrPolicy == null)) {
-            final StringBuffer sb = new StringBuffer("<ul>"); // NOI18N
+            final StringBuffer sb = new StringBuffer("<ul>");                // NOI18N
             if (serverPolicy == null) {
-                sb.append("<li>")                        // NOI18N
+                sb.append("<li>")                                            // NOI18N
                 .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class,
                             "DomainserverProject.initPolicy().serverPolicy")) // NOI18N
-                .append("</li>");                        // NOI18N
+                .append("</li>");                                            // NOI18N
                 runtimeProps.put(PROP_POLICY_SERVER, DEFAULT_POLICY_SERVER);
                 serverPolicy = DEFAULT_POLICY_SERVER;
             }
             if (attrPolicy == null) {
-                sb.append("<li>")                        // NOI18N
+                sb.append("<li>")                                            // NOI18N
                 .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class,
                             "DomainserverProject.initPolicy().attributePolicy")) // NOI18N
-                .append("</li>");                        // NOI18N
+                .append("</li>");                                            // NOI18N
                 runtimeProps.put(PROP_POLICY_ATTR, DEFAULT_POLICY_ATTR);
                 attrPolicy = DEFAULT_POLICY_ATTR;
             }
             if (classNodePolicy == null) {
-                sb.append("<li>")                        // NOI18N
+                sb.append("<li>")                                            // NOI18N
                 .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class,
                             "DomainserverProject.initPolicy().classNodePolicy")) // NOI18N
-                .append("</li>");                        // NOI18N
+                .append("</li>");                                            // NOI18N
                 runtimeProps.put(PROP_POLICY_CLASS_NODE,
                     DEFAULT_POLICY_CLASS_NODE);
                 classNodePolicy = DEFAULT_POLICY_CLASS_NODE;
             }
             if (orgNodePolicy == null) {
-                sb.append("<li>")                        // NOI18N
+                sb.append("<li>")                                            // NOI18N
                 .append(org.openide.util.NbBundle.getMessage(
                             DomainserverProject.class,
                             "DomainserverProject.initPolicy().orgNodePolicy")) // NOI18N
-                .append("</li>");                        // NOI18N
+                .append("</li>");                                            // NOI18N
                 runtimeProps.put(PROP_POLICY_ORG_NODE, DEFAULT_POLICY_ORG_NODE);
                 orgNodePolicy = DEFAULT_POLICY_ORG_NODE;
             }
-            sb.append("</ul>");                          // NOI18N
+            sb.append("</ul>");                                              // NOI18N
             JOptionPane.showMessageDialog(
                 WindowManager.getDefault().getMainWindow(),
                 org.openide.util.NbBundle.getMessage(
                     DomainserverProject.class,
-                    "DomainserverProject.initPolicy().JOptionPane.message", // NOI18N
+                    "DomainserverProject.initPolicy().JOptionPane.message",  // NOI18N
                     sb.toString()),
                 org.openide.util.NbBundle.getMessage(
                     DomainserverProject.class,
-                    "DomainserverProject.initPolicy().JOptionPane.title"), // NOI18N
+                    "DomainserverProject.initPolicy().JOptionPane.title"),   // NOI18N
                 JOptionPane.INFORMATION_MESSAGE);
             storeRuntimeProperties();
         }
-        // INFO: we cannot check for invalid policies at this point, because
-        // we are not connected to the backend yet.
+        // INFO: we cannot check for invalid policies at this point, because we are not connected to the backend yet.
     }
 
     @Override
@@ -334,6 +333,7 @@ public final class DomainserverProject implements Project, Connectable {
                     ioe); // NOI18N
             }
         }
+
         return result;
     }
 
@@ -541,7 +541,7 @@ public final class DomainserverProject implements Project, Connectable {
                                 LOG.debug("new Backend(runtimeProps)"); // NOI18N
                             }
 
-                            backend = new Backend(runtimeProps);
+                            backend = BackendFactory.getInstance().getBackend(runtimeProps, true);
                             connectionInProgress = false;
                             diffAccessor = new DiffAccessor(runtimeProps, backend);
                             fireConnectionStatusChanged();
@@ -919,6 +919,7 @@ public final class DomainserverProject implements Project, Connectable {
      *
      * @return  DOCUMENT ME!
      */
+    // TODO: provide backend via lookup -> instancecontent
     public Backend getCidsDataObjectBackend() {
         return backend;
     }

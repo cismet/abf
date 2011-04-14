@@ -59,7 +59,7 @@ import de.cismet.cids.abf.domainserver.project.utils.Renderers.UnifiedCellRender
 import de.cismet.cids.abf.utilities.CidsUserGroupTransferable;
 import de.cismet.cids.abf.utilities.Comparators;
 
-import de.cismet.cids.jpa.backend.service.impl.Backend;
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 import de.cismet.cids.jpa.entity.common.Domain;
 import de.cismet.cids.jpa.entity.permission.ClassPermission;
