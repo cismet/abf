@@ -143,6 +143,19 @@ public class ConfigAttrKeyNode extends ProjectNode {
             final List<CommonEntity> entities = (List)backend.getEntries(key);
             entities.add(key);
             backend.delete(entities);
+
+            final Node parent = getParentNode();
+            if (parent == null) {
+                LOG.warn("cannot access parent node, refresh cannot be performed");                            // NOI18N
+            } else {
+                final Refreshable refreshable = parent.getCookie(Refreshable.class);
+                if (refreshable == null) {
+                    LOG.warn("cannot get Refreshable from parent, refresh cannot be performed: " + getName()); // NOI18N
+                } else {
+                    refreshable.refresh();
+                }
+            }
+
             fireNodeDestroyed();
         } catch (final Exception e) {
             final String message = "cannot destroy key: " + key; // NOI18N
@@ -192,7 +205,6 @@ public class ConfigAttrKeyNode extends ProjectNode {
         @Override
         public void refresh() {
             if (Children.LEAF.equals(getChildren()) || !(getChildren() instanceof ProjectChildren)) {
-                setChildren(Children.LEAF);
                 setChildren(new ConfigAttrKeyNodeChildren(key, type, project));
             } else {
                 ((ProjectChildren)getChildren()).refreshByNotify();

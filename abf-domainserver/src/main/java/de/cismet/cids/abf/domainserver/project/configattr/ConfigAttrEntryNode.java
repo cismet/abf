@@ -40,6 +40,7 @@ import javax.swing.SwingUtilities;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.nodes.ModifyCookie;
 
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
@@ -170,6 +171,19 @@ public final class ConfigAttrEntryNode extends ProjectNode {
         try {
             if (getCookieSet().getCookie(CloseCookie.class).close()) {
                 project.getCidsDataObjectBackend().delete(entry);
+
+                final Node parent = getParentNode();
+                if (parent == null) {
+                    LOG.warn("cannot access parent node, refresh cannot be performed");                            // NOI18N
+                } else {
+                    final Refreshable refreshable = parent.getCookie(Refreshable.class);
+                    if (refreshable == null) {
+                        LOG.warn("cannot get Refreshable from parent, refresh cannot be performed: " + getName()); // NOI18N
+                    } else {
+                        refreshable.refresh();
+                    }
+                }
+
                 fireNodeDestroyed();
             }
         } catch (final Exception e) {
