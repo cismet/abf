@@ -92,6 +92,7 @@ public class RegistryProject implements Project, Connectable {
         this.state = state;
         final FileObject fob = projDir.getFileObject(RUNTIME_PROPS);
         runtimeProps = new Properties();
+
         try {
             runtimeProps.load(fob.getInputStream());
         } catch (final Exception e) {
@@ -99,6 +100,7 @@ public class RegistryProject implements Project, Connectable {
             LOG.error(message, e);
             throw new IllegalStateException(message, e);
         }
+
         logicalView = new RegistryLogicalView(this);
         connectionSupport = new ConnectionSupport();
     }

@@ -23,6 +23,7 @@ public class RegistryLogicalView implements LogicalViewProvider {
     //~ Instance fields --------------------------------------------------------
 
     private final transient RegistryProject project;
+    private transient volatile RegistryProjectNode view;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -44,6 +45,14 @@ public class RegistryLogicalView implements LogicalViewProvider {
 
     @Override
     public Node createLogicalView() {
-        return new RegistryProjectNode(project);
+        if (view == null) {
+            synchronized (this) {
+                if (view == null) {
+                    view = new RegistryProjectNode(project);
+                }
+            }
+        }
+
+        return view;
     }
 }
