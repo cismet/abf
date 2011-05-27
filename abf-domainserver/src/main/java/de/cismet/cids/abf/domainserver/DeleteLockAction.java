@@ -40,8 +40,9 @@ public final class DeleteLockAction extends NodeAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            DeleteLockAction.class);
+    private static final transient Logger LOG = Logger.getLogger(DeleteLockAction.class);
+
+    private static final RequestProcessor proc = new RequestProcessor("DeleteLockActionRP", 7); // NOI18N
 
     private static final String DELETE_LOCK_STMT = "DELETE FROM cs_locks WHERE id = "; // NOI18N
 
@@ -101,8 +102,7 @@ public final class DeleteLockAction extends NodeAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(DeleteLockAction.class,
-                "DeleteLockAction.getName().returnvalue"); // NOI18N
+        return NbBundle.getMessage(DeleteLockAction.class, "DeleteLockAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
@@ -125,17 +125,16 @@ public final class DeleteLockAction extends NodeAction {
         if (nodes.length != 1) {
             return false;
         }
-        final DomainserverProject project = nodes[0].getLookup().lookup(
-                DomainserverProject.class);
-        if (project == null) {
+
+        final DomainserverProject project = nodes[0].getLookup().lookup(DomainserverProject.class);
+        if ((project == null) || project.isConnected() || project.isConnectionInProgress()) {
             return false;
         }
-        if (project.isConnected() || project.isConnectionInProgress()) {
-            return false;
-        }
+
         if (!nodes[0].getName().equals(project.getProjectDirectory().getName())) {
             return false;
         }
+
         return lockExists(project);
     }
 
@@ -160,7 +159,7 @@ public final class DeleteLockAction extends NodeAction {
                             return DatabaseConnection.getConnection(project.getRuntimeProps(), 2);
                         }
                     });
-            RequestProcessor.getDefault().post(task);
+            proc.post(task);
             con = task.get(300, TimeUnit.MILLISECONDS);
             set = con.createStatement().executeQuery(DomainserverProject.STMT_READ_LOCKS);
 
