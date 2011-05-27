@@ -250,5 +250,18 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <preparationGoals>clean install</preparationGoals>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <goals>deploy nbm:autoupdate</goals>
+                        <!-- jalopy compile interferes with the release plugin so it must be deactivated -->
+                    <arguments>-Djalopy.skip=true</arguments>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
