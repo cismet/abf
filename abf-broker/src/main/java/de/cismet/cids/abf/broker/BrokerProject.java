@@ -135,7 +135,7 @@ public class BrokerProject implements Project {
                     e);
             }
         }
-        
+
         return properties;
     }
 

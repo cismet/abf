@@ -29,6 +29,7 @@ public class BrokerLogicalView implements LogicalViewProvider {
     //~ Instance fields --------------------------------------------------------
 
     private final transient BrokerProject project;
+    private transient volatile BrokerProjectNode view;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -50,29 +51,37 @@ public class BrokerLogicalView implements LogicalViewProvider {
 
     @Override
     public Node createLogicalView() {
-        // Get the DataObject that represents it
-        final DataFolder projDirDataObject = DataFolder.findFolder(project.getProjectDirectory());
-        final Children children = projDirDataObject.createNodeChildren(
-                new DataFilter() {
+        if (view == null) {
+            synchronized (this) {
+                if (view == null) {
+                    // Get the DataObject that represents it
+                    final DataFolder projDirDataObject = DataFolder.findFolder(project.getProjectDirectory());
+                    final Children children = projDirDataObject.createNodeChildren(
+                            new DataFilter() {
 
-                    @Override
-                    public boolean acceptDataObject(final DataObject dataObject) {
-                        // TODO: shall this filter only accept properties files????
-                        final FileObject fo = dataObject.getPrimaryFile();
-                        final String name = fo.getName();
-                        // CVS Folder
-                        if (fo.isFolder()
-                                    && ("cvs".equalsIgnoreCase(name)      // NOI18N
-                                        || BrokerProjectFactory.PROJECT_DIR.equalsIgnoreCase(name))) {
-                            return false;
-                        }
-                        if ("properties".equalsIgnoreCase(fo.getExt())) { // NOI18N
-                            return true;
-                        }
-                        
-                        return false;
-                    }
-                });
-        return new BrokerProjectNode(new AbstractNode(children), project);
+                                @Override
+                                public boolean acceptDataObject(final DataObject dataObject) {
+                                    // TODO: shall this filter only accept properties files????
+                                    final FileObject fo = dataObject.getPrimaryFile();
+                                    final String name = fo.getName();
+                                    // CVS Folder
+                                    if (fo.isFolder()
+                                                && ("cvs".equalsIgnoreCase(name)      // NOI18N
+                                                    || BrokerProjectFactory.PROJECT_DIR.equalsIgnoreCase(name))) {
+                                        return false;
+                                    }
+                                    if ("properties".equalsIgnoreCase(fo.getExt())) { // NOI18N
+                                        return true;
+                                    }
+
+                                    return false;
+                                }
+                            });
+                    view = new BrokerProjectNode(new AbstractNode(children), project);
+                }
+            }
+        }
+
+        return view;
     }
 }
