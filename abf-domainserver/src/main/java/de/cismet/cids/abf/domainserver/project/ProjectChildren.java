@@ -31,6 +31,7 @@ import de.cismet.cids.abf.utilities.nodes.LoadingNode;
  * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
+// can probably be replaced completely by ChildrenFactory, tbi
 public abstract class ProjectChildren extends Children.Keys {
 
     //~ Static fields/initializers ---------------------------------------------
@@ -88,7 +89,10 @@ public abstract class ProjectChildren extends Children.Keys {
                                 });
 
                             threadedNotify();
-
+                        } catch (final Exception e) {
+                            LOG.error("could not generate keys", e); // NOI18N
+                            setKeysEDT(e);
+                        } finally {
                             EventQueue.invokeLater(new Runnable() {
 
                                     @Override
@@ -96,10 +100,7 @@ public abstract class ProjectChildren extends Children.Keys {
                                         handle.finish();
                                     }
                                 });
-                        } catch (final Exception e) {
-                            LOG.error("could not generate keys", e); // NOI18N
-                            setKeysEDT(e);
-                        } finally {
+
                             loadingNode.dispose();
                             synchronized (lock) {
                                 refreshInProgress = false;

@@ -15,6 +15,7 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.AbstractNode;
+import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
@@ -31,6 +32,9 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 
 import java.text.MessageFormat;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -78,7 +82,7 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
      * @param  project  DOCUMENT ME!
      */
     public DomainserverProjectNode(final DomainserverProject project) {
-        super(new DomainserverProjectNodeChildren(project), Lookups.singleton(project));
+        super(Children.create(new DomainserverProjectNodeChildrenFactory(project), false), Lookups.singleton(project));
 
         this.project = project;
         final UserManagement userManagement = new UserManagement(project);
@@ -218,7 +222,7 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
      *
      * @version  $Revision$, $Date$
      */
-    private static final class DomainserverProjectNodeChildren extends Children.Keys {
+    private static final class DomainserverProjectNodeChildrenFactory extends ChildFactory<Node> {
 
         //~ Instance fields ----------------------------------------------------
 
@@ -231,34 +235,19 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
          *
          * @param  project  DOCUMENT ME!
          */
-        public DomainserverProjectNodeChildren(final DomainserverProject project) {
+        public DomainserverProjectNodeChildrenFactory(final DomainserverProject project) {
             this.project = project;
         }
 
         //~ Methods ------------------------------------------------------------
 
         @Override
-        protected Node[] createNodes(final Object key) {
-            if (key instanceof Node) {
-                return new Node[] { (Node)key };
-            } else {
-                throw new IllegalStateException("illegal key received"); // NOI18N
-            }
+        protected Node createNodeForKey(final Node key) {
+            return key;
         }
 
         @Override
-        protected void addNotify() {
-            final Node runtimeNode;
-            try {
-                final FileObject runtimeFO = project.getProjectDirectory().getFileObject("runtime.properties"); // NOI18N
-                final DataObject runtimeDO = DataObject.find(runtimeFO);
-                runtimeNode = runtimeDO.getNodeDelegate();
-            } catch (final Exception e) {
-                final String message = "cannot create project view";                                            // NOI18N
-                LOG.error(message, e);
-                throw new IllegalStateException(message, e);
-            }
-
+        protected boolean createKeys(final List<Node> toPopulate) {
             final Lookup lkp = project.getLookup();
             final UserManagement um = lkp.lookup(UserManagement.class);
             final ClassManagement cm = lkp.lookup(ClassManagement.class);
@@ -271,9 +260,20 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
             final QueryManagement qm = lkp.lookup(QueryManagement.class);
             final SyncManagement sm = lkp.lookup(SyncManagement.class);
 
-            final Node[] n = new Node[] { runtimeNode, um, cm, vm, catm, tm, cam, jcm, im, qm, sm };
+            final Node runtimeNode;
+            try {
+                final FileObject runtimeFO = project.getProjectDirectory().getFileObject("runtime.properties"); // NOI18N
+                final DataObject runtimeDO = DataObject.find(runtimeFO);
+                runtimeNode = runtimeDO.getNodeDelegate();
+            } catch (final Exception e) {
+                final String message = "cannot create project view";                                            // NOI18N
+                LOG.error(message, e);
+                throw new IllegalStateException(message, e);
+            }
 
-            setKeys(n);
+            toPopulate.addAll(Arrays.asList(new Node[] { runtimeNode, um, cm, vm, catm, tm, cam, jcm, im, qm, sm }));
+
+            return true;
         }
     }
 

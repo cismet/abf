@@ -34,6 +34,7 @@ public final class DomainserverLogicalView implements LogicalViewProvider {
 
     private final transient DomainserverProject project;
     private transient int skippedCounter;
+    private transient volatile DomainserverProjectNode view;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -115,6 +116,14 @@ public final class DomainserverLogicalView implements LogicalViewProvider {
 
     @Override
     public Node createLogicalView() {
-        return new DomainserverProjectNode(project);
+        if (view == null) {
+            synchronized (this) {
+                if (view == null) {
+                    view = new DomainserverProjectNode(project);
+                }
+            }
+        }
+
+        return view;
     }
 }

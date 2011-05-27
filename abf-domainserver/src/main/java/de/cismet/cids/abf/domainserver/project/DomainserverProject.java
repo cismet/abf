@@ -82,6 +82,7 @@ import de.cismet.diff.db.DatabaseConnection;
  * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
+// TODO: refactor
 public final class DomainserverProject implements Project, Connectable {
 
     //~ Static fields/initializers ---------------------------------------------
