@@ -7,6 +7,8 @@
 ****************************************************/
 package de.cismet.cids.abf.client;
 
+import org.netbeans.spi.project.ui.support.CommonProjectActions;
+
 import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
@@ -15,6 +17,8 @@ import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 
 import java.awt.Image;
+
+import javax.swing.Action;
 
 /**
  * DOCUMENT ME!
@@ -63,5 +67,14 @@ public final class ClientProjectNode extends FilterNode {
     @Override
     public Image getOpenedIcon(final int type) {
         return icon;
+    }
+
+    @Override
+    public Action[] getActions(final boolean context) {
+        return new Action[] {
+                CommonProjectActions.customizeProjectAction(),
+                null,
+                CommonProjectActions.closeProjectAction()
+            };
     }
 }
