@@ -23,6 +23,7 @@ public final class LibrarySupportLogicalView implements LogicalViewProvider {
     //~ Instance fields --------------------------------------------------------
 
     private final transient LibrarySupportProject project;
+    private transient volatile LibrarySupportProjectNode view;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -44,9 +45,15 @@ public final class LibrarySupportLogicalView implements LogicalViewProvider {
 
     @Override
     public Node createLogicalView() {
-        final LibrarySupportProjectNode view = new LibrarySupportProjectNode(
-                project);
-        project.addLookup(Lookups.fixed(view));
+        if (view == null) {
+            synchronized (this) {
+                if (view == null) {
+                    view = new LibrarySupportProjectNode(project);
+                    project.addLookup(Lookups.fixed(view));
+                }
+            }
+        }
+
         return view;
     }
 }

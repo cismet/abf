@@ -63,8 +63,7 @@ public final class PackageFolderNode extends FilterNode implements Observer {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            PackageFolderNode.class);
+    private static final transient Logger LOG = Logger.getLogger(PackageFolderNode.class);
 
     private static final Image IMG_PACKAGE;
     private static final Image IMG_PACKAGE_EMTPY;
