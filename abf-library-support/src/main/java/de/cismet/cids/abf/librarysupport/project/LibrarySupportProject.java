@@ -16,6 +16,7 @@ import org.netbeans.spi.project.ProjectState;
 import org.openide.filesystems.FileObject;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
+import org.openide.util.RequestProcessor;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 
@@ -36,8 +37,7 @@ public final class LibrarySupportProject implements Project {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            LibrarySupportProject.class);
+    private static final transient Logger LOG = Logger.getLogger(LibrarySupportProject.class);
 
     public static final String EXT_DIR = "ext";         // NOI18N
     public static final String INT_DIR = "int";         // NOI18N
@@ -48,6 +48,7 @@ public final class LibrarySupportProject implements Project {
 
     //~ Instance fields --------------------------------------------------------
 
+    private final transient RequestProcessor processor = new RequestProcessor("LibrarySupportRP(" + this + ")", 7);
     private final transient FileObject distDir;
     private final transient ProjectState state;
     private final transient LibrarySupportLogicalView view;
@@ -78,6 +79,15 @@ public final class LibrarySupportProject implements Project {
     @Override
     public FileObject getProjectDirectory() {
         return distDir;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public RequestProcessor getProcessor() {
+        return processor;
     }
 
     /**

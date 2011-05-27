@@ -56,8 +56,7 @@ public final class LocalManagement extends ProjectNode implements LocalManagemen
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            LocalManagement.class);
+    private static final transient Logger LOG = Logger.getLogger(LocalManagement.class);
 
     public static final String SRC_DIR = "src/plain"; // NOI18N
 
@@ -97,8 +96,15 @@ public final class LocalManagement extends ProjectNode implements LocalManagemen
         nodeImage = ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER
                         + "home_16.gif"); // NOI18N
         setName(localDir.getName());
+
         // init children to ensure the filechangelisteners will be initialized
-        getChildren().getNodes();
+        project.getProcessor().post(new Runnable() {
+
+                @Override
+                public void run() {
+                    getChildren().getNodes();
+                }
+            });
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -138,14 +144,16 @@ public final class LocalManagement extends ProjectNode implements LocalManagemen
 
     @Override
     public Image getIcon(final int i) {
+        Image image = nodeImage;
         if (ModificationStore.getInstance().anyModifiedInContext(
                         FileUtil.toFile(
                             sourceDir).getAbsolutePath(),
                         ModificationStore.MOD_CHANGED)) {
             final Image badge = ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER + "blueDot_7.gif"); // NOI18N
-            return ImageUtilities.mergeImages(nodeImage, badge, 10, 10);
+            image = ImageUtilities.mergeImages(nodeImage, badge, 10, 10);
         }
-        return nodeImage;
+
+        return image;
     }
 
     @Override
@@ -252,8 +260,7 @@ final class ResourceJarManangementChildren extends Children.Keys {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            ResourceJarManangementChildren.class);
+    private static final transient Logger LOG = Logger.getLogger(ResourceJarManangementChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -268,8 +275,7 @@ final class ResourceJarManangementChildren extends Children.Keys {
      * @param  project  DOCUMENT ME!
      * @param  sources  DOCUMENT ME!
      */
-    public ResourceJarManangementChildren(final LibrarySupportProject project,
-            final FileObject sources) {
+    public ResourceJarManangementChildren(final LibrarySupportProject project, final FileObject sources) {
         this.project = project;
         this.sources = sources;
     }
@@ -293,6 +299,7 @@ final class ResourceJarManangementChildren extends Children.Keys {
             setKeys(new Object[] {});
             return;
         }
+
         sources.refresh();
         final ArrayList<FileObject> fos = new ArrayList<FileObject>();
         for (final Enumeration<? extends FileObject> e = sources.getFolders(false); e.hasMoreElements();) {

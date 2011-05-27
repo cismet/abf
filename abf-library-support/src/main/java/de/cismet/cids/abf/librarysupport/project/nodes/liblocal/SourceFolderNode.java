@@ -103,9 +103,15 @@ public final class SourceFolderNode extends ProjectNode implements SourceContext
             getCookieSet().add(
                 new PackageContextCookieImpl(sourceDir, sourceDir));
             ModificationStore.getInstance().addObserver(this);
-            // init children to ensure the filechangelisteners will be
-            // initialized
-            getChildren().getNodes();
+
+            // init children to ensure the filechangelisteners will be initialized
+            project.getProcessor().post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        getChildren().getNodes();
+                    }
+                });
         }
     }
 

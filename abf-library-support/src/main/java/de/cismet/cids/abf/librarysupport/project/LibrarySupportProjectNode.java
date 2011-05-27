@@ -86,8 +86,7 @@ public final class LibrarySupportProjectNode extends AbstractNode implements Ref
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            LibrarySupportProjectNode.class);
+    private static final transient Logger LOG = Logger.getLogger(LibrarySupportProjectNode.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -113,16 +112,23 @@ public final class LibrarySupportProjectNode extends AbstractNode implements Ref
      */
     private LibrarySupportProjectNode(final LibrarySupportProject project, final InstanceContent content) {
         super(new LibrarySupportProjectNodeChildren(project), new AbstractLookup(content));
-        nodeImage = ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER
-                        + "category_16.gif");               // NOI18N
+        nodeImage = ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER + "category_16.gif"); // NOI18N
         this.project = project;
         content.add(project);
         content.add((RefreshCookie)this);
         setName(project.getProjectDirectory().getParent().getName()
                     + NbBundle.getMessage(
                         this.getClass(),
-                        "LibrarySupportProjectNode.name")); // NOI18N
-        getChildren().getNodes();
+                        "LibrarySupportProjectNode.name"));                                           // NOI18N
+
+        // force node initialisation
+        project.getProcessor().post(new Runnable() {
+
+                @Override
+                public void run() {
+                    getChildren().getNodes();
+                }
+            });
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -159,13 +165,13 @@ public final class LibrarySupportProjectNode extends AbstractNode implements Ref
             return ImageUtilities.mergeImages(nodeImage, badge, 3, 3);
         }
         setShortDescription(FileUtil.toFile(project.getProjectDirectory()).getAbsolutePath());
+
         return nodeImage;
     }
 
     @Override
     public Action[] getActions(final boolean b) {
-        final ProjectCloseHookAction closeHook = new ProjectCloseHookAction(
-                CommonProjectActions.closeProjectAction());
+        final ProjectCloseHookAction closeHook = new ProjectCloseHookAction(CommonProjectActions.closeProjectAction());
         return new Action[] {
                 closeHook,
                 null,
@@ -353,10 +359,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys {
         this.project = project;
         this.fileL = new FileChangeListenerImpl();
         final FileObject projDir = project.getProjectDirectory();
-        projDir.addFileChangeListener((FileChangeListener)WeakListeners.create(
-                FileChangeListener.class,
-                fileL,
-                projDir));
+        projDir.addFileChangeListener(WeakListeners.create(FileChangeListener.class, fileL, projDir));
     }
 
     //~ Methods ----------------------------------------------------------------

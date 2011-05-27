@@ -102,8 +102,15 @@ public final class StarterManagement extends ProjectNode implements SourceContex
         final String name = starterDir.getName();
         setName(name);
         setDisplayName(name);
+
         // init children to ensure the filechangelisteners will be initialized
-        getChildren().getNodes();
+        project.getProcessor().post(new Runnable() {
+
+                @Override
+                public void run() {
+                    getChildren().getNodes();
+                }
+            });
     }
 
     //~ Methods ----------------------------------------------------------------

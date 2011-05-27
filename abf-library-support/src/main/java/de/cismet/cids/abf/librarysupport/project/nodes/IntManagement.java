@@ -11,6 +11,7 @@ import org.openide.nodes.FilterNode;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
+import org.openide.util.NbBundle;
 import org.openide.util.lookup.Lookups;
 import org.openide.util.lookup.ProxyLookup;
 
@@ -51,8 +52,7 @@ public final class IntManagement extends FilterNode {
 
     @Override
     public Image getIcon(final int i) {
-        return ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER
-                        + "intern_16.png"); // NOI18N
+        return ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER + "intern_16.png"); // NOI18N
     }
 
     @Override
@@ -62,8 +62,6 @@ public final class IntManagement extends FilterNode {
 
     @Override
     public String getName() {
-        return org.openide.util.NbBundle.getMessage(
-                IntManagement.class,
-                "IntManagement.getName().returnvalue"); // NOI18N
+        return NbBundle.getMessage(IntManagement.class, "IntManagement.getName().returnvalue"); // NOI18N
     }
 }
