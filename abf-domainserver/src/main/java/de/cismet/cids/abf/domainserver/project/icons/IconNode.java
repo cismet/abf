@@ -65,9 +65,10 @@ public final class IconNode extends ProjectNode {
      */
     public IconNode(final Icon icon, final DomainserverProject project) {
         super(Children.LEAF, project);
+
         this.icon = icon;
-        defaultIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "javaclass.png"); // NOI18N
+
+        defaultIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "javaclass.png"); // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -90,6 +91,7 @@ public final class IconNode extends ProjectNode {
         if (image == null) {
             image = defaultIcon;
         }
+
         return image;
     }
 
@@ -121,13 +123,15 @@ public final class IconNode extends ProjectNode {
                             JOptionPane.INFORMATION_MESSAGE);
                     }
                 });
+
             return;
         }
+
         try {
             project.getCidsDataObjectBackend().deleteIcon(icon);
-            ((IconManagement)project.getLookup().lookup(IconManagement.class)).refreshChildren();
+            project.getLookup().lookup(IconManagement.class).refreshChildren();
         } catch (final Exception e) {
-            LOG.error("error during icon deletion", e);                                   // NOI18N
+            LOG.error("error during icon deletion", e); // NOI18N
             ErrorManager.getDefault().notify(e);
         }
     }
@@ -136,19 +140,14 @@ public final class IconNode extends ProjectNode {
     protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set main = Sheet.createPropertiesSet();
-        main.setName(org.openide.util.NbBundle.getMessage(
-                IconNode.class,
-                "IconNode.createSheet().main.name"));        // NOI18N
+        main.setName(org.openide.util.NbBundle.getMessage(IconNode.class, "IconNode.createSheet().main.name")); // NOI18N
         main.setDisplayName(org.openide.util.NbBundle.getMessage(
                 IconNode.class,
-                "IconNode.createSheet().main.displayName")); // NOI18N
+                "IconNode.createSheet().main.displayName"));                                                    // NOI18N
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
-            final Property idProp = new PropertySupport.Reflection(icon,
-                    Integer.class, "getId", null);          // NOI18N
-            idProp.setName(org.openide.util.NbBundle.getMessage(
-                    IconNode.class,
-                    "IconNode.createSheet().idProp.name")); // NOI18N
+            final Property idProp = new PropertySupport.Reflection(icon, Integer.class, "getId", null);                 // NOI18N
+            idProp.setName(org.openide.util.NbBundle.getMessage(IconNode.class, "IconNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
             final Property nameProp = new PropertySupport(
@@ -183,7 +182,8 @@ public final class IconNode extends ProjectNode {
                             ErrorManager.getDefault().notify(e);
                         }
                     }
-                };                                                // </editor-fold>
+                };
+            // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: PathProp ">
             final Property pathProp = new PropertySupport(
@@ -217,16 +217,18 @@ public final class IconNode extends ProjectNode {
                             ErrorManager.getDefault().notify(e);
                         }
                     }
-                };                                                // </editor-fold>
+                };
+            // </editor-fold>
+
             main.put(idProp);
             main.put(nameProp);
             main.put(pathProp);
             sheet.put(main);
         } catch (final Exception ex) {
-            LOG.error("could not create sheet for icon: "         // NOI18N
-                        + icon.getName(), ex);
+            LOG.error("could not create sheet for icon: " + icon.getName(), ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
         }
+
         return sheet;
     }
 }

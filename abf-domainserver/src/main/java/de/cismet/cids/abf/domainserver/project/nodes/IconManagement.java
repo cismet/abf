@@ -15,8 +15,9 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 
-import java.awt.EventQueue;
 import java.awt.Image;
+
+import java.io.IOException;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.icons.IconManagementContextCookie;
 import de.cismet.cids.abf.domainserver.project.icons.IconNode;
@@ -31,7 +33,6 @@ import de.cismet.cids.abf.domainserver.project.icons.NewIconAction;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
-import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.entity.cidsclass.Icon;
@@ -58,13 +59,13 @@ public final class IconManagement extends ProjectNode implements ConnectionListe
      */
     public IconManagement(final DomainserverProject project) {
         super(Children.LEAF, project);
-        image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER
-                        + "icons.png"); // NOI18N
+        image = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "icons.png"); // NOI18N
         project.addConnectionListener(WeakListeners.create(ConnectionListener.class, this, project));
         getCookieSet().add(this);
+
         setDisplayName(org.openide.util.NbBundle.getMessage(
                 IconManagement.class,
-                "IconManagement.IconManagement(DomainserverProject).displayName"));
+                "IconManagement.IconManagement(DomainserverProject).displayName")); // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -98,8 +99,8 @@ public final class IconManagement extends ProjectNode implements ConnectionListe
      */
     public void refreshChildren() {
         final Children ch = getChildren();
-        if (ch instanceof IconManagementChildren) {
-            ((IconManagementChildren)ch).refreshAll();
+        if (ch instanceof ProjectChildren) {
+            ((ProjectChildren)ch).refreshByNotify();
         }
     }
 }
@@ -109,17 +110,11 @@ public final class IconManagement extends ProjectNode implements ConnectionListe
  *
  * @version  $Revision$, $Date$
  */
-final class IconManagementChildren extends Children.Keys {
+final class IconManagementChildren extends ProjectChildren {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            IconManagementChildren.class);
-
-    //~ Instance fields --------------------------------------------------------
-
-    private final transient DomainserverProject project;
-    private transient LoadingNode loadingNode;
+    private static final transient Logger LOG = Logger.getLogger(IconManagementChildren.class);
 
     //~ Constructors -----------------------------------------------------------
 
@@ -129,63 +124,36 @@ final class IconManagementChildren extends Children.Keys {
      * @param  project  DOCUMENT ME!
      */
     public IconManagementChildren(final DomainserverProject project) {
-        this.project = project;
+        super(project);
     }
 
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    protected Node[] createNodes(final Object object) {
-        if (object instanceof LoadingNode) {
-            return new Node[] { (LoadingNode)object };
-        } else if (object instanceof Icon) {
-            return new Node[] { new IconNode((Icon)object, project) };
+    protected Node[] createUserNodes(final Object o) {
+        if (o instanceof Icon) {
+            return new Node[] { new IconNode((Icon)o, project) };
         } else {
             return new Node[] {};
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     */
-    void refreshAll() {
-        addNotify();
-    }
-
     @Override
-    protected void addNotify() {
-        loadingNode = new LoadingNode();
-        setKeys(new Object[] { loadingNode });
-        refresh();
-        final Thread t = new Thread(new Runnable() {
+    protected void threadedNotify() throws IOException {
+        try {
+            final List<Icon> icons = project.getCidsDataObjectBackend().getAllEntities(Icon.class);
+            Collections.sort(icons, new Comparators.Icons());
+            setKeysEDT(icons);
+        } catch (final Exception ex) {
+            final String message = "could not load icons";            // NOI18N
+            LOG.error(message, ex);
+            ErrorUtils.showErrorMessage(
+                org.openide.util.NbBundle.getMessage(
+                    IconManagementChildren.class,
+                    "IconManagement.addNotify().ErrorUtils.message"), // NOI18N
+                ex);
 
-                    @Override
-                    public void run() {
-                        try {
-                            final List<Icon> icons = project.getCidsDataObjectBackend().getAllEntities(Icon.class);
-                            Collections.sort(icons, new Comparators.Icons());
-                            EventQueue.invokeLater(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        setKeys(icons);
-                                    }
-                                });
-                        } catch (final Exception ex) {
-                            LOG.error("could not load icons", ex); // NOI18N
-                            ErrorUtils.showErrorMessage(
-                                org.openide.util.NbBundle.getMessage(
-                                    IconManagementChildren.class,
-                                    "IconManagement.addNotify().ErrorUtils.message"),
-                                ex);                               // NOI18N
-                        } finally {
-                            if (loadingNode != null) {
-                                loadingNode.dispose();
-                                loadingNode = null;
-                            }
-                        }
-                    }
-                }, getClass().getSimpleName() + "::addNotifyRunner"); // NOI18N
-        t.start();
+            throw new IOException(message, ex);
+        }
     }
 }
