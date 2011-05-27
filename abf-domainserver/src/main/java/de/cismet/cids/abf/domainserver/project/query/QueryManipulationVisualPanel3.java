@@ -374,26 +374,30 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements Obser
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         setMaximumSize(new java.awt.Dimension(661, 460));
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblRight, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblRight.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblRight,
+            org.openide.util.NbBundle.getMessage(
+                QueryManipulationVisualPanel3.class,
+                "QueryManipulationVisualPanel3.lblRight.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblGroups, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblGroups.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblGroups,
+            org.openide.util.NbBundle.getMessage(
+                QueryManipulationVisualPanel3.class,
+                "QueryManipulationVisualPanel3.lblGroups.text")); // NOI18N
 
         jScrollPane1.setViewportView(lstGroup);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+                new Object[][] {
+                    { null, null, null, null },
+                    { null, null, null, null },
+                    { null, null, null, null },
+                    { null, null, null, null }
+                },
+                new String[] { "Title 1", "Title 2", "Title 3", "Title 4" }));
         jScrollPane2.setViewportView(jTable1);
 
         org.openide.awt.Mnemonics.setLocalizedText(btnAddAll, "<<");
@@ -404,27 +408,30 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements Obser
 
         org.openide.awt.Mnemonics.setLocalizedText(btnRemoveAll, ">>");
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblStmt, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblStmt.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblStmt,
+            org.openide.util.NbBundle.getMessage(
+                QueryManipulationVisualPanel3.class,
+                "QueryManipulationVisualPanel3.lblStmt.text")); // NOI18N
 
         tblRights.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+                new Object[][] {},
+                new String[] { "Title 1", "Title 2", "Title 3" }) {
 
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, false
-            };
+                boolean[] canEdit = new boolean[] { false, true, false };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+                @Override
+                public boolean isCellEditable(final int rowIndex, final int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            });
         jScrollPane4.setViewportView(tblRights);
 
-        org.openide.awt.Mnemonics.setLocalizedText(lblRights, org.openide.util.NbBundle.getMessage(QueryManipulationVisualPanel3.class, "QueryManipulationVisualPanel3.lblRights.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblRights,
+            org.openide.util.NbBundle.getMessage(
+                QueryManipulationVisualPanel3.class,
+                "QueryManipulationVisualPanel3.lblRights.text")); // NOI18N
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(104, 20));
 
@@ -432,83 +439,108 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements Obser
         edpStmt.setPreferredSize(new java.awt.Dimension(90, 16));
         jScrollPane3.setViewportView(edpStmt);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE)
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                        .add(layout.createSequentialGroup()
-                                            .add(27, 27, 27)
-                                            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 293, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                            .add(jScrollPane4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 315, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                            .add(lblRights)))
-                                    .add(lblStmt))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 93, Short.MAX_VALUE)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, layout.createSequentialGroup()
-                                        .add(lblRight)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(cboRight, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .add(layout.createSequentialGroup()
-                                        .add(lblGroups)
-                                        .add(155, 155, 155))
-                                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 208, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                    .add(layout.createSequentialGroup()
-                        .add(349, 349, 349)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(btnAdd, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(btnAddAll, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(btnRemoveAll, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(btnRemove, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
-        );
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                        layout.createSequentialGroup().addContainerGap().add(
+                            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                                jScrollPane3,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                621,
+                                Short.MAX_VALUE).add(
+                                layout.createSequentialGroup().add(
+                                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                                        org.jdesktop.layout.GroupLayout.TRAILING,
+                                        layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                                            layout.createSequentialGroup().add(27, 27, 27).add(
+                                                jScrollPane2,
+                                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                                                293,
+                                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).add(
+                                            org.jdesktop.layout.GroupLayout.TRAILING,
+                                            layout.createParallelGroup(
+                                                org.jdesktop.layout.GroupLayout.LEADING).add(
+                                                jScrollPane4,
+                                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                                                315,
+                                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(lblRights))).add(
+                                        lblStmt)).addPreferredGap(
+                                    org.jdesktop.layout.LayoutStyle.RELATED,
+                                    93,
+                                    Short.MAX_VALUE).add(
+                                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false).add(
+                                        org.jdesktop.layout.GroupLayout.LEADING,
+                                        layout.createSequentialGroup().add(lblRight).addPreferredGap(
+                                            org.jdesktop.layout.LayoutStyle.RELATED).add(
+                                            cboRight,
+                                            0,
+                                            org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                            Short.MAX_VALUE)).add(
+                                        layout.createSequentialGroup().add(lblGroups).add(155, 155, 155)).add(
+                                        org.jdesktop.layout.GroupLayout.LEADING,
+                                        jScrollPane1,
+                                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                                        208,
+                                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))).add(
+                        layout.createSequentialGroup().add(349, 349, 349).add(
+                            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false).add(
+                                btnAdd,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE).add(
+                                btnAddAll,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE).add(
+                                btnRemoveAll,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE).add(
+                                btnRemove,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE)))).addContainerGap()));
         layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(lblStmt)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 84, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(layout.createSequentialGroup()
-                        .add(45, 45, 45)
-                        .add(lblRights))
-                    .add(layout.createSequentialGroup()
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(lblRight)
-                            .add(cboRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(lblGroups)))
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .add(44, 44, 44)
-                        .add(btnAddAll)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(btnAdd)
-                        .add(20, 20, 20)
-                        .add(btnRemove)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(btnRemoveAll))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jScrollPane1)
-                            .add(jScrollPane4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 248, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                layout.createSequentialGroup().addContainerGap().add(lblStmt).addPreferredGap(
+                    org.jdesktop.layout.LayoutStyle.RELATED).add(
+                    jScrollPane3,
+                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                    84,
+                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false).add(
+                        layout.createSequentialGroup().add(45, 45, 45).add(lblRights)).add(
+                        layout.createSequentialGroup().addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
+                            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblRight).add(
+                                cboRight,
+                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                            org.jdesktop.layout.LayoutStyle.RELATED,
+                            org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                            Short.MAX_VALUE).add(lblGroups))).add(
+                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
+                        layout.createSequentialGroup().add(44, 44, 44).add(btnAddAll).addPreferredGap(
+                            org.jdesktop.layout.LayoutStyle.RELATED).add(btnAdd).add(20, 20, 20).add(btnRemove)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(btnRemoveAll)).add(
+                        org.jdesktop.layout.GroupLayout.TRAILING,
+                        layout.createSequentialGroup().addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
+                            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jScrollPane1).add(
+                                jScrollPane4,
+                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                                248,
+                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
+                            org.jdesktop.layout.LayoutStyle.RELATED).add(
+                            jScrollPane2,
+                            org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
+                            0,
+                            org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))).addContainerGap(
+                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
+                    Short.MAX_VALUE)));
+    } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
 
@@ -567,9 +599,9 @@ public final class QueryManipulationVisualPanel3 extends JPanel implements Obser
             // not needed
         } // </editor-fold>
 
-        // field is needed for drag and drop (why?)
-
         //~ Instance fields ----------------------------------------------------
+
+        // field is needed for drag and drop (why?)
 
         // </editor-fold>
 
