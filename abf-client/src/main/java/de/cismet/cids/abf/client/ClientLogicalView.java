@@ -29,6 +29,7 @@ public class ClientLogicalView implements LogicalViewProvider {
     //~ Instance fields --------------------------------------------------------
 
     private final transient ClientProject project;
+    private transient volatile ClientProjectNode view;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -50,32 +51,40 @@ public class ClientLogicalView implements LogicalViewProvider {
 
     @Override
     public Node createLogicalView() {
-        // Get the DataObject that represents it
-        final DataFolder projDirDataObject = DataFolder.findFolder(project.getProjectDirectory());
-        final Children children = projDirDataObject.createNodeChildren(
-                new DataFilter() {
+        if (view == null) {
+            synchronized (this) {
+                if (view == null) {
+                    // Get the DataObject that represents it
+                    final DataFolder projDirDataObject = DataFolder.findFolder(project.getProjectDirectory());
+                    final Children children = projDirDataObject.createNodeChildren(
+                            new DataFilter() {
 
-                    @Override
-                    public boolean acceptDataObject(final DataObject dataObject) {
-                        final FileObject fo = dataObject.getPrimaryFile();
-                        final String name = fo.getName();
-                        final String ext = fo.getExt();
-                        // CVS Folder
-                        if (fo.isFolder()
-                                    && ("cvs".equalsIgnoreCase(name)      // NOI18N
-                                        || ClientProjectFactory.PROJECT_DIR.equalsIgnoreCase(name))) {
-                            return false;
-                        }
-                        if (fo.isFolder()
-                                    || "jnlp".equalsIgnoreCase(ext)       // NOI18N
-                                    || "cfg".equalsIgnoreCase(ext)        // NOI18N
-                                    || "properties".equalsIgnoreCase(ext) // NOI18N
-                                    || "xml".equalsIgnoreCase(ext)) {     // NOI18N
-                            return true;
-                        }
-                        return false;
-                    }
-                });
-        return new ClientProjectNode(new AbstractNode(children), project);
+                                @Override
+                                public boolean acceptDataObject(final DataObject dataObject) {
+                                    final FileObject fo = dataObject.getPrimaryFile();
+                                    final String name = fo.getName();
+                                    final String ext = fo.getExt();
+                                    // CVS Folder
+                                    if (fo.isFolder()
+                                                && ("cvs".equalsIgnoreCase(name)      // NOI18N
+                                                    || ClientProjectFactory.PROJECT_DIR.equalsIgnoreCase(name))) {
+                                        return false;
+                                    }
+                                    if (fo.isFolder()
+                                                || "jnlp".equalsIgnoreCase(ext)       // NOI18N
+                                                || "cfg".equalsIgnoreCase(ext)        // NOI18N
+                                                || "properties".equalsIgnoreCase(ext) // NOI18N
+                                                || "xml".equalsIgnoreCase(ext)) {     // NOI18N
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            });
+                    view = new ClientProjectNode(new AbstractNode(children), project);
+                }
+            }
+        }
+
+        return view;
     }
 }
