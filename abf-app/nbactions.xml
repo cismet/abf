@@ -9,6 +9,7 @@
             <goal>nbm:run-platform</goal>
         </goals>
         <properties>
+            <jalopy.skip>true</jalopy.skip>
             <jarsigner.skip>true</jarsigner.skip>
             <netbeans.run.params>-J-XX:MaxPermSize=128m</netbeans.run.params>
         </properties>
@@ -20,15 +21,33 @@
             <goal>nbm:run-platform</goal>
         </goals>
         <properties>
+            <jalopy.skip>true</jalopy.skip>
             <jarsigner.skip>true</jarsigner.skip>
             <netbeans.run.params>-J-XX:MaxPermSize=128m</netbeans.run.params>
         </properties>
     </action>
     <action>
-            <actionName>CUSTOM-Run Platform</actionName>
-            <displayName>Run Platform</displayName>
-            <goals>
-                <goal>nbm:run-platform</goal>
-            </goals>
-        </action>
+        <actionName>CUSTOM-Run Platform</actionName>
+        <displayName>Run Platform</displayName>
+        <goals>
+            <goal>nbm:run-platform</goal>
+        </goals>
+        <properties>
+            <jalopy.skip>true</jalopy.skip>
+            <jarsigner.skip>true</jarsigner.skip>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-Debug Platform</actionName>
+        <displayName>Debug Platform</displayName>
+        <goals>
+            <goal>nbm:run-platform</goal>
+        </goals>
+        <properties>
+            <jalopy.skip>true</jalopy.skip>
+            <jarsigner.skip>true</jarsigner.skip>
+            <jpda.listen>true</jpda.listen>
+            <netbeans.run.params.ide>-J-Xss5m -J-Xdebug -J-Xrunjdwp:transport=dt_socket,suspend=n,server=n,address=${jpda.address}</netbeans.run.params.ide>
+        </properties>
+    </action>
 </actions>

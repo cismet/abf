@@ -20,6 +20,11 @@
         <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-app/</developerConnection>
         <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-app/</url>
     </scm>
+    
+    <properties>
+        <netbeans.run.params.ide/>
+        <netbeans.run.params>${netbeans.run.params.ide}</netbeans.run.params>
+    </properties>
 
     <dependencies>
         <!-- START: ENABLED CLUSTERS -->
@@ -135,6 +140,12 @@
             <type>nbm</type>
             <version>3.1-SNAPSHOT</version>
         </dependency>
+<!--        <dependency>
+            <groupId>de.cismet.cids.abf</groupId>
+            <artifactId>abf-options</artifactId>
+            <type>nbm</type>
+            <version>3.1-SNAPSHOT</version>
+        </dependency>-->
     </dependencies>
 
     <build>
