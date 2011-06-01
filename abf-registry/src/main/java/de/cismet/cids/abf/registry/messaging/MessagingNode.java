@@ -166,7 +166,6 @@ class MessagingChildren extends Children.Keys {
 
     @Override
     protected void addNotify() {
-        super.addNotify();
         try {
             setKeys(registryProject.getMessageForwarder().getAllActiveDomains());
         } catch (final Exception ex) {

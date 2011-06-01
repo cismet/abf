@@ -19,9 +19,13 @@ import org.netbeans.spi.project.ActionProvider;
 import org.netbeans.spi.project.ProjectState;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
 
+import org.openide.filesystems.FileChangeAdapter;
+import org.openide.filesystems.FileChangeListener;
+import org.openide.filesystems.FileEvent;
 import org.openide.filesystems.FileObject;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
+import org.openide.util.WeakListeners;
 import org.openide.util.lookup.Lookups;
 
 import java.awt.EventQueue;
@@ -69,8 +73,9 @@ public class RegistryProject implements Project, Connectable {
     private final transient FileObject projectDir;
     private final transient ProjectState state;
     private final transient LogicalViewProvider logicalView;
-    private final transient Properties runtimeProps;
+    private transient Properties runtimeProps;
     private final transient ConnectionSupport connectionSupport;
+    private final transient FileChangeListener runtimeL;
 
     private transient Lookup lkp;
     private transient RMForwarder messageForwarder;
@@ -82,27 +87,31 @@ public class RegistryProject implements Project, Connectable {
     /**
      * Creates a new RegistryProject object.
      *
-     * @param   projDir  DOCUMENT ME!
-     * @param   state    DOCUMENT ME!
-     *
-     * @throws  IllegalStateException  DOCUMENT ME!
+     * @param  projDir  DOCUMENT ME!
+     * @param  state    DOCUMENT ME!
      */
     public RegistryProject(final FileObject projDir, final ProjectState state) {
         this.projectDir = projDir;
         this.state = state;
+        runtimeL = new RuntimePropertyFileListener();
+
         final FileObject fob = projDir.getFileObject(RUNTIME_PROPS);
+        fob.addFileChangeListener(WeakListeners.create(FileChangeListener.class, runtimeL, fob));
+
         runtimeProps = new Properties();
+        LogicalViewProvider view = null;
+        ConnectionSupport cs = null;
 
         try {
             runtimeProps.load(fob.getInputStream());
-        } catch (final Exception e) {
-            final String message = "cannot load runtime.properties"; // NOI18N
-            LOG.error(message, e);
-            throw new IllegalStateException(message, e);
+            view = new RegistryLogicalView(this);
+            cs = new ConnectionSupport();
+        } catch (final IOException ex) {
+            LOG.error("cannot load runtime properties", ex); // NOI18N
         }
 
-        logicalView = new RegistryLogicalView(this);
-        connectionSupport = new ConnectionSupport();
+        logicalView = view;
+        connectionSupport = cs;
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -223,6 +232,7 @@ public class RegistryProject implements Project, Connectable {
                 throw new IllegalStateException(message, e);
             }
         }
+
         return properties;
     }
 
@@ -298,6 +308,26 @@ public class RegistryProject implements Project, Connectable {
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class RuntimePropertyFileListener extends FileChangeAdapter {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void fileChanged(final FileEvent fe) {
+            runtimeProps = new Properties();
+            try {
+                runtimeProps.load(getProjectDirectory().getFileObject(RUNTIME_PROPS).getInputStream());
+            } catch (final IOException ex) {
+                LOG.error("cannot reload runtime properties", ex); // NOI18N
+            }
+        }
+    }
 
     /**
      * DOCUMENT ME!
