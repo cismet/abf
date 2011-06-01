@@ -18,6 +18,7 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.actions.SystemAction;
 import org.openide.util.lookup.Lookups;
@@ -82,18 +83,48 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
     }
 
     @Override
+    public String getDisplayName() {
+        final StringBuilder sb = new StringBuilder(project.getProjectDirectory().getName());
+        sb.append(" [cidsRegistry] "); // NOI18N
+
+        if (project.isConnectionInProgress()) {
+            if (project.isConnected()) {
+                sb.append(NbBundle.getMessage(
+                        RegistryProjectNode.class,
+                        "RegistryProjectNode.getDisplayName().returnvalue.disconnect"));   // NOI18N
+            } else {
+                sb.append(NbBundle.getMessage(
+                        RegistryProjectNode.class,
+                        "RegistryProjectNode.getDisplayName().returnvalue.connect"));      // NOI18N
+            }
+        } else {
+            if (project.isConnected()) {
+                sb.append(NbBundle.getMessage(
+                        RegistryProjectNode.class,
+                        "RegistryProjectNode.getDisplayName().returnvalue.connected"));    // NOI18N
+            } else {
+                sb.append(NbBundle.getMessage(
+                        RegistryProjectNode.class,
+                        "RegistryProjectNode.getDisplayName().returnvalue.disconnected")); // NOI18N
+            }
+        }
+
+        return sb.toString();
+    }
+
+    @Override
     public String getHtmlDisplayName() {
         if (project.isConnectionInProgress()) {
             if (project.isConnected()) {
                 return MessageFormat.format(
                         htmlTemplate,
-                        org.openide.util.NbBundle.getMessage(
+                        NbBundle.getMessage(
                             RegistryProjectNode.class,
                             "RegistryProjectNode.getHtmlDisplayName().returnvalue.disconnect"));   // NOI18N
             } else {
                 return MessageFormat.format(
                         htmlTemplate,
-                        org.openide.util.NbBundle.getMessage(
+                        NbBundle.getMessage(
                             RegistryProjectNode.class,
                             "RegistryProjectNode.getHtmlDisplayName().returnvalue.connect"));      // NOI18N
             }
@@ -101,13 +132,13 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
             if (project.isConnected()) {
                 return MessageFormat.format(
                         htmlTemplate,
-                        org.openide.util.NbBundle.getMessage(
+                        NbBundle.getMessage(
                             RegistryProjectNode.class,
                             "RegistryProjectNode.getHtmlDisplayName().returnvalue.connected"));    // NOI18N
             } else {
                 return MessageFormat.format(
                         htmlTemplate,
-                        org.openide.util.NbBundle.getMessage(
+                        NbBundle.getMessage(
                             RegistryProjectNode.class,
                             "RegistryProjectNode.getHtmlDisplayName().returnvalue.disconnected")); // NOI18N
             }
@@ -127,11 +158,7 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isIndeterminate()) {
-            setDisplayName(project.getProjectDirectory().getName() + " ..."); // NOI18N
-        } else {
-            fireDisplayNameChange(null, null);
-        }
+        fireDisplayNameChange(null, null);
     }
 
     @Override
