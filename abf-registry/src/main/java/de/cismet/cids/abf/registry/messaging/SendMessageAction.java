@@ -80,7 +80,7 @@ public final class SendMessageAction extends CookieAction {
                     SendMessageAction.class,
                     "SendMessageAction.performAction(Node[]).message",
                     map.size()));
-        if ((message != null) && (message.trim().isEmpty())) {
+        if ((message != null) && (!message.trim().isEmpty())) {
             for (final Entry<RMUser, RegistryProject> entry : map.entrySet()) {
                 final RegistryProject project = entry.getValue();
                 final RMUser user = entry.getKey();
