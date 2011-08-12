@@ -1345,6 +1345,15 @@ final class DynamicCatalogNodeChildren extends ProjectChildren {
 
     private static final transient Logger LOG = Logger.getLogger(DynamicCatalogNodeChildren.class);
 
+    private static final URLBase EMPTY_URLBASE;
+
+    static {
+        EMPTY_URLBASE = new URLBase();
+        EMPTY_URLBASE.setPath("");           // NOI18N
+        EMPTY_URLBASE.setProtocolPrefix(""); // NOI18N
+        EMPTY_URLBASE.setServer("");         // NOI18N
+    }
+
     //~ Instance fields --------------------------------------------------------
 
     private final transient CatNode parentNode;
@@ -1485,13 +1494,14 @@ final class DynamicCatalogNodeChildren extends ProjectChildren {
      * @return  DOCUMENT ME!
      */
     private URL getURL(final String s) {
-        final URL url = new URL();
-        url.setObjectName(s);
-        final URLBase base = new URLBase();
-        base.setPath("");           // NOI18N
-        base.setProtocolPrefix(""); // NOI18N
-        base.setServer("");         // NOI18N
-        url.setUrlbase(base);
-        return url;
+        if ((s == null) || s.isEmpty()) {
+            return URL.NO_DESCRIPTION;
+        } else {
+            final URL url = new URL();
+            url.setObjectName(s);
+            url.setUrlbase(EMPTY_URLBASE);
+
+            return url;
+        }
     }
 }
