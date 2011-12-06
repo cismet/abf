@@ -5,20 +5,20 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.0.4</version>
+        <version>3.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>abf-utilities</artifactId>
-    <version>3.0.4</version>
+    <version>3.1-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Utilities</name>
     <description>Utility module for cids ABF</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0.4/abf-utilities</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0.4/abf-utilities</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.0.4/abf-utilities</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-utilities/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-utilities/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-utilities/</url>
     </scm>
     
     <dependencies>
