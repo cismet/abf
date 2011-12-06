@@ -164,11 +164,6 @@ public abstract class ConfigAttrEditor extends TopComponent implements ExplorerM
         final boolean before = isTransient();
 
         dataObject.getCookie(ModifyCookie.class).setModified(modified);
-//        if (modified) {
-//            instanceContent.add(dataObject.getCookie(SaveCookie.class));
-//        } else {
-//            instanceContent.remove(dataObject.getCookie(SaveCookie.class));
-//        }
 
         if (before != modified) {
             updateDisplayName();

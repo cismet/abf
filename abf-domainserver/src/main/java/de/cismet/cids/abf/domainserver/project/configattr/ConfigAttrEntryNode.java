@@ -24,6 +24,7 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.windows.TopComponent;
+import org.openide.windows.WindowManager;
 
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -36,6 +37,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -399,10 +401,19 @@ public final class ConfigAttrEntryNode extends ProjectNode {
             final ConfigAttrEditor editor = ConfigAttrEntryEditorFactory.getEditor(ConfigAttrEntryNode.this);
             if (editor == null) {
                 if (LOG.isInfoEnabled()) {
-                    LOG.info("nothing to save");           // NOI18N
+                    LOG.info("nothing to save");                             // NOI18N
                 }
             } else {
-                final ConfigAttrEntry newEntry = editor.getEditorValue();
+                final ConfigAttrEntry newEntry;
+                try {
+                    newEntry = editor.getEditorValue();
+                } catch (final Exception e) {
+                    final String message = "cannot fetch entry from editor"; // NOI18N
+                    LOG.warn(message, e);
+
+                    return;
+                }
+
                 if (LOG.isInfoEnabled()) {
                     LOG.info("saving entry: " + newEntry); // NOI18N
                 }

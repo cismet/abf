@@ -31,7 +31,6 @@ package de.cismet.cids.abf.domainserver.project.configattr;
 import org.apache.log4j.Logger;
 
 import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -43,6 +42,8 @@ import org.openide.util.WeakListeners;
 import java.awt.EventQueue;
 
 import java.io.StringReader;
+
+import javax.swing.JOptionPane;
 
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrValue;
@@ -113,7 +114,16 @@ public class XMLConfigAttrEditor extends ConfigAttrEditor {
             final SAXBuilder builder = new SAXBuilder(false);
             final Document doc = builder.build(new StringReader(entry.getValue().getValue()));
             final XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
-            txeValue.setText(out.outputString((Element)doc.getRootElement().getChildren().get(0)));
+
+            final String text = out.outputString(doc.getRootElement());
+            final int closingRoot = text.lastIndexOf("</root>"); // NOI18N
+            if (closingRoot == -1) {
+                // it's an empty element
+                txeValue.setText(null);
+            } else {
+                // we have to add the identation again, trim stripped it
+                txeValue.setText("  " + text.substring(6, closingRoot).trim());       // NOI18N
+            }
         } catch (final Exception ex) {
             LOG.warn("cannot parse entry value: " + entry.getValue().getValue(), ex); // NOI18N
             txeValue.setText(entry.getValue().getValue());
@@ -204,7 +214,26 @@ public class XMLConfigAttrEditor extends ConfigAttrEditor {
             final XMLOutputter out = new XMLOutputter(Format.getCompactFormat());
             newValue.setValue(out.outputString(doc));
         } catch (final Exception e) {
-            LOG.warn("cannot apply compact xml format for the editor value", e); // NOI18N
+            final String message = "cannot apply compact xml format for the editor value"; // NOI18N
+            LOG.warn(message, e);
+
+            EventQueue.invokeLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        JOptionPane.showMessageDialog(
+                            XMLConfigAttrEditor.this,
+                            NbBundle.getMessage(
+                                XMLConfigAttrEditor.class,
+                                "XMLConfigAttrEditor.getEditorValue().invalidXML.message"), // NOI18N
+                            NbBundle.getMessage(
+                                XMLConfigAttrEditor.class,
+                                "XMLConfigAttrEditor.getEditorValue().invalidXML.title"), // NOI18N
+                            JOptionPane.WARNING_MESSAGE);
+                    }
+                });
+
+            throw new IllegalStateException(message, e);
         }
 
         final ConfigAttrEntry newEntry = new ConfigAttrEntry();
