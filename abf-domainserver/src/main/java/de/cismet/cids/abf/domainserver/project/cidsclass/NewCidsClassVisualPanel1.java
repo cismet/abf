@@ -56,6 +56,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.TableCellEditor;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
@@ -223,12 +224,9 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         classTableModel = new ClassTableModel(project, cidsClass);
         tblAttr.setModel(classTableModel);
         final JXTable attrTable = (JXTable)tblAttr;
-        attrTable.setSortOrder(0, SortOrder.ASCENDING);
-        attrTable.setSortable(true);
-        for (int i = 1; i < attrTable.getColumnCount(); ++i) {
-            attrTable.getColumnExt(i).setSortable(false);
-        }
         attrTable.getColumnExt(0).setVisible(false);
+        // first column is not visible anymore, thus the new first column is our sort column
+        attrTable.setSortOrder(0, SortOrder.ASCENDING);
         retrieveAndSortTypes();
         final List allIcons = new ArrayList(project.getCidsDataObjectBackend().getAllEntities(Icon.class));
         Collections.sort(allIcons, new Comparators.Icons());
@@ -1150,7 +1148,9 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
      */
     final class DropAwareJXTable extends JXTable implements DropTargetListener {
 
-        //~ Methods ------------------------------------------------------------
+        //~ Static fields/initializers -----------------------------------------
+
+        public static final String EXTENSION_TYPE_NAME = "Extension type"; // NOI18N
 
         // <editor-fold defaultstate="collapsed" desc=" Not needed ListenerImpls ">
         @Override
@@ -1233,12 +1233,43 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
                     }
                     attr.setPosition(classTableModel.getRowCount());
                     attr.setVisible(Boolean.TRUE);
+                    attr.setExtensionAttr(EXTENSION_TYPE_NAME.equals(t.getName()));
+
                     classTableModel.addAttribute(attr);
-                    tblAttr.editCellAt(classTableModel.getRowCount() - 1, 0);
-                    this.requestFocusInWindow();
+
+                    int index;
+                    final Object[] attrs = cidsClass.getAttributes().toArray();
+                    for (index = 0; index < attrs.length; ++index) {
+                        if (attr.equals(attrs[index])) {
+                            break;
+                        }
+                    }
+
+                    final int modelIndex = index;
+                    final int viewIndex = convertRowIndexToView(modelIndex);
+                    scrollRowToVisible(viewIndex);
+                    final TableCellEditor tce = getCellEditor(viewIndex, 0);
+                    // we only want to select and highlight the newly created attribute row after first edit
+                    tce.addCellEditorListener(new CellEditorListener() {
+
+                            @Override
+                            public void editingStopped(final ChangeEvent e) {
+                                final int viewIndex = convertRowIndexToView(modelIndex);
+                                scrollRowToVisible(viewIndex);
+                                tblAttr.getSelectionModel().setSelectionInterval(viewIndex, viewIndex);
+                                tce.removeCellEditorListener(this);
+                            }
+
+                            @Override
+                            public void editingCanceled(final ChangeEvent e) {
+                                editingStopped(e);
+                            }
+                        });
+                    editCellAt(viewIndex, 0);
+                    requestFocusInWindow();
                 }
             } catch (final Exception e) {
-                LOG.warn("exception occured during drop action", e);                                         // NOI18N
+                LOG.warn("exception occured during drop action", e); // NOI18N
             } finally {
                 dtde.dropComplete(true);
             }

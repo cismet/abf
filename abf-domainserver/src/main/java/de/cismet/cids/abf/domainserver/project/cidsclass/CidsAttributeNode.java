@@ -62,6 +62,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
     //~ Instance fields --------------------------------------------------------
 
     private final transient Image attributeImage;
+    private final transient Image attributeGrayImage;
     private final transient Image arrayBadge;
     private final transient Image foreignKeyBadge;
     private final transient Image primaryKeyBadge;
@@ -89,6 +90,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
         this.cidsAttribute = cidsAttribute;
         setName(cidsAttribute.getFieldName());
         attributeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute.png");          // NOI18N
+        attributeGrayImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute_gray.png"); // NOI18N
         arrayBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_array.png");            // NOI18N
         foreignKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_foreign_key.png"); // NOI18N
         primaryKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_key.png");         // NOI18N
@@ -100,6 +102,11 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
 
     @Override
     public Image getIcon(final int i) {
+        // extension attributes won't be badged
+        if (cidsAttribute.isExtensionAttr()) {
+            return attributeGrayImage;
+        }
+
         Image ret = attributeImage;
         int count = 0;
         if (cidsAttribute.isIndexed()) {
@@ -153,6 +160,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
         final Sheet.Set relations = Sheet.createPropertiesSet();
         final Sheet.Set classes = Sheet.createPropertiesSet();
         final Sheet.Set rightAttributes = Sheet.createPropertiesSet();
+
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: CidsAttrID ">
             final Property idProp = new PropertySupport.Reflection(
@@ -204,7 +212,8 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                                 e);
                         }
                     }
-                };                // </editor-fold>
+                };
+            // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: FieldName ">
             final Property fieldnameProp = new PropertySupport(
@@ -347,7 +356,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().substituteProp.replaceOfAttr"), // NOI18N
                     true,
-                    true) {
+                    !cidsAttribute.isExtensionAttr()) {
 
                     @Override
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
@@ -392,7 +401,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().optionalProp.optionalTooltip"), // NOI18N
                     true,
-                    true) {
+                    !cidsAttribute.isExtensionAttr()) {
 
                     @Override
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
@@ -474,7 +483,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().indexedProp.indexedTooltip"), // NOI18N
                     true,
-                    true) {
+                    !cidsAttribute.isExtensionAttr()) {
 
                     @Override
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
@@ -506,14 +515,14 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                 };                                                                                                      // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Extension Attribtue ">
-/*            final Property extensionProp = new PropertySupport.Reflection(
+            final Property extensionProp = new PropertySupport.Reflection(
                     cidsAttribute,
                     Boolean.class,
-                    "getExtensionAttr", // NOI18N
-                    "setExtensionAttr"); // NOI18N
+                    "isExtensionAttr", // NOI18N
+                    null);
             extensionProp.setName(NbBundle.getMessage(
                     CidsAttributeNode.class,
-                    "CidsAttributeNode.createSheet().extensionProp.name")); // NOI18N */
+                    "CidsAttributeNode.createSheet().extensionProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Description ">
             final Property descriptionProp = new PropertySupport(
@@ -605,76 +614,6 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                     }
                 }; // </editor-fold>
 
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: fromString ">
-//            final JavaClassPropertyEditor fromStringPropertyEditor = new
-//                    JavaClassPropertyEditor(project, JavaClassPropertyEditor.
-//                    MODE_FROMSTRING);
-//            Property fromStringProp = new PropertySupport("fromString",
-//                    JavaClass.class, "fromString", "fromString-Klasse des " +
-//                    "Attributes", true, true)
-//            {
-//                public Object getValue() throws
-//                        IllegalAccessException,
-//                        InvocationTargetException
-//                {
-//                    Object val;
-//                    try
-//                    {
-//                        // TODO: we probably do not need that anymore because
-//                        //       no lazy fetching is performed
-//                        if(cidsAttribute.getFromString() != null)
-//                            //zum fetchen gezwungen
-//                            cidsAttribute.getFromString().toString();
-//                        val = cidsAttribute.getFromString();
-//                    }
-//                    catch (Throwable e)
-//                    {
-//                        log.error("could not retrieve fromString property", e);
-//                        ErrorManager.getDefault().annotate(e,
-//                                ErrorManager.EXCEPTION,
-//                                "An error occured during the loading of " +
-//                                "fromString. Value has to be set to null.\n\n" +
-//                                e.getMessage(),
-//                                "Beim Laden von fromString ist ein Fehler " +
-//                                "aufgetreten. Der entsprechende Wert wird auf" +
-//                                " null gesetzt:\n\n" + e.getMessage(),
-//                                e.getCause(), new Date());
-//                        ErrorManager.getDefault().notify(e);
-//                        val = null;
-//                        setValue(null);
-//                    }
-//                    return val;
-//                }
-//
-//                public void setValue(Object object) throws
-//                        IllegalAccessException,
-//                        IllegalArgumentException,
-//                        InvocationTargetException
-//                {
-//                    CidsClass old = cidsClass;
-//                    try
-//                    {
-//                        cidsAttribute.setFromString((JavaClass)object);
-//                        // TODO: why is the class object stored here???
-//                        //       cannot understand this because the cidsclass is
-//                        //       not modified -.-
-//                        cidsClass = (CidsClass)project.getCidsDataObjectBackend(
-//                                ).storeClass(cidsClass);
-//                        refreshInDiagram();
-//                    }
-//                    catch (Throwable t)
-//                    {
-//                        log.error("could not store attribute", t);
-//                        cidsClass = old;
-//                        ErrorManager.getDefault().notify(t);
-//                    }
-//                }
-//
-//                public PropertyEditor getPropertyEditor()
-//                {
-//                    return fromStringPropertyEditor;
-//                }
-//            };// </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Editor ">
             final JavaClassPropertyEditor editorPropertyEditor = new JavaClassPropertyEditor(
                     project,
@@ -848,7 +787,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().arrayKeyProp.arrayKeyOfAttr"), // NOI18N
                     true,
-                    true) {
+                    !cidsAttribute.isExtensionAttr()) {
 
                     @Override
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
@@ -887,7 +826,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().foreignKeyProp.attrIsForeignKey"), // NOI18N
                     true,
-                    true) {
+                    !cidsAttribute.isExtensionAttr()) {
 
                     @Override
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
@@ -926,7 +865,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         CidsAttributeNode.class,
                         "CidsAttributeNode.createSheet().arrayProp.attrIsArray"), // NOI18N
                     true,
-                    true) {
+                    !cidsAttribute.isExtensionAttr()) {
 
                     @Override
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
@@ -993,11 +932,13 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         }
                     };
                 rightAttributes.put(attributePermissionProp);
-            }                                                                        // </editor-fold>
-            main.setName("properties");                                              // NOI18N
-            relations.setName("relations");                                          // NOI18N
-            classes.setName("java");                                                 // NOI18N
-            rightAttributes.setName("rights");                                       // NOI18N
+            } // </editor-fold>
+
+            main.setName("properties");        // NOI18N
+            relations.setName("relations");    // NOI18N
+            classes.setName("java");           // NOI18N
+            rightAttributes.setName("rights"); // NOI18N
+
             main.setDisplayName(NbBundle.getMessage(
                     CidsAttributeNode.class,
                     "CidsAttributeNode.createSheet().main.displayName"));            // NOI18N
@@ -1010,6 +951,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             rightAttributes.setDisplayName(NbBundle.getMessage(
                     CidsAttributeNode.class,
                     "CidsAttributeNode.createSheet().rightAttributes.displayName")); // NOI18N
+
             main.put(idProp);
             main.put(nameProp);
             main.put(fieldnameProp);
@@ -1020,26 +962,30 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             main.put(optionalProp);
             main.put(visibleProp);
             main.put(indexedProp);
+            main.put(extensionProp);
+
             classes.put(toStringProp);
-//            classes.put(fromStringProp);
             classes.put(editorProp);
             classes.put(complexEditorProp);
+
             relations.put(foreignKeyProp);
             relations.put(foreignKeyReferencesToProp);
             relations.put(typeProp);
             relations.put(arrayProp);
             relations.put(arrayKeyProp);
+
             sheet.put(main);
             sheet.put(classes);
             sheet.put(relations);
+
             if (rightAttributes.getProperties().length > 0) {
                 sheet.put(rightAttributes);
             }
         } catch (final Exception ex) {
-            LOG.error("could not create property sheet", ex);                        // NOI18N
+            LOG.error("could not create property sheet", ex);              // NOI18N
             ErrorUtils.showErrorMessage(NbBundle.getMessage(
                     CidsAttributeNode.class,
-                    "CidsAttributeNode.createSheet().ErrorUtils.message"),           // NOI18N
+                    "CidsAttributeNode.createSheet().ErrorUtils.message"), // NOI18N
                 ex);
         }
         return sheet;
