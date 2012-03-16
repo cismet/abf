@@ -110,7 +110,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
     private final transient javax.swing.JButton cmdRemove = new javax.swing.JButton();
     private final transient javax.swing.JButton cmdUp = new javax.swing.JButton();
     private final transient javax.swing.ButtonGroup grpTypeSort = new javax.swing.ButtonGroup();
-    private final transient javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
+    private javax.swing.JPanel jPanel1;
     private final transient javax.swing.JToolBar jToolBar1 = new javax.swing.JToolBar();
     private final transient javax.swing.JToolBar jToolBar2 = new javax.swing.JToolBar();
     private javax.swing.JToggleButton jtbAttrSync;
@@ -224,9 +224,12 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         classTableModel = new ClassTableModel(project, cidsClass);
         tblAttr.setModel(classTableModel);
         final JXTable attrTable = (JXTable)tblAttr;
-        attrTable.getColumnExt(0).setVisible(false);
-        // first column is not visible anymore, thus the new first column is our sort column
         attrTable.setSortOrder(0, SortOrder.ASCENDING);
+        attrTable.setSortable(true);
+        for (int i = 1; i < attrTable.getColumnCount(); ++i) {
+            attrTable.getColumnExt(i).setSortable(false);
+        }
+        attrTable.getColumnExt(0).setVisible(false);
         retrieveAndSortTypes();
         final List allIcons = new ArrayList(project.getCidsDataObjectBackend().getAllEntities(Icon.class));
         Collections.sort(allIcons, new Comparators.Icons());
@@ -460,6 +463,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jtbAttrSync = new javax.swing.JToggleButton();
+        jPanel1 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -653,23 +657,70 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
 
         panhead.setLayout(new java.awt.GridBagLayout());
 
+        panClass1.setLayout(new java.awt.GridBagLayout());
+
         org.openide.awt.Mnemonics.setLocalizedText(
             lblClassName,
             org.openide.util.NbBundle.getMessage(
                 NewCidsClassVisualPanel1.class,
                 "NewCidsClassVisualPanel1.lblClassName.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panClass1.add(lblClassName, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(
             lblTableName,
             org.openide.util.NbBundle.getMessage(
                 NewCidsClassVisualPanel1.class,
                 "NewCidsClassVisualPanel1.lblTableName.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panClass1.add(lblTableName, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(
             lblDesc,
             org.openide.util.NbBundle.getMessage(
                 NewCidsClassVisualPanel1.class,
                 "NewCidsClassVisualPanel1.lblDesc.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panClass1.add(lblDesc, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panClass1.add(txtDescription, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panClass1.add(txtTablename, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panClass1.add(txtClassname, gridBagConstraints);
 
         chkSync.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(
@@ -677,56 +728,20 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
             org.openide.util.NbBundle.getMessage(
                 NewCidsClassVisualPanel1.class,
                 "NewCidsClassVisualPanel1.chkSync.text")); // NOI18N
-
-        final org.jdesktop.layout.GroupLayout panClass1Layout = new org.jdesktop.layout.GroupLayout(panClass1);
-        panClass1.setLayout(panClass1Layout);
-        panClass1Layout.setHorizontalGroup(
-            panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                panClass1Layout.createSequentialGroup().addContainerGap().add(
-                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(lblClassName).add(
-                        lblTableName).add(lblDesc)).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
-                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                        org.jdesktop.layout.GroupLayout.TRAILING,
-                        panClass1Layout.createSequentialGroup().add(
-                            txtTablename,
-                            org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                            181,
-                            Short.MAX_VALUE).addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED).add(
-                            chkSync)).add(
-                        txtDescription,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        299,
-                        Short.MAX_VALUE).add(
-                        txtClassname,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                        285,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap()));
-        panClass1Layout.setVerticalGroup(
-            panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                panClass1Layout.createSequentialGroup().addContainerGap().add(
-                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblClassName).add(
-                        txtClassname,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
-                    org.jdesktop.layout.LayoutStyle.RELATED).add(
-                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblTableName).add(
-                        chkSync).add(
-                        txtTablename,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
-                    org.jdesktop.layout.LayoutStyle.RELATED).add(
-                    panClass1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(lblDesc).add(
-                        txtDescription,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addContainerGap(
-                    org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                    Short.MAX_VALUE)));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        panClass1.add(chkSync, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
         panhead.add(panClass1, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(
@@ -1150,7 +1165,11 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
 
         //~ Static fields/initializers -----------------------------------------
 
-        public static final String EXTENSION_TYPE_NAME = "Extension type"; // NOI18N
+        public static final String EXTENSION_TYPE = "Extension type"; // NOI18N
+
+        // <editor-fold defaultstate="collapsed" desc=" Not needed ListenerImpls ">
+
+        // NOI18N
 
         // <editor-fold defaultstate="collapsed" desc=" Not needed ListenerImpls ">
         @Override
@@ -1231,32 +1250,23 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
                             LOG.warn("exception skipped", skip);                                             // NOI18N
                         }
                     }
-                    attr.setPosition(classTableModel.getRowCount());
-                    attr.setVisible(Boolean.TRUE);
-                    attr.setExtensionAttr(EXTENSION_TYPE_NAME.equals(t.getName()));
+                    final int newRowIndex = getRowCount();
+                    final int lastObjIndex = convertRowIndexToModel(newRowIndex - 1);
+                    final Attribute last = classTableModel.getAttributeAt(lastObjIndex);
 
+                    attr.setPosition(last.getPosition() + 1);
+                    attr.setVisible(Boolean.TRUE);
+                    attr.setExtensionAttr(EXTENSION_TYPE.equals(t.getName()));
                     classTableModel.addAttribute(attr);
 
-                    int index;
-                    final Object[] attrs = cidsClass.getAttributes().toArray();
-                    for (index = 0; index < attrs.length; ++index) {
-                        if (attr.equals(attrs[index])) {
-                            break;
-                        }
-                    }
-
-                    final int modelIndex = index;
-                    final int viewIndex = convertRowIndexToView(modelIndex);
-                    scrollRowToVisible(viewIndex);
-                    final TableCellEditor tce = getCellEditor(viewIndex, 0);
-                    // we only want to select and highlight the newly created attribute row after first edit
+                    // the new attribute is the last onne
+                    scrollRowToVisible(newRowIndex);
+                    final TableCellEditor tce = getCellEditor(newRowIndex, 0);
                     tce.addCellEditorListener(new CellEditorListener() {
 
                             @Override
                             public void editingStopped(final ChangeEvent e) {
-                                final int viewIndex = convertRowIndexToView(modelIndex);
-                                scrollRowToVisible(viewIndex);
-                                tblAttr.getSelectionModel().setSelectionInterval(viewIndex, viewIndex);
+                                getSelectionModel().setSelectionInterval(newRowIndex, newRowIndex);
                                 tce.removeCellEditorListener(this);
                             }
 
@@ -1265,7 +1275,8 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
                                 editingStopped(e);
                             }
                         });
-                    editCellAt(viewIndex, 0);
+
+                    editCellAt(newRowIndex, 0);
                     requestFocusInWindow();
                 }
             } catch (final Exception e) {
