@@ -65,6 +65,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
     private final transient Image attributeGrayImage;
     private final transient Image arrayBadge;
     private final transient Image foreignKeyBadge;
+    private final transient Image foreignKeyBadBadge;
     private final transient Image primaryKeyBadge;
     private final transient Image indexBadge;
 
@@ -89,12 +90,13 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
         this.cidsClass = cidsClass;
         this.cidsAttribute = cidsAttribute;
         setName(cidsAttribute.getFieldName());
-        attributeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute.png");          // NOI18N
-        attributeGrayImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute_gray.png"); // NOI18N
-        arrayBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_array.png");            // NOI18N
-        foreignKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_foreign_key.png"); // NOI18N
-        primaryKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_key.png");         // NOI18N
-        indexBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_search.png");           // NOI18N
+        attributeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute.png");               // NOI18N
+        attributeGrayImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "attribute_gray.png");      // NOI18N
+        arrayBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_array.png");                 // NOI18N
+        foreignKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_foreign_key.png");      // NOI18N
+        foreignKeyBadBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_bad_oneToMany.png"); // NOI18N
+        primaryKeyBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_key.png");              // NOI18N
+        indexBadge = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_search.png");                // NOI18N
         permResolve = PermissionResolver.getInstance(project);
     }
 
@@ -118,10 +120,26 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
             count++;
         }
         if (cidsAttribute.isForeignKey()) {
-            if (count == 0) {
-                ret = ImageUtilities.mergeImages(ret, foreignKeyBadge, 16, 8);
+            final Image badge;
+            if (cidsAttribute.getForeignKeyClass() < 0) {
+                final Integer refKey = Math.abs(cidsAttribute.getForeignKeyClass());
+                // TODO: this may slow down the EDT, we probably have to put it in a task and fire an icon change
+                // afterwards
+                final CidsClass ref = project.getCidsDataObjectBackend().getEntity(CidsClass.class, refKey);
+
+                if (isOneToManyBackrefPresent(ref)) {
+                    badge = foreignKeyBadge;
+                } else {
+                    badge = foreignKeyBadBadge;
+                }
             } else {
-                ret = ImageUtilities.mergeImages(ret, foreignKeyBadge, 16, 0);
+                badge = foreignKeyBadge;
+            }
+
+            if (count == 0) {
+                ret = ImageUtilities.mergeImages(ret, badge, 16, 8);
+            } else {
+                ret = ImageUtilities.mergeImages(ret, badge, 16, 0);
             }
             count++;
         }
@@ -151,6 +169,25 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
         } else {
             return "<font color='!controlShadow'>" + getName() + "</font>"; // NOI18N
         }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   fkClass  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    private boolean isOneToManyBackrefPresent(final CidsClass fkClass) {
+        boolean backrefSet = false;
+        for (final Attribute a : fkClass.getAttributes()) {
+            if (a.isForeignKey() && cidsClass.getId().equals(a.getForeignKeyClass())) {
+                backrefSet = true;
+                break;
+            }
+        }
+
+        return backrefSet;
     }
 
     @Override
@@ -760,9 +797,22 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
                         final Integer fkClass = cidsAttribute.getForeignKeyClass();
                         if (fkClass != null) {
-                            final CidsClass c = project.getCidsDataObjectBackend().getEntity(CidsClass.class, fkClass);
+                            // to support the 1:n facilities we use the absolute value of the fk
+                            final CidsClass c = project.getCidsDataObjectBackend()
+                                        .getEntity(CidsClass.class, Math.abs(fkClass));
                             if (c != null) {
-                                return c.getName();
+                                final StringBuilder sb = new StringBuilder(c.getName());
+
+                                if (fkClass < 0) {
+                                    sb.append(" [1:N]");                                                                         // NOI18N
+                                    if (!isOneToManyBackrefPresent(c)) {
+                                        sb.append(NbBundle.getMessage(
+                                                CidsAttributeNode.class,
+                                                "CidsAttributeNode.createSheet().foreignKeyReferencesToProp.refBrokenPostfix")); // NOI18N
+                                    }
+                                }
+
+                                return sb.toString();
                             }
                         }
                         return null;

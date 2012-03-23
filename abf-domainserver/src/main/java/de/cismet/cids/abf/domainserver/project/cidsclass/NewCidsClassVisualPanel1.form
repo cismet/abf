@@ -142,6 +142,14 @@
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="146"/>
                   </AuxValues>
                 </Component>
+                <Component class="javax.swing.JToggleButton" name="btnOneToMany">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="1:N"/>
+                    <Property name="focusable" type="boolean" value="false"/>
+                    <Property name="horizontalTextPosition" type="int" value="0"/>
+                    <Property name="verticalTextPosition" type="int" value="3"/>
+                  </Properties>
+                </Component>
                 <Component class="javax.swing.JToggleButton" name="jtbAttrSync">
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>

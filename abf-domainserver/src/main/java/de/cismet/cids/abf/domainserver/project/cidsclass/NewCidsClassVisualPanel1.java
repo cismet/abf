@@ -13,6 +13,7 @@ import org.jdesktop.swingx.JXTable;
 
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.WeakListeners;
 
 import java.awt.Component;
 import java.awt.Image;
@@ -30,6 +31,8 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -56,6 +59,8 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellEditor;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -99,7 +104,12 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
     private final transient ItemListener attrPolicyL;
     private final transient NewCidsClassWizardPanel1 model;
 
+    private final transient ActionListener oneToManyL;
+
+    private final transient ListSelectionListener tableRowSelectionL;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnOneToMany;
     private final transient javax.swing.JComboBox cboAttrPolicy = new javax.swing.JComboBox();
     private final transient javax.swing.JComboBox cboClassIcons = new javax.swing.JComboBox();
     private final transient javax.swing.JComboBox cboObjectIcons = new javax.swing.JComboBox();
@@ -110,7 +120,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
     private final transient javax.swing.JButton cmdRemove = new javax.swing.JButton();
     private final transient javax.swing.JButton cmdUp = new javax.swing.JButton();
     private final transient javax.swing.ButtonGroup grpTypeSort = new javax.swing.ButtonGroup();
-    private javax.swing.JPanel jPanel1;
+    private final transient javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
     private final transient javax.swing.JToolBar jToolBar1 = new javax.swing.JToolBar();
     private final transient javax.swing.JToolBar jToolBar2 = new javax.swing.JToolBar();
     private javax.swing.JToggleButton jtbAttrSync;
@@ -154,10 +164,12 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
      */
     public NewCidsClassVisualPanel1(final NewCidsClassWizardPanel1 model) {
         this.model = model;
+        this.tableRowSelectionL = new TableRowSelectionListener();
+        this.oneToManyL = new OneToManyActionListener();
+
         initComponents();
-        dbType = new ImageIcon(ImageUtilities.loadImage(
-                    DomainserverProject.IMAGE_FOLDER
-                            + "db_types.png")); // NOI18N
+
+        dbType = new ImageIcon(ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "db_types.png")); // NOI18N
         syncClassDocL = new SyncClassDocListener();
         syncTableDocL = new SyncTableDocListener();
         attrPolicyL = new ItemListener() {
@@ -206,6 +218,13 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
                     c.setObjectIcon((Icon)cboObjectIcons.getSelectedItem());
                 }
             });
+
+        tblAttr.getSelectionModel()
+                .addListSelectionListener(WeakListeners.create(
+                        ListSelectionListener.class,
+                        tableRowSelectionL,
+                        tblAttr.getSelectionModel()));
+        btnOneToMany.addActionListener(WeakListeners.create(ActionListener.class, oneToManyL, btnOneToMany));
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -271,6 +290,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         syncTablename();
         classTableModel.setAttrSync(jtbAttrSync.isSelected());
         model.fireChangeEvent();
+        tblAttr.getSelectionModel().clearSelection();
     }
 
     /**
@@ -462,8 +482,8 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        btnOneToMany = new javax.swing.JToggleButton();
         jtbAttrSync = new javax.swing.JToggleButton();
-        jPanel1 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -515,6 +535,12 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
                 }
             });
         jToolBar1.add(cmdDown);
+
+        org.openide.awt.Mnemonics.setLocalizedText(btnOneToMany, "1:N");
+        btnOneToMany.setFocusable(false);
+        btnOneToMany.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnOneToMany.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnOneToMany);
 
         jtbAttrSync.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(
@@ -981,6 +1007,64 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
     }                                                                             //GEN-LAST:event_jtbAttrSyncActionPerformed
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class OneToManyActionListener implements ActionListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            final int index = tblAttr.getSelectedRow();
+
+            assert index > 0 : "no row selected, check row selection listener impl"; // NOI18N
+
+            final int mIndex = tblAttr.convertRowIndexToModel(index);
+            final Attribute a = classTableModel.getAttributeAt(mIndex);
+
+            // only to prevent errors due to buggy code or external changes
+            final Integer fkClass = a.getForeignKeyClass();
+            if (btnOneToMany.isSelected()) {
+                assert (fkClass != null) && (fkClass > 0) : "attr already has 1:N foreign key setting"; // NOI18N
+            } else {
+                assert (fkClass != null) && (fkClass < 0) : "attr already has 1:1 foreign key setting"; // NOI18N
+            }
+
+            a.setForeignKeyClass(-1 * fkClass);
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class TableRowSelectionListener implements ListSelectionListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void valueChanged(final ListSelectionEvent e) {
+            if (e.getValueIsAdjusting()) {
+                return;
+            }
+
+            if (tblAttr.getSelectedRowCount() == 1) {
+                final int mIndex = tblAttr.convertRowIndexToModel(tblAttr.getSelectedRow());
+                final Attribute a = classTableModel.getAttributeAt(mIndex);
+
+                btnOneToMany.setEnabled(a.getType().isComplexType());
+                btnOneToMany.setSelected((a.getForeignKeyClass() != null) && (a.getForeignKeyClass() < 0));
+            } else {
+                btnOneToMany.setEnabled(false);
+                btnOneToMany.setSelected(false);
+            }
+        }
+    }
 
     /**
      * DOCUMENT ME!
