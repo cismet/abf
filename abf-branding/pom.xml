@@ -5,20 +5,20 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.0.5</version>
+        <version>3.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>abf-branding</artifactId>
-    <version>3.0.5</version>
+    <version>3.1-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Branding</name>
     <description>The ABF Branding module provides the branding for the application</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.0.5/abf-branding</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/tags/abf-3.0.5/abf-branding</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.0.5/abf-branding</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-branding/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/trunk/abf/abf-branding/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-branding/</url>
     </scm>
 
     <build>
