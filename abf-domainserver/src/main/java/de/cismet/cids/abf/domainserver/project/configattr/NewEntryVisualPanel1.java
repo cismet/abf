@@ -72,10 +72,13 @@ public final class NewEntryVisualPanel1 extends JPanel {
 
     private final transient NewEntryWizardPanel1 model;
 
-    private final transient UGItemListenerImpl uGItemL;
-    private final transient UserItemListenerImpl userItemL;
+    private final transient ItemListener uGItemL;
+    private final transient ItemListener userItemL;
+    private final transient ItemListener domainItemL;
 
     private transient List<ConfigAttrType> typeCache;
+
+    private transient List<UserGroup> allUserGroups;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cboDomain;
@@ -97,6 +100,8 @@ public final class NewEntryVisualPanel1 extends JPanel {
         this.model = model;
         uGItemL = new UGItemListenerImpl();
         userItemL = new UserItemListenerImpl();
+        domainItemL = new DomainItemListenerImpl();
+
         initComponents();
     }
 
@@ -180,29 +185,28 @@ public final class NewEntryVisualPanel1 extends JPanel {
     void init() {
         final Backend backend = model.getProject().getCidsDataObjectBackend();
         final List<Domain> domains = backend.getAllEntities(Domain.class);
-        final List<UserGroup> usergroups = backend.getAllEntities(UserGroup.class);
+        allUserGroups = backend.getAllEntities(UserGroup.class);
         typeCache = backend.getAllEntities(ConfigAttrType.class);
-        Collections.sort(usergroups, new Comparators.UserGroups());
+        Collections.sort(allUserGroups, new Comparators.UserGroups());
 
         Domain localDomain = null;
         for (final Domain domain : domains) {
             if (ProjectUtils.LOCAL_DOMAIN_NAME.equals(domain.getName())) { // NOI18N
                 localDomain = domain;
-                break;
             }
+
+            cboDomain.addItem(domain);
         }
 
         if (localDomain == null) {
             throw new IllegalStateException("could not find local domain"); // NOI18N
         }
 
-        // we accept the local domain only
-        cboDomain.addItem(localDomain);
         cboDomain.setSelectedItem(localDomain);
-        cboDomain.setEnabled(false);
+        cboDomain.addItemListener(WeakListeners.create(ItemListener.class, domainItemL, cboDomain));
 
         cboUsergroup.addItem(UserGroup.NO_GROUP);
-        for (final UserGroup ug : usergroups) {
+        for (final UserGroup ug : allUserGroups) {
             if (!ProjectUtils.isRemoteGroup(ug, model.getProject())) {
                 cboUsergroup.addItem(ug);
             }
@@ -297,6 +301,32 @@ public final class NewEntryVisualPanel1 extends JPanel {
     } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class DomainItemListenerImpl implements ItemListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void itemStateChanged(final ItemEvent e) {
+            if (ItemEvent.SELECTED == e.getStateChange()) {
+                final Domain selected = (Domain)e.getItem();
+                cboUsergroup.removeAllItems();
+
+                cboUsergroup.addItem(UserGroup.NO_GROUP);
+                for (final UserGroup ug : allUserGroups) {
+                    if (selected.equals(ug.getDomain())) {
+                        cboUsergroup.addItem(ug);
+                    }
+                }
+                cboUsergroup.setSelectedItem(UserGroup.NO_GROUP);
+            }
+        }
+    }
 
     /**
      * DOCUMENT ME!
