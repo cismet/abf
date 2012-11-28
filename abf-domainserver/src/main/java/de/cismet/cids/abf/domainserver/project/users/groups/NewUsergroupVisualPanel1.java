@@ -100,7 +100,13 @@ public final class NewUsergroupVisualPanel1 extends JPanel {
      * @return  DOCUMENT ME!
      */
     UserGroup getUserGroup() {
-        final UserGroup ug = new UserGroup();
+        final UserGroup ug;
+        if (model.getUserGroup() == null) {
+            ug = new UserGroup();
+        } else {
+            ug = model.getUserGroup();
+        }
+
         ug.setName(txtName.getText());
         final Object o = cboDomain.getSelectedItem();
         if (o instanceof Domain) {
