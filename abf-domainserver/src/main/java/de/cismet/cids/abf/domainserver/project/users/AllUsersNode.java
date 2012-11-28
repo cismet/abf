@@ -7,12 +7,13 @@
 ****************************************************/
 package de.cismet.cids.abf.domainserver.project.users;
 
-import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.actions.CallableSystemAction;
 
 import java.awt.Image;
+
+import java.io.IOException;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupContextCookie;
 import de.cismet.cids.abf.utilities.Comparators;
@@ -99,11 +101,7 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
  *
  * @version  $Revision$, $Date$
  */
-final class AllUsersChildren extends Children.Keys {
-
-    //~ Instance fields --------------------------------------------------------
-
-    private final transient DomainserverProject project;
+final class AllUsersChildren extends ProjectChildren {
 
     //~ Constructors -----------------------------------------------------------
 
@@ -113,28 +111,27 @@ final class AllUsersChildren extends Children.Keys {
      * @param  project  DOCUMENT ME!
      */
     public AllUsersChildren(final DomainserverProject project) {
-        this.project = project;
+        super(project);
     }
 
     //~ Methods ----------------------------------------------------------------
-
-    @Override
-    protected Node[] createNodes(final Object object) {
-        return new Node[] { new UserNode((User)object, project) };
-    }
-
-    @Override
-    protected void addNotify() {
-        super.addNotify();
-        final List<User> users = project.getCidsDataObjectBackend().getAllEntities(User.class);
-        Collections.sort(users, new Comparators.Users());
-        setKeys(users);
-    }
 
     /**
      * DOCUMENT ME!
      */
     void refreshAll() {
         addNotify();
+    }
+
+    @Override
+    protected Node[] createUserNodes(final Object o) {
+        return new Node[] { new UserNode((User)o, project) };
+    }
+
+    @Override
+    protected void threadedNotify() throws IOException {
+        final List<User> users = project.getCidsDataObjectBackend().getAllEntities(User.class);
+        Collections.sort(users, new Comparators.Users());
+        setKeysEDT(users);
     }
 }
