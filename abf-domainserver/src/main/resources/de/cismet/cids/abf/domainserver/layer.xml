@@ -53,6 +53,9 @@
             <file name="de-cismet-cids-abf-domainserver-project-users-groups-NewUsergroupWizardAction.instance">
                 <attr name="position" intvalue="150"/>
             </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-AddUsersWizardAction.instance">
+                <attr name="position" intvalue="550"/>
+            </file>
             <file name="de-cismet-cids-abf-domainserver-project-users-NewUserWizardAction.instance">
                 <attr name="position" intvalue="100"/>
             </file>
@@ -145,6 +148,10 @@
                 <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-ChangeGroupBelongingWizardAction.instance"/>
                 <attr name="position" intvalue="500"/>
             </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-AddUsersWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-AddUsersWizardAction.instance"/>
+                <attr name="position" intvalue="550"/>
+            </file>
             <file name="de-cismet-cids-abf-domainserver-project-separatorAfter.shadow">
                 <attr name="originalFile" stringvalue="Actions/Domainserver/de-cismet-cids-abf-domainserver-project-separatorAfter.instance"/>
                 <attr name="position" intvalue="450"/>
@@ -215,6 +222,10 @@
             <file name="de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-DeleteUserAction.instance"/>
                 <attr name="position" intvalue="200"/>
+            </file>
+            <file name="de-cismet-cids-abf-domainserver-project-users-groups-AddUsersWizardAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-AddUsersWizardAction.instance"/>
+                <attr name="position" intvalue="550"/>
             </file>
             <file name="de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Usermanagement/de-cismet-cids-abf-domainserver-project-users-groups-RemoveGroupMembershipAction.instance"/>
