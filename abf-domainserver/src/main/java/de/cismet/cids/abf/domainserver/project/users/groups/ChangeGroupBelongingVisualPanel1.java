@@ -25,6 +25,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JList;
@@ -34,6 +35,7 @@ import javax.swing.ListCellRenderer;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers;
 import de.cismet.cids.abf.utilities.CidsUserGroupTransferable;
+import de.cismet.cids.abf.utilities.Comparators;
 
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
@@ -85,11 +87,15 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
     void init() {
         final List<UserGroup> l = model.getBackend().getAllEntities(UserGroup.class);
         final List<UserGroup> groups = new ArrayList<UserGroup>();
+
         for (final UserGroup ug : l) {
             if (!ProjectUtils.isRemoteGroup(ug, model.getProject())) {
                 groups.add(ug);
             }
         }
+
+        Collections.sort(groups, new Comparators.UserGroups());
+
         membership.clear();
         membership.addAll(model.getUser().getUserGroups());
         final ListCellRenderer lcr = new Renderers.UserGroupListRenderer(model.getProject());
