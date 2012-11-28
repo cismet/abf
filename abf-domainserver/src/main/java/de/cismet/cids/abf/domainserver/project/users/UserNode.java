@@ -27,7 +27,9 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,13 +39,13 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
-import de.cismet.cids.abf.domainserver.project.configattr.ConfigAttrEntryNode;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.ChangeGroupBelongingWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.groups.RemoveGroupMembershipAction;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
@@ -104,9 +106,6 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
         final Sheet.Set setUG = Sheet.createPropertiesSet();
-        final Sheet.Set setCAttr = Sheet.createPropertiesSet();
-        final Sheet.Set setAAttr = Sheet.createPropertiesSet();
-        final Sheet.Set setXAttr = Sheet.createPropertiesSet();
 
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
@@ -254,8 +253,8 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             Collections.sort(ugs, new Comparators.UserGroups());
             for (final UserGroup ug : user.getUserGroups()) {
                 setUG.put(new PropertySupport.ReadOnly<Integer>(
-                        "ug"
-                                + ug.getId(), // NOI18N
+                        "ug" // NOI18N
+                                + ug.getId(),
                         Integer.class,
                         ug.getName(),
                         ug.getDescription()) {
@@ -267,81 +266,10 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                     });
             } // </editor-fold>
 
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: ConfigAttrs ">
-            final List<ConfigAttrEntry> caes = project.getCidsDataObjectBackend().getEntries(user);
-            Collections.sort(caes, new Comparators.ConfigAttrEntries());
-
-            // hidden as long as there is no entry added
-            setCAttr.setHidden(true);
-            setAAttr.setHidden(true);
-            setXAttr.setHidden(true);
-
-            final Map<String, List<ReadOnly<String>>> propMapC = new TreeMap<String, List<ReadOnly<String>>>();
-            final Map<String, List<ReadOnly<String>>> propMapA = new TreeMap<String, List<ReadOnly<String>>>();
-            final Map<String, List<ReadOnly<String>>> propMapX = new TreeMap<String, List<ReadOnly<String>>>();
-
-            for (final ConfigAttrEntry cae : caes) {
-                final String entryOwner = ConfigAttrEntryNode.createEntryOwnerString(cae);
-
-                final PropertySupport.ReadOnly<String> p = new PropertySupport.ReadOnly<String>(cae.getKey().getKey()
-                                + cae.getId(),
-                        String.class,
-                        cae.getKey().getKey(),
-                        null) {
-
-                        @Override
-                        public String getValue() throws IllegalAccessException, InvocationTargetException {
-                            return cae.getValue().getValue();
-                        }
-                    };
-
-                final Map<String, List<ReadOnly<String>>> map;
-                switch (cae.getType().getAttrType()) {
-                    case CONFIG_ATTR: {
-                        map = propMapC;
-
-                        break;
-                    }
-                    case ACTION_TAG: {
-                        map = propMapA;
-
-                        break;
-                    }
-                    case XML_ATTR: {
-                        map = propMapX;
-
-                        break;
-                    }
-                    default: {
-                        throw new IllegalStateException("unknown type: " + cae.getType().getAttrType()); // NOI18N
-                    }
-                }
-
-                List<ReadOnly<String>> attrList = map.get(entryOwner);
-                if (attrList == null) {
-                    attrList = new ArrayList<ReadOnly<String>>();
-                }
-
-                attrList.add(p);
-                map.put(entryOwner, attrList);
-            }
-
-            populateAttrSet(setCAttr, propMapC);
-            populateAttrSet(setAAttr, propMapA);
-            populateAttrSet(setXAttr, propMapX);
-
-            // </editor-fold>
-
             setUG.setName("usergroups");                          // NOI18N
             setUG.setDisplayName(NbBundle.getMessage(
                     UserNode.class,
                     "UserNode.createSheet().setUG.displayName")); // NOI18N
-            setCAttr.setName("configattrs");                      // NOI18N
-            setCAttr.setDisplayName("Configuration Attributes");
-            setAAttr.setName("actionattrs");                      // NOI18N
-            setAAttr.setDisplayName("Action-Tag Attributes");
-            setXAttr.setName("xmlattrs");                         // NOI18N
-            setXAttr.setDisplayName("XML Configuration Attributes");
 
             set.put(nameProp);
             set.put(passProp);
@@ -351,9 +279,12 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
             sheet.put(set);
             sheet.put(setUG);
-            sheet.put(setCAttr);
-            sheet.put(setAAttr);
-            sheet.put(setXAttr);
+
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: ConfigAttrs ">
+
+            populateAttrSet(project, sheet, null, user);
+
+            // </editor-fold>
         } catch (final Exception ex) {
             LOG.error("could not create property sheet", ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
@@ -364,30 +295,206 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     /**
      * DOCUMENT ME!
      *
-     * @param  set  DOCUMENT ME!
-     * @param  map  DOCUMENT ME!
+     * @param   project  backend map DOCUMENT ME!
+     * @param   sheet    DOCUMENT ME!
+     * @param   group    DOCUMENT ME!
+     * @param   user     DOCUMENT ME!
+     *
+     * @throws  IllegalArgumentException  DOCUMENT ME!
+     * @throws  IllegalStateException     DOCUMENT ME!
      */
-    public static void populateAttrSet(final Sheet.Set set, final Map<String, List<ReadOnly<String>>> map) {
-        for (final String key : map.keySet()) {
-            set.put(new PropertySupport.ReadOnly<String>(
-                    "attr-"
-                            + key
-                            + System.currentTimeMillis(),
-                    String.class,
-                    key,
-                    null) {
-
-                    @Override
-                    public String getValue() throws IllegalAccessException, InvocationTargetException {
-                        return "";
-                    }
-                });
-            for (final ReadOnly<String> ro : map.get(key)) {
-                set.put(ro);
-            }
-
-            set.setHidden(false);
+    public static void populateAttrSet(final DomainserverProject project,
+            final Sheet sheet,
+            final UserGroup group,
+            final User user) {
+        if ((user == null) && (group == null)) {
+            throw new IllegalArgumentException("group and user must not be null");                   // NOI18N
         }
+        final ReadOnly<String> propCAttr = new ReadOnly<String>(
+                "configattrs",                                                                       // NOI18N
+                String.class,
+                NbBundle.getMessage(UserNode.class, "UserNode.createSheet().propCAttr.displayName"), // NOI18N
+                null) {
+
+                @Override
+                public String getHtmlDisplayName() {
+                    return "<html><b>"                                                               // NOI18N
+                                + NbBundle.getMessage(
+                                    UserNode.class,
+                                    "UserNode.createSheet().propCAttr.displayName") + "</b></html>"; // NOI18N
+                }
+
+                @Override
+                public String getValue() throws IllegalAccessException, InvocationTargetException {
+                    return ""; // NOI18N
+                }
+            };
+
+        final ReadOnly<String> propAAttr = new ReadOnly<String>(
+                "actionattrs",                                                                                 // NOI18N
+                String.class,
+                NbBundle.getMessage(UserNode.class, "UserNode.createSheet().propAAttr.displayName"),           // NOI18N
+                null) {
+
+                @Override
+                public String getHtmlDisplayName() {
+                    return "<html><b>"                                                               // NOI18N
+                                + NbBundle.getMessage(
+                                    UserNode.class,
+                                    "UserNode.createSheet().propAAttr.displayName") + "</b></html>"; // NOI18N
+                }
+
+                @Override
+                public String getValue() throws IllegalAccessException, InvocationTargetException {
+                    return ""; // NOI18N
+                }
+            };
+
+        final ReadOnly<String> propXAttr = new ReadOnly<String>(
+                "xmlattrs",                                                                                    // NOI18N
+                String.class,
+                NbBundle.getMessage(UserNode.class, "UserNode.createSheet().propXAttr.displayName"),           // NOI18N
+                null) {
+
+                @Override
+                public String getHtmlDisplayName() {
+                    return "<html><b>"                                                               // NOI18N
+                                + NbBundle.getMessage(
+                                    UserNode.class,
+                                    "UserNode.createSheet().propXAttr.displayName") + "</b></html>"; // NOI18N
+                }
+
+                @Override
+                public String getValue() throws IllegalAccessException, InvocationTargetException {
+                    return ""; // NOI18N
+                }
+            };
+
+        final Collection<UserGroup> ugs;
+        if (user == null) {
+            ugs = new ArrayList(1);
+            ugs.add(group);
+        } else {
+            ugs = user.getUserGroups();
+        }
+
+        for (final UserGroup ug : ugs) {
+            final List<ConfigAttrEntry> caes = project.getCidsDataObjectBackend()
+                        .getEntries(ug.getDomain(),
+                            ug,
+                            user,
+                            project.getRuntimeProps().getProperty("serverName"),
+                            true);
+            Collections.sort(caes, new Comparators.ConfigAttrEntries());
+
+            if (!caes.isEmpty()) {
+                final Sheet.Set ugSet = Sheet.createPropertiesSet();
+                ugSet.setName(ug.toString());
+                ugSet.setDisplayName(ug.getName() + "@" + ug.getDomain().getName()); // NOI18N
+
+                final Map<ReadOnly<String>, List<ReadOnly<String>>> map =
+                    new TreeMap<ReadOnly<String>, List<ReadOnly<String>>>(new Comparator<ReadOnly<String>>() {
+
+                            @Override
+                            public int compare(final ReadOnly<String> o1, final ReadOnly<String> o2) {
+                                return o1.getDisplayName().compareTo(o2.getDisplayName());
+                            }
+                        });
+
+                for (final ConfigAttrEntry cae : caes) {
+                    final PropertySupport.ReadOnly<String> p = new PropertySupport.ReadOnly<String>(cae.getKey()
+                                    .getKey()
+                                    + cae.getId(),
+                            String.class,
+                            cae.getKey().getKey()
+                                    + " ["                                                                        // NOI18N
+                                    + ((cae.getUser() == null)
+                                        ? ((cae.getUsergroup() == null)
+                                            ? NbBundle.getMessage(
+                                                UserNode.class,
+                                                "UserNode.createSheet().caentryProp.displayName.category.domain") // NOI18N
+                                            : NbBundle.getMessage(
+                                                UserNode.class,
+                                                "UserNode.createSheet().caentryProp.displayName.category.ug"))    // NOI18N
+                                        : NbBundle.getMessage(
+                                            UserNode.class,
+                                            "UserNode.createSheet().caentryProp.displayName.category.user"))      // NOI18N
+                                    + "]",                                                                        // NOI18N
+                            null) {
+
+                            @Override
+                            public String getHtmlDisplayName() {
+                                return "<html>" + cae.getKey().getKey()
+                                            + " <font color=\"!controlShadow\"> ["                                            // NOI18N
+                                            + ((cae.getUser() == null)
+                                                ? ((cae.getUsergroup() == null)
+                                                    ? NbBundle.getMessage(
+                                                        UserNode.class,
+                                                        "UserNode.createSheet().caentryProp.displayName.category.domain")     // NOI18N
+                                                    : NbBundle.getMessage(
+                                                        UserNode.class,
+                                                        "UserNode.createSheet().caentryProp.displayName.category.ug"))        // NOI18N
+                                                : NbBundle.getMessage(
+                                                    UserNode.class,
+                                                    "UserNode.createSheet().caentryProp.displayName.category.user"))          // NOI18N
+                                            + "]</font></html>";                                                              // NOI18N
+                            }
+
+                            @Override
+                            public String getValue() throws IllegalAccessException, InvocationTargetException {
+                                return cae.getValue().getValue();
+                            }
+                        };
+
+                    List<ReadOnly<String>> attrList;
+                    switch (cae.getType().getAttrType()) {
+                        case CONFIG_ATTR: {
+                            attrList = map.get(propCAttr);
+                            if (attrList == null) {
+                                attrList = new ArrayList<ReadOnly<String>>();
+                                map.put(propCAttr, attrList);
+                            }
+
+                            break;
+                        }
+                        case ACTION_TAG: {
+                            attrList = map.get(propAAttr);
+                            if (attrList == null) {
+                                attrList = new ArrayList<ReadOnly<String>>();
+                                map.put(propAAttr, attrList);
+                            }
+
+                            break;
+                        }
+                        case XML_ATTR: {
+                            attrList = map.get(propXAttr);
+                            if (attrList == null) {
+                                attrList = new ArrayList<ReadOnly<String>>();
+                                map.put(propXAttr, attrList);
+                            }
+
+                            break;
+                        }
+                        default: {
+                            throw new IllegalStateException("unknown type: " + cae.getType().getAttrType()); // NOI18N
+                        }
+                    }
+
+                    attrList.add(p);
+                }
+
+                for (final ReadOnly<String> typeProp : map.keySet()) {
+                    ugSet.put(typeProp);
+                    for (final ReadOnly<String> entryProp : map.get(typeProp)) {
+                        ugSet.put(entryProp);
+                    }
+                }
+
+                sheet.put(ugSet);
+            }
+        }
+
+        // </editor-fold>
     }
 
     @Override

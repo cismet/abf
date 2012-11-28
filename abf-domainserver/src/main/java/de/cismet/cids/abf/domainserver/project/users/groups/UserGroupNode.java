@@ -17,6 +17,7 @@ import org.openide.nodes.PropertySupport;
 import org.openide.nodes.PropertySupport.ReadOnly;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.actions.SystemAction;
 
@@ -27,23 +28,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
-import de.cismet.cids.abf.domainserver.project.configattr.ConfigAttrEntryNode;
 import de.cismet.cids.abf.domainserver.project.users.NewUserWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.UserNode;
+import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
+import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver.Result;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.entity.common.Domain;
-import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
+import de.cismet.cids.jpa.entity.permission.ClassPermission;
+import de.cismet.cids.jpa.entity.permission.Permission;
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
@@ -122,10 +123,6 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
         final Sheet.Set setAdditionalInfo = Sheet.createPropertiesSet();
-        final Sheet.Set setPerm = Sheet.createPropertiesSet();
-        final Sheet.Set setCAttr = Sheet.createPropertiesSet();
-        final Sheet.Set setAAttr = Sheet.createPropertiesSet();
-        final Sheet.Set setXAttr = Sheet.createPropertiesSet();
 
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
@@ -292,73 +289,7 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
                     }
                 }; //</editor-fold>
 
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: AdminCount ">
-            final List<ConfigAttrEntry> caes = project.getCidsDataObjectBackend()
-                        .getEntries(userGroup.getDomain(), userGroup, null, true);
-            Collections.sort(caes, new Comparators.ConfigAttrEntries());
-
-            // hidden as long as there is no entry added
-            setCAttr.setHidden(true);
-            setAAttr.setHidden(true);
-            setXAttr.setHidden(true);
-
-            final Map<String, List<ReadOnly<String>>> propMapC = new TreeMap<String, List<ReadOnly<String>>>();
-            final Map<String, List<ReadOnly<String>>> propMapA = new TreeMap<String, List<ReadOnly<String>>>();
-            final Map<String, List<ReadOnly<String>>> propMapX = new TreeMap<String, List<ReadOnly<String>>>();
-
-            for (final ConfigAttrEntry cae : caes) {
-                final String entryOwner = ConfigAttrEntryNode.createEntryOwnerString(cae);
-
-                final PropertySupport.ReadOnly<String> p = new PropertySupport.ReadOnly<String>(cae.getKey().getKey()
-                                + cae.getId(),
-                        String.class,
-                        cae.getKey().getKey(),
-                        null) {
-
-                        @Override
-                        public String getValue() throws IllegalAccessException, InvocationTargetException {
-                            return cae.getValue().getValue();
-                        }
-                    };
-
-                final Map<String, List<ReadOnly<String>>> map;
-                switch (cae.getType().getAttrType()) {
-                    case CONFIG_ATTR: {
-                        map = propMapC;
-
-                        break;
-                    }
-                    case ACTION_TAG: {
-                        map = propMapA;
-
-                        break;
-                    }
-                    case XML_ATTR: {
-                        map = propMapX;
-
-                        break;
-                    }
-                    default: {
-                        throw new IllegalStateException("unknown type: " + cae.getType().getAttrType()); // NOI18N
-                    }
-                }
-
-                List<ReadOnly<String>> attrList = map.get(entryOwner);
-                if (attrList == null) {
-                    attrList = new ArrayList<ReadOnly<String>>();
-                }
-
-                attrList.add(p);
-                map.put(entryOwner, attrList);
-            }
-
-            UserNode.populateAttrSet(setCAttr, propMapC);
-            UserNode.populateAttrSet(setAAttr, propMapA);
-            UserNode.populateAttrSet(setXAttr, propMapX);
-
-            //</editor-fold>
-
-            set.setName("usergroupInfo");
+            set.setName("usergroupInfo");                           // NOI18N
             set.setDisplayName(org.openide.util.NbBundle.getMessage(
                     UserGroupNode.class,
                     "UserGroupNode.createSheet().displayName"));    // NOI18N
@@ -366,12 +297,6 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
             setAdditionalInfo.setDisplayName(org.openide.util.NbBundle.getMessage(
                     UserGroupNode.class,
                     "UserGroupNode.createSheet().additionalInfo")); // NOI18N
-            setCAttr.setName("configattrs");                        // NOI18N
-            setCAttr.setDisplayName("Configuration Attributes");
-            setAAttr.setName("actionattrs");                        // NOI18N
-            setAAttr.setDisplayName("Action-Tag Attributes");
-            setXAttr.setName("xmlattrs");                           // NOI18N
-            setXAttr.setDisplayName("XML Configuration Attributes");
 
             set.put(nameProp);
             set.put(domainProp);
@@ -382,10 +307,47 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
             sheet.put(set);
             sheet.put(setAdditionalInfo);
-//            sheet.put(setPerm);
-            sheet.put(setCAttr);
-            sheet.put(setAAttr);
-            sheet.put(setXAttr);
+
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: classperms ">
+            final List<ClassPermission> cperms = project.getCidsDataObjectBackend().getClassPermissions(userGroup);
+
+            if (!cperms.isEmpty()) {
+                final Sheet.Set setPerm = Sheet.createPropertiesSet();
+                final PermissionResolver permResolv = PermissionResolver.getInstance(project);
+
+                for (final ClassPermission cperm : cperms) {
+                    final ReadOnly<String> pPerm = new ReadOnly<String>(
+                            "cperm" // NOI18N
+                                    + cperm.getId(),
+                            String.class,
+                            cperm.getCidsClass().getName(),
+                            null) {
+
+                            @Override
+                            public String getValue() throws IllegalAccessException, InvocationTargetException {
+                                final Permission p = cperm.getPermission();
+                                String s = permResolv.getPermString(cperm.getCidsClass(), p).getPermissionString();
+                                if (s == null) {
+                                    s = p.getKey();
+                                }
+
+                                return s;
+                            }
+                        };
+
+                    setPerm.put(pPerm);
+                }
+
+                setPerm.setName("classpermissions"); // NOI18N
+                setPerm.setDisplayName(NbBundle.getMessage(
+                        UserGroupNode.class,
+                        "UserGroupNode.createSheet().setPerm.displayName"));
+                sheet.put(setPerm);
+            }
+            //</editor-fold>
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: config attrs ">
+            UserNode.populateAttrSet(project, sheet, userGroup, null);
+            //</editor-fold>
         } catch (final Exception ex) {
             LOG.error("could not create property sheet", ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
