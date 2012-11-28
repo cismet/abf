@@ -13,6 +13,7 @@ import org.openide.ErrorManager;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
+import org.openide.nodes.PropertySupport.ReadOnly;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
@@ -24,20 +25,28 @@ import java.io.IOException;
 
 import java.lang.reflect.InvocationTargetException;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.configattr.ConfigAttrEntryNode;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.ChangeGroupBelongingWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.groups.RemoveGroupMembershipAction;
+import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.user.User;
+import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
  * DOCUMENT ME!
@@ -94,7 +103,11 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
-        final Sheet.Set setAdditionalInfo = Sheet.createPropertiesSet();
+        final Sheet.Set setUG = Sheet.createPropertiesSet();
+        final Sheet.Set setCAttr = Sheet.createPropertiesSet();
+        final Sheet.Set setAAttr = Sheet.createPropertiesSet();
+        final Sheet.Set setXAttr = Sheet.createPropertiesSet();
+
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
             final Property idProp = new PropertySupport.Reflection(user,
@@ -237,54 +250,144 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                 };                                                 // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: GroupInfo ">
-            final Property groupsInfo = new PropertySupport(
-                    "groupsInfo",                                                   // NOI18N
-                    String.class,
-                    org.openide.util.NbBundle.getMessage(
-                        UserNode.class,
-                        "UserNode.createSheet().groupsInfo.usergroups"),            // NOI18N
-                    org.openide.util.NbBundle.getMessage(
-                        UserNode.class,
-                        "UserNode.createSheet().groupsInfo.userIsMemberOfTheseGroups"), // NOI18N
-                    true,
-                    false) {
+            final List<UserGroup> ugs = new ArrayList<UserGroup>(user.getUserGroups());
+            Collections.sort(ugs, new Comparators.UserGroups());
+            for (final UserGroup ug : user.getUserGroups()) {
+                setUG.put(new PropertySupport.ReadOnly<Integer>(
+                        "ug"
+                                + ug.getId(), // NOI18N
+                        Integer.class,
+                        ug.getName(),
+                        ug.getDescription()) {
 
-                    @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
-                        final Set set = user.getUserGroups();
-                        if (set == null) {
-                            return org.openide.util.NbBundle.getMessage(
-                                    UserNode.class,
-                                    "UserNode.createSheet().groupsInfo.getValue().userNotAssignedToAnyGroup"); // NOI18N
-                        } else {
-                            return set.toString();
+                        @Override
+                        public Integer getValue() throws IllegalAccessException, InvocationTargetException {
+                            return ug.getId();
                         }
-                    }
+                    });
+            } // </editor-fold>
 
-                    @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
-                        IllegalArgumentException,
-                        InvocationTargetException {
-                        // not needed
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: ConfigAttrs ">
+            final List<ConfigAttrEntry> caes = project.getCidsDataObjectBackend().getEntries(user);
+            Collections.sort(caes, new Comparators.ConfigAttrEntries());
+
+            // hidden as long as there is no entry added
+            setCAttr.setHidden(true);
+            setAAttr.setHidden(true);
+            setXAttr.setHidden(true);
+
+            final Map<String, List<ReadOnly<String>>> propMapC = new TreeMap<String, List<ReadOnly<String>>>();
+            final Map<String, List<ReadOnly<String>>> propMapA = new TreeMap<String, List<ReadOnly<String>>>();
+            final Map<String, List<ReadOnly<String>>> propMapX = new TreeMap<String, List<ReadOnly<String>>>();
+
+            for (final ConfigAttrEntry cae : caes) {
+                final String entryOwner = ConfigAttrEntryNode.createEntryOwnerString(cae);
+
+                final PropertySupport.ReadOnly<String> p = new PropertySupport.ReadOnly<String>(cae.getKey().getKey()
+                                + cae.getId(),
+                        String.class,
+                        cae.getKey().getKey(),
+                        null) {
+
+                        @Override
+                        public String getValue() throws IllegalAccessException, InvocationTargetException {
+                            return cae.getValue().getValue();
+                        }
+                    };
+
+                final Map<String, List<ReadOnly<String>>> map;
+                switch (cae.getType().getAttrType()) {
+                    case CONFIG_ATTR: {
+                        map = propMapC;
+
+                        break;
                     }
-                };                                                         // </editor-fold>
-            setAdditionalInfo.setName("addition");                         // NOI18N
-            setAdditionalInfo.setDisplayName(NbBundle.getMessage(
+                    case ACTION_TAG: {
+                        map = propMapA;
+
+                        break;
+                    }
+                    case XML_ATTR: {
+                        map = propMapX;
+
+                        break;
+                    }
+                    default: {
+                        throw new IllegalStateException("unknown type: " + cae.getType().getAttrType()); // NOI18N
+                    }
+                }
+
+                List<ReadOnly<String>> attrList = map.get(entryOwner);
+                if (attrList == null) {
+                    attrList = new ArrayList<ReadOnly<String>>();
+                }
+
+                attrList.add(p);
+                map.put(entryOwner, attrList);
+            }
+
+            populateAttrSet(setCAttr, propMapC);
+            populateAttrSet(setAAttr, propMapA);
+            populateAttrSet(setXAttr, propMapX);
+
+            // </editor-fold>
+
+            setUG.setName("usergroups");                          // NOI18N
+            setUG.setDisplayName(NbBundle.getMessage(
                     UserNode.class,
-                    "UserNode.createSheet().additionalInfo.displayName")); // NOI18N
+                    "UserNode.createSheet().setUG.displayName")); // NOI18N
+            setCAttr.setName("configattrs");                      // NOI18N
+            setCAttr.setDisplayName("Configuration Attributes");
+            setAAttr.setName("actionattrs");                      // NOI18N
+            setAAttr.setDisplayName("Action-Tag Attributes");
+            setXAttr.setName("xmlattrs");                         // NOI18N
+            setXAttr.setDisplayName("XML Configuration Attributes");
+
             set.put(nameProp);
             set.put(passProp);
             set.put(pwchangeProp);
             set.put(adminProp);
             set.put(idProp);
-            setAdditionalInfo.put(groupsInfo);
+
             sheet.put(set);
-            sheet.put(setAdditionalInfo);
+            sheet.put(setUG);
+            sheet.put(setCAttr);
+            sheet.put(setAAttr);
+            sheet.put(setXAttr);
         } catch (final Exception ex) {
-            LOG.error("could not create property sheet", ex);              // NOI18N
+            LOG.error("could not create property sheet", ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
         }
         return sheet;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  set  DOCUMENT ME!
+     * @param  map  DOCUMENT ME!
+     */
+    public static void populateAttrSet(final Sheet.Set set, final Map<String, List<ReadOnly<String>>> map) {
+        for (final String key : map.keySet()) {
+            set.put(new PropertySupport.ReadOnly<String>(
+                    "attr-"
+                            + key
+                            + System.currentTimeMillis(),
+                    String.class,
+                    key,
+                    null) {
+
+                    @Override
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
+                        return "";
+                    }
+                });
+            for (final ReadOnly<String> ro : map.get(key)) {
+                set.put(ro);
+            }
+
+            set.setHidden(false);
+        }
     }
 
     @Override
@@ -321,6 +424,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                 CallableSystemAction.get(ChangeGroupBelongingWizardAction.class),
                 removeGrpMbrShip,
                 null,
+                CallableSystemAction.get(CopyUserWizardAction.class),
                 CallableSystemAction.get(DeleteUserAction.class),
             };
     }

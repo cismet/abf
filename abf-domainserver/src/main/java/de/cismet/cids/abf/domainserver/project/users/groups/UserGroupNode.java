@@ -14,6 +14,7 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.nodes.Node.Property;
 import org.openide.nodes.PropertySupport;
+import org.openide.nodes.PropertySupport.ReadOnly;
 import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
 import org.openide.util.actions.CallableSystemAction;
@@ -26,12 +27,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.configattr.ConfigAttrEntryNode;
 import de.cismet.cids.abf.domainserver.project.users.NewUserWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.UserNode;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
@@ -39,6 +43,7 @@ import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.entity.common.Domain;
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
@@ -115,6 +120,13 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     @Override
     protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
+        final Sheet.Set set = Sheet.createPropertiesSet();
+        final Sheet.Set setAdditionalInfo = Sheet.createPropertiesSet();
+        final Sheet.Set setPerm = Sheet.createPropertiesSet();
+        final Sheet.Set setCAttr = Sheet.createPropertiesSet();
+        final Sheet.Set setAAttr = Sheet.createPropertiesSet();
+        final Sheet.Set setXAttr = Sheet.createPropertiesSet();
+
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
             final Property idProp = new PropertySupport.Reflection(userGroup,
@@ -280,8 +292,73 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
                     }
                 }; //</editor-fold>
 
-            final Sheet.Set set = Sheet.createPropertiesSet();
-            final Sheet.Set setAdditionalInfo = Sheet.createPropertiesSet();
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: AdminCount ">
+            final List<ConfigAttrEntry> caes = project.getCidsDataObjectBackend()
+                        .getEntries(userGroup.getDomain(), userGroup, null, true);
+            Collections.sort(caes, new Comparators.ConfigAttrEntries());
+
+            // hidden as long as there is no entry added
+            setCAttr.setHidden(true);
+            setAAttr.setHidden(true);
+            setXAttr.setHidden(true);
+
+            final Map<String, List<ReadOnly<String>>> propMapC = new TreeMap<String, List<ReadOnly<String>>>();
+            final Map<String, List<ReadOnly<String>>> propMapA = new TreeMap<String, List<ReadOnly<String>>>();
+            final Map<String, List<ReadOnly<String>>> propMapX = new TreeMap<String, List<ReadOnly<String>>>();
+
+            for (final ConfigAttrEntry cae : caes) {
+                final String entryOwner = ConfigAttrEntryNode.createEntryOwnerString(cae);
+
+                final PropertySupport.ReadOnly<String> p = new PropertySupport.ReadOnly<String>(cae.getKey().getKey()
+                                + cae.getId(),
+                        String.class,
+                        cae.getKey().getKey(),
+                        null) {
+
+                        @Override
+                        public String getValue() throws IllegalAccessException, InvocationTargetException {
+                            return cae.getValue().getValue();
+                        }
+                    };
+
+                final Map<String, List<ReadOnly<String>>> map;
+                switch (cae.getType().getAttrType()) {
+                    case CONFIG_ATTR: {
+                        map = propMapC;
+
+                        break;
+                    }
+                    case ACTION_TAG: {
+                        map = propMapA;
+
+                        break;
+                    }
+                    case XML_ATTR: {
+                        map = propMapX;
+
+                        break;
+                    }
+                    default: {
+                        throw new IllegalStateException("unknown type: " + cae.getType().getAttrType()); // NOI18N
+                    }
+                }
+
+                List<ReadOnly<String>> attrList = map.get(entryOwner);
+                if (attrList == null) {
+                    attrList = new ArrayList<ReadOnly<String>>();
+                }
+
+                attrList.add(p);
+                map.put(entryOwner, attrList);
+            }
+
+            UserNode.populateAttrSet(setCAttr, propMapC);
+            UserNode.populateAttrSet(setAAttr, propMapA);
+            UserNode.populateAttrSet(setXAttr, propMapX);
+
+            //</editor-fold>
+
+            set.setName("usergroupInfo");
             set.setDisplayName(org.openide.util.NbBundle.getMessage(
                     UserGroupNode.class,
                     "UserGroupNode.createSheet().displayName"));    // NOI18N
@@ -289,18 +366,31 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
             setAdditionalInfo.setDisplayName(org.openide.util.NbBundle.getMessage(
                     UserGroupNode.class,
                     "UserGroupNode.createSheet().additionalInfo")); // NOI18N
+            setCAttr.setName("configattrs");                        // NOI18N
+            setCAttr.setDisplayName("Configuration Attributes");
+            setAAttr.setName("actionattrs");                        // NOI18N
+            setAAttr.setDisplayName("Action-Tag Attributes");
+            setXAttr.setName("xmlattrs");                           // NOI18N
+            setXAttr.setDisplayName("XML Configuration Attributes");
+
             set.put(nameProp);
             set.put(domainProp);
             set.put(descProp);
             set.put(idProp);
             setAdditionalInfo.put(countUser);
             setAdditionalInfo.put(countAdmins);
+
             sheet.put(set);
             sheet.put(setAdditionalInfo);
+//            sheet.put(setPerm);
+            sheet.put(setCAttr);
+            sheet.put(setAAttr);
+            sheet.put(setXAttr);
         } catch (final Exception ex) {
-            LOG.error("could not create property sheet", ex);       // NOI18N
+            LOG.error("could not create property sheet", ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
         }
+
         return sheet;
     }
 
@@ -312,12 +402,16 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     @Override
     public Action[] getActions(final boolean b) {
         SystemAction newUser = null;
+        SystemAction addUser = null;
         if (!isRemote()) {
             newUser = CallableSystemAction.get(NewUserWizardAction.class);
+            addUser = CallableSystemAction.get(AddUsersWizardAction.class);
         }
         return new Action[] {
                 newUser,
+                addUser,
                 null,
+                CallableSystemAction.get(CopyUsergroupWizardAction.class),
                 CallableSystemAction.get(DeleteUsergroupAction.class)
             };
     }
