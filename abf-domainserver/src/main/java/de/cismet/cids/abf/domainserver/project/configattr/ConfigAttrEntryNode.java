@@ -24,7 +24,6 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.windows.TopComponent;
-import org.openide.windows.WindowManager;
 
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -37,7 +36,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -86,16 +84,7 @@ public final class ConfigAttrEntryNode extends ProjectNode {
         super(Children.LEAF, project);
         this.entry = entry;
 
-        final StringBuilder sb = new StringBuilder();
-        sb.append(entry.getDomain().getName());
-        if (entry.getUsergroup() != null) {
-            sb.append(SEPARATOR).append(entry.getUsergroup().getName());
-        }
-        if (entry.getUser() != null) {
-            sb.append(SEPARATOR).append(entry.getUser().getLoginname());
-        }
-
-        setName(sb.toString());
+        setName(createEntryOwnerString(entry));
 
         userIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "user.png");           // NOI18N
         adminIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "admin.png");         // NOI18N
@@ -110,6 +99,26 @@ public final class ConfigAttrEntryNode extends ProjectNode {
     }
 
     //~ Methods ----------------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   entry  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public static String createEntryOwnerString(final ConfigAttrEntry entry) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(entry.getDomain().getName());
+        if (entry.getUsergroup() != null) {
+            sb.append(SEPARATOR).append(entry.getUsergroup().getName());
+        }
+        if (entry.getUser() != null) {
+            sb.append(SEPARATOR).append(entry.getUser().getLoginname());
+        }
+
+        return sb.toString();
+    }
 
     @Override
     public Image getIcon(final int type) {
