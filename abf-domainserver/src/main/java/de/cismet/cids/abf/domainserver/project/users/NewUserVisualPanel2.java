@@ -8,13 +8,16 @@
 package de.cismet.cids.abf.domainserver.project.users;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers;
+import de.cismet.cids.abf.utilities.Comparators;
 
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
@@ -53,15 +56,28 @@ public final class NewUserVisualPanel2 extends JPanel {
      */
     void init() {
         final List<UserGroup> l = model.getProject().getCidsDataObjectBackend().getAllEntities(UserGroup.class);
-        final List<UserGroup> groups = new ArrayList<UserGroup>();
+        Collections.sort(l, new Comparators.UserGroups());
+
+        final DefaultListModel dlm = new DefaultListModel();
         for (final UserGroup ug : l) {
             if (!ProjectUtils.isRemoteGroup(ug, model.getProject())) {
-                groups.add(ug);
+                dlm.addElement(ug);
             }
         }
         lstGroup.setCellRenderer(new Renderers.UserGroupListRenderer(model.getProject()));
         lstGroup.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        lstGroup.setListData(groups.toArray());
+        lstGroup.setModel(dlm);
+        lstGroup.clearSelection();
+
+        final List<UserGroup> userGroups = model.getUserGroups();
+        if (userGroups != null) {
+            final int[] indices = new int[userGroups.size()];
+            for (int i = 0; i < indices.length; ++i) {
+                indices[i] = dlm.indexOf(userGroups.get(i));
+            }
+
+            lstGroup.setSelectedIndices(indices);
+        }
     }
 
     /**
@@ -75,6 +91,7 @@ public final class NewUserVisualPanel2 extends JPanel {
         for (final Object o : values) {
             l.add((UserGroup)o);
         }
+
         return l;
     }
 

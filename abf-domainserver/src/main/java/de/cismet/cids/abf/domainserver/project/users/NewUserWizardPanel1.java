@@ -30,6 +30,7 @@ import de.cismet.cids.jpa.entity.user.User;
  *
  * @version  $Revision$, $Date$
  */
+//TODO: proper wizard
 public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
 
     //~ Instance fields --------------------------------------------------------
@@ -39,6 +40,7 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
     private transient NewUserVisualPanel1 component;
     private transient String domainserverName;
     private transient WizardDescriptor wizard;
+    private transient User user;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -74,6 +76,15 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
         return HelpCtx.DEFAULT_HELP;
     }
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    User getUser() {
+        return user;
+    }
+
     @Override
     public boolean isValid() {
         final User user = component.getUser();
@@ -94,6 +105,7 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
             return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);
+
         return true;
     }
 
@@ -115,6 +127,7 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
      * DOCUMENT ME!
      */
     void fireChangeEvent() {
+        System.out.println("change");
         final Iterator<ChangeListener> it;
         synchronized (listeners) {
             it = new HashSet<ChangeListener>(listeners).iterator();
@@ -129,11 +142,15 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
     public void readSettings(final Object settings) {
         wizard = (WizardDescriptor)settings;
         final DomainserverProject project = (DomainserverProject)wizard.getProperty(NewUserWizardAction.PROJECT_PROP);
+        user = (User)wizard.getProperty(NewUserWizardAction.USER_PROP);
+
+        System.out.println("user: " + user);
         final Properties props = project.getRuntimeProps();
         domainserverName = props.getProperty("serverName") // NOI18N
                     + " ("                                 // NOI18N
                     + props.getProperty("connection.url")  // NOI18N
                     + ")";                                 // NOI18N
+        System.out.println("preinit");
         component.init();
     }
 

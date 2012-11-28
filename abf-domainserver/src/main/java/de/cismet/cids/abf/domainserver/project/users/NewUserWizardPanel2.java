@@ -12,9 +12,13 @@ import org.openide.util.HelpCtx;
 
 import java.awt.Component;
 
+import java.util.List;
+
 import javax.swing.event.ChangeListener;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+
+import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
  * DOCUMENT ME!
@@ -27,6 +31,7 @@ public class NewUserWizardPanel2 implements WizardDescriptor.Panel {
 
     private transient NewUserVisualPanel2 component;
     private transient DomainserverProject project;
+    private transient List<UserGroup> userGroups;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -45,6 +50,15 @@ public class NewUserWizardPanel2 implements WizardDescriptor.Panel {
      */
     DomainserverProject getProject() {
         return project;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    List<UserGroup> getUserGroups() {
+        return userGroups;
     }
 
     @Override
@@ -70,8 +84,8 @@ public class NewUserWizardPanel2 implements WizardDescriptor.Panel {
     @Override
     public void readSettings(final Object settings) {
         final WizardDescriptor wizard = (WizardDescriptor)settings;
-        project = (DomainserverProject)wizard.getProperty(
-                NewUserWizardAction.PROJECT_PROP);
+        project = (DomainserverProject)wizard.getProperty(NewUserWizardAction.PROJECT_PROP);
+        userGroups = (List)wizard.getProperty(NewUserWizardAction.USERGROUP_PROP);
         component.init();
     }
 

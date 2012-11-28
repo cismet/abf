@@ -50,6 +50,9 @@ public final class NewUserVisualPanel1 extends JPanel {
         this.model = model;
         docL = new DocumentListenerImpl();
         initComponents();
+
+        txtPass.getDocument().addDocumentListener(WeakListeners.document(docL, txtPass.getDocument()));
+        txtLogin.getDocument().addDocumentListener(WeakListeners.document(docL, txtLogin.getDocument()));
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -58,12 +61,18 @@ public final class NewUserVisualPanel1 extends JPanel {
      * DOCUMENT ME!
      */
     void init() {
-        clearFields();
+        final User user = model.getUser();
+
+        System.out.println(user);
+        if (user == null) {
+            clearFields();
+        } else {
+            txtLogin.setText(user.getLoginname());
+            txtPass.setText(user.getPassword());
+            chkAdmin.setSelected(user.isAdmin());
+        }
+
         lblDomainserver.setText(model.getDomainserverName());
-        txtPass.getDocument().addDocumentListener(
-            WeakListeners.document(docL, txtPass.getDocument()));
-        txtLogin.getDocument().addDocumentListener(
-            WeakListeners.document(docL, txtLogin.getDocument()));
     }
 
     /**
@@ -72,10 +81,16 @@ public final class NewUserVisualPanel1 extends JPanel {
      * @return  DOCUMENT ME!
      */
     User getUser() {
-        final User user = new User();
+        final User user;
+        if (model.getUser() == null) {
+            user = new User();
+        } else {
+            user = model.getUser();
+        }
         user.setLoginname(txtLogin.getText());
         user.setPassword(txtPass.getText());
         user.setAdmin(chkAdmin.isSelected());
+
         return user;
     }
 
