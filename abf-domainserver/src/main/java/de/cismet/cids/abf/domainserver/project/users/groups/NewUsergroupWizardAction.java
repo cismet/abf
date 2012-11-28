@@ -43,8 +43,7 @@ public final class NewUsergroupWizardAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            NewUsergroupWizardAction.class);
+    private static final transient Logger LOG = Logger.getLogger(NewUsergroupWizardAction.class);
 
     public static final String PROJECT_PROP = "projectProperty";     // NOI18N
     public static final String USERGROUP_PROP = "usergroupProperty"; // NOI18N
