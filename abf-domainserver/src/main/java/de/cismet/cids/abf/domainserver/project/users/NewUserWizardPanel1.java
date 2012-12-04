@@ -8,16 +8,13 @@
 package de.cismet.cids.abf.domainserver.project.users;
 
 import org.openide.WizardDescriptor;
+import org.openide.util.ChangeSupport;
 import org.openide.util.HelpCtx;
 
 import java.awt.Component;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Properties;
-import java.util.Set;
 
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -36,7 +33,7 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
     //~ Instance fields --------------------------------------------------------
 
     private final transient NameValidator validator;
-    private final transient Set<ChangeListener> listeners;
+    private final transient ChangeSupport changeSupport;
     private transient NewUserVisualPanel1 component;
     private transient String domainserverName;
     private transient WizardDescriptor wizard;
@@ -49,7 +46,7 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
      */
     public NewUserWizardPanel1() {
         validator = new NameValidator(NameValidator.NAME_HIGH);
-        listeners = new HashSet<ChangeListener>(1);
+        changeSupport = new ChangeSupport(this);
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -87,8 +84,8 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
 
     @Override
     public boolean isValid() {
-        final User user = component.getUser();
-        if (!validator.isValid(user.getLoginname())) {
+        final User u = component.getUser();
+        if (!validator.isValid(u.getLoginname())) {
             wizard.putProperty(
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
@@ -96,7 +93,7 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
                     "NewUserWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.invalidLogin"));    // NOI18N
             return false;
         }
-        if (!validator.isValid(user.getPassword())) {
+        if (!validator.isValid(u.getPassword())) {
             wizard.putProperty(
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
@@ -111,31 +108,19 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
 
     @Override
     public void addChangeListener(final ChangeListener l) {
-        synchronized (listeners) {
-            listeners.add(l);
-        }
+        changeSupport.addChangeListener(l);
     }
 
     @Override
     public void removeChangeListener(final ChangeListener l) {
-        synchronized (listeners) {
-            listeners.remove(l);
-        }
+        changeSupport.addChangeListener(l);
     }
 
     /**
      * DOCUMENT ME!
      */
     void fireChangeEvent() {
-        System.out.println("change");
-        final Iterator<ChangeListener> it;
-        synchronized (listeners) {
-            it = new HashSet<ChangeListener>(listeners).iterator();
-        }
-        final ChangeEvent ev = new ChangeEvent(this);
-        while (it.hasNext()) {
-            it.next().stateChanged(ev);
-        }
+        changeSupport.fireChange();
     }
 
     @Override
@@ -144,14 +129,15 @@ public class NewUserWizardPanel1 implements WizardDescriptor.Panel {
         final DomainserverProject project = (DomainserverProject)wizard.getProperty(NewUserWizardAction.PROJECT_PROP);
         user = (User)wizard.getProperty(NewUserWizardAction.USER_PROP);
 
-        System.out.println("user: " + user);
         final Properties props = project.getRuntimeProps();
         domainserverName = props.getProperty("serverName") // NOI18N
                     + " ("                                 // NOI18N
                     + props.getProperty("connection.url")  // NOI18N
                     + ")";                                 // NOI18N
-        System.out.println("preinit");
+
         component.init();
+
+        fireChangeEvent();
     }
 
     @Override
