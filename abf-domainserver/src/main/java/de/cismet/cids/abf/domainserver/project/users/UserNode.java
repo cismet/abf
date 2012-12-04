@@ -21,13 +21,14 @@ import org.openide.util.actions.CallableSystemAction;
 
 import java.awt.Image;
 
+import java.beans.PropertyEditor;
+
 import java.io.IOException;
 
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -44,6 +45,7 @@ import de.cismet.cids.abf.domainserver.project.users.groups.ChangeGroupBelonging
 import de.cismet.cids.abf.domainserver.project.users.groups.RemoveGroupMembershipAction;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
+import de.cismet.cids.abf.utilities.nodes.PropertyRefresh;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
@@ -57,7 +59,7 @@ import de.cismet.cids.jpa.entity.user.UserGroup;
  * @author   martin.scholl@cismet.de
  * @version  1.12
  */
-public final class UserNode extends ProjectNode implements UserContextCookie, Refreshable {
+public final class UserNode extends ProjectNode implements UserContextCookie, Refreshable, PropertyRefresh {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -68,6 +70,9 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     private final transient Image adminImage;
     private final transient Image userImage;
     private transient User user;
+
+    // accessed in syncronised methods
+    private transient boolean sheetInitialised;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -80,6 +85,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public UserNode(final User user, final DomainserverProject project) {
         super(Children.LEAF, project);
         this.user = user;
+        sheetInitialised = false;
         userImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "user.png");   // NOI18N
         adminImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "admin.png"); // NOI18N
         getCookieSet().add(this);
@@ -103,6 +109,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     @Override
     protected Sheet createSheet() {
+        sheetInitialised = true;
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
         final Sheet.Set setUG = Sheet.createPropertiesSet();
@@ -177,6 +184,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                 };                                                 // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Password ">
+            final PasswordPropertyEditor pwEditor = new PasswordPropertyEditor();
             final Property passProp = new PropertySupport(
                     "password",                                        // NOI18N
                     String.class,
@@ -191,13 +199,23 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
                     @Override
                     public Object getValue() throws IllegalAccessException, InvocationTargetException {
-                        return user.getPassword();
+                        return "****"; // NOI18N
+                    }
+
+                    @Override
+                    public PropertyEditor getPropertyEditor() {
+                        return pwEditor;
                     }
 
                     @Override
                     public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
+                        if ((object == null) || object.toString().equals("****")) {
+                            // ignore
+                            return;
+                        }
+
                         final User old = user;
                         try {
                             user.setPassword(object.toString());
@@ -211,7 +229,9 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                         firePropertyChange("lastPWChange",         // NOI18N
                             null, user.getLastPwdChange());
                     }
-                };                                                 // </editor-fold>
+                };
+            passProp.setValue("canEditAsText", Boolean.FALSE);
+            // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Administrator ">
             final Property adminProp = new PropertySupport(
@@ -289,6 +309,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             LOG.error("could not create property sheet", ex); // NOI18N
             ErrorManager.getDefault().notify(ex);
         }
+
         return sheet;
     }
 
@@ -370,12 +391,13 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                 }
             };
 
-        final Collection<UserGroup> ugs;
+        final List<UserGroup> ugs;
         if (user == null) {
             ugs = new ArrayList(1);
             ugs.add(group);
         } else {
-            ugs = user.getUserGroups();
+            ugs = new ArrayList(user.getUserGroups());
+            Collections.sort(ugs, new Comparators.UserGroups());
         }
 
         for (final UserGroup ug : ugs) {
@@ -539,7 +561,13 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     @Override
     public void destroy() throws IOException {
         try {
-            project.getCidsDataObjectBackend().delete(user);
+            final Backend backend = project.getCidsDataObjectBackend();
+            for (final UserGroup ug : user.getUserGroups()) {
+                ug.getUsers().remove(user);
+                backend.store(ug);
+            }
+            user.getUserGroups().clear();
+            backend.delete(user);
         } catch (final Exception ex) {
             final String message = "could not delete user: " + user; // NOI18N
             LOG.error(message, ex);
@@ -559,6 +587,13 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public void refresh() {
         user = project.getCidsDataObjectBackend().getEntity(User.class, user.getId());
 
-        setSheet(createSheet());
+        refreshProperties(false);
+    }
+
+    @Override
+    public void refreshProperties(final boolean forceInit) {
+        if (sheetInitialised || forceInit) {
+            setSheet(createSheet());
+        }
     }
 }
