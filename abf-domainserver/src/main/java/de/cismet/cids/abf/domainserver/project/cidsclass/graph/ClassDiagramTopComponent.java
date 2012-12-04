@@ -1111,7 +1111,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         }
         relationClasses.add(cidsClass);
         for (final Attribute attr : cidsClass.getAttributes()) {
-            if (attr.isForeignKey()) {
+            if (attr.isForeignKey() && (attr.getForeignKeyClass() >= 0)) {
                 final CidsClass foreignClass = project.getCidsDataObjectBackend()
                             .getEntity(CidsClass.class, attr.getForeignKeyClass());
                 if ((foreignClass != null) && !(relationClasses.contains(foreignClass))) {
