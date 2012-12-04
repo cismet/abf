@@ -295,6 +295,47 @@ public final class Renderers {
      *
      * @version  $Revision$, $Date$
      */
+    public static final class DomainListRenderer implements ListCellRenderer {
+
+        //~ Instance fields ----------------------------------------------------
+
+        private final transient ImageIcon domainIcon;
+
+        //~ Constructors -------------------------------------------------------
+
+        /**
+         * Creates a new UserGroupListRenderer object.
+         */
+        public DomainListRenderer() {
+            domainIcon = ImageUtilities.loadImageIcon(DomainserverProject.IMAGE_FOLDER + "domainserver.png", false); // NOI18N
+        }
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public Component getListCellRendererComponent(final JList list,
+                final Object value,
+                final int index,
+                final boolean isSelected,
+                final boolean cellHasFocus) {
+            final JLabel l = (JLabel)LIST_R.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            if (value instanceof Domain) {
+                final Domain domain = ((Domain)value);
+
+                l.setText(domain.getName());
+                l.setIcon(domainIcon);
+            }
+
+            return l;
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
     public static final class UserGroupListRenderer implements ListCellRenderer {
 
         //~ Instance fields ----------------------------------------------------
