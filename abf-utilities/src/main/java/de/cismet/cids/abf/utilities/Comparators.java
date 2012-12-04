@@ -16,6 +16,7 @@ import de.cismet.cids.jpa.entity.cidsclass.JavaClass;
 import de.cismet.cids.jpa.entity.cidsclass.Type;
 import de.cismet.cids.jpa.entity.common.Domain;
 import de.cismet.cids.jpa.entity.common.URL;
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.permission.Permission;
 import de.cismet.cids.jpa.entity.permission.Policy;
 import de.cismet.cids.jpa.entity.user.User;
@@ -295,6 +296,21 @@ public final class Comparators {
         @Override
         public int compare(final CatNode cn1, final CatNode cn2) {
             return String.valueOf(cn1.getName()).compareTo(String.valueOf(cn2.getName()));
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    public static final class ConfigAttrEntries implements Comparator<ConfigAttrEntry> {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public int compare(final ConfigAttrEntry o1, final ConfigAttrEntry o2) {
+            return String.valueOf(o1.getKey().getKey()).compareTo(String.valueOf(o2.getKey().getKey()));
         }
     }
 }
