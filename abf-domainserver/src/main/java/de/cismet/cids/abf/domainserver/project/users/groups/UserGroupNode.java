@@ -23,6 +23,8 @@ import org.openide.util.actions.SystemAction;
 
 import java.awt.Image;
 
+import java.io.IOException;
+
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
@@ -33,14 +35,15 @@ import java.util.Set;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.users.NewUserWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.UserNode;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
-import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver.Result;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
+import de.cismet.cids.abf.utilities.nodes.PropertyRefresh;
 
 import de.cismet.cids.jpa.entity.common.Domain;
 import de.cismet.cids.jpa.entity.permission.ClassPermission;
@@ -55,7 +58,7 @@ import de.cismet.cids.jpa.entity.user.UserGroup;
  * @author   martin.scholl@cismet.de
  * @version  1.17
  */
-public final class UserGroupNode extends ProjectNode implements UserGroupContextCookie, Refreshable {
+public final class UserGroupNode extends ProjectNode implements UserGroupContextCookie, Refreshable, PropertyRefresh {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -66,6 +69,9 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     private final transient Image group;
     private final transient Image remotegroup;
     private transient UserGroup userGroup;
+
+    // accessed in syncronised methods
+    private transient boolean sheetInitialised;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -78,6 +84,7 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     public UserGroupNode(final UserGroup userGroup, final DomainserverProject project) {
         super(new UserGroupNodeChildren(userGroup, project), project);
         this.userGroup = userGroup;
+        sheetInitialised = false;
         group = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "group.png");             // NOI18N
         remotegroup = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "remotegroup.png"); // NOI18N
         getCookieSet().add(this);
@@ -120,6 +127,8 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
     @Override
     protected Sheet createSheet() {
+        sheetInitialised = true;
+        System.out.println("createSheet: " + userGroup);
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
         final Sheet.Set setAdditionalInfo = Sheet.createPropertiesSet();
@@ -381,20 +390,42 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     @Override
     public void refresh() {
         userGroup = project.getCidsDataObjectBackend().getEntity(UserGroup.class, userGroup.getId());
-        ((UserGroupNodeChildren)getChildren()).refreshAll(userGroup);
+        final Children c = getChildren();
+        ((UserGroupNodeChildren)c).refreshAll(userGroup);
+
+        for (final Node n : c.getNodes()) {
+            final Refreshable r = n.getCookie(Refreshable.class);
+            if (r != null) {
+                r.refresh();
+            }
+        }
+
+        refreshProperties(false);
+    }
+
+    @Override
+    public void refreshProperties(final boolean forceInit) {
+        if (sheetInitialised || forceInit) {
+            setSheet(createSheet());
+        }
+
+        for (final Node n : getChildren().getNodes()) {
+            final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
+            if (pr != null) {
+                pr.refreshProperties(forceInit);
+            }
+        }
     }
 }
-
 /**
  * DOCUMENT ME!
  *
  * @version  $Revision$, $Date$
  */
-final class UserGroupNodeChildren extends Children.Keys {
+final class UserGroupNodeChildren extends ProjectChildren {
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient DomainserverProject project;
     private transient UserGroup userGroup;
 
     //~ Constructors -----------------------------------------------------------
@@ -406,25 +437,12 @@ final class UserGroupNodeChildren extends Children.Keys {
      * @param  project    DOCUMENT ME!
      */
     public UserGroupNodeChildren(final UserGroup userGroup, final DomainserverProject project) {
+        super(project);
+
         this.userGroup = userGroup;
-        this.project = project;
     }
 
     //~ Methods ----------------------------------------------------------------
-
-    @Override
-    protected Node[] createNodes(final Object object) {
-        return new Node[] { new UserNode((User)object, project) };
-    }
-
-    @Override
-    protected void addNotify() {
-        super.addNotify();
-        final Set<User> users = userGroup.getUsers();
-        final List<User> l = new ArrayList<User>(users);
-        Collections.sort(l, new Comparators.Users());
-        setKeys(l);
-    }
 
     /**
      * DOCUMENT ME!
@@ -436,5 +454,18 @@ final class UserGroupNodeChildren extends Children.Keys {
             userGroup = ug;
         }
         addNotify();
+    }
+
+    @Override
+    protected Node[] createUserNodes(final Object o) {
+        return new Node[] { new UserNode((User)o, project) };
+    }
+
+    @Override
+    protected void threadedNotify() throws IOException {
+        final Set<User> users = userGroup.getUsers();
+        final List<User> l = new ArrayList<User>(users);
+        Collections.sort(l, new Comparators.Users());
+        setKeysEDT(l);
     }
 }
