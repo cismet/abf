@@ -22,6 +22,9 @@ import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 
@@ -38,12 +41,15 @@ public abstract class ProjectChildren extends Children.Keys {
 
     private static final transient Logger LOG = Logger.getLogger(ProjectChildren.class);
 
+    private static final transient ExecutorService executor = Executors.newFixedThreadPool(8);
+
     //~ Instance fields --------------------------------------------------------
 
     protected final transient DomainserverProject project;
 
     private final transient Object lock;
-    private boolean refreshInProgress;
+
+    private transient Future<?> refreshFuture;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -70,7 +76,8 @@ public abstract class ProjectChildren extends Children.Keys {
         if (!isInitialized()) {
             setKeys(new Object[] { loadingNode });
         }
-        final Thread loader = new Thread(new Runnable() {
+
+        refreshFuture = executor.submit(new Runnable() {
 
                     private final transient ProgressHandle handle = ProgressHandleFactory.createHandle(
                             "Refreshing children: " // NOI18N
@@ -103,12 +110,11 @@ public abstract class ProjectChildren extends Children.Keys {
 
                             loadingNode.dispose();
                             synchronized (lock) {
-                                refreshInProgress = false;
+                                refreshFuture = null;
                             }
                         }
                     }
                 });
-        loader.start();
     }
 
     @Override
@@ -171,16 +177,18 @@ public abstract class ProjectChildren extends Children.Keys {
 
     /**
      * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
      */
-    public void refreshByNotify() {
+    public Future<?> refreshByNotify() {
         synchronized (lock) {
-            if (refreshInProgress) {
-                return;
-            } else {
-                refreshInProgress = true;
+            if (refreshFuture == null) {
+                addNotify();
             }
         }
-        addNotify();
+
+        return refreshFuture;
+
         // we do not refresh the already present nodes anymore since we don't want all sub-objects to query the db for
         // changes. it is decided that the user has to use the ABF to do any db changes or he is responsible for data
         // consistency to himself.
