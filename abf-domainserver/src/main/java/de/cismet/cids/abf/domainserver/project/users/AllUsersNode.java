@@ -7,6 +7,9 @@
 ****************************************************/
 package de.cismet.cids.abf.domainserver.project.users;
 
+import org.apache.log4j.Logger;
+
+import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.actions.CallableSystemAction;
@@ -17,6 +20,8 @@ import java.io.IOException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Action;
 
@@ -26,6 +31,7 @@ import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupContextCookie;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
+import de.cismet.cids.abf.utilities.nodes.PropertyRefresh;
 
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
@@ -36,7 +42,7 @@ import de.cismet.cids.jpa.entity.user.UserGroup;
  * @author   martin.scholl@cismet.de
  * @version  1.11
  */
-public final class AllUsersNode extends ProjectNode implements Refreshable, UserGroupContextCookie {
+public final class AllUsersNode extends ProjectNode implements Refreshable, UserGroupContextCookie, PropertyRefresh {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -50,6 +56,9 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
         ALL_GROUP.setDescription(null);
         ALL_GROUP.setDomain(null);
     }
+
+    /** LOGGER. */
+    private static final transient Logger LOG = Logger.getLogger(AllUsersNode.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -87,15 +96,32 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
 
     @Override
     public void refresh() {
-        ((AllUsersChildren)getChildren()).refreshAll();
+        final Children c = getChildren();
+        final Future<?> future = ((AllUsersChildren)c).refreshByNotify();
+
+        try {
+            future.get(30, TimeUnit.SECONDS);
+            refreshProperties(false);
+        } catch (final Exception ex) {
+            LOG.warn("unsuccessful refresh: " + this, ex);
+        }
     }
 
     @Override
     public UserGroup getUserGroup() {
         return ALL_GROUP;
     }
-}
 
+    @Override
+    public void refreshProperties(final boolean forceInit) {
+        for (final Node n : getChildren().getNodes()) {
+            final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
+            if (pr != null) {
+                pr.refreshProperties(forceInit);
+            }
+        }
+    }
+}
 /**
  * DOCUMENT ME!
  *
@@ -115,13 +141,6 @@ final class AllUsersChildren extends ProjectChildren {
     }
 
     //~ Methods ----------------------------------------------------------------
-
-    /**
-     * DOCUMENT ME!
-     */
-    void refreshAll() {
-        addNotify();
-    }
 
     @Override
     protected Node[] createUserNodes(final Object o) {
