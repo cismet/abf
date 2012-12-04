@@ -33,6 +33,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
 import de.cismet.cids.jpa.backend.service.Backend;
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
@@ -137,7 +138,6 @@ public final class CopyUserWizardAction extends CookieAction {
                 "CopyUserWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         wizard.putProperty(NewUserWizardAction.PROJECT_PROP, project);
 
-        System.out.println("action " + u);
         final User user = new User();
         user.setAdmin(u.isAdmin());
         user.setLoginname(u.getLoginname()
@@ -145,6 +145,7 @@ public final class CopyUserWizardAction extends CookieAction {
                         CopyUserWizardAction.class,
                         "CopyUserWizardAction.performAction(Node[]).user.copySuffix"));
         user.setUserGroups(u.getUserGroups());
+        user.setPassword(null);
 
         wizard.putProperty(NewUserWizardAction.USER_PROP, user);
         wizard.putProperty(NewUserWizardAction.USERGROUP_PROP, userGroups);
@@ -168,6 +169,34 @@ public final class CopyUserWizardAction extends CookieAction {
                         backend.store(ug);
                     } catch (final Exception e) {
                         LOG.error("could not store usergroup: " + ug.getName(), e); // NOI18N
+                    }
+
+                    try {
+                        for (final UserGroup group : u.getUserGroups()) {
+                            if (group.equals(ug)) {
+                                final List<ConfigAttrEntry> caes = backend.getEntries(group.getDomain(),
+                                        group,
+                                        u,
+                                        project.getRuntimeProps().getProperty("serverName"), // NOI18N
+                                        false);
+                                for (final ConfigAttrEntry cae : caes) {
+                                    final ConfigAttrEntry clone = new ConfigAttrEntry();
+                                    clone.setDomain(cae.getDomain());
+                                    clone.setKey(cae.getKey());
+                                    clone.setType(cae.getType());
+                                    clone.setUser(newUser);
+                                    clone.setUsergroup(group);
+                                    clone.setValue(cae.getValue());
+
+                                    backend.storeEntry(clone);
+                                }
+                            }
+                        }
+                    } catch (final Exception e) {
+                        LOG.error("could not store config attr entries for user in usergroup: [user=" + newUser + "|ug="
+                                    + ug + "]",
+                            e);
+                        ErrorManager.getDefault().notify(e);
                     }
                 }
             } catch (final Exception e) {

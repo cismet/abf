@@ -23,6 +23,7 @@ import java.awt.Dialog;
 import java.text.MessageFormat;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -30,6 +31,8 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
+import de.cismet.cids.jpa.backend.service.Backend;
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
@@ -152,11 +155,34 @@ public final class CopyUsergroupWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            final UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
+            UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
+            final Backend backend = project.getCidsDataObjectBackend();
             try {
-                project.getCidsDataObjectBackend().store(newGroup);
+                newGroup = backend.store(newGroup);
             } catch (final Exception e) {
                 LOG.error("could not store new usergroup", e); // NOI18N
+                ErrorManager.getDefault().notify(e);
+            }
+
+            try {
+                final List<ConfigAttrEntry> caes = backend.getEntries(ug.getDomain(),
+                        ug,
+                        null,
+                        project.getRuntimeProps().getProperty("serverName"), // NOI18N
+                        false);
+                for (final ConfigAttrEntry cae : caes) {
+                    final ConfigAttrEntry clone = new ConfigAttrEntry();
+                    clone.setDomain(cae.getDomain());
+                    clone.setKey(cae.getKey());
+                    clone.setType(cae.getType());
+                    clone.setUser(null);
+                    clone.setUsergroup(newGroup);
+                    clone.setValue(cae.getValue());
+
+                    backend.storeEntry(clone);
+                }
+            } catch (final Exception e) {
+                LOG.error("could not store config attr entries", e); // NOI18N
                 ErrorManager.getDefault().notify(e);
             }
             project.getLookup().lookup(UserManagement.class).refresh();
