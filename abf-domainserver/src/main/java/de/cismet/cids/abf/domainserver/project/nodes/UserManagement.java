@@ -7,6 +7,8 @@
 ****************************************************/
 package de.cismet.cids.abf.domainserver.project.nodes;
 
+import org.apache.log4j.Logger;
+
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
@@ -22,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Action;
 
@@ -38,6 +42,7 @@ import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
+import de.cismet.cids.abf.utilities.nodes.PropertyRefresh;
 
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
@@ -50,7 +55,13 @@ import de.cismet.cids.jpa.entity.user.UserGroup;
  */
 public final class UserManagement extends ProjectNode implements ConnectionListener,
     UserManagementContextCookie,
-    Refreshable {
+    Refreshable,
+    PropertyRefresh {
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    /** LOGGER. */
+    private static final transient Logger LOG = Logger.getLogger(UserManagement.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -128,7 +139,33 @@ public final class UserManagement extends ProjectNode implements ConnectionListe
     public void refresh() {
         final Children children = getChildren();
         if (children instanceof ProjectChildren) {
-            ((ProjectChildren)children).refreshByNotify();
+            final Future<?> future = ((ProjectChildren)children).refreshByNotify();
+
+            try {
+                future.get(30, TimeUnit.SECONDS);
+
+                for (final Node n : children.getNodes()) {
+                    final Refreshable r = n.getCookie(Refreshable.class);
+
+                    if (r != null) {
+                        r.refresh();
+                    }
+                }
+            } catch (final Exception e) {
+                LOG.warn("refresh unsuccessful: " + this, e); // NOI18N
+            }
+        }
+    }
+
+    @Override
+    public void refreshProperties(final boolean forceInit) {
+        final Children children = getChildren();
+        for (final Node n : children.getNodes()) {
+            final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
+
+            if (pr != null) {
+                pr.refreshProperties(forceInit);
+            }
         }
     }
 
