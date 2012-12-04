@@ -40,6 +40,7 @@ import javax.swing.SwingUtilities;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.nodes.ModifyCookie;
 
@@ -61,12 +62,19 @@ public final class ConfigAttrEntryNode extends ProjectNode {
 
     private static final String SEPARATOR = " -> "; // NOI18N
 
-    //~ Instance fields --------------------------------------------------------
+    private static final transient Image USER_ICON;
+    private static final transient Image ADMIN_ICON;
+    private static final transient Image UG_ICON;
+    private static final transient Image DOMAIN_ICON;
 
-    private final transient Image userIcon;
-    private final transient Image adminIcon;
-    private final transient Image ugIcon;
-    private final transient Image domainIcon;
+    static {
+        USER_ICON = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "user.png");           // NOI18N
+        ADMIN_ICON = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "admin.png");         // NOI18N
+        UG_ICON = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "group.png");            // NOI18N
+        DOMAIN_ICON = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "domainserver.png"); // NOI18N
+    }
+
+    //~ Instance fields --------------------------------------------------------
 
     private final transient SaveCookie saveCookie;
 
@@ -85,11 +93,6 @@ public final class ConfigAttrEntryNode extends ProjectNode {
         this.entry = entry;
 
         setName(createEntryOwnerString(entry));
-
-        userIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "user.png");           // NOI18N
-        adminIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "admin.png");         // NOI18N
-        ugIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "group.png");            // NOI18N
-        domainIcon = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "domainserver.png"); // NOI18N
 
         saveCookie = new SaveCookieImpl();
 
@@ -120,21 +123,32 @@ public final class ConfigAttrEntryNode extends ProjectNode {
         return sb.toString();
     }
 
-    @Override
-    public Image getIcon(final int type) {
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   entry  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public static Image getIcon(final ConfigAttrEntry entry) {
         if (entry.getUser() != null) {
             if (entry.getUser().isAdmin()) {
-                return adminIcon;
+                return ADMIN_ICON;
             } else {
-                return userIcon;
+                return USER_ICON;
             }
         } else if (entry.getUsergroup() != null) {
-            return ugIcon;
+            return UG_ICON;
         } else if (entry.getDomain() != null) {
-            return domainIcon;
+            return DOMAIN_ICON;
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Image getIcon(final int type) {
+        return getIcon(entry);
     }
 
     @Override
@@ -196,6 +210,8 @@ public final class ConfigAttrEntryNode extends ProjectNode {
                 }
 
                 fireNodeDestroyed();
+
+                project.getLookup().lookup(UserManagement.class).refreshProperties(false);
             }
         } catch (final Exception e) {
             final String message = "cannot destroy entry: " + entry; // NOI18N

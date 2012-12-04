@@ -28,6 +28,9 @@ public final class NewUserVisualPanel1 extends JPanel {
     private final transient NewUserWizardPanel1 model;
     private final transient DocumentListener docL;
 
+    // EDT access only
+    private transient boolean init;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final transient javax.swing.JCheckBox chkAdmin = new javax.swing.JCheckBox();
     private final transient javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
@@ -49,6 +52,8 @@ public final class NewUserVisualPanel1 extends JPanel {
     public NewUserVisualPanel1(final NewUserWizardPanel1 model) {
         this.model = model;
         docL = new DocumentListenerImpl();
+        init = false;
+
         initComponents();
 
         txtPass.getDocument().addDocumentListener(WeakListeners.document(docL, txtPass.getDocument()));
@@ -61,9 +66,10 @@ public final class NewUserVisualPanel1 extends JPanel {
      * DOCUMENT ME!
      */
     void init() {
+        init = true;
+
         final User user = model.getUser();
 
-        System.out.println(user);
         if (user == null) {
             clearFields();
         } else {
@@ -73,6 +79,8 @@ public final class NewUserVisualPanel1 extends JPanel {
         }
 
         lblDomainserver.setText(model.getDomainserverName());
+
+        init = false;
     }
 
     /**
@@ -185,7 +193,9 @@ public final class NewUserVisualPanel1 extends JPanel {
 
         @Override
         public void changedUpdate(final DocumentEvent e) {
-            model.fireChangeEvent();
+            if (!init) {
+                model.fireChangeEvent();
+            }
         }
 
         @Override

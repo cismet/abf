@@ -43,11 +43,13 @@ import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.nodes.LoadingNode;
 
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrKey;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrType.Types;
@@ -152,10 +154,16 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
             dialog.toFront();
             final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
             if (!cancelled) {
-                final ConfigAttrEntry newEntry = (ConfigAttrEntry)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRY);
-                project.getCidsDataObjectBackend().storeEntry(newEntry);
+                final List<ConfigAttrEntry> newEntries = (List)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRIES);
+                final Backend backend = project.getCidsDataObjectBackend();
+
+                for (final ConfigAttrEntry entry : newEntries) {
+                    backend.storeEntry(entry);
+                }
+
                 addNodeListener(nodeL);
                 getCookie(Refreshable.class).refresh();
+                project.getLookup().lookup(UserManagement.class).refreshProperties(false);
             }
         }
 

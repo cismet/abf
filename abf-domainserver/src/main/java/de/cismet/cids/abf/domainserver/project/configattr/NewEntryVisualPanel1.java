@@ -5,37 +5,38 @@
 *              ... and it just works.
 *
 ****************************************************/
-/*
- *  Copyright (C) 2010 mscholl
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package de.cismet.cids.abf.domainserver.project.configattr;
 
+import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.WeakListeners;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
+import javax.swing.SortOrder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.domainserver.project.utils.Renderers.DomainListRenderer;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers.UserGroupListRenderer;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers.UserListRenderer;
 import de.cismet.cids.abf.utilities.Comparators;
@@ -75,18 +76,27 @@ public final class NewEntryVisualPanel1 extends JPanel {
     private final transient ItemListener uGItemL;
     private final transient ItemListener userItemL;
     private final transient ItemListener domainItemL;
+    private final transient ChangeListener addButtonCL;
+    private final transient ActionListener addButtonAL;
+    private final transient ActionListener remButtonAL;
+    private final transient ListSelectionListener remButtonLSL;
 
     private transient List<ConfigAttrType> typeCache;
-
     private transient List<UserGroup> allUserGroups;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddEntry;
+    private javax.swing.JButton btnRemoveEntry;
     private javax.swing.JComboBox cboDomain;
     private javax.swing.JComboBox cboUser;
     private javax.swing.JComboBox cboUsergroup;
+    private javax.swing.JScrollPane jScrollPane1;
+    private org.jdesktop.swingx.JXList jxlEntries;
     private javax.swing.JLabel lblDomain;
     private javax.swing.JLabel lblUser;
     private javax.swing.JLabel lblUsergroup;
+    private javax.swing.JPanel pnlEntries;
+    private javax.swing.JToolBar tlbEntry;
     // End of variables declaration//GEN-END:variables
 
     //~ Constructors -----------------------------------------------------------
@@ -101,8 +111,26 @@ public final class NewEntryVisualPanel1 extends JPanel {
         uGItemL = new UGItemListenerImpl();
         userItemL = new UserItemListenerImpl();
         domainItemL = new DomainItemListenerImpl();
+        addButtonCL = new AddButtonChangeListener();
+        addButtonAL = new AddButtonActionListener();
+        remButtonAL = new RemoveButtonActionListener();
+        remButtonLSL = new JXEntriesSelectionListener();
+
+        model.addChangeListener(WeakListeners.change(addButtonCL, model));
 
         initComponents();
+
+        btnAddEntry.addActionListener(WeakListeners.create(ActionListener.class, addButtonAL, btnAddEntry));
+        btnRemoveEntry.addActionListener(WeakListeners.create(ActionListener.class, remButtonAL, btnRemoveEntry));
+        jxlEntries.addListSelectionListener(WeakListeners.create(
+                ListSelectionListener.class,
+                remButtonLSL,
+                jxlEntries));
+
+        btnAddEntry.setIcon(ImageUtilities.loadImageIcon(DomainserverProject.IMAGE_FOLDER + "plus.png", false));     // NOI18N
+        btnRemoveEntry.setIcon(ImageUtilities.loadImageIcon(DomainserverProject.IMAGE_FOLDER + "minus.png", false)); // NOI18N
+        btnAddEntry.setText(null);
+        btnRemoveEntry.setText(null);
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -204,6 +232,7 @@ public final class NewEntryVisualPanel1 extends JPanel {
 
         cboDomain.setSelectedItem(localDomain);
         cboDomain.addItemListener(WeakListeners.create(ItemListener.class, domainItemL, cboDomain));
+        cboDomain.setRenderer(new DomainListRenderer());
 
         cboUsergroup.addItem(UserGroup.NO_GROUP);
         for (final UserGroup ug : allUserGroups) {
@@ -221,7 +250,17 @@ public final class NewEntryVisualPanel1 extends JPanel {
         cboUser.addItemListener(WeakListeners.create(ItemListener.class, userItemL, cboUser));
         cboUser.setRenderer(new UserListRenderer());
 
-        model.fireChangeEvent();
+        jxlEntries.setModel(model.getEntryListModel());
+        jxlEntries.setComparator(new JXEntriesComparator());
+        jxlEntries.setCellRenderer(new JXEntriesRenderer());
+        jxlEntries.setSortable(true);
+        jxlEntries.setSortsOnUpdates(true);
+        jxlEntries.setAutoCreateRowSorter(true);
+        jxlEntries.setSortOrder(SortOrder.ASCENDING);
+
+        btnRemoveEntry.setEnabled(false);
+
+        model.setCurrentEntry(getEntry());
     }
 
     @Override
@@ -235,72 +274,283 @@ public final class NewEntryVisualPanel1 extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
         cboDomain = new javax.swing.JComboBox();
         lblDomain = new javax.swing.JLabel();
         cboUsergroup = new javax.swing.JComboBox();
         cboUser = new javax.swing.JComboBox();
         lblUsergroup = new javax.swing.JLabel();
         lblUser = new javax.swing.JLabel();
+        pnlEntries = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jxlEntries = new org.jdesktop.swingx.JXList();
+        tlbEntry = new javax.swing.JToolBar();
+        btnAddEntry = new javax.swing.JButton();
+        btnRemoveEntry = new javax.swing.JButton();
+
+        setOpaque(false);
+        setLayout(new java.awt.GridBagLayout());
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(cboDomain, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(
             lblDomain,
             NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblDomain.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblDomain, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(cboUsergroup, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(cboUser, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(
             lblUsergroup,
             NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblUsergroup.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblUsergroup, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(
             lblUser,
             NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.lblUser.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblUser, gridBagConstraints);
 
-        final javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-                layout.createSequentialGroup().addContainerGap().addGroup(
-                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(lblDomain)
-                                .addComponent(
-                                    cboDomain,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE,
-                                    109,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(
-                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(lblUsergroup)
-                                .addComponent(
-                                    cboUsergroup,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE,
-                                    156,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(
-                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(lblUser)
-                                .addComponent(cboUser, 0, 234, Short.MAX_VALUE)).addContainerGap()));
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-                layout.createSequentialGroup().addGap(29, 29, 29).addGroup(
-                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-                        layout.createSequentialGroup().addComponent(lblUsergroup).addPreferredGap(
-                            javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(
-                            cboUsergroup,
-                            javax.swing.GroupLayout.PREFERRED_SIZE,
-                            javax.swing.GroupLayout.DEFAULT_SIZE,
-                            javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(
-                        layout.createSequentialGroup().addGroup(
-                            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(
-                                lblDomain).addComponent(lblUser)).addPreferredGap(
-                            javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(
-                            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(
-                                cboDomain,
-                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(
-                                cboUser,
-                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                javax.swing.GroupLayout.PREFERRED_SIZE)))).addContainerGap(
-                    javax.swing.GroupLayout.DEFAULT_SIZE,
-                    Short.MAX_VALUE)));
+        pnlEntries.setOpaque(false);
+        pnlEntries.setLayout(new java.awt.GridBagLayout());
+
+        jxlEntries.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(jxlEntries);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 5);
+        pnlEntries.add(jScrollPane1, gridBagConstraints);
+
+        tlbEntry.setRollover(true);
+        tlbEntry.setOpaque(false);
+
+        org.openide.awt.Mnemonics.setLocalizedText(
+            btnAddEntry,
+            NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.btnAddEntry.text")); // NOI18N
+        btnAddEntry.setFocusable(false);
+        btnAddEntry.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAddEntry.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tlbEntry.add(btnAddEntry);
+
+        org.openide.awt.Mnemonics.setLocalizedText(
+            btnRemoveEntry,
+            NbBundle.getMessage(NewEntryVisualPanel1.class, "NewEntryVisualPanel1.btnRemoveEntry.text")); // NOI18N
+        btnRemoveEntry.setFocusable(false);
+        btnRemoveEntry.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRemoveEntry.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tlbEntry.add(btnRemoveEntry);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        pnlEntries.add(tlbEntry, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(pnlEntries, gridBagConstraints);
     } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class AddButtonActionListener implements ActionListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            final ConfigAttrEntry cae = model.getCurrentEntry();
+            model.addEntry(cae);
+
+            // setselectedvalue currently does not convert the index
+            final ListModel lm = jxlEntries.getModel();
+            int index = -1;
+            for (int i = 0; i < lm.getSize(); ++i) {
+                if (lm.getElementAt(i).equals(cae)) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index >= 0) {
+                index = jxlEntries.convertIndexToView(index);
+                jxlEntries.setSelectedIndex(index);
+                jxlEntries.ensureIndexIsVisible(index);
+            }
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class RemoveButtonActionListener implements ActionListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            // getselectedvalue currently does not convert the index
+            final int viewIndex = jxlEntries.getSelectedIndex();
+            final int modelIndex = jxlEntries.convertIndexToModel(viewIndex);
+            final ListModel lm = jxlEntries.getModel();
+            model.removeEntry((ConfigAttrEntry)lm.getElementAt(modelIndex));
+
+            if (viewIndex < lm.getSize()) {
+                jxlEntries.setSelectedIndex(viewIndex);
+            } else {
+                jxlEntries.setSelectedIndex(viewIndex - 1);
+            }
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class JXEntriesSelectionListener implements ListSelectionListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void valueChanged(final ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                final int viewIndex = jxlEntries.getSelectedIndex();
+                ConfigAttrEntry cae = null;
+
+                if (viewIndex >= 0) {
+                    final int modelIndex = jxlEntries.convertIndexToModel(viewIndex);
+                    final ListModel lm = jxlEntries.getModel();
+                    cae = (ConfigAttrEntry)lm.getElementAt(modelIndex);
+                }
+
+                btnRemoveEntry.setEnabled(cae != null);
+            }
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class AddButtonChangeListener implements ChangeListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void stateChanged(final ChangeEvent e) {
+            btnAddEntry.setEnabled(!model.entryContained(getEntry(), model.getEntries()));
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private static final class JXEntriesComparator implements Comparator<ConfigAttrEntry> {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public int compare(final ConfigAttrEntry o1, final ConfigAttrEntry o2) {
+            return ConfigAttrEntryNode.createEntryOwnerString(o1)
+                        .compareTo(ConfigAttrEntryNode.createEntryOwnerString(o2));
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private static final class JXEntriesRenderer extends DefaultListCellRenderer {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public Component getListCellRendererComponent(final JList list,
+                final Object value,
+                final int index,
+                final boolean isSelected,
+                final boolean cellHasFocus) {
+            final JLabel comp = (JLabel)super.getListCellRendererComponent(
+                    list,
+                    value,
+                    index,
+                    isSelected,
+                    cellHasFocus);
+
+            final ConfigAttrEntry cae = (ConfigAttrEntry)value;
+            comp.setText(ConfigAttrEntryNode.createEntryOwnerString(cae));
+            comp.setIcon(new ImageIcon(ConfigAttrEntryNode.getIcon(cae)));
+
+            return comp;
+        }
+    }
 
     /**
      * DOCUMENT ME!
@@ -315,6 +565,7 @@ public final class NewEntryVisualPanel1 extends JPanel {
         public void itemStateChanged(final ItemEvent e) {
             if (ItemEvent.SELECTED == e.getStateChange()) {
                 final Domain selected = (Domain)e.getItem();
+
                 cboUsergroup.removeAllItems();
 
                 cboUsergroup.addItem(UserGroup.NO_GROUP);
@@ -323,7 +574,10 @@ public final class NewEntryVisualPanel1 extends JPanel {
                         cboUsergroup.addItem(ug);
                     }
                 }
+
                 cboUsergroup.setSelectedItem(UserGroup.NO_GROUP);
+
+                model.setCurrentEntry(getEntry());
             }
         }
     }
@@ -340,7 +594,7 @@ public final class NewEntryVisualPanel1 extends JPanel {
         @Override
         public void itemStateChanged(final ItemEvent e) {
             if (ItemEvent.SELECTED == e.getStateChange()) {
-                model.fireChangeEvent();
+                model.setCurrentEntry(getEntry());
             }
         }
     }
@@ -358,6 +612,7 @@ public final class NewEntryVisualPanel1 extends JPanel {
         public void itemStateChanged(final ItemEvent e) {
             if (ItemEvent.SELECTED == e.getStateChange()) {
                 final UserGroup selected = (UserGroup)e.getItem();
+
                 cboUser.removeAllItems();
                 if (UserGroup.NO_GROUP.equals(selected)) {
                     cboUser.addItem(UG_FIRST_USER);
@@ -372,8 +627,11 @@ public final class NewEntryVisualPanel1 extends JPanel {
                         cboUser.addItem(user);
                     }
                     cboUser.setEnabled(true);
+
                     cboUser.setSelectedItem(User.NO_USER);
                 }
+
+                model.setCurrentEntry(getEntry());
             }
         }
     }

@@ -46,6 +46,7 @@ import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.backend.service.Backend;
@@ -157,6 +158,8 @@ public class ConfigAttrKeyNode extends ProjectNode {
             }
 
             fireNodeDestroyed();
+
+            project.getLookup().lookup(UserManagement.class).refreshProperties(false);
         } catch (final Exception e) {
             final String message = "cannot destroy key: " + key; // NOI18N
             LOG.error(message, e);
@@ -271,10 +274,25 @@ public class ConfigAttrKeyNode extends ProjectNode {
             dialog.toFront();
             final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
             if (!cancelled) {
-                final ConfigAttrEntry newEntry = (ConfigAttrEntry)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRY);
-                project.getCidsDataObjectBackend().storeEntry(newEntry);
+                final Backend backend = project.getCidsDataObjectBackend();
+                final List<ConfigAttrEntry> oldEntries = backend.getEntries(key);
+                final List<ConfigAttrEntry> newEntries = (List)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRIES);
+
+                for (final ConfigAttrEntry old : oldEntries) {
+                    if (!newEntries.contains(old)) {
+                        backend.delete(old);
+                    }
+                }
+
+                for (final ConfigAttrEntry nuu : newEntries) {
+                    if (nuu.getId() == null) {
+                        backend.storeEntry(nuu);
+                    }
+                }
+
                 addNodeListener(nodeL);
                 getCookie(Refreshable.class).refresh();
+                project.getLookup().lookup(UserManagement.class).refreshProperties(false);
             }
         }
         /**
