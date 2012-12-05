@@ -26,7 +26,7 @@
     </developers>
 
     <modules>
-<!--        <module>../abf-app</module>-->
+        <module>../abf-app</module>
         <module>../abf-branding</module>
         <module>../abf-update-center</module>
         <module>../abf-utilities</module>
