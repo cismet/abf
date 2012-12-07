@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -319,6 +320,16 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: classperms ">
             final List<ClassPermission> cperms = project.getCidsDataObjectBackend().getClassPermissions(userGroup);
+            Collections.sort(cperms, new Comparator<ClassPermission>() {
+
+                    @Override
+                    public int compare(final ClassPermission o1, final ClassPermission o2) {
+                        return o1.getCidsClass()
+                                    .getName()
+                                    .toLowerCase()
+                                    .compareTo(o2.getCidsClass().getName().toLowerCase());
+                    }
+                });
 
             if (!cperms.isEmpty()) {
                 final Sheet.Set setPerm = Sheet.createPropertiesSet();
