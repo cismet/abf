@@ -322,7 +322,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
         ((JXTable)tblRights).setSortOrder(group, SortOrder.ASCENDING);
         final List<UserGroup> groups = model.getBackend().getAllEntities(UserGroup.class);
         Collections.sort(groups, new Comparators.UserGroups());
-        
+
         ((JXList)lstGroup).setComparator(ugComp);
         ((JXList)lstGroup).setSortOrder(SortOrder.ASCENDING);
         // ((JXList)groupList).setFilterEnabled(true);

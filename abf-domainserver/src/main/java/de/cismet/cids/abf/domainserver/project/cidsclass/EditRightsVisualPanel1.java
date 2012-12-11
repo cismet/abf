@@ -273,7 +273,7 @@ public final class EditRightsVisualPanel1 extends JPanel {
         final Backend backend = model.getBackend();
         allUserGroups = backend.getAllEntities(UserGroup.class);
         Collections.sort(allUserGroups, new Comparators.UserGroups());
-        
+
         final DefaultListModel lModel = new DefaultListModel();
         final JXList list = (JXList)lstGroups;
         list.setModel(lModel);
