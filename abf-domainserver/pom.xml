@@ -5,29 +5,29 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.1.3</version>
+        <version>3.1.4-SNAPSHOT</version>
         <relativePath>../abf-parent</relativePath>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf-domainserver</artifactId>
-    <version>3.1.3</version>
+    <version>3.1.4-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Domainserver</name>
     <description>DESCRIPTION PENDING !!!</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.1.3/abf-domainserver</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.1.3/abf-domainserver</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.1.3/abf-domainserver</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-domainserver/</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-domainserver/</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-domainserver/</url>
     </scm>
 
     <dependencies>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.1.3</version>
+            <version>3.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
