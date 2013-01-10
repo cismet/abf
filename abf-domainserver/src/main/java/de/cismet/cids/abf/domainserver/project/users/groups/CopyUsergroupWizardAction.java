@@ -9,16 +9,23 @@ package de.cismet.cids.abf.domainserver.project.users.groups;
 
 import org.apache.log4j.Logger;
 
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
+
 import org.openide.DialogDisplayer;
 import org.openide.ErrorManager;
 import org.openide.WizardDescriptor;
 import org.openide.nodes.Node;
 import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle;
+import org.openide.util.RequestProcessor;
+import org.openide.util.RequestProcessor.Task;
+import org.openide.util.TaskListener;
 import org.openide.util.actions.CookieAction;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.EventQueue;
 
 import java.text.MessageFormat;
 
@@ -33,6 +40,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
+import de.cismet.cids.jpa.entity.permission.ClassPermission;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
@@ -155,37 +163,75 @@ public final class CopyUsergroupWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
-            final Backend backend = project.getCidsDataObjectBackend();
-            try {
-                newGroup = backend.store(newGroup);
-            } catch (final Exception e) {
-                LOG.error("could not store new usergroup", e); // NOI18N
-                ErrorManager.getDefault().notify(e);
-            }
+            final Task task = RequestProcessor.getDefault().create(new Runnable() {
 
-            try {
-                final List<ConfigAttrEntry> caes = backend.getEntries(ug.getDomain(),
-                        ug,
-                        null,
-                        project.getRuntimeProps().getProperty("serverName"), // NOI18N
-                        false);
-                for (final ConfigAttrEntry cae : caes) {
-                    final ConfigAttrEntry clone = new ConfigAttrEntry();
-                    clone.setDomain(cae.getDomain());
-                    clone.setKey(cae.getKey());
-                    clone.setType(cae.getType());
-                    clone.setUser(null);
-                    clone.setUsergroup(newGroup);
-                    clone.setValue(cae.getValue());
+                        @Override
+                        public void run() {
+                            // it would probably be better to make the copy action atomic
+                            UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
+                            final Backend backend = project.getCidsDataObjectBackend();
+                            try {
+                                newGroup.setPriority(backend.getLowestUGPrio());
+                                newGroup = backend.store(newGroup);
 
-                    backend.storeEntry(clone);
-                }
-            } catch (final Exception e) {
-                LOG.error("could not store config attr entries", e); // NOI18N
-                ErrorManager.getDefault().notify(e);
-            }
-            project.getLookup().lookup(UserManagement.class).refresh();
+                                final List<ConfigAttrEntry> caes = backend.getEntries(
+                                        ug.getDomain(),
+                                        ug,
+                                        null,
+                                        project.getRuntimeProps().getProperty("serverName"), // NOI18N
+                                        false);
+                                for (final ConfigAttrEntry cae : caes) {
+                                    final ConfigAttrEntry clone = new ConfigAttrEntry();
+                                    clone.setDomain(cae.getDomain());
+                                    clone.setKey(cae.getKey());
+                                    clone.setType(cae.getType());
+                                    clone.setUser(null);
+                                    clone.setUsergroup(newGroup);
+                                    clone.setValue(cae.getValue());
+
+                                    backend.storeEntry(clone);
+                                }
+
+                                final List<ClassPermission> cperms = project.getCidsDataObjectBackend()
+                                            .getClassPermissions(ug);
+                                for (final ClassPermission cperm : cperms) {
+                                    final ClassPermission perm = new ClassPermission();
+                                    perm.setCidsClass(cperm.getCidsClass());
+                                    perm.setPermission(cperm.getPermission());
+                                    perm.setUserGroup(newGroup);
+
+                                    backend.store(perm);
+                                }
+                            } catch (final Exception e) {
+                                LOG.error("could not copy usergroup: " + ug, e); // NOI18N
+                                ErrorManager.getDefault().notify(e);
+                            }
+                        }
+                    });
+
+            final ProgressHandle handle = ProgressHandleFactory.createHandle(NbBundle.getMessage(
+                        CopyUsergroupWizardAction.class,
+                        "CopyUsergroupWizardAction.performAction(Node[]).handle.title")); // NOI18N
+            handle.start();
+            handle.switchToIndeterminate();
+
+            final TaskListener tl = new TaskListener() {
+
+                    @Override
+                    public void taskFinished(final org.openide.util.Task task) {
+                        EventQueue.invokeLater(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    handle.finish();
+                                    project.getLookup().lookup(UserManagement.class).refresh();
+                                }
+                            });
+                    }
+                };
+
+            task.addTaskListener(tl);
+            RequestProcessor.getDefault().post(task);
         }
     }
 
