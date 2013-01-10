@@ -21,6 +21,7 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.actions.SystemAction;
 
+import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.io.IOException;
@@ -32,12 +33,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.NewUserWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.UserNode;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
@@ -240,6 +244,14 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
                     }
                 };                                                         //</editor-fold>
 
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: prio ">
+            final Property prioProp = new PropertySupport.Reflection(userGroup,
+                    Integer.class, "getPriority", null);      // NOI18N
+            prioProp.setName(org.openide.util.NbBundle.getMessage(
+                    UserGroupNode.class,
+                    "UserGroupNode.createSheet().prioProp")); // NOI18N
+            //</editor-fold>
+
             // <editor-fold defaultstate="collapsed" desc=" Create Property: UserCount ">
             final Property countUser = new PropertySupport(
                     "usercount",                                               // NOI18N
@@ -311,6 +323,7 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
             set.put(nameProp);
             set.put(domainProp);
             set.put(descProp);
+            set.put(prioProp);
             set.put(idProp);
             setAdditionalInfo.put(countUser);
             setAdditionalInfo.put(countAdmins);
@@ -366,7 +379,7 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
             }
             //</editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: config attrs ">
-            UserNode.populateAttrSet(project, sheet, userGroup, null);
+            UserNode.populateLegacyConfigAttrSet(project, sheet, userGroup, null);
             //</editor-fold>
         } catch (final Exception ex) {
             LOG.error("could not create property sheet", ex); // NOI18N
@@ -399,32 +412,77 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     }
 
     @Override
-    public void refresh() {
-        userGroup = project.getCidsDataObjectBackend().getEntity(UserGroup.class, userGroup.getId());
-        final Children c = getChildren();
-        ((UserGroupNodeChildren)c).refreshAll(userGroup);
-
-        for (final Node n : c.getNodes()) {
-            final Refreshable r = n.getCookie(Refreshable.class);
-            if (r != null) {
-                r.refresh();
-            }
+    public void destroy() throws IOException {
+        try {
+            project.getCidsDataObjectBackend().delete(userGroup);
+            super.destroy();
+        } catch (final Exception e) {
+            LOG.error("could not delete usergroup: " + userGroup, e); // NOI18N
         }
+    }
 
-        refreshProperties(false);
+    @Override
+    public void refresh() {
+        final Children c = getChildren();
+        UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
+
+                @Override
+                public void run() {
+                    userGroup = project.getCidsDataObjectBackend().getEntity(UserGroup.class, userGroup.getId());
+                    try {
+                        // we assure that the children are initialised and the setting of the keys is scheduled in
+                        // the EDT
+                        final Future<?> f = ((UserGroupNodeChildren)c).refreshAll(userGroup);
+
+                        f.get(30, TimeUnit.SECONDS);
+                    } catch (final Exception ex) {
+                        LOG.error("cannot refresh usergroup children", ex);
+
+                        return;
+                    }
+
+                    // we access the nodes of the children in the EDT
+                    EventQueue.invokeLater(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                for (final Node n : c.getNodes()) {
+                                    final Refreshable r = n.getCookie(Refreshable.class);
+                                    if (r != null) {
+                                        r.refresh();
+                                    }
+                                }
+
+                                refreshProperties(false);
+                            }
+                        });
+                }
+            });
     }
 
     @Override
     public void refreshProperties(final boolean forceInit) {
-        if (sheetInitialised || forceInit) {
-            setSheet(createSheet());
-        }
+        final Runnable r = new Runnable() {
 
-        for (final Node n : getChildren().getNodes()) {
-            final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
-            if (pr != null) {
-                pr.refreshProperties(forceInit);
-            }
+                @Override
+                public void run() {
+                    if (sheetInitialised || forceInit) {
+                        setSheet(createSheet());
+                    }
+
+                    for (final Node n : getChildren().getNodes()) {
+                        final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
+                        if (pr != null) {
+                            pr.refreshProperties(forceInit);
+                        }
+                    }
+                }
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
         }
     }
 }
@@ -458,13 +516,16 @@ final class UserGroupNodeChildren extends ProjectChildren {
     /**
      * DOCUMENT ME!
      *
-     * @param  ug  DOCUMENT ME!
+     * @param   ug  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
      */
-    void refreshAll(final UserGroup ug) {
+    Future<?> refreshAll(final UserGroup ug) {
         if (ug != null) {
             userGroup = ug;
         }
-        addNotify();
+
+        return refreshByNotify();
     }
 
     @Override

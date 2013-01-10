@@ -75,7 +75,7 @@ public final class NewUsergroupWizardPanel1 implements WizardDescriptor.Panel {
                 WizardDescriptor.PROP_ERROR_MESSAGE,
                 org.openide.util.NbBundle.getMessage(
                     NewUsergroupWizardPanel1.class,
-                    "NewUsergroupWizardPanel1.isValid().wizard..PROP_ERROR_MESSAGE.nameOfUsergroupInvalid")); // NOI18N
+                    "NewUsergroupWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.nameOfUsergroupInvalid")); // NOI18N
             return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);

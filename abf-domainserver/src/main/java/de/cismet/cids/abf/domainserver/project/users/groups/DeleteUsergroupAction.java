@@ -15,14 +15,13 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.CookieAction;
 import org.openide.windows.WindowManager;
 
+import java.io.IOException;
+
 import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
-
-import de.cismet.cids.jpa.backend.service.Backend;
-import de.cismet.cids.jpa.entity.user.UserGroup;
 
 // TODO: why is a separate action used, destroy would probably be sufficient
 /**
@@ -52,18 +51,17 @@ public final class DeleteUsergroupAction extends CookieAction {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {
+            final DomainserverProject project = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
+
             for (final Node n : nodes) {
-                UserGroup ug = null;
                 try {
-                    final DomainserverProject project = n.getCookie(DomainserverContext.class).getDomainserverProject();
-                    final Backend backend = project.getCidsDataObjectBackend();
-                    ug = n.getCookie(UserGroupContextCookie.class).getUserGroup();
-                    backend.delete(ug);
-                    project.getLookup().lookup(UserManagement.class).refresh();
-                } catch (final Exception e) {
-                    LOG.error("could not delete usergroup: " + ug, e);                // NOI18N
+                    n.destroy();
+                } catch (final IOException ex) {
+                    LOG.error("could not delete node: " + n, ex); // NOI18N
                 }
             }
+
+            project.getLookup().lookup(UserManagement.class).refresh();
         }
     }
 

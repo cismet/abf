@@ -60,6 +60,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.catalog.CatalogNodeContextCookie;
+import de.cismet.cids.abf.domainserver.project.customizer.DomainserverProjectCustomizer;
 import de.cismet.cids.abf.utilities.Connectable;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
@@ -343,12 +344,14 @@ public final class DomainserverProject implements Project, Connectable {
         if (lkp == null) {
             lkp = Lookups.fixed(
                     new Object[] {
-                        this,                     // project spec requires a project be in its own lookup
-                        state,                    // allow outside code to mark the project eg. need saving
-                        new ActionProviderImpl(), // Provides standard actions
-                        getProperties(),          // The project properties
-                        new Info(),               // Project information implementation
-                        logicalView,              // Logical view of project implementation
+                        this,                                   // project spec requires a project be in its own lookup
+                        state,                                  // allow outside code to mark the project eg. need
+                                                                // saving
+                        new ActionProviderImpl(),               // Provides standard actions
+                        getProperties(),                        // The project properties
+                        new Info(),                             // Project information implementation
+                        logicalView,                            // Logical view of project implementation
+                        new DomainserverProjectCustomizer(this) // project properties dialog
                     });
         }
 
@@ -372,7 +375,7 @@ public final class DomainserverProject implements Project, Connectable {
      *
      * @return  DOCUMENT ME!
      */
-    private Properties getProperties() {
+    public Properties getProperties() {
         if (projectProps == null) {
             final FileObject fob = projectDir.getFileObject(
                     DomainserverProjectFactory.PROJECT_DIR
@@ -394,6 +397,7 @@ public final class DomainserverProject implements Project, Connectable {
                 }
             }
         }
+
         return projectProps;
     }
 

@@ -19,6 +19,7 @@ import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 
+import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.beans.PropertyEditor;
@@ -32,14 +33,17 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.customizer.DomainserverProjectCustomizer;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.ChangeGroupBelongingWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.groups.RemoveGroupMembershipAction;
@@ -211,7 +215,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                     public void setValue(final Object object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
-                        if ((object == null) || object.toString().equals("****")) {
+                        if ((object == null) || object.toString().equals("****")) { // NOI18N
                             // ignore
                             return;
                         }
@@ -230,7 +234,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                             null, user.getLastPwdChange());
                     }
                 };
-            passProp.setValue("canEditAsText", Boolean.FALSE);
+            passProp.setValue("canEditAsText", Boolean.FALSE);     // NOI18N
             // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Administrator ">
@@ -300,10 +304,22 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             sheet.put(set);
             sheet.put(setUG);
 
-            // <editor-fold defaultstate="collapsed" desc=" Create Property: ConfigAttrs ">
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: ConfigAttrs legacy">
+            if (Boolean.valueOf(
+                            project.getProperties().getProperty(
+                                DomainserverProjectCustomizer.PROP_USER_SHOW_LEGACY_CFGATTR_PROPS,
+                                "false"))) { // NOI18N
+                populateLegacyConfigAttrSet(project, sheet, null, user);
+            }
+            // </editor-fold>
 
-            populateAttrSet(project, sheet, null, user);
-
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: ConfigAttrs">
+            if (Boolean.valueOf(
+                            project.getProperties().getProperty(
+                                DomainserverProjectCustomizer.PROP_USER_SHOW_CFGATTR_PROPS,
+                                "false"))) {                  // NOI18N
+                populateConfigAttrSet(sheet);
+            }
             // </editor-fold>
         } catch (final Exception ex) {
             LOG.error("could not create property sheet", ex); // NOI18N
@@ -311,6 +327,148 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
         }
 
         return sheet;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   sheet  DOCUMENT ME!
+     *
+     * @throws  IllegalStateException  DOCUMENT ME!
+     */
+    private void populateConfigAttrSet(final Sheet sheet) {
+        final ReadOnly<String> propCAttr = new ReadOnly<String>(
+                "configattrs",                                                                                 // NOI18N
+                String.class,
+                NbBundle.getMessage(UserNode.class, "UserNode.createSheet().propCAttr.displayName"),           // NOI18N
+                null) {
+
+                @Override
+                public String getHtmlDisplayName() {
+                    return "<html><b>"                                                               // NOI18N
+                                + NbBundle.getMessage(
+                                    UserNode.class,
+                                    "UserNode.createSheet().propCAttr.displayName") + "</b></html>"; // NOI18N
+                }
+
+                @Override
+                public String getValue() throws IllegalAccessException, InvocationTargetException {
+                    return ""; // NOI18N
+                }
+            };
+
+        final ReadOnly<String> propAAttr = new ReadOnly<String>(
+                "actionattrs",                                                                                 // NOI18N
+                String.class,
+                NbBundle.getMessage(UserNode.class, "UserNode.createSheet().propAAttr.displayName"),           // NOI18N
+                null) {
+
+                @Override
+                public String getHtmlDisplayName() {
+                    return "<html><b>"                                                               // NOI18N
+                                + NbBundle.getMessage(
+                                    UserNode.class,
+                                    "UserNode.createSheet().propAAttr.displayName") + "</b></html>"; // NOI18N
+                }
+
+                @Override
+                public String getValue() throws IllegalAccessException, InvocationTargetException {
+                    return ""; // NOI18N
+                }
+            };
+
+        final ReadOnly<String> propXAttr = new ReadOnly<String>(
+                "xmlattrs",                                                                                    // NOI18N
+                String.class,
+                NbBundle.getMessage(UserNode.class, "UserNode.createSheet().propXAttr.displayName"),           // NOI18N
+                null) {
+
+                @Override
+                public String getHtmlDisplayName() {
+                    return "<html><b>"                                                               // NOI18N
+                                + NbBundle.getMessage(
+                                    UserNode.class,
+                                    "UserNode.createSheet().propXAttr.displayName") + "</b></html>"; // NOI18N
+                }
+
+                @Override
+                public String getValue() throws IllegalAccessException, InvocationTargetException {
+                    return ""; // NOI18N
+                }
+            };
+
+        final List<Object[]> entries = project.getCidsDataObjectBackend().getEntriesNewCollect(user, true);
+        // entries sorted by key id, thus we create the attr entries right away and sort later
+        final Map<ReadOnly<String>, List<ConflictAwareCfgAttrProperty>> map =
+            new TreeMap<ReadOnly<String>, List<ConflictAwareCfgAttrProperty>>(new Comparator<ReadOnly<String>>() {
+
+                    @Override
+                    public int compare(final ReadOnly<String> o1, final ReadOnly<String> o2) {
+                        return o1.getDisplayName().compareTo(o2.getDisplayName());
+                    }
+                });
+        for (final Object[] obj : entries) {
+            final ConfigAttrEntry cae = (ConfigAttrEntry)obj[0];
+            final ReadOnly<String> prop;
+            switch (cae.getType().getAttrType()) {
+                case CONFIG_ATTR: {
+                    prop = propCAttr;
+                    break;
+                }
+                case ACTION_TAG: {
+                    prop = propAAttr;
+                    break;
+                }
+                case XML_ATTR: {
+                    prop = propXAttr;
+                    break;
+                }
+                default: {
+                    throw new IllegalStateException("unknown type: " + cae.getType().getAttrType()); // NOI18N
+                }
+            }
+
+            List<ConflictAwareCfgAttrProperty> props = map.get(prop);
+            if (props == null) {
+                props = new ArrayList<ConflictAwareCfgAttrProperty>();
+                map.put(prop, props);
+            }
+
+            if (props.isEmpty() || !props.get(props.size() - 1).getMainEntry().getKey().equals(cae.getKey())) {
+                props.add(new ConflictAwareCfgAttrProperty(cae, (String)obj[1]));
+            } else {
+                props.get(props.size() - 1).putConflictEntry(cae, (String)obj[1]);
+            }
+        }
+
+        for (final List<ConflictAwareCfgAttrProperty> props : map.values()) {
+            Collections.sort(props, new Comparator<ConflictAwareCfgAttrProperty>() {
+
+                    private final transient Comparator<ConfigAttrEntry> comp = new Comparators.ConfigAttrEntries();
+
+                    @Override
+                    public int compare(final ConflictAwareCfgAttrProperty o1,
+                            final ConflictAwareCfgAttrProperty o2) {
+                        return comp.compare(o1.mainEntry, o2.getMainEntry());
+                    }
+                });
+        }
+
+        final Sheet.Set setConflictAwareCfgAttr = Sheet.createPropertiesSet();
+
+        for (final ReadOnly<String> prop : map.keySet()) {
+            setConflictAwareCfgAttr.put(prop);
+            for (final ConflictAwareCfgAttrProperty p : map.get(prop)) {
+                setConflictAwareCfgAttr.put(p);
+            }
+        }
+
+        setConflictAwareCfgAttr.setName("conflictAwareConfigAttrProperties"); // NOI18N
+        setConflictAwareCfgAttr.setDisplayName(NbBundle.getMessage(
+                UserNode.class,
+                "UserNode.populateConfigAttrSet(Sheet).setConflictAwareCfgAttr.displayName"));
+
+        sheet.put(setConflictAwareCfgAttr);
     }
 
     /**
@@ -324,7 +482,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
      * @throws  IllegalArgumentException  DOCUMENT ME!
      * @throws  IllegalStateException     DOCUMENT ME!
      */
-    public static void populateAttrSet(final DomainserverProject project,
+    public static void populateLegacyConfigAttrSet(final DomainserverProject project,
             final Sheet sheet,
             final UserGroup group,
             final User user) {
@@ -405,7 +563,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                         .getEntries(ug.getDomain(),
                             ug,
                             user,
-                            project.getRuntimeProps().getProperty("serverName"),
+                            project.getRuntimeProps().getProperty("serverName"), // NOI18N
                             true);
             Collections.sort(caes, new Comparators.ConfigAttrEntries());
 
@@ -515,8 +673,6 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                 sheet.put(ugSet);
             }
         }
-
-        // </editor-fold>
     }
 
     @Override
@@ -560,20 +716,25 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     @Override
     public void destroy() throws IOException {
+        final Set<UserGroup> ugs;
+
         try {
             final Backend backend = project.getCidsDataObjectBackend();
             for (final UserGroup ug : user.getUserGroups()) {
                 ug.getUsers().remove(user);
                 backend.store(ug);
             }
+            ugs = new HashSet<UserGroup>(user.getUserGroups());
             user.getUserGroups().clear();
             backend.delete(user);
+            // it has been deleted
+            user.setId(-1);
         } catch (final Exception ex) {
             final String message = "could not delete user: " + user; // NOI18N
             LOG.error(message, ex);
             throw new IOException(message, ex);
         }
-        project.getLookup().lookup(UserManagement.class).refreshGroups(user.getUserGroups());
+        project.getLookup().lookup(UserManagement.class).refreshGroups(ugs);
     }
 
     // returns false to ensure a user can only be deleted by deleteuseraction
@@ -585,15 +746,129 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     @Override
     public void refresh() {
-        user = project.getCidsDataObjectBackend().getEntity(User.class, user.getId());
+        // has the user been deleted?
+        if (user.getId() >= 0) {
+            UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
 
-        refreshProperties(false);
+                    @Override
+                    public void run() {
+                        user = project.getCidsDataObjectBackend().getEntity(User.class, user.getId());
+
+                        refreshProperties(false);
+                    }
+                });
+        }
     }
 
     @Override
     public void refreshProperties(final boolean forceInit) {
-        if (sheetInitialised || forceInit) {
-            setSheet(createSheet());
+        final Runnable r = new Runnable() {
+
+                @Override
+                public void run() {
+                    if (sheetInitialised || forceInit) {
+                        setSheet(createSheet());
+                    }
+                }
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
+        }
+    }
+
+    //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class ConflictAwareCfgAttrProperty extends PropertySupport<String> {
+
+        //~ Instance fields ----------------------------------------------------
+
+        private final transient ConfigAttrEntry mainEntry;
+        private final transient String mainEntryOriginUgName;
+        private final transient List<Object[]> conflictingEntries;
+
+        //~ Constructors -------------------------------------------------------
+
+        /**
+         * Creates a new ConflictAwareCfgAttrProperty object.
+         *
+         * @param  cae           DOCUMENT ME!
+         * @param  originUgName  DOCUMENT ME!
+         */
+        public ConflictAwareCfgAttrProperty(final ConfigAttrEntry cae, final String originUgName) {
+            super(cae.getKey().getKey() + cae.getId() + "-conflictaware", // NOI18N
+                String.class,
+                cae.getKey().getKey(),
+                null,
+                true,
+                false);
+
+            this.mainEntry = cae;
+            this.mainEntryOriginUgName = originUgName;
+            this.conflictingEntries = new ArrayList<Object[]>(0);
+        }
+
+        //~ Methods ------------------------------------------------------------
+
+        /**
+         * DOCUMENT ME!
+         *
+         * @param  cae           DOCUMENT ME!
+         * @param  originUgName  DOCUMENT ME!
+         */
+        public void putConflictEntry(final ConfigAttrEntry cae, final String originUgName) {
+            conflictingEntries.add(new Object[] { cae, originUgName });
+        }
+
+        /**
+         * DOCUMENT ME!
+         *
+         * @return  DOCUMENT ME!
+         */
+        public ConfigAttrEntry getMainEntry() {
+            return mainEntry;
+        }
+
+        /**
+         * DOCUMENT ME!
+         *
+         * @return  DOCUMENT ME!
+         */
+        public String getMainEntryOriginUgName() {
+            return mainEntryOriginUgName;
+        }
+
+        @Override
+        public String getHtmlDisplayName() {
+            final int size = conflictingEntries.size();
+            return "<html>"                                                                                       // NOI18N
+                        + mainEntry.getKey().getKey()
+                        + ((size > 0) ? (" <font color=\"!controlShadow\"> [" + size + " more ...]</font>") : "") // NOI18N
+                        + "</html>";                                                                              // NOI18N
+        }
+
+        @Override
+        public PropertyEditor getPropertyEditor() {
+            return new ConflictingCfgAttrPropertyEditor(mainEntry, mainEntryOriginUgName, conflictingEntries);
+        }
+
+        @Override
+        public String getValue() throws IllegalAccessException, InvocationTargetException {
+            return mainEntry.getValue().getValue();
+        }
+
+        @Override
+        public void setValue(final String t) throws IllegalAccessException,
+            IllegalArgumentException,
+            InvocationTargetException {
+            // ignore, this property is actually read only
         }
     }
 }
