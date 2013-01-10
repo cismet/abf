@@ -13,9 +13,11 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.RequestProcessor;
 import org.openide.util.WeakListeners;
 import org.openide.util.actions.CallableSystemAction;
 
+import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.io.IOException;
@@ -62,6 +64,8 @@ public final class UserManagement extends ProjectNode implements ConnectionListe
 
     /** LOGGER. */
     private static final transient Logger LOG = Logger.getLogger(UserManagement.class);
+
+    public static final RequestProcessor REFRESH_PROCESSOR = new RequestProcessor("user-refresh-processor", 10); // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
@@ -139,33 +143,57 @@ public final class UserManagement extends ProjectNode implements ConnectionListe
     public void refresh() {
         final Children children = getChildren();
         if (children instanceof ProjectChildren) {
-            final Future<?> future = ((ProjectChildren)children).refreshByNotify();
+            REFRESH_PROCESSOR.execute(new Runnable() {
 
-            try {
-                future.get(30, TimeUnit.SECONDS);
+                    @Override
+                    public void run() {
+                        final Future<?> future = ((ProjectChildren)children).refreshByNotify();
 
-                for (final Node n : children.getNodes()) {
-                    final Refreshable r = n.getCookie(Refreshable.class);
+                        try {
+                            future.get(30, TimeUnit.SECONDS);
 
-                    if (r != null) {
-                        r.refresh();
+                            // access the children nodes in the EDT
+                            EventQueue.invokeLater(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        for (final Node n : children.getNodes()) {
+                                            final Refreshable r = n.getCookie(Refreshable.class);
+
+                                            if (r != null) {
+                                                r.refresh();
+                                            }
+                                        }
+                                    }
+                                });
+                        } catch (final Exception e) {
+                            LOG.warn("refresh unsuccessful: " + this, e); // NOI18N
+                        }
                     }
-                }
-            } catch (final Exception e) {
-                LOG.warn("refresh unsuccessful: " + this, e); // NOI18N
-            }
+                });
         }
     }
 
     @Override
     public void refreshProperties(final boolean forceInit) {
-        final Children children = getChildren();
-        for (final Node n : children.getNodes()) {
-            final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
+        final Runnable r = new Runnable() {
 
-            if (pr != null) {
-                pr.refreshProperties(forceInit);
-            }
+                @Override
+                public void run() {
+                    final Children children = getChildren();
+                    for (final Node n : children.getNodes()) {
+                        final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
+
+                        if (pr != null) {
+                            pr.refreshProperties(forceInit);
+                        }
+                    }
+                }
+            };
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
         }
     }
 
