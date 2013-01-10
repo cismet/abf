@@ -147,11 +147,12 @@ public final class NewUserWizardAction extends CookieAction {
                 for (final UserGroup ug : ugs) {
                     ug.getUsers().add(newUser);
                     try {
-                        backend.store(ug);
+                        newUser.getUserGroups().add(backend.store(ug));
                     } catch (final Exception e) {
                         LOG.error("could not store usergroup: " + ug.getName(), e);  // NOI18N
                     }
                 }
+                backend.store(newUser);
             } catch (final Exception e) {
                 LOG.error("could not store new user: " + newUser.getLoginname(), e); // NOI18N
                 ErrorManager.getDefault().notify(e);
