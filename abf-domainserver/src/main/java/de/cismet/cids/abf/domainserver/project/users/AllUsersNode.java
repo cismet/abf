@@ -14,6 +14,7 @@ import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.actions.CallableSystemAction;
 
+import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import javax.swing.Action;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupContextCookie;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
@@ -97,14 +99,20 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
     @Override
     public void refresh() {
         final Children c = getChildren();
-        final Future<?> future = ((AllUsersChildren)c).refreshByNotify();
+        UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
 
-        try {
-            future.get(30, TimeUnit.SECONDS);
-            refreshProperties(false);
-        } catch (final Exception ex) {
-            LOG.warn("unsuccessful refresh: " + this, ex);
-        }
+                @Override
+                public void run() {
+                    final Future<?> future = ((AllUsersChildren)c).refreshByNotify();
+
+                    try {
+                        future.get(30, TimeUnit.SECONDS);
+                        refreshProperties(false);
+                    } catch (final Exception ex) {
+                        LOG.warn("unsuccessful refresh: " + this, ex); // NOI18N
+                    }
+                }
+            });
     }
 
     @Override
@@ -114,11 +122,23 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
 
     @Override
     public void refreshProperties(final boolean forceInit) {
-        for (final Node n : getChildren().getNodes()) {
-            final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
-            if (pr != null) {
-                pr.refreshProperties(forceInit);
-            }
+        final Runnable r = new Runnable() {
+
+                @Override
+                public void run() {
+                    for (final Node n : getChildren().getNodes()) {
+                        final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
+                        if (pr != null) {
+                            pr.refreshProperties(forceInit);
+                        }
+                    }
+                }
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
         }
     }
 }
