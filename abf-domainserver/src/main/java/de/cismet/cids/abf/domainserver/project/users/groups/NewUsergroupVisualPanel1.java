@@ -9,6 +9,8 @@ package de.cismet.cids.abf.domainserver.project.users.groups;
 
 import org.openide.util.WeakListeners;
 
+import java.awt.EventQueue;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -34,6 +36,8 @@ public final class NewUsergroupVisualPanel1 extends JPanel {
     private final transient NewUsergroupWizardPanel1 model;
     // needed because of weaklistener
     private final transient DocumentListener docL;
+    // EDT access only
+    private transient boolean init;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final transient javax.swing.JComboBox cboDomain = new javax.swing.JComboBox();
@@ -59,8 +63,7 @@ public final class NewUsergroupVisualPanel1 extends JPanel {
         initComponents();
         docL = new DocumentListenerImpl();
         cboDomain.setRenderer(new Renderers.UnifiedCellRenderer());
-        txtName.getDocument().addDocumentListener(WeakListeners.document(docL,
-                txtName.getDocument()));
+        txtName.getDocument().addDocumentListener(WeakListeners.document(docL, txtName.getDocument()));
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -69,6 +72,9 @@ public final class NewUsergroupVisualPanel1 extends JPanel {
      * DOCUMENT ME!
      */
     void init() {
+        assert EventQueue.isDispatchThread() : "not called from EDT"; // NOI18N
+
+        init = true;
         final Properties props = model.getProject().getRuntimeProps();
         final String destination = props.getProperty("serverName") // NOI18N
                     + " ("                                         // NOI18N
@@ -85,6 +91,9 @@ public final class NewUsergroupVisualPanel1 extends JPanel {
             txtDescription.setText(ug.getDescription());
             cboDomain.setSelectedItem(ug.getDomain());
         }
+
+        init = false;
+        model.fireChangeEvent();
     }
 
     @Override
@@ -226,17 +235,19 @@ public final class NewUsergroupVisualPanel1 extends JPanel {
 
         @Override
         public void insertUpdate(final DocumentEvent e) {
-            model.fireChangeEvent();
+            changedUpdate(e);
         }
 
         @Override
         public void removeUpdate(final DocumentEvent e) {
-            model.fireChangeEvent();
+            changedUpdate(e);
         }
 
         @Override
         public void changedUpdate(final DocumentEvent e) {
-            model.fireChangeEvent();
+            if (!init) {
+                model.fireChangeEvent();
+            }
         }
     }
 }
