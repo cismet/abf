@@ -41,7 +41,7 @@ public abstract class ProjectChildren extends Children.Keys {
 
     private static final transient Logger LOG = Logger.getLogger(ProjectChildren.class);
 
-    private static final transient ExecutorService executor = Executors.newFixedThreadPool(8);
+    private static final transient ExecutorService EXECUTOR = Executors.newFixedThreadPool(8);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -77,7 +77,7 @@ public abstract class ProjectChildren extends Children.Keys {
             setKeys(new Object[] { loadingNode });
         }
 
-        refreshFuture = executor.submit(new Runnable() {
+        refreshFuture = EXECUTOR.submit(new Runnable() {
 
                     private final transient ProgressHandle handle = ProgressHandleFactory.createHandle(
                             "Refreshing children: " // NOI18N
