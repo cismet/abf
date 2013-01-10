@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 
@@ -58,6 +59,7 @@ public final class PermissionResolver {
     private static final String USE_STRING_NODE_POLICY;
 
     private static final Map<DomainserverProject, PermissionResolver> MAP;
+    private static final ReentrantLock INITLOCK;
 
     static {
         PERM_STRING_READ = NbBundle.getMessage(
@@ -103,6 +105,7 @@ public final class PermissionResolver {
                 PermissionResolver.class,
                 "PermissionResolver.PERM_STRING_UNSUPPORTED_PERMISSION"); // NOI18N
         MAP = new HashMap<DomainserverProject, PermissionResolver>();
+        INITLOCK = new ReentrantLock(false);
     }
 
     //~ Instance fields --------------------------------------------------------
@@ -199,12 +202,21 @@ public final class PermissionResolver {
         if (p == null) {
             throw new IllegalArgumentException("project must not be null"); // NOI18N
         }
-        PermissionResolver resolver = MAP.get(p);
-        if (resolver == null) {
-            resolver = new PermissionResolver(p);
-            MAP.put(p, resolver);
+
+        // we won't use double checked locking as we neither know if it really works at all
+        // (see http://www.javaworld.com/javaworld/jw-02-2001/jw-0209-double.html)
+        INITLOCK.lock();
+        try {
+            PermissionResolver resolver = MAP.get(p);
+            if (resolver == null) {
+                resolver = new PermissionResolver(p);
+                MAP.put(p, resolver);
+            }
+
+            return resolver;
+        } finally {
+            INITLOCK.unlock();
         }
-        return resolver;
     }
 
     /**
