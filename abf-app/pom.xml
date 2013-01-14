@@ -5,21 +5,21 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.1.5-SNAPSHOT</version>
+        <version>3.1.4.1</version>
         <relativePath>../abf-parent</relativePath>
     </parent>
 
     <artifactId>abf-app</artifactId>
-    <version>3.1.5-SNAPSHOT</version>
+    <version>3.1.4.1</version>
     <packaging>nbm-application</packaging>
 
     <name>ABF Application</name>
     <description>The ABF Application module builds the stand-alone NetBeans-based ABF application</description>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-app/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-app/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-app/</url>
+        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.1.4.1/abf-app</connection>
+        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.1.4.1/abf-app</developerConnection>
+        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.1.4.1/abf-app</url>
     </scm>
     
     <properties>
@@ -85,25 +85,25 @@
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-branding</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-broker</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-cids-java-template</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-client</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <!--dependency>
             <groupId>de.cismet.cids.abf</groupId>
@@ -115,31 +115,31 @@
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-domainserver</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-library-support</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-registry</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-update-center</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
             <type>nbm</type>
-            <version>3.1.5-SNAPSHOT</version>
+            <version>3.1.4.1</version>
         </dependency>
 <!--        <dependency>
             <groupId>de.cismet.cids.abf</groupId>
