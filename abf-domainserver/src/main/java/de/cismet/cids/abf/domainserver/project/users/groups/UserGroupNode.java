@@ -434,7 +434,10 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
                         // the EDT
                         final Future<?> f = ((UserGroupNodeChildren)c).refreshAll(userGroup);
 
-                        f.get(30, TimeUnit.SECONDS);
+                        // if the future is null the refresh has already taken place
+                        if (f != null) {
+                            f.get(30, TimeUnit.SECONDS);
+                        }
                     } catch (final Exception ex) {
                         LOG.error("cannot refresh usergroup children", ex);
 

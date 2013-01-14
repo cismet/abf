@@ -150,7 +150,10 @@ public final class UserManagement extends ProjectNode implements ConnectionListe
                         final Future<?> future = ((ProjectChildren)children).refreshByNotify();
 
                         try {
-                            future.get(30, TimeUnit.SECONDS);
+                            // if future is null the refresh has already taken place
+                            if (future != null) {
+                                future.get(30, TimeUnit.SECONDS);
+                            }
 
                             // access the children nodes in the EDT
                             EventQueue.invokeLater(new Runnable() {
