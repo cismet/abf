@@ -79,7 +79,7 @@
             <dependency>
                 <groupId>de.cismet.cids</groupId>
                 <artifactId>data-objects</artifactId>
-                <version>3.1</version>
+                <version>3.1.1</version>
             </dependency>
             <dependency>
                 <groupId>de.cismet.cids</groupId>
