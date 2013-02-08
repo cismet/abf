@@ -30,7 +30,6 @@ import java.awt.EventQueue;
 import java.text.MessageFormat;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JComponent;
 
@@ -39,8 +38,6 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
 import de.cismet.cids.jpa.backend.service.Backend;
-import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
-import de.cismet.cids.jpa.entity.permission.ClassPermission;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
@@ -167,41 +164,10 @@ public final class CopyUsergroupWizardAction extends CookieAction {
 
                         @Override
                         public void run() {
-                            // it would probably be better to make the copy action atomic
-                            UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
+                            final UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
                             final Backend backend = project.getCidsDataObjectBackend();
                             try {
-                                newGroup.setPriority(backend.getLowestUGPrio());
-                                newGroup = backend.store(newGroup);
-
-                                final List<ConfigAttrEntry> caes = backend.getEntries(
-                                        ug.getDomain(),
-                                        ug,
-                                        null,
-                                        project.getRuntimeProps().getProperty("serverName"), // NOI18N
-                                        false);
-                                for (final ConfigAttrEntry cae : caes) {
-                                    final ConfigAttrEntry clone = new ConfigAttrEntry();
-                                    clone.setDomain(cae.getDomain());
-                                    clone.setKey(cae.getKey());
-                                    clone.setType(cae.getType());
-                                    clone.setUser(null);
-                                    clone.setUsergroup(newGroup);
-                                    clone.setValue(cae.getValue());
-
-                                    backend.storeEntry(clone);
-                                }
-
-                                final List<ClassPermission> cperms = project.getCidsDataObjectBackend()
-                                            .getClassPermissions(ug);
-                                for (final ClassPermission cperm : cperms) {
-                                    final ClassPermission perm = new ClassPermission();
-                                    perm.setCidsClass(cperm.getCidsClass());
-                                    perm.setPermission(cperm.getPermission());
-                                    perm.setUserGroup(newGroup);
-
-                                    backend.store(perm);
-                                }
+                                backend.copy(ug, newGroup);
                             } catch (final Exception e) {
                                 LOG.error("could not copy usergroup: " + ug, e); // NOI18N
                                 ErrorManager.getDefault().notify(e);
