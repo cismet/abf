@@ -16,6 +16,7 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.NodeAction;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.util.LinkedList;
@@ -30,32 +31,30 @@ import de.cismet.cids.abf.librarysupport.project.nodes.cookies.SourceContextCook
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.StarterManagementContextCookie;
 import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
 import de.cismet.cids.abf.utilities.ModificationStore;
+import de.cismet.cids.abf.utilities.files.FileUtils;
 
 /**
  * DOCUMENT ME!
  *
  * @author   mscholl
- * @version  1.5
+ * @version  1.6
  */
 public final class DeployAllJarsAction extends NodeAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            DeployAllJarsAction.class);
+    private static final transient Logger LOG = Logger.getLogger(DeployAllJarsAction.class);
 
     //~ Methods ----------------------------------------------------------------
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(DeployAllJarsAction.class,
-                "DeployAllJarsAction.getName().returnvalue"); // NOI18N
+        return NbBundle.getMessage(DeployAllJarsAction.class, "DeployAllJarsAction.getName().returnvalue"); // NOI18N
     }
 
     @Override
     protected String iconResource() {
-        return LibrarySupportProject.IMAGE_FOLDER
-                    + "einpflegenAll_24.gif"; // NOI18N
+        return LibrarySupportProject.IMAGE_FOLDER + "einpflegenAll_24.gif"; // NOI18N
     }
 
     @Override
@@ -73,20 +72,27 @@ public final class DeployAllJarsAction extends NodeAction {
         final List<DeployInformation> infos = new LinkedList<DeployInformation>();
         for (final Node n : nodes) {
             for (final Node ch : n.getChildren().getNodes()) {
-                infos.add(DeployInformation.getDeployInformation(ch));
+                final SourceContextCookie scc = ch.getCookie(SourceContextCookie.class);
+                try {
+                    if (!FileUtils.containsClassFiles(scc.getSourceObject())) {
+                        infos.add(DeployInformation.getDeployInformation(ch));
+                    }
+                } catch (final FileNotFoundException ex) {
+                    LOG.warn("ignoring node as its source context is invalid: " + ch, ex); // NOI18N
+                }
             }
         }
         try {
             JarHandler.deployAllJars(infos, JarHandler.ANT_TARGET_DEPLOY_ALL_JARS);
             for (final Node n : nodes) {
-                final SourceContextCookie sourceCookie = (SourceContextCookie)n.getCookie(SourceContextCookie.class);
+                final SourceContextCookie sourceCookie = n.getCookie(SourceContextCookie.class);
                 ModificationStore.getInstance()
                         .removeAllModificationsInContext(
                             FileUtil.toFile(sourceCookie.getSourceObject()).getAbsolutePath(),
                             ModificationStore.MOD_CHANGED);
             }
         } catch (final IOException ex) {
-            LOG.warn("could not deploy all jars", ex); // NOI18N
+            LOG.warn("could not deploy all jars", ex);                                     // NOI18N
         }
     }
 
@@ -95,20 +101,20 @@ public final class DeployAllJarsAction extends NodeAction {
         if ((nodes == null) || (nodes.length < 1)) {
             return false;
         }
+        
         for (final Node n : nodes) {
-            final LocalManagementContextCookie l = (LocalManagementContextCookie)n.getCookie(
-                    LocalManagementContextCookie.class);
-            final StarterManagementContextCookie s = (StarterManagementContextCookie)n.getCookie(
-                    StarterManagementContextCookie.class);
+            final LocalManagementContextCookie l = n.getCookie(LocalManagementContextCookie.class);
+            final StarterManagementContextCookie s = n.getCookie(StarterManagementContextCookie.class);
             if ((l == null) && (s == null)) {
                 return false;
             }
         }
-        final LibrarySupportContextCookie lscc = (LibrarySupportContextCookie)nodes[0].getCookie(
-                LibrarySupportContextCookie.class);
+        
+        final LibrarySupportContextCookie lscc = nodes[0].getCookie(LibrarySupportContextCookie.class);
         if (lscc == null) {
             return false;
         }
+        
         final PropertyProvider provider = PropertyProvider.getInstance(lscc.getLibrarySupportContext()
                         .getProjectProperties());
         final File f = new File(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));
