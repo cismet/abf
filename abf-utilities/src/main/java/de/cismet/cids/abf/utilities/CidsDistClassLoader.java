@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import de.cismet.commons.ref.CacheException;
+
 /**
  * This Class is able the load all classes of libraries in a cidsDistribution. Additionally it has a class cache to
  * check if a class can generally be loaded or if the class can be used in a given library context.
