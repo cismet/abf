@@ -155,6 +155,14 @@ public class PasswordPanel extends javax.swing.JPanel {
         add(lblMessage, gridBagConstraints);
     }                                                                                                  // </editor-fold>//GEN-END:initComponents
 
+    /**
+     * DOCUMENT ME!
+     */
+    public void clear() {
+        pwfEnter.setText(null);
+        pwfRepeat.setText(null);
+    }
+
     //~ Inner Classes ----------------------------------------------------------
 
     /**
