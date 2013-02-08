@@ -133,7 +133,7 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     @Override
     protected Sheet createSheet() {
         sheetInitialised = true;
-        System.out.println("createSheet: " + userGroup);
+
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
         final Sheet.Set setAdditionalInfo = Sheet.createPropertiesSet();
@@ -332,7 +332,8 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
             sheet.put(setAdditionalInfo);
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: classperms ">
-            final List<ClassPermission> cperms = project.getCidsDataObjectBackend().getClassPermissions(userGroup);
+            final List<ClassPermission> cperms = project.getCidsDataObjectBackend()
+                        .getPermissions(ClassPermission.class, userGroup);
             Collections.sort(cperms, new Comparator<ClassPermission>() {
 
                     @Override
@@ -423,44 +424,57 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
     @Override
     public void refresh() {
-        final Children c = getChildren();
-        UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
+        final Runnable r = new Runnable() {
 
                 @Override
                 public void run() {
-                    userGroup = project.getCidsDataObjectBackend().getEntity(UserGroup.class, userGroup.getId());
-                    try {
-                        // we assure that the children are initialised and the setting of the keys is scheduled in
-                        // the EDT
-                        final Future<?> f = ((UserGroupNodeChildren)c).refreshAll(userGroup);
-
-                        // if the future is null the refresh has already taken place
-                        if (f != null) {
-                            f.get(30, TimeUnit.SECONDS);
-                        }
-                    } catch (final Exception ex) {
-                        LOG.error("cannot refresh usergroup children", ex);
-
-                        return;
-                    }
-
-                    // we access the nodes of the children in the EDT
-                    EventQueue.invokeLater(new Runnable() {
+                    final Children c = getChildren();
+                    UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
 
                             @Override
                             public void run() {
-                                for (final Node n : c.getNodes()) {
-                                    final Refreshable r = n.getCookie(Refreshable.class);
-                                    if (r != null) {
-                                        r.refresh();
+                                userGroup = project.getCidsDataObjectBackend()
+                                            .getEntity(UserGroup.class, userGroup.getId());
+                                try {
+                                    // we assure that the children are initialised and the setting of the keys is
+                                    // scheduled in the EDT
+                                    final Future<?> f = ((UserGroupNodeChildren)c).refreshAll(userGroup);
+
+                                    // if the future is null the refresh has already taken place
+                                    if (f != null) {
+                                        f.get(30, TimeUnit.SECONDS);
                                     }
+                                } catch (final Exception ex) {
+                                    LOG.error("cannot refresh usergroup children", ex); // NOI18N
+
+                                    return;
                                 }
 
-                                refreshProperties(false);
+                                // we access the nodes of the children in the EDT
+                                EventQueue.invokeLater(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            for (final Node n : c.getNodes()) {
+                                                final Refreshable r = n.getCookie(Refreshable.class);
+                                                if (r != null) {
+                                                    r.refresh();
+                                                }
+                                            }
+
+                                            refreshProperties(false);
+                                        }
+                                    });
                             }
                         });
                 }
-            });
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
+        }
     }
 
     @Override
