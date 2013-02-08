@@ -8,16 +8,14 @@
 package de.cismet.cids.abf.domainserver.project.catalog;
 
 import org.openide.WizardDescriptor;
+import org.openide.util.ChangeSupport;
 import org.openide.util.HelpCtx;
 
 import java.awt.Component;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -35,7 +33,9 @@ public final class NodeRightPropertyWizardPanel1 implements WizardDescriptor.Pan
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient Set<ChangeListener> listeners;
+    private final transient ChangeSupport changeSupport;
+    private final transient ReentrantLock compLock;
+
     private transient NodeRightPropertyVisualPanel1 component;
     private transient CatNode catNode;
     private transient Backend backend;
@@ -48,17 +48,25 @@ public final class NodeRightPropertyWizardPanel1 implements WizardDescriptor.Pan
      * Creates a new NodeRightPropertyWizardPanel1 object.
      */
     public NodeRightPropertyWizardPanel1() {
-        listeners = new HashSet<ChangeListener>(1);
+        changeSupport = new ChangeSupport(this);
+        compLock = new ReentrantLock(false);
     }
 
     //~ Methods ----------------------------------------------------------------
 
     @Override
     public Component getComponent() {
-        if (component == null) {
-            component = new NodeRightPropertyVisualPanel1(this);
-            addChangeListener(component);
+        compLock.lock();
+
+        try {
+            if (component == null) {
+                component = new NodeRightPropertyVisualPanel1(this);
+                addChangeListener(component);
+            }
+        } finally {
+            compLock.unlock();
         }
+
         return component;
     }
 
@@ -110,30 +118,19 @@ public final class NodeRightPropertyWizardPanel1 implements WizardDescriptor.Pan
 
     @Override
     public void addChangeListener(final ChangeListener l) {
-        synchronized (listeners) {
-            listeners.add(l);
-        }
+        changeSupport.addChangeListener(l);
     }
 
     @Override
     public void removeChangeListener(final ChangeListener l) {
-        synchronized (listeners) {
-            listeners.remove(l);
-        }
+        changeSupport.removeChangeListener(l);
     }
 
     /**
      * DOCUMENT ME!
      */
     protected void fireChangeEvent() {
-        final Iterator<ChangeListener> it;
-        synchronized (listeners) {
-            it = new HashSet<ChangeListener>(listeners).iterator();
-        }
-        final ChangeEvent ev = new ChangeEvent(this);
-        while (it.hasNext()) {
-            it.next().stateChanged(ev);
-        }
+        changeSupport.fireChange();
     }
 
     @Override
