@@ -10,9 +10,11 @@ package de.cismet.cids.abf.domainserver.project.configattr;
 import org.apache.log4j.Logger;
 
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.actions.DeleteAction;
 import org.openide.actions.NewAction;
+import org.openide.actions.RenameAction;
 import org.openide.cookies.CloseCookie;
 import org.openide.cookies.EditCookie;
 import org.openide.nodes.Children;
@@ -86,7 +88,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
      */
     public ConfigAttrKeyNode(final ConfigAttrKey key, final Types type, final DomainserverProject project) {
         super(new ConfigAttrKeyNodeChildren(key, type, project), project);
-        setName(key.getKey());
+        super.setName(key.getKey());
         this.key = key;
         this.type = type;
 
@@ -112,11 +114,40 @@ public class ConfigAttrKeyNode extends ProjectNode {
     public Action[] getActions(final boolean context) {
         return new Action[] {
                 CallableSystemAction.get(NewAction.class),
+                CallableSystemAction.get(RenameAction.class),
                 null,
                 CallableSystemAction.get(RefreshAction.class),
                 null,
                 CallableSystemAction.get(DeleteAction.class)
             };
+    }
+
+    @Override
+    public boolean canRename() {
+        return true;
+    }
+
+    @Override
+    public void setName(final String s) {
+        final String oldName = key.getKey();
+
+        try {
+            key.setKey(s);
+            project.getCidsDataObjectBackend().store(key);
+
+            super.setName(s);
+        } catch (final Exception e) {
+            key.setKey(oldName);
+            LOG.error("cannot rename key: " + key, e); // NOI18N
+
+            final NotifyDescriptor nd = new NotifyDescriptor.Message(NbBundle.getMessage(
+                        ConfigAttrKeyNode.class,
+                        "ConfigAttrKeyNode.setName(String).renameError.message", // NOI18N
+                        e.getLocalizedMessage()),
+                    NotifyDescriptor.WARNING_MESSAGE);
+
+            DialogDisplayer.getDefault().notify(nd);
+        }
     }
 
     @Override
