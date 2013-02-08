@@ -80,8 +80,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            NodeRightPropertyVisualPanel1.class);
+    private static final transient Logger LOG = Logger.getLogger(NodeRightPropertyVisualPanel1.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -157,32 +156,34 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
                     if (tblRights.isEditing()) {
                         return;
                     }
+
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("new right selected, updating"); // NOI18N
                     }
+
                     final DefaultTableModel tModel = (DefaultTableModel)tblRights.getModel();
                     final JXTable tblRights = getRightsTable();
                     final int[] selRows = tblRights.getSelectedRows();
+
                     if (selRows.length != 1) {
                         return;
                     }
+
                     final int selIndex = tblRights.convertRowIndexToModel(selRows[0]);
                     final UserGroup ug = (UserGroup)tModel.getValueAt(selIndex, 0);
-                    final Permission selPerm = (Permission)tModel.getValueAt(
-                            selIndex,
-                            1);
+                    final Permission selPerm = (Permission)tModel.getValueAt(selIndex, 1);
                     final List rows = tModel.getDataVector();
+
                     for (int i = 0; i < rows.size(); ++i) {
                         final List row = (List)rows.get(i);
-                        if (ug.equals(row.get(0))
-                                    && selPerm.equals(row.get(1))
-                                    && (i != selIndex)) {
+                        if (ug.equals(row.get(0)) && selPerm.equals(row.get(1)) && (i != selIndex)) {
                             final int toRem = i;
                             EventQueue.invokeLater(new Runnable() {
 
                                     @Override
                                     public void run() {
                                         tModel.removeRow(toRem);
+                                        updateGroupList();
                                     }
                                 });
                             return;
@@ -216,6 +217,9 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
         ((DefaultComboBoxModel)cboPolicy.getModel()).removeAllElements();
         cboPolicy.setRenderer(new DefaultListCellRenderer() {
 
+                private final transient PermissionResolver resolver = PermissionResolver.getInstance(
+                        model.getProject());
+
                 @Override
                 public Component getListCellRendererComponent(final JList list,
                         final Object value,
@@ -236,8 +240,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
                         node.setPolicy(null);
                         try {
                             s = "<"
-                                        + PermissionResolver.getInstance(model.getProject()).getPermString(node, null)
-                                        .getInheritanceString() + ">"; // NOI18N
+                                        + resolver.getPermString(node, null).getInheritanceString() + ">"; // NOI18N
                         } finally {
                             node.setPolicy(p);
                         }
@@ -322,6 +325,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
         ((JXTable)tblRights).setSortOrder(group, SortOrder.ASCENDING);
         final List<UserGroup> groups = model.getBackend().getAllEntities(UserGroup.class);
         Collections.sort(groups, new Comparators.UserGroups());
+        allUserGroups = new ArrayList<UserGroup>(groups);
 
         ((JXList)lstGroup).setComparator(ugComp);
         ((JXList)lstGroup).setSortOrder(SortOrder.ASCENDING);
@@ -339,7 +343,6 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
         for (final UserGroup ug : groups) {
             ((DefaultListModel)((JXList)lstGroup).getWrappedModel()).addElement(ug);
         }
-        allUserGroups = groups;
         btnAddAll.addActionListener(addAllL);
         btnAdd.addActionListener(addL);
         btnRemove.addActionListener(remL);
