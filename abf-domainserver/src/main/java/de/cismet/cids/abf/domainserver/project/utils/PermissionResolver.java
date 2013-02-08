@@ -31,6 +31,10 @@ import de.cismet.cids.jpa.entity.permission.Policy;
 import de.cismet.cids.jpa.entity.permission.PolicyRule;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
+import de.cismet.commons.ref.PurgingCache;
+
+import de.cismet.tools.Calculator;
+
 /**
  * DOCUMENT ME!
  *
@@ -118,6 +122,7 @@ public final class PermissionResolver {
     private final transient Permission writePerm;
     private final transient Permission noPerm;
     private final transient ThreadLocal<Result> result;
+    private final transient PurgingCache<CatNode, List<CatNode>> nodeCache;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -138,6 +143,14 @@ public final class PermissionResolver {
             throw new IllegalStateException("the project is not connected"); // NOI18N
         }
         this.project = project;
+        this.nodeCache = new PurgingCache<CatNode, List<CatNode>>(new Calculator<CatNode, List<CatNode>>() {
+
+                    @Override
+                    public List<CatNode> calculate(final CatNode node) throws Exception {
+                        return project.getCidsDataObjectBackend().getNodeParents(node);
+                    }
+                });
+
         final Backend backend = project.getCidsDataObjectBackend();
         ruleMap = new HashMap<Integer, Map<Integer, Boolean>>();
         for (final PolicyRule rule : backend.getAllEntities(PolicyRule.class)) {
@@ -153,11 +166,11 @@ public final class PermissionResolver {
         Permission read = null;
         Permission write = null;
         for (final Permission perm : perms) {
-            if (perm.getKey().equalsIgnoreCase("read"))                      // NOI18N
+            if (perm.getKey().equalsIgnoreCase("read"))  // NOI18N
             {
                 read = perm;
             }
-            if (perm.getKey().equalsIgnoreCase("write"))                     // NOI18N
+            if (perm.getKey().equalsIgnoreCase("write")) // NOI18N
             {
                 write = perm;
             }
@@ -554,9 +567,10 @@ public final class PermissionResolver {
     // TODO: refactor since this implementation is rather hard to understand
     private Policy getOrgNodePolicy(final CatNode node) {
         if (!node.getNodeType().equals(CatNode.Type.ORG.getType())) {
-            throw new IllegalArgumentException("node is not of type OrgNode");         // NOI18N
+            throw new IllegalArgumentException("node is not of type OrgNode"); // NOI18N
         }
-        final List<CatNode> parents = project.getCidsDataObjectBackend().getNodeParents(node);
+
+        final List<CatNode> parents = nodeCache.get(node);
         if (parents.size() > 1) {
             throw new IllegalStateException("node has more than one parent: " + node); // NOI18N
         } else if (parents.isEmpty()) {
