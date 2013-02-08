@@ -68,13 +68,26 @@ public abstract class ProjectChildren extends Children.Keys {
 
     @Override
     protected void addNotify() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("addNotify caller debug, initialized: " + isInitialized(), new Throwable("trace: " + this)); // NOI18N
-        }
-
         final LoadingNode loadingNode = new LoadingNode();
-        if (!isInitialized()) {
-            setKeys(new Object[] { loadingNode });
+        final Runnable r = new Runnable() {
+
+                @Override
+                public void run() {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("addNotify caller debug, initialized: " + isInitialized(),
+                            new Throwable("trace: " + this)); // NOI18N
+                    }
+
+                    if (!isInitialized()) {
+                        setKeys(new Object[] { loadingNode });
+                    }
+                }
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
         }
 
         refreshFuture = EXECUTOR.submit(new Runnable() {
@@ -161,7 +174,11 @@ public abstract class ProjectChildren extends Children.Keys {
 
                 @Override
                 public void run() {
-                    setKeys(keys);
+                    try {
+                        setKeys(keys);
+                    } catch (Exception e) {
+                        LOG.fatal("cannot set keys: " + keys + " | " + this, e);
+                    }
                 }
             });
     }
