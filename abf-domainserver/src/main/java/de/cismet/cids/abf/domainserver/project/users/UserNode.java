@@ -78,6 +78,8 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     // accessed in syncronised methods
     private transient boolean sheetInitialised;
 
+    private transient volatile boolean deleted;
+
     //~ Constructors -----------------------------------------------------------
 
     /**
@@ -89,6 +91,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public UserNode(final User user, final DomainserverProject project) {
         super(Children.LEAF, project);
         this.user = user;
+        deleted = false;
         sheetInitialised = false;
         userImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "user.png");   // NOI18N
         adminImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "admin.png"); // NOI18N
@@ -726,9 +729,10 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             }
             ugs = new HashSet<UserGroup>(user.getUserGroups());
             user.getUserGroups().clear();
+            
             backend.delete(user);
-            // it has been deleted
-            user.setId(-1);
+            
+            deleted = true;
         } catch (final Exception ex) {
             final String message = "could not delete user: " + user; // NOI18N
             LOG.error(message, ex);
@@ -747,7 +751,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     @Override
     public void refresh() {
         // has the user been deleted?
-        if (user.getId() >= 0) {
+        if (!deleted) {
             UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
 
                     @Override
