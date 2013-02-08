@@ -168,7 +168,9 @@ public final class AddUsersWizardAction extends CookieAction {
             return false;
         }
         if (ug == null) {
-            LOG.warn("usergroupcontext is null"); // NOI18N
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("usergroupcontext is null"); // NOI18N
+            }
 
             return false;
         }
