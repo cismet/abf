@@ -114,20 +114,32 @@ public final class UserManagement extends ProjectNode implements ConnectionListe
      * @param  affectedGroups  DOCUMENT ME!
      */
     public void refreshGroups(final Collection<UserGroup> affectedGroups) {
-        final UserManagement um = project.getLookup().lookup(UserManagement.class);
-        final Node[] ugNodes = um.getChildren().getNodes(true);
-        for (final Node n : ugNodes) {
-            final UserGroup ug = n.getCookie(UserGroupContextCookie.class).getUserGroup();
-            if (AllUsersNode.ALL_GROUP.equals(ug)) {
-                n.getCookie(Refreshable.class).refresh();
-            } else {
-                for (final UserGroup affected : affectedGroups) {
-                    if (affected.equals(ug)) {
-                        n.getCookie(Refreshable.class).refresh();
-                        break;
+        final Runnable r = new Runnable() {
+
+                @Override
+                public void run() {
+                    final UserManagement um = project.getLookup().lookup(UserManagement.class);
+                    final Node[] ugNodes = um.getChildren().getNodes(true);
+                    for (final Node n : ugNodes) {
+                        final UserGroup ug = n.getCookie(UserGroupContextCookie.class).getUserGroup();
+                        if (AllUsersNode.ALL_GROUP.equals(ug)) {
+                            n.getCookie(Refreshable.class).refresh();
+                        } else {
+                            for (final UserGroup affected : affectedGroups) {
+                                if (affected.equals(ug)) {
+                                    n.getCookie(Refreshable.class).refresh();
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
-            }
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
         }
     }
 
@@ -141,39 +153,51 @@ public final class UserManagement extends ProjectNode implements ConnectionListe
 
     @Override
     public void refresh() {
-        final Children children = getChildren();
-        if (children instanceof ProjectChildren) {
-            REFRESH_PROCESSOR.execute(new Runnable() {
+        final Runnable r = new Runnable() {
 
-                    @Override
-                    public void run() {
-                        final Future<?> future = ((ProjectChildren)children).refreshByNotify();
+                @Override
+                public void run() {
+                    final Children children = getChildren();
+                    if (children instanceof ProjectChildren) {
+                        REFRESH_PROCESSOR.execute(new Runnable() {
 
-                        try {
-                            // if future is null the refresh has already taken place
-                            if (future != null) {
-                                future.get(30, TimeUnit.SECONDS);
-                            }
+                                @Override
+                                public void run() {
+                                    final Future<?> future = ((ProjectChildren)children).refreshByNotify();
 
-                            // access the children nodes in the EDT
-                            EventQueue.invokeLater(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        for (final Node n : children.getNodes()) {
-                                            final Refreshable r = n.getCookie(Refreshable.class);
-
-                                            if (r != null) {
-                                                r.refresh();
-                                            }
+                                    try {
+                                        // if future is null the refresh has already taken place
+                                        if (future != null) {
+                                            future.get(30, TimeUnit.SECONDS);
                                         }
+
+                                        // access the children nodes in the EDT
+                                        EventQueue.invokeLater(new Runnable() {
+
+                                                @Override
+                                                public void run() {
+                                                    for (final Node n : children.getNodes()) {
+                                                        final Refreshable r = n.getCookie(Refreshable.class);
+
+                                                        if (r != null) {
+                                                            r.refresh();
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                    } catch (final Exception e) {
+                                        LOG.warn("refresh unsuccessful: " + this, e); // NOI18N
                                     }
-                                });
-                        } catch (final Exception e) {
-                            LOG.warn("refresh unsuccessful: " + this, e); // NOI18N
-                        }
+                                }
+                            });
                     }
-                });
+                }
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
         }
     }
 
