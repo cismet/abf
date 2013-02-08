@@ -98,21 +98,33 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
 
     @Override
     public void refresh() {
-        final Children c = getChildren();
-        UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
+        final Runnable r = new Runnable() {
 
                 @Override
                 public void run() {
-                    final Future<?> future = ((AllUsersChildren)c).refreshByNotify();
+                    final Children c = getChildren();
+                    UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
 
-                    try {
-                        future.get(30, TimeUnit.SECONDS);
-                        refreshProperties(false);
-                    } catch (final Exception ex) {
-                        LOG.warn("unsuccessful refresh: " + this, ex); // NOI18N
-                    }
+                            @Override
+                            public void run() {
+                                final Future<?> future = ((AllUsersChildren)c).refreshByNotify();
+
+                                try {
+                                    future.get(30, TimeUnit.SECONDS);
+                                    refreshProperties(false);
+                                } catch (final Exception ex) {
+                                    LOG.warn("unsuccessful refresh: " + this, ex); // NOI18N
+                                }
+                            }
+                        });
                 }
-            });
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
+        }
     }
 
     @Override
