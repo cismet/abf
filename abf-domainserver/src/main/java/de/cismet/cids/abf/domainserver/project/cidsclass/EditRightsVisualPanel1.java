@@ -151,6 +151,8 @@ public final class EditRightsVisualPanel1 extends JPanel {
                 EditRightsVisualPanel1.class,
                 "EditRightsVisualPanel1.EditRightsVisualPanel1(EditRightsWizardPanel1).tblRightsColumnIdentifiers.element2")); // NOI18N
         unmarkedRightRows = new ArrayList();
+        selectedClasses = new ArrayList(0);
+
         initComponents();
     }
 
@@ -167,7 +169,7 @@ public final class EditRightsVisualPanel1 extends JPanel {
         initGrouptable();
         initGrouplist();
         // selecting all classes, will perform an update
-        tblClasses.getSelectionModel().setSelectionInterval(0, model.getCidsClasses().length - 1);
+        tblClasses.getSelectionModel().clearSelection();
     }
 
     /**
