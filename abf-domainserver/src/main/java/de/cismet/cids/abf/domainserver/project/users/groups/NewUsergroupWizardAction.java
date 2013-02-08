@@ -32,6 +32,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserManagementContextCookie;
 
 import de.cismet.cids.jpa.backend.service.Backend;
+import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
@@ -140,13 +141,18 @@ public final class NewUsergroupWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            final UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
+            UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
             try {
                 final Backend b = project.getCidsDataObjectBackend();
                 newGroup.setPriority(b.getLowestUGPrio());
-                b.store(newGroup);
+                newGroup = b.store(newGroup);
+
+                for (final User u : newGroup.getUsers()) {
+                    u.getUserGroups().add(newGroup);
+                    b.store(u);
+                }
             } catch (final Exception e) {
-                LOG.error("could not store new usergroup", e);                   // NOI18N
+                LOG.error("could not store new usergroup", e); // NOI18N
                 ErrorManager.getDefault().notify(e);
             }
             project.getLookup().lookup(UserManagement.class).refresh();
