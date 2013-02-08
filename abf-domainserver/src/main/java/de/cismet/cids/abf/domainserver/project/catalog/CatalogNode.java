@@ -29,6 +29,7 @@ import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.datatransfer.PasteType;
 import org.openide.windows.WindowManager;
 
+import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.datatransfer.Transferable;
 
@@ -44,6 +45,7 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -70,6 +72,7 @@ import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassPropertyEditor
 import de.cismet.cids.abf.domainserver.project.nodes.CatalogManagement;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
 import de.cismet.cids.abf.utilities.Comparators;
+import de.cismet.cids.abf.utilities.Comparators.Permissions;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
@@ -260,26 +263,47 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
                             catNode.setIsLeaf(catNode.getDynamicChildren() == null);
                         }
 
-                        final Children c = getChildren();
+                        // children have to be fetched in EDT
+                        class ChildrenGetter implements Runnable {
+
+                            Children c;
+
+                            @Override
+                            public void run() {
+                                c = getChildren();
+                            }
+                        }
+
+                        final ChildrenGetter cg = new ChildrenGetter();
+                        try {
+                            EventQueue.invokeAndWait(cg);
+                        } catch (final Exception ex) {
+                            LOG.warn("exception during children fetching, retrying", ex);                       // NOI18N
+                            try {
+                                EventQueue.invokeAndWait(cg);
+                            } catch (final Exception ex1) {
+                                throw new IllegalStateException("cannot wait for children to be fetched", ex1); // NOI18N
+                            }
+                        }
                         if (catNode.isLeaf()
                                     && ((catNode.getDynamicChildren() == null)
                                         || NULL.equalsIgnoreCase(catNode.getDynamicChildren()))) {
                             setChildrenEDT(Children.LEAF);
-                        } else if (c instanceof CatalogNodeChildren) {
+                        } else if (cg.c instanceof CatalogNodeChildren) {
                             if ((catNode.getDynamicChildren() == null)
                                         || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
-                                ((ProjectChildren)c).refreshByNotify();
+                                ((ProjectChildren)cg.c).refreshByNotify();
                             } else {
                                 setChildrenEDT(new DynamicCatalogNodeChildren(catNode, project));
                             }
-                        } else if (c instanceof DynamicCatalogNodeChildren) {
+                        } else if (cg.c instanceof DynamicCatalogNodeChildren) {
                             if ((catNode.getDynamicChildren() == null)
                                         || NULL.equalsIgnoreCase(catNode.getDynamicChildren())) {
                                 setChildrenEDT(new CatalogNodeChildren(catNode, project));
                             } else {
-                                ((ProjectChildren)c).refreshByNotify();
+                                ((ProjectChildren)cg.c).refreshByNotify();
                             }
-                        } else if (c == Children.LEAF) {
+                        } else if (cg.c == Children.LEAF) {
                             if (catNode.getDynamicChildren() == null) {
                                 setChildrenEDT(new CatalogNodeChildren(catNode, project));
                             } else {
@@ -292,7 +316,13 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
                         // an appropriate property change and/or how to register an
                         // appropriate listener at the right place if this is necessary,
                         // this workaround is acceptable
-                        setSheet(createSheet());
+                        EventQueue.invokeLater(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    setSheet(createSheet());
+                                }
+                            });
                     } else {
                         setChildrenEDT(Children.LEAF);
                     }
@@ -846,6 +876,21 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
             final LinkedList<Property> rightProps = new LinkedList<Property>();
             if (catNode.getNodePermissions() != null) {
                 final List<NodePermission> perms = new ArrayList<NodePermission>(catNode.getNodePermissions());
+                Collections.sort(perms, new Comparator<NodePermission>() {
+
+                    private final Permissions permComp = new Permissions();
+
+                    @Override
+                    public int compare(final NodePermission o1, final NodePermission o2)
+                    {
+                        int res = o1.getUserGroup().getName().compareTo(o2.getUserGroup().getName());
+                        if(res == 0){
+                            res = permComp.compare(o1.getPermission(), o2.getPermission());
+                        }
+
+                        return res;
+                    }
+                });
                 for (final NodePermission perm : perms) {
                     rightProps.add(new PropertySupport(
                             "nodeRight"// NOI18N
@@ -1013,13 +1058,14 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
             for (final Iterator<Property> props = rightProps.iterator(); props.hasNext();) {
                 rights.put(props.next());
             }
-            sheet.put(main);
-            sheet.put(clazz);
-            sheet.put(object);
-            sheet.put(rights);
             dynaChildren.put(dynaChildrenSQL);
             dynaChildren.put(dynaChildrenSQLSort);
+
+            sheet.put(main);
+            sheet.put(clazz);
             sheet.put(dynaChildren);
+            sheet.put(rights);
+            sheet.put(object);
         } catch (final Exception ex) {
             LOG.error("could not create property sheet", ex);                               // NOI18N
             ErrorUtils.showErrorMessage(NbBundle.getMessage(
@@ -1387,7 +1433,7 @@ final class DynamicCatalogNodeChildren extends ProjectChildren {
 
     @Override
     protected void threadedNotify() throws IOException {
-        Connection con = null;
+        final Connection con;
         try {
             con = DatabaseConnection.getConnection(project.getRuntimeProps());
         } catch (final SQLException ex) {
