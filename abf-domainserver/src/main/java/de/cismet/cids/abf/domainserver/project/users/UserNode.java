@@ -729,9 +729,9 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             }
             ugs = new HashSet<UserGroup>(user.getUserGroups());
             user.getUserGroups().clear();
-            
+
             backend.delete(user);
-            
+
             deleted = true;
         } catch (final Exception ex) {
             final String message = "could not delete user: " + user; // NOI18N
