@@ -16,6 +16,8 @@ import java.security.SecureRandom;
 
 import java.util.Arrays;
 
+import de.cismet.tools.Equals;
+
 /**
  * DOCUMENT ME!
  *
@@ -26,10 +28,10 @@ public class DefaultPasswordComponentModel implements PasswordComponentModel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    public static final String PROP_PW = "__prop_pw__";                     // NOI18N
-    public static final String PROP_PW_MATCH = "__prop_pw_match__";         // NOI18N
-    public static final String PROP_INFO_MESSAGE = "__prop_info_message__"; // NOI18N
-    public static final String PROP_WARN_MESSAGE = "__prop_warn_message__"; // NOI18N
+    public static final String PROP_PW = "password";              // NOI18N
+    public static final String PROP_PW_MATCH = "passwordMatch";   // NOI18N
+    public static final String PROP_INFO_MESSAGE = "infoMessage"; // NOI18N
+    public static final String PROP_WARN_MESSAGE = "warnMessage"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
@@ -53,20 +55,34 @@ public class DefaultPasswordComponentModel implements PasswordComponentModel {
 
     @Override
     public boolean isValid() {
-        if ((password != null) && (password.length > 4)) {
+        if ((password == null) || (password.length == 0)) {
+            if ((passwordMatch == null) || (passwordMatch.length == 0)) {
+                setWarnMessage(null);
+                setInfoMessage(NbBundle.getMessage(
+                        DefaultPasswordComponentModel.class,
+                        "DefaultPasswordComponentModel.isValid().infoMessage.enterPw"));      // NOI18N
+            } else {
+                setInfoMessage(null);
+                setWarnMessage(NbBundle.getMessage(
+                        DefaultPasswordComponentModel.class,
+                        "DefaultPasswordComponentModel.isValid().warnMessage.pwsDontMatch")); // NOI18N
+            }
+        } else if (password.length > 4) {
             if (Arrays.equals(password, passwordMatch)) {
                 setWarnMessage(null);
                 setInfoMessage(NbBundle.getMessage(
                         DefaultPasswordComponentModel.class,
-                        "DefaultPasswordComponentModel.isValid().infoMessage.pwsMatch")); // NOI18N
+                        "DefaultPasswordComponentModel.isValid().infoMessage.pwsMatch"));     // NOI18N
 
                 return true;
             } else {
+                setInfoMessage(null);
                 setWarnMessage(NbBundle.getMessage(
                         DefaultPasswordComponentModel.class,
                         "DefaultPasswordComponentModel.isValid().warnMessage.pwsDontMatch")); // NOI18N
             }
         } else {
+            setInfoMessage(null);
             setWarnMessage(NbBundle.getMessage(
                     DefaultPasswordComponentModel.class,
                     "DefaultPasswordComponentModel.isValid().warnMessage.pwTooShort"));       // NOI18N
@@ -114,6 +130,8 @@ public class DefaultPasswordComponentModel implements PasswordComponentModel {
         this.password = password;
 
         changeSupport.firePropertyChange(PROP_PW, oldPw, password);
+
+        isValid();
     }
 
     @Override
@@ -128,6 +146,8 @@ public class DefaultPasswordComponentModel implements PasswordComponentModel {
         this.passwordMatch = passwordMatch;
 
         changeSupport.firePropertyChange(PROP_PW_MATCH, oldPwMatch, passwordMatch);
+
+        isValid();
     }
 
     @Override
@@ -154,6 +174,11 @@ public class DefaultPasswordComponentModel implements PasswordComponentModel {
 
         this.infoMessage = infoMessage;
 
+        if (Equals.allNull(old, infoMessage)) {
+            // property change support does not check for this condition. however, we consider null to be equal to null
+            return;
+        }
+
         changeSupport.firePropertyChange(PROP_INFO_MESSAGE, old, infoMessage);
     }
 
@@ -175,6 +200,11 @@ public class DefaultPasswordComponentModel implements PasswordComponentModel {
         final String old = this.warnMessage;
 
         this.warnMessage = warnMessage;
+
+        if (Equals.allNull(old, warnMessage)) {
+            // property change support does not check for this condition. however, we consider null to be equal to null
+            return;
+        }
 
         changeSupport.firePropertyChange(PROP_WARN_MESSAGE, old, warnMessage);
     }
