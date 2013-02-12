@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+ 
+    <folder name="Actions">
+        <folder name="Distribution">
+            <file name="de-cismet-cids-abf-distribution-CreateDistributionAction.instance">
+                <attr name="delegate" newvalue="de.cismet.cids.abf.distribution.CreateDistributionAction"/>
+                <attr name="displayName" bundlevalue="de.cismet.cids.abf.distribution.Bundle#CreateDistributionAction.displayName"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <folder name="Distribution">
+            <file name="de-cismet-cids-abf-distribution-CreateDistributionAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Distribution/de-cismet-cids-abf-distribution-CreateDistributionAction.instance"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>

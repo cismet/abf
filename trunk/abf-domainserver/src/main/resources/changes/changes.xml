@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
+    <body>
+        <release version="3.0.3.1" date="2011-12-06" description="3.0.3.1 release" >
+            <action dev="Martin Scholl" type="fix" issue="2347">XML config attr editor displays root tag of new/empty elements</action>
+            <action dev="Martin Scholl" type="fix" issue="2173">Refresh on dynamic catalog nodes does not re-execute the dynamic children statement</action>
+        </release>
+    </body>
+</document>

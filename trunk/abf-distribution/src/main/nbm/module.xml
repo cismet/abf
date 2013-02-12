@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nbm>
+    <author>martin.scholl@cismet.de</author>
+    <moduleType>eager</moduleType>
+    <codeNameBase>de.cismet.cids.abf.distribution/1</codeNameBase>
+    <cluster>cidsabf</cluster>
+    <!--
+        this dependency has to be declared explicitely to be able to use maven api
+
+        !!! REMEBER TO UPDATE IMPLEMENTATION VERSION ON NB UPDATE !!!
+    -->
+    <dependencies>
+        <dependency>
+            <id>org.netbeans.modules:org-netbeans-modules-maven</id>
+            <type>impl</type>
+            <explicitValue>org.netbeans.modules.maven/1 = 201007282301</explicitValue>
+        </dependency>
+        <dependency>
+            <id>org.netbeans.modules:org-netbeans-modules-java-api-common</id>
+            <type>impl</type>
+            <explicitValue>org.netbeans.modules.java.api.common/0 = 201006111124</explicitValue>
+        </dependency>
+        <dependency>
+            <id>org.netbeans.modules:org-netbeans-modules-maven-indexer</id>
+            <type>impl</type>
+            <explicitValue>org.netbeans.modules.maven.indexer/1 = 201006111124</explicitValue>
+        </dependency>
+        <dependency>
+            <id>org.netbeans.modules:org-netbeans-modules-swing-validation</id>
+            <type>impl</type>
+            <explicitValue>org.netbeans.modules.swing.validation/1 = 201006111124</explicitValue>
+        </dependency>
+    </dependencies>
+
+
+</nbm>

@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Localizing-Bundle: de/cismet/cids/abf/librarysupport/Bundle.properties
+OpenIDE-Module-Layer: de/cismet/cids/abf/librarysupport/layer.xml
+OpenIDE-Module-Install: de/cismet/cids/abf/librarysupport/Installer.class
