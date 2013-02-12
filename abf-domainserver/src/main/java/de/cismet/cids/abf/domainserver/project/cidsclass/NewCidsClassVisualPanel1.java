@@ -77,6 +77,8 @@ import de.cismet.cids.jpa.entity.cidsclass.Icon;
 import de.cismet.cids.jpa.entity.cidsclass.Type;
 import de.cismet.cids.jpa.entity.permission.Policy;
 
+import de.cismet.tools.Equals;
+
 /**
  * DOCUMENT ME!
  *
@@ -400,40 +402,69 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
             final Integer countedTypeId = ((Integer)oa[1]);
             countedTypes.put(countedTypeId, counter);
         }
-        Collections.sort(types, new Comparator<Type>() {
 
-                @Override
-                public int compare(final Type t1, final Type t2) {
-                    final int id1 = t1.getId();
-                    final int id2 = t2.getId();
-                    if (togSortedLinks.isSelected()) {
-                        if (countedTypes.containsKey(id1)
-                                    && countedTypes.containsKey(id2)) {
+        if (togSortedLinks.isSelected()) {
+            // we sort after type usage: types used more often come before types used less often or not at all
+            // if types occur equally often they're sorted complex types first, normal types thereafter, whereas both
+            // groups are sorted by their natural alphabetical order
+            Collections.sort(types, new Comparator<Type>() {
+
+                    @Override
+                    public int compare(final Type t1, final Type t2) {
+                        final int id1 = t1.getId();
+                        final int id2 = t2.getId();
+
+                        if (countedTypes.containsKey(id1) && countedTypes.containsKey(id2)) {
                             final Long l1 = countedTypes.get(id1);
                             final Long l2 = countedTypes.get(id2);
-                            return (l1.compareTo(l2)) * (-1);
-                        } else if ((!countedTypes.containsKey(id1)
-                                        && countedTypes.containsKey(id2))
-                                    || t2.isComplexType()) {
+
+                            final int comp = (l1.compareTo(l2)) * (-1);
+
+                            if (comp == 0) {
+                                return compareTypes(t1, t2);
+                            } else {
+                                return comp;
+                            }
+                        } else if (!countedTypes.containsKey(id1) && countedTypes.containsKey(id2)) {
                             return 1;
-                        } else if ((countedTypes.containsKey(id1)
-                                        && !countedTypes.containsKey(id2))
-                                    || t1.isComplexType()) {
+                        } else if (countedTypes.containsKey(id1) && !countedTypes.containsKey(id2)) {
+                            return -1;
+                        } else {
+                            return compareTypes(t1, t2);
+                        }
+                    }
+
+                    private int compareTypes(final Type t1, final Type t2) {
+                        if (!t1.isComplexType() && t2.isComplexType()) {
+                            return 1;
+                        } else if (t1.isComplexType() && !t2.isComplexType()) {
                             return -1;
                         } else {
                             return t1.getName().compareTo(t2.getName());
                         }
-                    } else {
+                    }
+                });
+        } else {
+            // sort alphabetical
+            Collections.sort(types, new Comparator<Type>() {
+
+                    @Override
+                    public int compare(final Type t1, final Type t2) {
                         final String s1 = t1.getName();
                         final String s2 = t2.getName();
-                        if ((s1 == null) || (s2 == null)) {
-                            return t1.getName().compareTo(t2.getName());
+
+                        if (Equals.allNull(s1, s2)) {
+                            return 0;
+                        } else if (s1 == null) {
+                            return -1;
+                        } else if (s2 == null) {
+                            return 1;
                         } else {
                             return s1.toLowerCase().compareTo(s2.toLowerCase());
                         }
                     }
-                }
-            });
+                });
+        }
 
         final DefaultListModel dlModel = new DefaultListModel();
         for (final Type t : types) {
