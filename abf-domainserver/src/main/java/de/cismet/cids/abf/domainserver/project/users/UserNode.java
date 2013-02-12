@@ -466,10 +466,10 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             }
         }
 
-        setConflictAwareCfgAttr.setName("conflictAwareConfigAttrProperties"); // NOI18N
+        setConflictAwareCfgAttr.setName("conflictAwareConfigAttrProperties");                  // NOI18N
         setConflictAwareCfgAttr.setDisplayName(NbBundle.getMessage(
                 UserNode.class,
-                "UserNode.populateConfigAttrSet(Sheet).setConflictAwareCfgAttr.displayName"));
+                "UserNode.populateConfigAttrSet(Sheet).setConflictAwareCfgAttr.displayName")); // NOI18N
 
         sheet.put(setConflictAwareCfgAttr);
     }
@@ -607,7 +607,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
                             @Override
                             public String getHtmlDisplayName() {
-                                return "<html>" + cae.getKey().getKey()
+                                return "<html>" + cae.getKey().getKey()                                                       // NOI18N
                                             + " <font color=\"!controlShadow\"> ["                                            // NOI18N
                                             + ((cae.getUser() == null)
                                                 ? ((cae.getUsergroup() == null)
@@ -852,10 +852,15 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
         @Override
         public String getHtmlDisplayName() {
             final int size = conflictingEntries.size();
-            return "<html>"                                                                                       // NOI18N
+            return "<html>"                                                                          // NOI18N
                         + mainEntry.getKey().getKey()
-                        + ((size > 0) ? (" <font color=\"!controlShadow\"> [" + size + " more ...]</font>") : "") // NOI18N
-                        + "</html>";                                                                              // NOI18N
+                        + ((size > 0)
+                            ? (" <font color=\"!controlShadow\"> [" + size + " "                     // NOI18N
+                                + NbBundle.getMessage(
+                                    UserNode.class,
+                                    "UserNode.ConflictAwareCfgAttrProperty.getHtmlDisplayName.more") // NOI18N
+                                + " ...]</font>") : "")                                              // NOI18N
+                        + "</html>";                                                                 // NOI18N
         }
 
         @Override
