@@ -15,6 +15,7 @@ import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
+import org.openide.util.NbBundle;
 
 import java.awt.EventQueue;
 
@@ -74,7 +75,7 @@ public abstract class ProjectChildren extends Children.Keys {
                 @Override
                 public void run() {
                     if (LOG.isDebugEnabled()) {
-                        LOG.debug("addNotify caller debug, initialized: " + isInitialized(),
+                        LOG.debug("addNotify caller debug, initialized: " + isInitialized(), // NOI18N
                             new Throwable("trace: " + this)); // NOI18N
                     }
 
@@ -93,8 +94,10 @@ public abstract class ProjectChildren extends Children.Keys {
         refreshFuture = EXECUTOR.submit(new Runnable() {
 
                     private final transient ProgressHandle handle = ProgressHandleFactory.createHandle(
-                            "Refreshing children: " // NOI18N
-                                    + ProjectChildren.this.getNode().getDisplayName());
+                            NbBundle.getMessage(
+                                ProjectChildren.class,
+                                "ProjectChildren.addNotify.refreshFuture.handle.message", // NOI18N
+                                ProjectChildren.this.getNode().getDisplayName()));
 
                     @Override
                     public void run() {
@@ -176,8 +179,8 @@ public abstract class ProjectChildren extends Children.Keys {
                 public void run() {
                     try {
                         setKeys(keys);
-                    } catch (Exception e) {
-                        LOG.fatal("cannot set keys: " + keys + " | " + this, e);
+                    } catch (final Exception e) {
+                        LOG.error("cannot set keys: " + keys + " | " + this, e); // NOI18N
                     }
                 }
             });
