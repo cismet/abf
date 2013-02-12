@@ -572,16 +572,21 @@ public final class EditRightsVisualPanel1 extends JPanel {
         rightsTable.setSortOrder(0, SortOrder.ASCENDING);
         rightsTable.setSortable(true);
         if (preserveSelection == null) {
-            sModel.setSelectionInterval(0, data.size() - 1);
+            sModel.clearSelection();
         } else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("using preserved selection: " // NOI18N
                             + preserveSelection);
             }
-            rightsTable.clearSelection();
+            sModel.clearSelection();
             for (final Integer row : preserveSelection) {
-                final int selRow = rightsTable.convertRowIndexToView(row);
-                sModel.addSelectionInterval(selRow, selRow);
+                try {
+                    final int selRow = rightsTable.convertRowIndexToView(row);
+                    sModel.addSelectionInterval(selRow, selRow);
+                } catch (final ArrayIndexOutOfBoundsException e) {
+                    // this can happen if a selected row was dropped
+                    LOG.trace("igonring dropped row", e); // NOI18N
+                }
             }
         }
     }
