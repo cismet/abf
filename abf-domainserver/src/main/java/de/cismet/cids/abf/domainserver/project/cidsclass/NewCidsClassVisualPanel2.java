@@ -77,12 +77,13 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            NewCidsClassVisualPanel2.class);
+    private static final transient Logger LOG = Logger.getLogger(NewCidsClassVisualPanel2.class);
 
     //~ Instance fields --------------------------------------------------------
 
     private final transient NewCidsClassWizardPanel2 model;
+    private final transient ItemListener policyL;
+
     private transient Permission[] validPermissions;
     private transient int differentRightCount;
     private transient List<UserGroup> allUserGroups;
@@ -113,6 +114,8 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
      */
     public NewCidsClassVisualPanel2(final NewCidsClassWizardPanel2 m) {
         this.model = m;
+        this.policyL = new PolicyChangedListener();
+
         initComponents();
     }
 
@@ -201,6 +204,7 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
      * DOCUMENT ME!
      */
     private void initCboPolicy() {
+        cboPolicy.removeItemListener(policyL);
         ((DefaultComboBoxModel)cboPolicy.getModel()).removeAllElements();
         cboPolicy.setRenderer(new DefaultListCellRenderer() {
 
@@ -249,17 +253,7 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
         } else {
             cboPolicy.setSelectedItem(model.getCidsClass().getPolicy());
         }
-        cboPolicy.addItemListener(new ItemListener() {
-
-                @Override
-                public void itemStateChanged(final ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        final Policy policy = (Policy)e.getItem();
-                        model.getCidsClass().setPolicy((policy.getId() == null) ? null : policy);
-                    }
-                    NewCidsClassVisualPanel2.this.repaint();
-                }
-            });
+        cboPolicy.addItemListener(policyL);
     }
 
     /**
@@ -675,6 +669,25 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
     }                                                                              //GEN-LAST:event_btnRemoveAllActionPerformed
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class PolicyChangedListener implements ItemListener {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public void itemStateChanged(final ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                final Policy policy = (Policy)e.getItem();
+                model.getCidsClass().setPolicy((policy.getId() == null) ? null : policy);
+            }
+            NewCidsClassVisualPanel2.this.repaint();
+        }
+    }
 
     /**
      * DOCUMENT ME!
