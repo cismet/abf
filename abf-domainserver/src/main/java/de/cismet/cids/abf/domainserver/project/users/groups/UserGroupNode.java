@@ -93,6 +93,8 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
         group = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "group.png");             // NOI18N
         remotegroup = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "remotegroup.png"); // NOI18N
         getCookieSet().add(this);
+
+        this.setName(getDisplayName());
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -172,9 +174,9 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
                         final String newName = (String)object;
                         try {
                             userGroup.setName(newName);
-                            userGroup = project.getCidsDataObjectBackend().store(
-                                    userGroup);
-                            fireDisplayNameChange(old.getName(), newName);
+                            userGroup = project.getCidsDataObjectBackend().store(userGroup);
+
+                            UserGroupNode.this.setName(UserGroupNode.this.getDisplayName());
                         } catch (final Exception e) {
                             LOG.error("could not store usergroup", e); // NOI18N
                             ErrorManager.getDefault().notify(e);
