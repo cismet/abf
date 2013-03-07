@@ -15,17 +15,11 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.CookieAction;
 import org.openide.windows.WindowManager;
 
-import java.awt.EventQueue;
-
-import java.sql.SQLException;
-
-import java.util.Iterator;
-import java.util.LinkedList;
+import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 
 import de.cismet.cids.jpa.backend.service.Backend;
-import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 
 import de.cismet.cids.util.Cancelable;
 
@@ -51,52 +45,27 @@ public final class IndexAction extends CookieAction implements Cancelable {
 
     @Override
     protected void performAction(final Node[] nodes) {
-        canceled = false;
-        final LinkedList<CidsClass> classes = new LinkedList<CidsClass>();
-        for (final Node n : nodes) {
-            final CidsClassContextCookie classCookie = n.getCookie(CidsClassContextCookie.class);
-            classes.add(classCookie.getCidsClass());
-        }
-        final DomainserverContext domainCookie = nodes[0].getCookie(DomainserverContext.class);
-        backend = domainCookie.getDomainserverProject().getCidsDataObjectBackend();
-        final IndexActionDialog dialog = new IndexActionDialog(
-                WindowManager.getDefault().getMainWindow(),
-                true,
-                classes.size(),
-                (Cancelable)this);
-        backend.addProgressListener(dialog);
-        final Thread indexActionThread = new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            final Iterator<CidsClass> it = classes.iterator();
-                            while (it.hasNext() && !canceled) {
-                                backend.refreshIndex(it.next());
-                                if (!canceled) {
-                                    dialog.nextClass();
-                                }
-                            }
-                        } catch (final SQLException ex) {
-                            LOG.error("could not index class", ex);                    // NOI18N
-                            LOG.error("next ex", ex.getNextException());               // NOI18N
-                            dialog.setError(
-                                org.openide.util.NbBundle.getMessage(
-                                    IndexAction.class,
-                                    "IndexAction.performAction(Node[]).dialog.error"), // NOI18N
-                                ex);
-                        }
-                    }
-                });
-        indexActionThread.setPriority(6);
-        EventQueue.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    dialog.setVisible(true);
-                }
-            });
-        indexActionThread.start();
+        JOptionPane.showMessageDialog(WindowManager.getDefault().getMainWindow(),
+            NbBundle.getMessage(IndexAction.class, "IndexAction.performAction(Node[]).notAvailableDialog.message"),
+            NbBundle.getMessage(IndexAction.class, "IndexAction.performAction(Node[]).notAvailableDialog.title"),
+            JOptionPane.INFORMATION_MESSAGE);
+        // TODO: this is the old reindex action and subject to change canceled = false; final LinkedList<CidsClass>
+        // classes = new LinkedList<CidsClass>(); for (final Node n : nodes) { final CidsClassContextCookie classCookie
+        // = n.getCookie(CidsClassContextCookie.class); classes.add(classCookie.getCidsClass()); } final
+        // DomainserverContext domainCookie = nodes[0].getCookie(DomainserverContext.class); backend =
+        // domainCookie.getDomainserverProject().getCidsDataObjectBackend(); final IndexActionDialog dialog = new
+        // IndexActionDialog( WindowManager.getDefault().getMainWindow(), true, classes.size(), (Cancelable)this);
+        // backend.addProgressListener(dialog); final Thread indexActionThread = new Thread(new Runnable() {
+        //
+        // @Override public void run() { try { final Iterator<CidsClass> it = classes.iterator(); while (it.hasNext() &&
+        // !canceled) { backend.refreshIndex(it.next()); if (!canceled) { dialog.nextClass(); } } } catch (final
+        // SQLException ex) { LOG.error("could not index class", ex);                    // NOI18N LOG.error("next
+        // ex", ex.getNextException());               // NOI18N dialog.setError(
+        // org.openide.util.NbBundle.getMessage( IndexAction.class,
+        // "IndexAction.performAction(Node[]).dialog.error"), // NOI18N ex); } } });
+        // indexActionThread.setPriority(6); EventQueue.invokeLater(new Runnable() {
+        //
+        // @Override public void run() { dialog.setVisible(true); } }); indexActionThread.start();
     }
 
     @Override
