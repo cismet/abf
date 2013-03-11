@@ -30,6 +30,10 @@
             <version>3.1.7-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>de.cismet.commons</groupId>
+            <artifactId>cismet-commons</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-projectuiapi</artifactId>
         </dependency>
