@@ -87,8 +87,8 @@ public final class IndexAction extends CookieAction implements Cancelable {
                         }
                     }
                 },
-                "cids-class-indexer-thread-" // NOI18N
-                        + System.currentTimeMillis());                                 
+                "cids-class-indexer-thread-"                                           // NOI18N
+                        + System.currentTimeMillis());
         indexActionThread.setPriority(6);
         EventQueue.invokeLater(new Runnable() {
 
@@ -122,7 +122,7 @@ public final class IndexAction extends CookieAction implements Cancelable {
     @Override
     protected void initialize() {
         super.initialize();
-        
+
         putValue("noIconInMenu", Boolean.TRUE); // NOI18N
     }
 
@@ -141,7 +141,7 @@ public final class IndexAction extends CookieAction implements Cancelable {
         if (!super.enable(nodes)) {
             return false;
         }
-        
+
         return nodes[0].getCookie(DomainserverContext.class).getDomainserverProject().isConnected();
     }
 
