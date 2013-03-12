@@ -23,6 +23,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserContextCookie;
+import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.User;
@@ -98,14 +99,16 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                 if (ugn != null) {
                     final UserGroup ug = ugn.getUserGroup();
                     ug.getUsers().remove(usr);
+                    usr.getUserGroups().remove(ug);
                     try {
                         backend.store(ug);
+                        backend.store(usr);
                     } catch (final RuntimeException e) {
                         LOG.error("could not store usergroup '" + ug                        // NOI18N
                                     + "' and hence user '" + usr                            // NOI18N
                                     + "' was not removed",                                  // NOI18N
                             e);
-                        // TODO: notify user
+                        ErrorUtils.showErrorMessage("Could not store usergroup or user", "Store error", e);
                     }
                     project.getLookup().lookup(UserManagement.class).refreshGroups(Arrays.asList(ug));
                 } else {
