@@ -12,6 +12,7 @@ import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 
+import java.awt.EventQueue;
 import java.awt.Image;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
@@ -19,6 +20,7 @@ import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.configattr.ActionConfigAttrRootNode;
 import de.cismet.cids.abf.domainserver.project.configattr.StringConfigAttrRootNode;
 import de.cismet.cids.abf.domainserver.project.configattr.XMLConfigAttrRootNode;
+import de.cismet.cids.abf.utilities.Refreshable;
 
 /**
  * DOCUMENT ME!
@@ -26,7 +28,7 @@ import de.cismet.cids.abf.domainserver.project.configattr.XMLConfigAttrRootNode;
  * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
-public final class ConfigAttrManagement extends ProjectNode {
+public final class ConfigAttrManagement extends ProjectNode implements Refreshable {
 
     //~ Instance fields --------------------------------------------------------
 
@@ -57,6 +59,29 @@ public final class ConfigAttrManagement extends ProjectNode {
     @Override
     public Image getOpenedIcon(final int type) {
         return getIcon(type);
+    }
+
+    @Override
+    public void refresh() {
+        final Runnable r = new Runnable() {
+
+                @Override
+                public void run() {
+                    final Node[] children = getChildren().getNodes(false);
+                    for (final Node childNode : children) {
+                        final Refreshable childRefreshable = childNode.getCookie(Refreshable.class);
+                        if (childRefreshable != null) {
+                            childRefreshable.refresh();
+                        }
+                    }
+                }
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
+        }
     }
 
     //~ Inner Classes ----------------------------------------------------------

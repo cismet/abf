@@ -25,6 +25,7 @@ import org.openide.util.datatransfer.NewType;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.EventQueue;
 
 import java.io.IOException;
 
@@ -35,6 +36,8 @@ import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -312,7 +315,32 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
             if (Children.LEAF.equals(getChildren()) || !(getChildren() instanceof ProjectChildren)) {
                 setChildrenEDT(new GenericConfigAttrRootNodeChildren(type, project));
             } else {
-                ((ProjectChildren)getChildren()).refreshByNotify();
+                final Future<?> refreshing = ((ProjectChildren)getChildren()).refreshByNotify();
+
+                try {
+                    refreshing.get(10, TimeUnit.SECONDS);
+                    final Runnable r = new Runnable() {
+
+                            @Override
+                            public void run() {
+                                final Node[] childNodes = getChildren().getNodes(false);
+                                for (final Node childNode : childNodes) {
+                                    final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
+                                    if (refreshableChild != null) {
+                                        refreshableChild.refresh();
+                                    }
+                                }
+                            }
+                        };
+
+                    if (EventQueue.isDispatchThread()) {
+                        r.run();
+                    } else {
+                        EventQueue.invokeLater(r);
+                    }
+                } catch (final Exception e) {
+                    LOG.warn("cannot wait for finish of refresh of config attr root node children", e); // NOI18N
+                }
             }
         }
     }
