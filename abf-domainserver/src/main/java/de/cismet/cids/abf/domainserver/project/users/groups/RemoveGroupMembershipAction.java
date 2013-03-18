@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserContextCookie;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
@@ -98,11 +99,8 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                 final User usr = n.getCookie(UserContextCookie.class).getUser();
                 if (ugn != null) {
                     final UserGroup ug = ugn.getUserGroup();
-                    ug.getUsers().remove(usr);
-                    usr.getUserGroups().remove(ug);
                     try {
-                        backend.store(ug);
-                        backend.store(usr);
+                        backend.removeMembership(usr, ug);
                     } catch (final RuntimeException e) {
                         LOG.error("could not store usergroup '" + ug                        // NOI18N
                                     + "' and hence user '" + usr                            // NOI18N
@@ -111,6 +109,7 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                         ErrorUtils.showErrorMessage("Could not store usergroup or user", "Store error", e);
                     }
                     project.getLookup().lookup(UserManagement.class).refreshGroups(Arrays.asList(ug));
+                    project.getLookup().lookup(ConfigAttrManagement.class).refresh();
                 } else {
                     LOG.warn("the usergroup the user '"                                     // NOI18N
                                 + usr + "' was supposed to be in a group which could not"   // NOI18N
