@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
 // TODO: why is a separate action used, destroy would probably be sufficient
@@ -62,6 +63,7 @@ public final class DeleteUsergroupAction extends CookieAction {
             }
 
             project.getLookup().lookup(UserManagement.class).refresh();
+            project.getLookup().lookup(ConfigAttrManagement.class).refresh();
         }
     }
 

@@ -44,6 +44,7 @@ import javax.swing.Action;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.customizer.DomainserverProjectCustomizer;
+import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.ChangeGroupBelongingWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.groups.RemoveGroupMembershipAction;
@@ -739,6 +740,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             throw new IOException(message, ex);
         }
         project.getLookup().lookup(UserManagement.class).refreshGroups(ugs);
+        project.getLookup().lookup(ConfigAttrManagement.class).refresh();
     }
 
     // returns false to ensure a user can only be deleted by deleteuseraction
