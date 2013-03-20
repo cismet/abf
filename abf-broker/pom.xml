@@ -102,7 +102,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <author>martin.scholl@cismet.de</author>
                     <codeNameBase>de.cismet.cids.abf.broker/3</codeNameBase>
                 </configuration>
             </plugin>
