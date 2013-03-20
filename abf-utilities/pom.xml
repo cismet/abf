@@ -148,6 +148,9 @@
                         <publicPackage>org.objectweb.asm.*</publicPackage>
                         <publicPackage>org.slf4j.*</publicPackage>
                         <publicPackage>net.sf.cglib.*</publicPackage>
+                        <publicPackage>javax.xml.*</publicPackage>
+                        <publicPackage>org.xml.*</publicPackage>
+                        <publicPackage>org.w3c.dom.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
