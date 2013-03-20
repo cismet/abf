@@ -26,7 +26,7 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-filesystems</artifactId>
-        </dependency>
+        </dependency>   
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-loaders</artifactId>
@@ -35,10 +35,6 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-projectapi</artifactId>
         </dependency>
-        <!--
-            those have to be declared explicitely due to "insufficient"
-            transitive dependency mechanism for nbms.
-        -->
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
@@ -57,13 +53,8 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-jdesktop-layout</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util-lookup</artifactId>
         </dependency>
-        <!-- END of nbm-required declaration -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -72,19 +63,48 @@
             <groupId>de.cismet.cids</groupId>
             <artifactId>data-objects</artifactId>
         </dependency>
-        <!-- force dom4j and jaxen -.- -->
         <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
+            <groupId>de.cismet.commons</groupId>
+            <artifactId>cismet-commons</artifactId>
         </dependency>
         <dependency>
-            <groupId>jaxen</groupId>
-            <artifactId>jaxen</artifactId>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swing-layout</artifactId>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <!-- BEGIN: added due to wired compiler issues because of the annotations -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
+        <!-- END: added due to wired compiler issues because of the annotations -->
+        <!-- BEGIN: for nbm these have to be compile time dependencies -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.9.0.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+        <!-- END: for nbm these have to be compile time dependencies -->
     </dependencies>
 
     <repositories>
@@ -126,6 +146,10 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
+                    <author>martin.scholl@cismet.de</author>
+                    <codeNameBase>de.cismet.cids.abf.utilities/3</codeNameBase>
+                    <moduleType>autoload</moduleType>
+                    <verifyRuntime>fail</verifyRuntime>
                     <publicPackages>
                         <publicPackage>de.cismet.*</publicPackage>
                         <publicPackage>javax.*</publicPackage>

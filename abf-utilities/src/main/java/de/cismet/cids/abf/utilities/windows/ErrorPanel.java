@@ -250,19 +250,19 @@ public class ErrorPanel extends javax.swing.JPanel {
         public void mouseClicked(final MouseEvent me) {
             final String url = org.openide.util.NbBundle.getMessage(
                     ErrorPanel.class,
-                    "ErrorPanel.LinkAdapter.mouseClicked(MouseEvent).url");                                    // NOI18N
-            final String osName = System.getProperty("os.name");                                               // NOI18N
+                    "ErrorPanel.LinkAdapter.mouseClicked(MouseEvent).url");                                       // NOI18N
+            final String osName = System.getProperty("os.name");                                                  // NOI18N
             try {
                 if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().browse(new URI(url));
-                } else if (osName.startsWith("Mac OS"))                                                        // NOI18N
+                } else if (osName.startsWith("Mac OS"))                                                           // NOI18N
                 {
-                    final Class fileMgr = Class.forName("com.apple.eio.FileManager");                          // NOI18N
-                    final Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class }); // NOI18N
+                    final Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");                          // NOI18N
+                    final Method openURL = fileMgr.getDeclaredMethod("openURL", new Class<?>[] { String.class }); // NOI18N
                     openURL.invoke(null, new Object[] { url });
-                } else if (osName.startsWith("Windows"))                                                       // NOI18N
+                } else if (osName.startsWith("Windows"))                                                          // NOI18N
                 {
-                    Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);                 // NOI18N
+                    Runtime.getRuntime().exec("rundll32 url.dll, FileProtocolHandler " + url);                    // NOI18N
                 } else {
                     // assume Unix or Linux
                     final String[] browsers = {
