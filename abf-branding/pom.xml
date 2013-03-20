@@ -69,6 +69,10 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <author>martin.scholl@cismet.de</author>
+                    <codeNameBase>de.cismet.cids.abf.branding/3</codeNameBase>
+                </configuration>
             </plugin>
         </plugins>
     </build>
