@@ -23,13 +23,13 @@ import javax.swing.event.ChangeListener;
  * @author   mscholl
  * @version  1.4
  */
-public final class NewWizardIterator implements WizardDescriptor.Iterator {
+public final class NewWizardIterator implements WizardDescriptor.Iterator<WizardDescriptor> {
 
     //~ Instance fields --------------------------------------------------------
 
     private transient int index;
 
-    private transient WizardDescriptor.Panel[] panels;
+    private transient WizardDescriptor.Panel<WizardDescriptor>[] panels;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -39,12 +39,12 @@ public final class NewWizardIterator implements WizardDescriptor.Iterator {
      *
      * @return  DOCUMENT ME!
      */
-    private WizardDescriptor.Panel[] getPanels() {
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
-            panels = new WizardDescriptor.Panel[] {
-                    // new NewWizardPanel1(),
-                    new NewWizardPanel2()
-                };
+            panels = new WizardDescriptor.Panel[] { new NewWizardPanel2() };
+            
             final String[] steps = new String[panels.length];
             for (int i = 0; i < panels.length; i++) {
                 final Component c = panels[i].getComponent();
@@ -74,14 +74,15 @@ public final class NewWizardIterator implements WizardDescriptor.Iterator {
                 }
             }
         }
+        
         return Arrays.copyOf(panels, panels.length);
     }
-
+    
     @Override
-    public WizardDescriptor.Panel current() {
+    public WizardDescriptor.Panel<WizardDescriptor> current() {
         return getPanels()[index];
     }
-
+    
     @Override
     public String name() {
         return null;

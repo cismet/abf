@@ -285,12 +285,11 @@ public final class StarterManagement extends ProjectNode implements SourceContex
  *
  * @version  $Revision$, $Date$
  */
-final class StarterManagementChildren extends Children.Keys {
+final class StarterManagementChildren extends Children.Keys<FileObject> {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            StarterManagementChildren.class);
+    private static final transient Logger LOG = Logger.getLogger( StarterManagementChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -313,18 +312,18 @@ final class StarterManagementChildren extends Children.Keys {
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    protected Node[] createNodes(final Object object) {
-        final FileObject key = (FileObject)object;
+    protected Node[] createNodes(final FileObject key) {
         try {
             final ManifestNode node = new ManifestNode(project, key);
+            
             return new Node[] { node };
         } catch (final DataObjectNotFoundException ex) {
             LOG.error("could not create manifestnode", ex); // NOI18N
-            return null;
         } catch (final FileNotFoundException ex) {
             LOG.error("could not create manifestnode", ex); // NOI18N
-            return null;
         }
+        
+            return null;
     }
 
     @Override
@@ -333,8 +332,7 @@ final class StarterManagementChildren extends Children.Keys {
         final ArrayList<FileObject> fos = new ArrayList<FileObject>();
         for (final Enumeration<? extends FileObject> e = source.getData(false); e.hasMoreElements();) {
             final FileObject fo = e.nextElement();
-            if (fo.getExt().equals("mf")) // NOI18N
-            {
+            if (fo.getExt().equals("mf")) { // NOI18N
                 fos.add(fo);
             }
         }
@@ -345,6 +343,7 @@ final class StarterManagementChildren extends Children.Keys {
                     return f1.getName().compareTo(f2.getName());
                 }
             });
+        
         setKeys(fos);
     }
 
@@ -355,7 +354,9 @@ final class StarterManagementChildren extends Children.Keys {
         if (LOG.isDebugEnabled()) {
             LOG.debug("running refresh");  // NOI18N
         }
+        
         addNotify();
+        
         if (LOG.isDebugEnabled()) {
             LOG.debug("refresh finished"); // NOI18N
         }

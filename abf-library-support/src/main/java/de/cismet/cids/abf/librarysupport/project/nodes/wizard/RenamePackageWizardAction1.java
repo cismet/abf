@@ -45,8 +45,7 @@ public final class RenamePackageWizardAction1 extends NodeAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            RenamePackageWizardAction1.class);
+    private static final transient Logger LOG = Logger.getLogger( RenamePackageWizardAction1.class);
 
     //~ Methods ----------------------------------------------------------------
 
@@ -59,8 +58,10 @@ public final class RenamePackageWizardAction1 extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    private WizardDescriptor.Panel[] getPanels(final FileObject root, final FileObject cur) {
-        final WizardDescriptor.Panel[] panels = new WizardDescriptor.Panel[] {
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels(final FileObject root, final FileObject cur) {
+        final WizardDescriptor.Panel<WizardDescriptor>[] panels = new WizardDescriptor.Panel[] {
                 new RenamePackageWizardPanel1(root, cur)
             };
         final String[] steps = new String[panels.length];
@@ -93,6 +94,7 @@ public final class RenamePackageWizardAction1 extends NodeAction {
                     Boolean.TRUE);
             }
         }
+        
         return panels;
     }
 
@@ -120,11 +122,10 @@ public final class RenamePackageWizardAction1 extends NodeAction {
 
     @Override
     protected void performAction(final Node[] nodes) {
-        final PackageContextCookie pcc = (PackageContextCookie)nodes[0].getCookie(PackageContextCookie.class);
+        final PackageContextCookie pcc = nodes[0].getCookie(PackageContextCookie.class);
         final FileObject root = pcc.getRootFolder();
         final FileObject current = pcc.getCurrentFolder();
-        final WizardDescriptor wizard = new WizardDescriptor(getPanels(root,
-                    current));
+        final WizardDescriptor wizard = new WizardDescriptor(getPanels(root, current));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent()
         // .getName()
         wizard.setTitleFormat(new MessageFormat("{0}"));                           // NOI18N
@@ -206,7 +207,6 @@ public final class RenamePackageWizardAction1 extends NodeAction {
                         RenamePackageWizardAction1.class,
                         "RenamePackageWizardAction1.performAction(Node[]).JOptionPane.fileOfSourcePackageCouldNotBeDeleted.title"),   // NOI18N
                     JOptionPane.ERROR_MESSAGE);
-                return;
             }
         }
     }

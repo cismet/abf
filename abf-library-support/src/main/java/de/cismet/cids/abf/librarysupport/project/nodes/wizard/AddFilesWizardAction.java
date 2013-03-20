@@ -46,8 +46,7 @@ public final class AddFilesWizardAction extends NodeAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            AddFilesWizardAction.class);
+    private static final transient Logger LOG = Logger.getLogger(AddFilesWizardAction.class);
 
     //~ Methods ----------------------------------------------------------------
 
@@ -60,9 +59,11 @@ public final class AddFilesWizardAction extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    private WizardDescriptor.Panel[] getPanels(final FileObject root,
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels(final FileObject root,
             final FileObject cur) {
-        final WizardDescriptor.Panel[] panels = new WizardDescriptor.Panel[] { new AddFilesWizardPanel1(root, cur) };
+        final WizardDescriptor.Panel<WizardDescriptor>[] panels = new WizardDescriptor.Panel[] { new AddFilesWizardPanel1(root, cur) };
         final String[] steps = new String[panels.length];
         for (int i = 0; i < panels.length; i++) {
             final Component c = panels[i].getComponent();
@@ -93,6 +94,7 @@ public final class AddFilesWizardAction extends NodeAction {
                     Boolean.TRUE);
             }
         }
+        
         return panels;
     }
 
@@ -105,8 +107,7 @@ public final class AddFilesWizardAction extends NodeAction {
 
     @Override
     public String iconResource() {
-        return LibrarySupportProject.IMAGE_FOLDER
-                    + "file_(add)_16x16.png"; // NOI18N
+        return LibrarySupportProject.IMAGE_FOLDER + "file_(add)_16x16.png"; // NOI18N
     }
 
     @Override
@@ -121,7 +122,7 @@ public final class AddFilesWizardAction extends NodeAction {
 
     @Override
     protected void performAction(final Node[] nodes) {
-        final PackageContextCookie cookie = (PackageContextCookie)nodes[0].getCookie(PackageContextCookie.class);
+        final PackageContextCookie cookie = nodes[0].getCookie(PackageContextCookie.class);
         final WizardDescriptor wizard = new WizardDescriptor(getPanels(
                     cookie.getRootFolder(),
                     cookie.getCurrentFolder()));

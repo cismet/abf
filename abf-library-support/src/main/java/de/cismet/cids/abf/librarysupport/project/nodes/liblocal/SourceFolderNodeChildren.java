@@ -39,12 +39,11 @@ import de.cismet.cids.abf.utilities.nodes.LoadingNode;
  * @author   mscholl
  * @version  1.12
  */
-public final class SourceFolderNodeChildren extends Children.Keys implements SourceContextCookie {
+public final class SourceFolderNodeChildren extends Children.Keys<Object> implements SourceContextCookie {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            SourceFolderNodeChildren.class);
+    private static final transient Logger LOG = Logger.getLogger( SourceFolderNodeChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 

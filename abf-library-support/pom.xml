@@ -29,6 +29,14 @@
             <version>3.1.8-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swing-layout</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-io</artifactId>
         </dependency>
@@ -49,14 +57,6 @@
             <artifactId>org-netbeans-modules-projectuiapi</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-modules-maven</artifactId>
-        </dependency>
-        <!--
-            those have to be declared explicitely due to "insufficient"
-            transitive dependency mechanism for nbms.
-        -->
-        <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
         </dependency>
@@ -75,10 +75,6 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-windows</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-jdesktop-layout</artifactId>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -104,7 +100,6 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-modules</artifactId>
         </dependency>
-        <!-- END of nbm-required declaration -->
     </dependencies>
 
     <repositories>
@@ -145,6 +140,9 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <codeNameBase>de.cismet.cids.abf.librarysupport/3</codeNameBase>
+                </configuration>
             </plugin>
         </plugins>
     </build>

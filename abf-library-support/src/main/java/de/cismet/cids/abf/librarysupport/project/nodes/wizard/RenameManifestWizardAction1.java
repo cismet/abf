@@ -39,7 +39,7 @@ public final class RenameManifestWizardAction1 extends NodeAction {
 
     //~ Instance fields --------------------------------------------------------
 
-    private transient WizardDescriptor.Panel[] panels;
+    private transient WizardDescriptor.Panel<WizardDescriptor>[] panels;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -49,7 +49,9 @@ public final class RenameManifestWizardAction1 extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    private WizardDescriptor.Panel[] getPanels() {
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
             panels = new WizardDescriptor.Panel[] { new RenameManifestWizardPanel1() };
             final String[] steps = new String[panels.length];
@@ -83,6 +85,7 @@ public final class RenameManifestWizardAction1 extends NodeAction {
                 }
             }
         }
+        
         return Arrays.copyOf(panels, panels.length);
     }
 
@@ -110,7 +113,7 @@ public final class RenameManifestWizardAction1 extends NodeAction {
 
     @Override
     protected void performAction(final Node[] nodes) {
-        final ManifestProviderCookie cookie = (ManifestProviderCookie)nodes[0].getCookie(ManifestProviderCookie.class);
+        final ManifestProviderCookie cookie = nodes[0].getCookie(ManifestProviderCookie.class);
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent()
         // .getName()

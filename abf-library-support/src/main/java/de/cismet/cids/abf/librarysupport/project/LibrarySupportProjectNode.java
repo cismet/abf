@@ -336,12 +336,11 @@ public final class LibrarySupportProjectNode extends AbstractNode implements Ref
  *
  * @version  $Revision$, $Date$
  */
-final class LibrarySupportProjectNodeChildren extends Children.Keys {
+final class LibrarySupportProjectNodeChildren extends Children.Keys<FileObject> {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            LibrarySupportProjectNodeChildren.class);
+    private static final transient Logger LOG = Logger.getLogger( LibrarySupportProjectNodeChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -365,13 +364,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys {
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    protected Node[] createNodes(final Object object) {
-        if (!(object instanceof FileObject)) {
-            throw new IllegalArgumentException(
-                "object must be FileObject: "
-                        + object); // NOI18N
-        }
-        final FileObject fo = (FileObject)object;
+    protected Node[] createNodes(final FileObject fo) {
         if (fo.getName().equals(LibrarySupportProject.EXT_DIR)
                     || fo.getName().equals(LibrarySupportProject.INT_DIR)) {
             final DataFolder df = DataFolder.findFolder(fo);
@@ -454,7 +447,9 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys {
         if (LOG.isDebugEnabled()) {
             LOG.debug("running refresh");  // NOI18N
         }
+        
         addNotify();
+        
         if (LOG.isDebugEnabled()) {
             LOG.debug("refresh finished"); // NOI18N
         }
@@ -518,6 +513,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys {
                     return f1.getName().compareTo(f2.getName());
                 }
             });
+        
         return fos;
     }
 
@@ -579,6 +575,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys {
                     return f1.getName().compareTo(f2.getName());
                 }
             });
+        
         return fos;
     }
 

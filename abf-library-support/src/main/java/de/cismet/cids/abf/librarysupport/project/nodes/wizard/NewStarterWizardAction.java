@@ -45,8 +45,7 @@ public final class NewStarterWizardAction extends NodeAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            NewStarterWizardAction.class);
+    private static final transient Logger LOG = Logger.getLogger(NewStarterWizardAction.class);
 
     public static final String PROP_SOURCE_DIR = "property_sourceDir";                     // NOI18N
     public static final String PROP_PROJECT = "property_project";                          // NOI18N
@@ -55,7 +54,7 @@ public final class NewStarterWizardAction extends NodeAction {
 
     //~ Instance fields --------------------------------------------------------
 
-    private transient WizardDescriptor.Panel[] panels;
+    private transient WizardDescriptor.Panel<WizardDescriptor>[] panels;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -65,7 +64,9 @@ public final class NewStarterWizardAction extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    private WizardDescriptor.Panel[] getPanels() {
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
             panels = new WizardDescriptor.Panel[] { new NewStarterWizardPanel1() };
             final String[] steps = new String[panels.length];
@@ -99,6 +100,7 @@ public final class NewStarterWizardAction extends NodeAction {
                 }
             }
         }
+        
         return Arrays.copyOf(panels, panels.length);
     }
 
@@ -126,12 +128,12 @@ public final class NewStarterWizardAction extends NodeAction {
 
     @Override
     protected void performAction(final Node[] nodes) {
-        final LibrarySupportContextCookie lscc = (LibrarySupportContextCookie)nodes[0].getCookie(
-                LibrarySupportContextCookie.class);
-        final SourceContextCookie scc = (SourceContextCookie)nodes[0].getCookie(
-                SourceContextCookie.class);
+        final LibrarySupportContextCookie lscc = nodes[0].getCookie(LibrarySupportContextCookie.class);
+        final SourceContextCookie scc = nodes[0].getCookie(SourceContextCookie.class);
+        
         assert lscc != null;
         assert scc != null;
+        
         final FileObject srcDir;
         try {
             srcDir = scc.getSourceObject();

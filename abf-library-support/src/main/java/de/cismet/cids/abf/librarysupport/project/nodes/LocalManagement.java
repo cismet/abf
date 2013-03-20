@@ -256,7 +256,7 @@ public final class LocalManagement extends ProjectNode implements LocalManagemen
  *
  * @version  $Revision$, $Date$
  */
-final class ResourceJarManangementChildren extends Children.Keys {
+final class ResourceJarManangementChildren extends Children.Keys<FileObject> {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -283,8 +283,7 @@ final class ResourceJarManangementChildren extends Children.Keys {
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    protected Node[] createNodes(final Object object) {
-        final FileObject fo = (FileObject)object;
+    protected Node[] createNodes(final FileObject fo) {
         return new Node[] { new SourceFolderNode(project, fo) };
     }
 
@@ -296,7 +295,8 @@ final class ResourceJarManangementChildren extends Children.Keys {
                     ResourceJarManangementChildren.class,
                     "LocalManagement.addNotify().ErrorUtils.message"),
                 null);                                      // NOI18N
-            setKeys(new Object[] {});
+            setKeys(new FileObject[0]);
+            
             return;
         }
 

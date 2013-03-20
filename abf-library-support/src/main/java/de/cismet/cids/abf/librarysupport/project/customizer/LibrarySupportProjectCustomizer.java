@@ -22,6 +22,7 @@ import java.util.Map;
 
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProjectNode;
+import javax.swing.JComponent;
 
 /**
  * DOCUMENT ME!
@@ -97,7 +98,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
         categories = new ProjectCustomizer.Category[2];
         categories[0] = general;
         categories[1] = deploy;
-        final Map panels = new HashMap(2);
+        final Map<ProjectCustomizer.Category, JComponent> panels = new HashMap<ProjectCustomizer.Category, JComponent>(5);
         final GeneralVisualPanel generalVis = new GeneralVisualPanel();
         final DeployVisualPanel deployVis = new DeployVisualPanel();
         keystoreVis = new KeystoreVisualPanel(project);

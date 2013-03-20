@@ -109,11 +109,9 @@ public final class NewWizardAction extends CookieAction {
     protected void performAction(final Node node, final boolean isPackage, final String ext) {
         final FileObject root;
         final FileObject current;
-        final PackageContextCookie pc = (PackageContextCookie)node.getCookie(
-                PackageContextCookie.class);
+        final PackageContextCookie pc = node.getCookie(PackageContextCookie.class);
         if (pc == null) {
-            final SourceContextCookie sc = (SourceContextCookie)node.getCookie(
-                    SourceContextCookie.class);
+            final SourceContextCookie sc = node.getCookie( SourceContextCookie.class);
             try {
                 root = sc.getSourceObject();
             } catch (FileNotFoundException ex) {
@@ -125,7 +123,7 @@ public final class NewWizardAction extends CookieAction {
             root = pc.getRootFolder();
             current = pc.getCurrentFolder();
         }
-        final WizardDescriptor.Iterator iterator = new NewWizardIterator();
+        final WizardDescriptor.Iterator<WizardDescriptor> iterator = new NewWizardIterator();
         final WizardDescriptor wizard = new WizardDescriptor(iterator);
         wizard.putProperty(PROP_ROOT_DIR, root);
         wizard.putProperty(PROP_CURRENT_DIR, current);
@@ -187,7 +185,6 @@ public final class NewWizardAction extends CookieAction {
                 } catch (final IOException ex) {
                     LOG.error("could not create file", ex); // NOI18N
                     ErrorManager.getDefault().notify(ex);
-                    return;
                 }
             }
         }
@@ -200,8 +197,7 @@ public final class NewWizardAction extends CookieAction {
 
     @Override
     public String getName() {
-        return NbBundle.getMessage(NewWizardAction.class,
-                "CTL_NewAction"); // NOI18N
+        return NbBundle.getMessage(NewWizardAction.class, "CTL_NewAction"); // NOI18N
     }
 
     @Override

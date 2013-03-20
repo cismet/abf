@@ -45,15 +45,14 @@ public class NewJarWizardAction extends NodeAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            NewJarWizardAction.class);
+    private static final transient Logger LOG = Logger.getLogger(NewJarWizardAction.class);
 
     public static final String PROP_SOURCE_DIR = "property_sourceDir";        // NOI18N
     public static final String PROP_NEW_JAR_NAME = "property_newStarterName"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
-    private transient WizardDescriptor.Panel[] panels;
+    private transient WizardDescriptor.Panel<WizardDescriptor>[] panels;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -63,7 +62,9 @@ public class NewJarWizardAction extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    protected WizardDescriptor.Panel[] getPanels() {
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
+    protected WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
             panels = new WizardDescriptor.Panel[] { new NewJarWizardPanel() };
             final String[] steps = new String[panels.length];
@@ -97,6 +98,7 @@ public class NewJarWizardAction extends NodeAction {
                 }
             }
         }
+        
         return Arrays.copyOf(panels, panels.length);
     }
 
