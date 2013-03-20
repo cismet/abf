@@ -14,7 +14,7 @@
     <packaging>nbm</packaging>
 
     <name>ABF Client</name>
-    <description>DESCRIPTION PENDING !!!</description>
+    <description>Simple project type to edit cids client configurations</description>
 
     <scm>
         <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-client/</connection>
@@ -101,6 +101,9 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <codeNameBase>de.cismet.cids.abf.client/3</codeNameBase>
+                </configuration>
             </plugin>
         </plugins>
     </build>
