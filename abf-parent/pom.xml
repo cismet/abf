@@ -31,7 +31,7 @@
         <module>../abf-update-center</module>
         <module>../abf-utilities</module>
         <module>../abf-library-support</module>
-        <module>../abf-cids-java-template</module>
+<!--        <module>../abf-cids-java-template</module>-->
         <module>../abf-registry</module>
         <module>../abf-broker</module>
         <module>../abf-client</module>
@@ -263,6 +263,7 @@
                     <version>3.9</version>
                     <extensions>true</extensions>
                     <configuration>
+                        <author>martin.scholl@cismet.de</author>
                         <moduleType>normal</moduleType>
                         <brandingToken>${branding.token}</brandingToken>
                         <cluster>${branding.token}</cluster>
