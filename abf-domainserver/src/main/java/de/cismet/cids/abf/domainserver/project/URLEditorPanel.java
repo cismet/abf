@@ -802,8 +802,7 @@ public class URLEditorPanel extends javax.swing.JPanel implements TableModelList
             backend.deleteURL(tModel.deleteURL(row));
         }
         if (!originalBases.isEmpty()) {
-            backend.deleteURLBasesIfUnused(
-                new ArrayList(originalBases.values()));
+            backend.deleteURLBasesIfUnused(new ArrayList<URLBase>(originalBases.values()));
         }
         tModel.notifyListeners(new TableModelEvent(tModel));
         clear(false);

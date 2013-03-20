@@ -62,7 +62,7 @@ public final class NewUserWizardAction extends CookieAction {
      *
      * @return  DOCUMENT ME!
      */
-    private WizardDescriptor.Panel[] getPanels() {
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
             panels = new WizardDescriptor.Panel[] {
                     new NewUserWizardPanel1(),

@@ -15,7 +15,7 @@
     <packaging>nbm</packaging>
 
     <name>ABF Domainserver</name>
-    <description>DESCRIPTION PENDING !!!</description>
+    <description>Project type to administer cids Domainservers</description>
 
     <scm>
         <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-domainserver/</connection>
@@ -30,8 +30,44 @@
             <version>3.1.8-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>de.cismet.cids</groupId>
+            <artifactId>data-objects</artifactId>
+        </dependency>
+        <dependency>
             <groupId>de.cismet.commons</groupId>
             <artifactId>cismet-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swingx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swing-layout</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.0-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -49,10 +85,6 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-navigator</artifactId>
         </dependency>
-        <!--
-            those have to be declared explicitely due to "insufficient"
-            transitive dependency mechanism for nbms.
-        -->
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-filesystems</artifactId>
@@ -105,11 +137,12 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-modules</artifactId>
         </dependency>
+        <!-- BEGIN: added due to wired compiler issues because of the annotations -->
         <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-jdesktop-layout</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
         </dependency>
-        <!-- END of nbm-required declaration -->
+        <!-- END: added due to wired compiler issues because of the annotations -->
     </dependencies>
 
     <repositories>
@@ -150,6 +183,9 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <codeNameBase>de.cismet.cids.abf.domainserver/3</codeNameBase>
+                </configuration>
             </plugin>
         </plugins>
     </build>

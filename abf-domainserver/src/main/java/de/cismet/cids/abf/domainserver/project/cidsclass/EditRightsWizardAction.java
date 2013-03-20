@@ -54,7 +54,7 @@ public final class EditRightsWizardAction extends CookieAction {
      *
      * @return  DOCUMENT ME!
      */
-    private WizardDescriptor.Panel[] getPanels() {
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         final WizardDescriptor.Panel[] panels = new WizardDescriptor.Panel[] { new EditRightsWizardPanel1() };
         final String[] steps = new String[panels.length];
         for (int i = 0; i < panels.length; i++) {

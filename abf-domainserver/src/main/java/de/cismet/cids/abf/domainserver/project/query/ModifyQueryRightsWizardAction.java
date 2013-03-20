@@ -28,7 +28,8 @@ public final class ModifyQueryRightsWizardAction extends ModifyQueryWizardAction
         if (query == null) {
             throw new IllegalStateException("query cannot be null"); // NOI18N
         }
-        final WizardDescriptor.ArrayIterator it = new WizardDescriptor.ArrayIterator(getPanels());
+        final WizardDescriptor.ArrayIterator<WizardDescriptor> it =
+            new WizardDescriptor.ArrayIterator<WizardDescriptor>(getPanels());
         it.nextPanel();
         it.nextPanel();
         final WizardDescriptor wizard = new WizardDescriptor(it);

@@ -71,8 +71,8 @@ public class NewCatalogNodeWizardAction extends CookieAction {
      *
      * @return  DOCUMENT ME!
      */
-    protected WizardDescriptor.Panel[] getPanels() {
-        final WizardDescriptor.Panel[] panels = new WizardDescriptor.Panel[] {
+    protected WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
+        final WizardDescriptor.Panel<WizardDescriptor>[] panels = new WizardDescriptor.Panel[] {
                 new NewCatalogNodeWizardPanel1(),
                 new NodeRightPropertyWizardPanel1()
             };
@@ -107,6 +107,7 @@ public class NewCatalogNodeWizardAction extends CookieAction {
                     Boolean.TRUE);
             }
         }
+
         return panels;
     }
 

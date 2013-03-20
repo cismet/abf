@@ -52,7 +52,7 @@ public abstract class QueryManipulationWizardAction extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    protected WizardDescriptor.Panel[] getPanels() {
+    protected WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         final WizardDescriptor.Panel[] panels = new WizardDescriptor.Panel[] {
                 new QueryManipulationWizardPanel1(),
                 new QueryManipulationWizardPanel2(),
@@ -113,7 +113,7 @@ public abstract class QueryManipulationWizardAction extends NodeAction {
         final Backend b = context.getDomainserverProject().getCidsDataObjectBackend();
         final WizardDescriptor wizard = (wd == null)
             ? new WizardDescriptor(
-                new WizardDescriptor.ArrayIterator(getPanels())) : wd;
+                new WizardDescriptor.ArrayIterator<WizardDescriptor>(getPanels())) : wd;
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wizard.setTitleFormat(new MessageFormat("{0}"));                                               // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(

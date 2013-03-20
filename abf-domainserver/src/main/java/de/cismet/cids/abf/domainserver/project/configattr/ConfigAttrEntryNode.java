@@ -226,7 +226,7 @@ public final class ConfigAttrEntryNode extends ProjectNode {
         try {
             //J-
             // <editor-fold defaultstate="collapsed" desc=" Create Property: EntryID ">
-            final Property idProp = new PropertySupport.Reflection(entry, Integer.class, "getId", null);             // NOI18N
+            final Property<Integer> idProp = new PropertySupport.Reflection<Integer>(entry, Integer.class, "getId", null);             // NOI18N
             idProp.setName(
                     NbBundle.getMessage(ConfigAttrEntryNode.class, "ConfigAttrEntryNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>

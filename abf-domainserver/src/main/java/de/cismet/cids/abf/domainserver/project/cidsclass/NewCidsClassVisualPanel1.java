@@ -252,7 +252,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         }
         attrTable.getColumnExt(0).setVisible(false);
         retrieveAndSortTypes();
-        final List allIcons = new ArrayList(project.getCidsDataObjectBackend().getAllEntities(Icon.class));
+        final List<Icon> allIcons = new ArrayList<Icon>(project.getCidsDataObjectBackend().getAllEntities(Icon.class));
         Collections.sort(allIcons, new Comparators.Icons());
         cboClassIcons.setModel(new DefaultComboBoxModel(allIcons.toArray()));
         cboObjectIcons.setModel(new DefaultComboBoxModel(allIcons.toArray()));

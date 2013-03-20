@@ -156,7 +156,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
         final String storeError = "could not store class: "; // NOI18N
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
-            final Property idProp = new PropertySupport.Reflection(
+            final Property<Integer> idProp = new PropertySupport.Reflection<Integer>(
                     cidsClass,
                     Integer.class,
                     "getId", // NOI18N
@@ -166,7 +166,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                     "CidsClassNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
-            final Property nameProp = new PropertySupport(
+            final Property<String> nameProp = new PropertySupport<String>(
                     "name",                                              // NOI18N
                     String.class,
                     NbBundle.getMessage(
@@ -179,12 +179,12 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
                         return cidsClass.getName();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final String old = cidsClass.getName();
@@ -203,7 +203,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                 }; // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Tablename ">
-            final Property tablenameProp = new PropertySupport(
+            final Property<String> tablenameProp = new PropertySupport<String>(
                     "tablename",                                              // NOI18N
                     String.class,
                     NbBundle.getMessage(
@@ -216,12 +216,12 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
                         return cidsClass.getTableName();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final String old = cidsClass.getTableName();
@@ -240,7 +240,7 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                 }; // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: PrimaryKeyField ">
-            final Property primaryKeyFieldProp = new PropertySupport(
+            final Property<String> primaryKeyFieldProp = new PropertySupport<String>(
                     "primaryKeyField",                                                            // NOI18N
                     String.class,
                     NbBundle.getMessage(
@@ -253,12 +253,12 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
                         return cidsClass.getPrimaryKeyField();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final String old = cidsClass.getPrimaryKeyField();

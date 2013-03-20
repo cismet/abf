@@ -146,11 +146,15 @@ public final class IconNode extends ProjectNode {
                 "IconNode.createSheet().main.displayName"));                                                    // NOI18N
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
-            final Property idProp = new PropertySupport.Reflection(icon, Integer.class, "getId", null);                 // NOI18N
+            final Property<Integer> idProp = new PropertySupport.Reflection<Integer>(
+                    icon,
+                    Integer.class,
+                    "getId",
+                    null);                                                                                              // NOI18N
             idProp.setName(org.openide.util.NbBundle.getMessage(IconNode.class, "IconNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
-            final Property nameProp = new PropertySupport(
+            final Property<String> nameProp = new PropertySupport<String>(
                     "name",                                               // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
@@ -163,12 +167,12 @@ public final class IconNode extends ProjectNode {
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
                         return icon.getName();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final Icon old = icon;
@@ -186,7 +190,7 @@ public final class IconNode extends ProjectNode {
             // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: PathProp ">
-            final Property pathProp = new PropertySupport(
+            final Property<String> pathProp = new PropertySupport<String>(
                     "path",                                            // NOI18N
                     String.class,
                     org.openide.util.NbBundle.getMessage(
@@ -199,12 +203,12 @@ public final class IconNode extends ProjectNode {
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
                         return icon.getFileName();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final Icon old = icon;
