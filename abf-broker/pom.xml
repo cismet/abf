@@ -14,7 +14,7 @@
     <packaging>nbm</packaging>
 
     <name>ABF Broker</name>
-    <description>DESCRIPTION PENDING !!!</description>
+    <description>Simple project to edit runtime properties of cids Brokers/Callservers</description>
 
     <scm>
         <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-broker/</connection>
@@ -101,6 +101,10 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <author>martin.scholl@cismet.de</author>
+                    <codeNameBase>de.cismet.cids.abf.broker/3</codeNameBase>
+                </configuration>
             </plugin>
         </plugins>
     </build>
