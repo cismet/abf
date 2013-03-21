@@ -24,14 +24,16 @@
     </scm>
 
     <dependencies>
+        <!-- 
+            NOTE: we cannot declare cids-dataobjects as direct dependency because the netbeans nbm plugin will place it
+            in the modules classpath then. As the Utilities module also has a dependency and in the end creates the 
+            entity objects classcast exceptions will occur as the classes are exactly the same but loaded by different
+            classloaders
+         -->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
             <version>3.1.8-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>de.cismet.cids</groupId>
-            <artifactId>data-objects</artifactId>
         </dependency>
         <dependency>
             <groupId>de.cismet.commons</groupId>
