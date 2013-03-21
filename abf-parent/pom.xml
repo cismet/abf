@@ -122,6 +122,16 @@
                 <version>3.5.6-Final</version>
             </dependency>
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>3.5.6-Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-c3p0</artifactId>
+                <version>3.5.6-Final</version>
+            </dependency>
+            <dependency>
                 <groupId>c3p0</groupId>
                 <artifactId>c3p0</artifactId>
                 <version>0.9.1</version>
@@ -308,7 +318,7 @@
                     <version>3.9</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <author>martin.scholl@cismet.de</author>
+                        <author>Martin Scholl @ cismet GmbH</author>
                         <moduleType>normal</moduleType>
                         <brandingToken>${branding.token}</brandingToken>
                         <cluster>${branding.token}</cluster>
@@ -348,48 +358,11 @@
                     <arguments>-Djalopy.skip=true</arguments>
                 </configuration>
             </plugin>
-            <!-- we want to use only direct dependencies to compile -->
-            <plugin>
-                <groupId>de.cismet.cids</groupId>
-                <artifactId>cids-maven-plugin</artifactId>
-                <version>2.0-preview-2</version>
-                <executions>
-                    <execution>
-                        <id>create-compile-classpath</id>
-                        <goals>
-                            <goal>create-direct-cp-property</goal>
-                        </goals>
-                        <configuration>
-                            <includeSystemScope>true</includeSystemScope>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <phase>none</phase>
-                    </execution>
-                    <execution>
-                        <id>direct-compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <compilerArguments>
-                                <sourcepath>${basedir}/src/main/java</sourcepath>
-                                <classpath>${classpath.directDependencies}</classpath>
-<!--                                <Xlint:unchecked/>-->
-                            </compilerArguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!-- 
+                NOTE: we cannot make use of direct dependency declaration as the nbm plugin will then include the library
+                as external dependency in every module resulting in classcast exceptions if objects are shared between
+                modules (because they're loaded by different classloaders
+            -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
