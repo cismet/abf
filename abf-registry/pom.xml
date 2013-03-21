@@ -33,6 +33,10 @@
             <artifactId>cids-server</artifactId>
         </dependency>
         <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-loaders</artifactId>
         </dependency>
@@ -44,10 +48,6 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-projectuiapi</artifactId>
         </dependency>
-        <!--
-            those have to be declared explicitely due to "insufficient"
-            transitive dependency mechanism for nbms.
-        -->
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-filesystems</artifactId>
@@ -66,10 +66,6 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-jdesktop-layout</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-windows</artifactId>
         </dependency>
         <dependency>
@@ -80,7 +76,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <!-- END of nbm-required declaration -->
     </dependencies>
 
     <repositories>
@@ -121,6 +116,9 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
+                <configuration>
+                    <codeNameBase>de.cismet.cids.abf.registry/3</codeNameBase>
+                </configuration>
             </plugin>
         </plugins>
     </build>
