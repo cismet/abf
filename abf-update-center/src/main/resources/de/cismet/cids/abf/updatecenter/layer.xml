@@ -8,7 +8,7 @@
                 <attr name="enabled" boolvalue="true"/>
                 <attr name="instanceOf" stringvalue="org.netbeans.spi.autoupdate.UpdateProvider"/>
                 <attr name="instanceCreate" methodvalue="org.netbeans.modules.autoupdate.updateprovider.AutoupdateCatalogFactory.createUpdateProvider"/>
-                <attr name="url" stringvalue="http://www.cismet.de/updatecenters/abf69/updates.xml"/>
+                <attr name="url" stringvalue="http://www.cismet.de/updatecenters/abf/updates.xml"/>
             </file>
 
             <file name="standard-update-provider.instance_hidden"/>
