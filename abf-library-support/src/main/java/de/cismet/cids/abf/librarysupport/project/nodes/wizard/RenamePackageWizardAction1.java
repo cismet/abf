@@ -45,7 +45,7 @@ public final class RenamePackageWizardAction1 extends NodeAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger( RenamePackageWizardAction1.class);
+    private static final transient Logger LOG = Logger.getLogger(RenamePackageWizardAction1.class);
 
     //~ Methods ----------------------------------------------------------------
 
@@ -58,9 +58,9 @@ public final class RenamePackageWizardAction1 extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    // it is impossible to create a typed array
-    @SuppressWarnings("unchecked")
     private WizardDescriptor.Panel<WizardDescriptor>[] getPanels(final FileObject root, final FileObject cur) {
+        // it is impossible to create a typed array
+        @SuppressWarnings("unchecked")
         final WizardDescriptor.Panel<WizardDescriptor>[] panels = new WizardDescriptor.Panel[] {
                 new RenamePackageWizardPanel1(root, cur)
             };
@@ -74,27 +74,19 @@ public final class RenamePackageWizardAction1 extends NodeAction {
             if (c instanceof JComponent) { // assume Swing components
                 final JComponent jc = (JComponent)c;
                 // Sets step number of a component
-                jc.putClientProperty(
-                    WizardDescriptor.PROP_CONTENT_SELECTED_INDEX,
-                    Integer.valueOf(i));
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, Integer.valueOf(i));
                 // Sets steps names for a panel
-                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA,
-                    steps);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                 // Turn on subtitle creation on each step
-                jc.putClientProperty(
-                    WizardDescriptor.PROP_AUTO_WIZARD_STYLE,
-                    Boolean.TRUE);
+                jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                 // Show steps on the left side with the image on the
                 // background
-                jc.putClientProperty(
-                    WizardDescriptor.PROP_CONTENT_DISPLAYED,
-                    Boolean.TRUE);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                 // Turn on numbering of all steps
-                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED,
-                    Boolean.TRUE);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
             }
         }
-        
+
         return panels;
     }
 
@@ -213,13 +205,10 @@ public final class RenamePackageWizardAction1 extends NodeAction {
 
     @Override
     protected boolean enable(final Node[] nodes) {
-        if ((nodes == null) || (nodes.length != 1)) {
+        if ((nodes == null) || (nodes.length != 1) || nodes[0].getName().contains("<root>")) { // NOI18N
             return false;
         }
-        if (nodes[0].getName().contains("<root>")) // NOI18N
-        {
-            return false;
-        }
+
         return nodes[0].getCookie(PackageContextCookie.class) != null;
     }
 }

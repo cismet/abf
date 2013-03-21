@@ -289,7 +289,7 @@ final class StarterManagementChildren extends Children.Keys<FileObject> {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger( StarterManagementChildren.class);
+    private static final transient Logger LOG = Logger.getLogger(StarterManagementChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -315,15 +315,15 @@ final class StarterManagementChildren extends Children.Keys<FileObject> {
     protected Node[] createNodes(final FileObject key) {
         try {
             final ManifestNode node = new ManifestNode(project, key);
-            
+
             return new Node[] { node };
         } catch (final DataObjectNotFoundException ex) {
             LOG.error("could not create manifestnode", ex); // NOI18N
         } catch (final FileNotFoundException ex) {
             LOG.error("could not create manifestnode", ex); // NOI18N
         }
-        
-            return null;
+
+        return null;
     }
 
     @Override
@@ -343,7 +343,7 @@ final class StarterManagementChildren extends Children.Keys<FileObject> {
                     return f1.getName().compareTo(f2.getName());
                 }
             });
-        
+
         setKeys(fos);
     }
 
@@ -352,11 +352,11 @@ final class StarterManagementChildren extends Children.Keys<FileObject> {
      */
     void refreshAll() {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("running refresh");  // NOI18N
+            LOG.debug("running refresh"); // NOI18N
         }
-        
+
         addNotify();
-        
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("refresh finished"); // NOI18N
         }

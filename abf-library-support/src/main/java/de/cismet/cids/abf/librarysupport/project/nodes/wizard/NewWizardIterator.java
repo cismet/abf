@@ -44,7 +44,7 @@ public final class NewWizardIterator implements WizardDescriptor.Iterator<Wizard
     private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
             panels = new WizardDescriptor.Panel[] { new NewWizardPanel2() };
-            
+
             final String[] steps = new String[panels.length];
             for (int i = 0; i < panels.length; i++) {
                 final Component c = panels[i].getComponent();
@@ -53,36 +53,28 @@ public final class NewWizardIterator implements WizardDescriptor.Iterator<Wizard
                 if (c instanceof JComponent) { // assume Swing components
                     final JComponent jc = (JComponent)c;
                     // Sets step number of a component
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_CONTENT_SELECTED_INDEX,
-                        Integer.valueOf(i));
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, Integer.valueOf(i));
                     // Sets steps names for a panel
-                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA,
-                        steps);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                     // Turn on subtitle creation on each step
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_AUTO_WIZARD_STYLE,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                     // Show steps on the left side with the image on the
                     // background
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_CONTENT_DISPLAYED,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                     // Turn on numbering of all steps
-                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
                 }
             }
         }
-        
+
         return Arrays.copyOf(panels, panels.length);
     }
-    
+
     @Override
     public WizardDescriptor.Panel<WizardDescriptor> current() {
         return getPanels()[index];
     }
-    
+
     @Override
     public String name() {
         return null;

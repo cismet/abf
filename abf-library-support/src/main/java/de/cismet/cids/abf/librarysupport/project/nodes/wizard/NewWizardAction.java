@@ -111,7 +111,7 @@ public final class NewWizardAction extends CookieAction {
         final FileObject current;
         final PackageContextCookie pc = node.getCookie(PackageContextCookie.class);
         if (pc == null) {
-            final SourceContextCookie sc = node.getCookie( SourceContextCookie.class);
+            final SourceContextCookie sc = node.getCookie(SourceContextCookie.class);
             try {
                 root = sc.getSourceObject();
             } catch (FileNotFoundException ex) {

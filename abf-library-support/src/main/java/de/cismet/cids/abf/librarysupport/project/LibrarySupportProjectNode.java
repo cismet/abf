@@ -340,7 +340,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys<FileObject> 
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger( LibrarySupportProjectNodeChildren.class);
+    private static final transient Logger LOG = Logger.getLogger(LibrarySupportProjectNodeChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -445,11 +445,11 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys<FileObject> 
      */
     void refreshAll() {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("running refresh");  // NOI18N
+            LOG.debug("running refresh"); // NOI18N
         }
-        
+
         addNotify();
-        
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("refresh finished"); // NOI18N
         }
@@ -513,7 +513,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys<FileObject> 
                     return f1.getName().compareTo(f2.getName());
                 }
             });
-        
+
         return fos;
     }
 
@@ -575,7 +575,7 @@ final class LibrarySupportProjectNodeChildren extends Children.Keys<FileObject> 
                     return f1.getName().compareTo(f2.getName());
                 }
             });
-        
+
         return fos;
     }
 

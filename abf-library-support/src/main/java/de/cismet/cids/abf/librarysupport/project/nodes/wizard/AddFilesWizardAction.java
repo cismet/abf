@@ -59,11 +59,12 @@ public final class AddFilesWizardAction extends NodeAction {
      *
      * @return  DOCUMENT ME!
      */
-    // it is impossible to create a typed array
-    @SuppressWarnings("unchecked")
-    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels(final FileObject root,
-            final FileObject cur) {
-        final WizardDescriptor.Panel<WizardDescriptor>[] panels = new WizardDescriptor.Panel[] { new AddFilesWizardPanel1(root, cur) };
+    private WizardDescriptor.Panel<WizardDescriptor>[] getPanels(final FileObject root, final FileObject cur) {
+        // it is impossible to create a typed array
+        @SuppressWarnings("unchecked")
+        final WizardDescriptor.Panel<WizardDescriptor>[] panels = new WizardDescriptor.Panel[] {
+                new AddFilesWizardPanel1(root, cur)
+            };
         final String[] steps = new String[panels.length];
         for (int i = 0; i < panels.length; i++) {
             final Component c = panels[i].getComponent();
@@ -74,27 +75,19 @@ public final class AddFilesWizardAction extends NodeAction {
             if (c instanceof JComponent) { // assume Swing components
                 final JComponent jc = (JComponent)c;
                 // Sets step number of a component
-                jc.putClientProperty(
-                    WizardDescriptor.PROP_CONTENT_SELECTED_INDEX,
-                    Integer.valueOf(i));
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, Integer.valueOf(i));
                 // Sets steps names for a panel
-                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA,
-                    steps);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                 // Turn on subtitle creation on each step
-                jc.putClientProperty(
-                    WizardDescriptor.PROP_AUTO_WIZARD_STYLE,
-                    Boolean.TRUE);
+                jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                 // Show steps on the left side with the image on the
                 // background
-                jc.putClientProperty(
-                    WizardDescriptor.PROP_CONTENT_DISPLAYED,
-                    Boolean.TRUE);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                 // Turn on numbering of all steps
-                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED,
-                    Boolean.TRUE);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
             }
         }
-        
+
         return panels;
     }
 
@@ -134,6 +127,7 @@ public final class AddFilesWizardAction extends NodeAction {
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
+
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
             final File[] choosenFiles = (File[])wizard.getProperty(
@@ -143,7 +137,7 @@ public final class AddFilesWizardAction extends NodeAction {
             if ((choosenFiles == null)
                         || (choosenFiles.length < 1)
                         || (pakkage == null)
-                        || pakkage.equals(""))                         // NOI18N
+                        || pakkage.equals("")) // NOI18N
             {
                 return;
             }
@@ -209,6 +203,7 @@ public final class AddFilesWizardAction extends NodeAction {
         if ((nodes == null) || (nodes.length != 1)) {
             return false;
         }
+
         return nodes[0].getCookie(PackageContextCookie.class) != null;
     }
 }

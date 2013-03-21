@@ -43,7 +43,7 @@ public final class SourceFolderNodeChildren extends Children.Keys<Object> implem
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger( SourceFolderNodeChildren.class);
+    private static final transient Logger LOG = Logger.getLogger(SourceFolderNodeChildren.class);
 
     //~ Instance fields --------------------------------------------------------
 

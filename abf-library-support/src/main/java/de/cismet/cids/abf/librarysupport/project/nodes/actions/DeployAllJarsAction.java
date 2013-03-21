@@ -101,7 +101,7 @@ public final class DeployAllJarsAction extends NodeAction {
         if ((nodes == null) || (nodes.length < 1)) {
             return false;
         }
-        
+
         for (final Node n : nodes) {
             final LocalManagementContextCookie l = n.getCookie(LocalManagementContextCookie.class);
             final StarterManagementContextCookie s = n.getCookie(StarterManagementContextCookie.class);
@@ -109,12 +109,12 @@ public final class DeployAllJarsAction extends NodeAction {
                 return false;
             }
         }
-        
+
         final LibrarySupportContextCookie lscc = nodes[0].getCookie(LibrarySupportContextCookie.class);
         if (lscc == null) {
             return false;
         }
-        
+
         final PropertyProvider provider = PropertyProvider.getInstance(lscc.getLibrarySupportContext()
                         .getProjectProperties());
         final File f = new File(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));

@@ -296,7 +296,7 @@ final class ResourceJarManangementChildren extends Children.Keys<FileObject> {
                     "LocalManagement.addNotify().ErrorUtils.message"),
                 null);                                      // NOI18N
             setKeys(new FileObject[0]);
-            
+
             return;
         }
 

@@ -64,28 +64,20 @@ public final class RenameManifestWizardAction1 extends NodeAction {
                 if (c instanceof JComponent) { // assume Swing components
                     final JComponent jc = (JComponent)c;
                     // Sets step number of a component
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_CONTENT_SELECTED_INDEX,
-                        Integer.valueOf(i));
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, Integer.valueOf(i));
                     // Sets steps names for a panel
-                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA,
-                        steps);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                     // Turn on subtitle creation on each step
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_AUTO_WIZARD_STYLE,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                     // Show steps on the left side with the image on the
                     // background
-                    jc.putClientProperty(
-                        WizardDescriptor.PROP_CONTENT_DISPLAYED,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                     // Turn on numbering of all steps
-                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED,
-                        Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
                 }
             }
         }
-        
+
         return Arrays.copyOf(panels, panels.length);
     }
 
@@ -136,6 +128,7 @@ public final class RenameManifestWizardAction1 extends NodeAction {
         if ((nodes == null) || (nodes.length != 1)) {
             return false;
         }
+
         return nodes[0].getCookie(ManifestProviderCookie.class) != null;
     }
 }
