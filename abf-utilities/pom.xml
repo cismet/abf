@@ -99,6 +99,28 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <!-- END: for nbm these have to be compile time dependencies -->
+        <!-- 
+            BEGIN: we need to declare these hibernate dependencies as direct ones to ensure the nbm plugin picks them
+            up and thus includes them in the module classpath. It seems that the runtime dependencies of declared 
+            dependencies are not considered!
+         -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <!-- 
+            END: we need to declare these hibernate dependencies as direct ones to ensure the nbm plugin picks them
+            up and thus includes them in the module classpath. It seems that the runtime dependencies of declared 
+            dependencies are not considered!
+         -->
     </dependencies>
 
     <repositories>
@@ -151,6 +173,21 @@
                         <publicPackage>javax.xml.*</publicPackage>
                         <publicPackage>org.xml.*</publicPackage>
                         <publicPackage>org.w3c.dom.*</publicPackage>
+                        
+                        <!-- BEGIN: ABF cids Registry -->
+                        <publicPackage>Sirius.*</publicPackage>
+                        <publicPackage>com.sun.grizzly.*</publicPackage>
+                        <publicPackage>junit.*</publicPackage>
+                        <publicPackage>org.apache.commons.*</publicPackage>
+                        <publicPackage>org.dom4j.*</publicPackage>
+                        <publicPackage>org.jdesktop.*</publicPackage>
+                        <publicPackage>org.postgresql.*</publicPackage>
+                        <publicPackage>org.postgis.*</publicPackage>
+                        <publicPackage>javax.activation.*</publicPackage>
+                        <publicPackage>org.jdom.*</publicPackage>
+                        <publicPackage>javax.persistence.*</publicPackage>
+                        <publicPackage>com.vividsolutions.*</publicPackage>
+                        <!-- END: ABF cids Registry -->
                     </publicPackages>
                 </configuration>
             </plugin>
