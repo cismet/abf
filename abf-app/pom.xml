@@ -93,12 +93,12 @@
             <type>nbm</type>
             <version>3.1.8-SNAPSHOT</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-cids-java-template</artifactId>
             <type>nbm</type>
             <version>3.1.8-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-client</artifactId>
