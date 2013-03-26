@@ -21,7 +21,6 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.util.actions.SystemAction;
 
-import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.io.IOException;
@@ -40,16 +39,16 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
-import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.RefreshIndicatorAction;
+import de.cismet.cids.abf.domainserver.project.RefreshableNode;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.NewUserWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.UserNode;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.utilities.Comparators;
-import de.cismet.cids.abf.utilities.Refreshable;
-import de.cismet.cids.abf.utilities.nodes.PropertyRefresh;
 
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.common.Domain;
 import de.cismet.cids.jpa.entity.permission.ClassPermission;
 import de.cismet.cids.jpa.entity.permission.Permission;
@@ -63,7 +62,7 @@ import de.cismet.cids.jpa.entity.user.UserGroup;
  * @author   martin.scholl@cismet.de
  * @version  1.17
  */
-public final class UserGroupNode extends ProjectNode implements UserGroupContextCookie, Refreshable, PropertyRefresh {
+public final class UserGroupNode extends RefreshableNode implements UserGroupContextCookie {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -73,10 +72,8 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
     private final transient Image group;
     private final transient Image remotegroup;
-    private transient UserGroup userGroup;
 
-    // accessed in syncronised methods
-    private transient boolean sheetInitialised;
+    private transient volatile UserGroup userGroup;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -87,9 +84,8 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
      * @param  project    DOCUMENT ME!
      */
     public UserGroupNode(final UserGroup userGroup, final DomainserverProject project) {
-        super(new UserGroupNodeChildren(userGroup, project), project);
+        super(new UserGroupNodeChildren(userGroup, project), project, UserManagement.REFRESH_DISPATCHER);
         this.userGroup = userGroup;
-        sheetInitialised = false;
         group = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "group.png");             // NOI18N
         remotegroup = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "remotegroup.png"); // NOI18N
         getCookieSet().add(this);
@@ -134,7 +130,7 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
     @Override
     protected Sheet createSheet() {
-        sheetInitialised = true;
+        setSheetInitialised(true);
 
         final Sheet sheet = Sheet.createDefault();
         final Sheet.Set set = Sheet.createPropertiesSet();
@@ -399,19 +395,23 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
 
     @Override
     public Action[] getActions(final boolean b) {
-        SystemAction newUser = null;
-        SystemAction addUser = null;
-        if (!isRemote()) {
-            newUser = CallableSystemAction.get(NewUserWizardAction.class);
-            addUser = CallableSystemAction.get(AddUsersWizardAction.class);
+        if (UserManagement.REFRESH_DISPATCHER.tasksInProgress()) {
+            return new Action[] { CallableSystemAction.get(RefreshIndicatorAction.class) };
+        } else {
+            SystemAction newUser = null;
+            SystemAction addUser = null;
+            if (!isRemote()) {
+                newUser = CallableSystemAction.get(NewUserWizardAction.class);
+                addUser = CallableSystemAction.get(AddUsersWizardAction.class);
+            }
+            return new Action[] {
+                    newUser,
+                    addUser,
+                    null,
+                    CallableSystemAction.get(CopyUsergroupWizardAction.class),
+                    CallableSystemAction.get(DeleteUsergroupAction.class)
+                };
         }
-        return new Action[] {
-                newUser,
-                addUser,
-                null,
-                CallableSystemAction.get(CopyUsergroupWizardAction.class),
-                CallableSystemAction.get(DeleteUsergroupAction.class)
-            };
     }
 
     @Override
@@ -425,83 +425,28 @@ public final class UserGroupNode extends ProjectNode implements UserGroupContext
     }
 
     @Override
-    public void refresh() {
-        final Runnable r = new Runnable() {
+    public void threadedRefresh() throws Exception {
+        final Children c = Children.MUTEX.readAccess(new org.openide.util.Mutex.Action<Children>() {
 
-                @Override
-                public void run() {
-                    final Children c = getChildren();
-                    UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                userGroup = project.getCidsDataObjectBackend()
-                                            .getEntity(UserGroup.class, userGroup.getId());
-                                try {
-                                    // we assure that the children are initialised and the setting of the keys is
-                                    // scheduled in the EDT
-                                    final Future<?> f = ((UserGroupNodeChildren)c).refreshAll(userGroup);
-
-                                    // if the future is null the refresh has already taken place
-                                    if (f != null) {
-                                        f.get(30, TimeUnit.SECONDS);
-                                    }
-                                } catch (final Exception ex) {
-                                    LOG.error("cannot refresh usergroup children", ex); // NOI18N
-
-                                    return;
-                                }
-
-                                // we access the nodes of the children in the EDT
-                                EventQueue.invokeLater(new Runnable() {
-
-                                        @Override
-                                        public void run() {
-                                            for (final Node n : c.getNodes()) {
-                                                final Refreshable r = n.getCookie(Refreshable.class);
-                                                if (r != null) {
-                                                    r.refresh();
-                                                }
-                                            }
-
-                                            refreshProperties(false);
-                                        }
-                                    });
-                            }
-                        });
-                }
-            };
-
-        if (EventQueue.isDispatchThread()) {
-            r.run();
-        } else {
-            EventQueue.invokeLater(r);
-        }
-    }
-
-    @Override
-    public void refreshProperties(final boolean forceInit) {
-        final Runnable r = new Runnable() {
-
-                @Override
-                public void run() {
-                    if (sheetInitialised || forceInit) {
-                        setSheet(createSheet());
+                    @Override
+                    public Children run() {
+                        return getChildren();
                     }
+                });
 
-                    for (final Node n : getChildren().getNodes()) {
-                        final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
-                        if (pr != null) {
-                            pr.refreshProperties(forceInit);
-                        }
-                    }
-                }
-            };
-
-        if (EventQueue.isDispatchThread()) {
-            r.run();
+        final Backend backend = project.getCidsDataObjectBackend();
+        if (backend == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("project was disconnected during refresh, ignoring"); // NOI18N
+            }
         } else {
-            EventQueue.invokeLater(r);
+            userGroup = backend.getEntity(UserGroup.class, userGroup.getId());
+            final Future<?> future = ((UserGroupNodeChildren)c).refreshAll(userGroup);
+
+            // if future is null the refresh is already finished
+            if(future != null){
+                future.get(30, TimeUnit.SECONDS);
+            }
         }
     }
 }

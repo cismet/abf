@@ -15,7 +15,8 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.CookieAction;
 import org.openide.windows.WindowManager;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -108,12 +109,15 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                             e);
                         ErrorUtils.showErrorMessage("Could not store usergroup or user", "Store error", e);
                     }
-                    project.getLookup().lookup(UserManagement.class).refreshGroups(Arrays.asList(ug));
+                    final List<UserGroup> toRefresh = new ArrayList<UserGroup>(usr.getUserGroups());
+                    toRefresh.add(ug);
+
+                    project.getLookup().lookup(UserManagement.class).refreshGroups(toRefresh);
                     project.getLookup().lookup(ConfigAttrManagement.class).refresh();
                 } else {
-                    LOG.warn("the usergroup the user '"                                     // NOI18N
-                                + usr + "' was supposed to be in a group which could not"   // NOI18N
-                                + " be found in lookup, nothing is done");                  // NOI18N
+                    LOG.warn("the usergroup the user '"                             // NOI18N
+                                + usr + "' was supposed to be in a group which could not" // NOI18N
+                                + " be found in lookup, nothing is done");          // NOI18N
                 }
             }
         }

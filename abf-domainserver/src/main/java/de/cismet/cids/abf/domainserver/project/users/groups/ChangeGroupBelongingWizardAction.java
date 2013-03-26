@@ -32,6 +32,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserContextCookie;
 
+import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
@@ -45,8 +46,7 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            ChangeGroupBelongingWizardAction.class);
+    private static final transient Logger LOG = Logger.getLogger(ChangeGroupBelongingWizardAction.class);
 
     public static final String USER_PROP = "userProperty";                    // NOI18N
     public static final String PROJECT_PROP = "projectProperty";              // NOI18N
@@ -54,7 +54,7 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
 
     //~ Instance fields --------------------------------------------------------
 
-    private transient WizardDescriptor.Panel[] panels;
+    private transient WizardDescriptor.Panel<WizardDescriptor>[] panels;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -63,6 +63,8 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
      *
      * @return  DOCUMENT ME!
      */
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
     private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
             panels = new WizardDescriptor.Panel[] { new ChangeGroupBelongingWizardPanel1() };
@@ -149,12 +151,16 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
+            // the api only delivers objects, no chance to achieve type safety
+            @SuppressWarnings("unchecked")
             final List<UserGroup> groups = (List<UserGroup>)wizard.getProperty(TOUCHED_GROUPS_PROP);
+            final Backend backend = project.getCidsDataObjectBackend();
             for (final UserGroup ug : groups) {
                 try {
-                    project.getCidsDataObjectBackend().store(ug);
+                    backend.store(ug);
+                    backend.store(user);
                 } catch (final Exception ex) {
-                    LOG.error("could not store usergroup: " + ug.getName(), ex);         // NOI18N
+                    LOG.error("could not store usergroup: " + ug.getName(), ex); // NOI18N
                     ErrorManager.getDefault().notify(ex);
                 }
             }

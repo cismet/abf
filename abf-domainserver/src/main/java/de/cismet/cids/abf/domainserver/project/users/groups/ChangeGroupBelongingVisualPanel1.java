@@ -37,6 +37,7 @@ import de.cismet.cids.abf.domainserver.project.utils.Renderers;
 import de.cismet.cids.abf.utilities.CidsUserGroupTransferable;
 import de.cismet.cids.abf.utilities.Comparators;
 
+import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
@@ -317,12 +318,13 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
         @Override
         public void drop(final DropTargetDropEvent dtde) {
             try {
-                final Object o = dtde.getTransferable().getTransferData(
-                        CidsUserGroupTransferable.CIDS_UG_FLAVOR);
+                final Object o = dtde.getTransferable().getTransferData(CidsUserGroupTransferable.CIDS_UG_FLAVOR);
                 if (o instanceof UserGroup) {
                     final UserGroup ug = (UserGroup)o;
                     if (!membership.contains(ug)) {
-                        ug.getUsers().add(model.getUser());
+                        final User user = model.getUser();
+                        ug.getUsers().add(user);
+                        user.getUserGroups().add(ug);
                         membership.add(ug);
                         lstGroupMembership.setListData(membership.toArray());
                         if (!touchedGroups.contains(ug)) {
@@ -354,7 +356,9 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
                                     CidsUserGroupTransferable.CIDS_UG_FLAVOR);
                     if (o instanceof UserGroup) {
                         final UserGroup ug = (UserGroup)o;
-                        ug.getUsers().remove(model.getUser());
+                        final User user = model.getUser();
+                        ug.getUsers().remove(user);
+                        user.getUserGroups().remove(ug);
                         membership.remove(ug);
                         lstGroupMembership.setListData(membership.toArray());
                         if (!touchedGroups.contains(ug)) {

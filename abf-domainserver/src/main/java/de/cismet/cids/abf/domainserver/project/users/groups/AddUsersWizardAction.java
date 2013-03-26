@@ -23,13 +23,18 @@ import java.awt.Dialog;
 import java.text.MessageFormat;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JComponent;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 
+import de.cismet.cids.jpa.backend.service.Backend;
+import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
@@ -49,7 +54,7 @@ public final class AddUsersWizardAction extends CookieAction {
 
     //~ Instance fields --------------------------------------------------------
 
-    private transient WizardDescriptor.Panel[] panels;
+    private transient WizardDescriptor.Panel<WizardDescriptor>[] panels;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -59,6 +64,8 @@ public final class AddUsersWizardAction extends CookieAction {
      *
      * @return  DOCUMENT ME!
      */
+    // it is impossible to create a typed array
+    @SuppressWarnings("unchecked")
     private WizardDescriptor.Panel<WizardDescriptor>[] getPanels() {
         if (panels == null) {
             panels = new WizardDescriptor.Panel[] { new AddUsersWizardPanel() };
@@ -125,6 +132,7 @@ public final class AddUsersWizardAction extends CookieAction {
     protected void performAction(final Node[] nodes) {
         final DomainserverProject project = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
         final UserGroup userGroup = nodes[0].getCookie(UserGroupContextCookie.class).getUserGroup();
+        final Set<User> oldUsers = new HashSet<User>(userGroup.getUsers());
 
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
@@ -141,16 +149,33 @@ public final class AddUsersWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
+            final Set<UserGroup> touchedGroups = new HashSet<UserGroup>();
+            touchedGroups.add(userGroup);
+
+            final Backend backend = project.getCidsDataObjectBackend();
             try {
-                project.getCidsDataObjectBackend().store(userGroup);
+                backend.store(userGroup);
+                for (final User user : userGroup.getUsers()) {
+                    // the user may still be present, thus remove from the cached set
+                    oldUsers.remove(user);
+                    user.getUserGroups().add(userGroup);
+                    backend.store(user);
+
+                    touchedGroups.addAll(user.getUserGroups());
+                }
+
+                // process the users, that are removed
+                for (final User user : oldUsers) {
+                    backend.removeMembership(user, userGroup);
+
+                    touchedGroups.addAll(user.getUserGroups());
+                }
             } catch (final Exception e) {
                 LOG.error("could not store usergroup", e); // NOI18N
                 ErrorManager.getDefault().notify(e);
             }
-            project.getLookup().lookup(UserManagement.class).refresh();
-            project.getLookup()
-                    .lookup(UserManagement.class)
-                    .refreshGroups(Arrays.asList(new UserGroup[] { userGroup }));
+            project.getLookup().lookup(UserManagement.class).refreshGroups(touchedGroups);
+            project.getLookup().lookup(ConfigAttrManagement.class).refresh();
         }
     }
 

@@ -43,6 +43,7 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.RefreshIndicatorAction;
 import de.cismet.cids.abf.domainserver.project.customizer.DomainserverProjectCustomizer;
 import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
@@ -124,32 +125,35 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
         try {
             // <editor-fold defaultstate="collapsed" desc=" Create Property: ID ">
-            final Property idProp = new PropertySupport.Reflection(user,
-                    Integer.class, "getId", null);          // NOI18N
-            idProp.setName(org.openide.util.NbBundle.getMessage(
+            final Property<Integer> idProp = new PropertySupport.Reflection<Integer>(
+                    user,
+                    Integer.class,
+                    "getId",
+                    null);                                  // NOI18N
+            idProp.setName(NbBundle.getMessage(
                     UserNode.class,
                     "UserNode.createSheet().idProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: PasswordChange ">
-            final Property pwchangeProp = new PropertySupport(
+            final Property<Date> pwchangeProp = new PropertySupport<Date>(
                     "lastPWChange",                                               // NOI18N
                     Date.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().pwchangeProp.lastPWChange"),      // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().pwchangeProp.timestampLastPWChange"), // NOI18N
                     true,
                     false) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public Date getValue() throws IllegalAccessException, InvocationTargetException {
                         return user.getLastPwdChange();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final Date object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         // not needed
@@ -157,56 +161,56 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                 }; // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Name ">
-            final Property nameProp = new PropertySupport(
+            final Property<String> nameProp = new PropertySupport<String>(
                     "name",                                       // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().nameProp.name"),  // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().nameProp.userLogin"), // NOI18N
                     true,
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
                         return user.getLoginname();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final User old = user;
                         try {
-                            user.setLoginname(object.toString());
+                            user.setLoginname(object);
                             user = project.getCidsDataObjectBackend().store(user);
                         } catch (final Exception ex) {
                             LOG.error("could not store user", ex); // NOI18N
                             user = old;
                             ErrorManager.getDefault().notify(ex);
                         }
-                        fireDisplayNameChange(null, object.toString());
+                        fireDisplayNameChange(null, object);
                     }
                 };                                                 // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Password ">
             final PasswordPropertyEditor pwEditor = new PasswordPropertyEditor();
-            final Property passProp = new PropertySupport(
+            final Property<String> passProp = new PropertySupport<String>(
                     "password",                                        // NOI18N
                     String.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().passProp.password"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().passProp.passwordOfUser"), // NOI18N
                     true,
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
                         return "****"; // NOI18N
                     }
 
@@ -216,7 +220,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         if ((object == null) || object.toString().equals("****")) { // NOI18N
@@ -226,7 +230,7 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
                         final User old = user;
                         try {
-                            user.setPassword(object.toString());
+                            user.setPassword(object);
                             user.setLastPwdChange(Calendar.getInstance().getTime());
                             user = project.getCidsDataObjectBackend().store(user);
                         } catch (final Exception ex) {
@@ -242,30 +246,30 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
             // </editor-fold>
 
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Administrator ">
-            final Property adminProp = new PropertySupport(
+            final Property<Boolean> adminProp = new PropertySupport<Boolean>(
                     "admin",                                         // NOI18N
                     Boolean.class,
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().adminProp.admin"),   // NOI18N
-                    org.openide.util.NbBundle.getMessage(
+                    NbBundle.getMessage(
                         UserNode.class,
                         "UserNode.createSheet().adminProp.isUserAdmin"), // NOI18N
                     true,
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    public Boolean getValue() throws IllegalAccessException, InvocationTargetException {
                         return user.isAdmin();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final Boolean object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final User old = user;
                         try {
-                            user.setAdmin((Boolean)object);
+                            user.setAdmin(object);
                             user = project.getCidsDataObjectBackend().store(user);
                         } catch (final Exception ex) {
                             LOG.error("could not store user", ex); // NOI18N
@@ -555,10 +559,10 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
         final List<UserGroup> ugs;
         if (user == null) {
-            ugs = new ArrayList(1);
+            ugs = new ArrayList<UserGroup>(1);
             ugs.add(group);
         } else {
-            ugs = new ArrayList(user.getUserGroups());
+            ugs = new ArrayList<UserGroup>(user.getUserGroups());
             Collections.sort(ugs, new Comparators.UserGroups());
         }
 
@@ -686,36 +690,46 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     @Override
     public boolean equals(final Object object) {
-        if (!(object instanceof UserNode)) {
-            return false;
+        if (object instanceof UserNode) {
+            final UserNode un = (UserNode)object;
+            if ((user == null) || (un.user == null)) {
+                return super.equals(object);
+            } else {
+                return user.getId().equals(un.user.getId());
+//                            && (user.getUserGroups().size() == un.user.getUserGroups().size());
+            }
         }
-        final UserNode un = (UserNode)object;
 
-        return user.getId().equals(un.user.getId());
+        return false;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = (59 * hash) + ((this.user == null) ? 0 : this.user.hashCode());
+        hash = (59 * hash) + ((this.user == null) ? 0 : this.user.getId());
+//        hash = (59 * hash) + ((this.user.getUserGroups() == null) ? 0 : this.user.getUserGroups().size());
 
         return hash;
     }
 
     @Override
     public Action[] getActions(final boolean b) {
-        Action removeGrpMbrShip = null;
-        if (!(getParentNode() instanceof AllUsersNode)) {
-            removeGrpMbrShip = CallableSystemAction.get(RemoveGroupMembershipAction.class);
-        }
+        if (UserManagement.REFRESH_DISPATCHER.tasksInProgress()) {
+            return new Action[] { CallableSystemAction.get(RefreshIndicatorAction.class) };
+        } else {
+            Action removeGrpMbrShip = null;
+            if (!((getParentNode() instanceof AllUsersNode) || (getParentNode() instanceof NoGroupUsersNode))) {
+                removeGrpMbrShip = CallableSystemAction.get(RemoveGroupMembershipAction.class);
+            }
 
-        return new Action[] {
-                CallableSystemAction.get(ChangeGroupBelongingWizardAction.class),
-                removeGrpMbrShip,
-                null,
-                CallableSystemAction.get(CopyUserWizardAction.class),
-                CallableSystemAction.get(DeleteUserAction.class),
-            };
+            return new Action[] {
+                    CallableSystemAction.get(ChangeGroupBelongingWizardAction.class),
+                    removeGrpMbrShip,
+                    null,
+                    CallableSystemAction.get(CopyUserWizardAction.class),
+                    CallableSystemAction.get(DeleteUserAction.class),
+                };
+        }
     }
 
     @Override
@@ -754,13 +768,21 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
     public void refresh() {
         // has the user been deleted?
         if (!deleted) {
-            UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
+            UserManagement.REFRESH_DISPATCHER.execute(new Runnable() {
 
                     @Override
                     public void run() {
-                        user = project.getCidsDataObjectBackend().getEntity(User.class, user.getId());
+                        // this is still not sufficient to ensure proper behaviour
+                        final Backend backend = project.getCidsDataObjectBackend();
+                        if (backend == null) {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("project was disconnected during refresh, ignoring"); // NOI18N
+                            }
+                        } else {
+                            user = backend.getEntity(User.class, user.getId());
 
-                        refreshProperties(false);
+                            refreshProperties(false);
+                        }
                     }
                 });
         }
@@ -768,21 +790,23 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     @Override
     public void refreshProperties(final boolean forceInit) {
-        final Runnable r = new Runnable() {
+        UserManagement.REFRESH_DISPATCHER.execute(new Runnable() {
 
                 @Override
                 public void run() {
                     if (sheetInitialised || forceInit) {
-                        setSheet(createSheet());
+                        final Sheet sheet = createSheet();
+
+                        EventQueue.invokeLater(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    setSheet(sheet);
+                                }
+                            });
                     }
                 }
-            };
-
-        if (EventQueue.isDispatchThread()) {
-            r.run();
-        } else {
-            EventQueue.invokeLater(r);
-        }
+            });
     }
 
     //~ Inner Classes ----------------------------------------------------------
