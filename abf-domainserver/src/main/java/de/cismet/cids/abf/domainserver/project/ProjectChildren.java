@@ -173,7 +173,7 @@ public abstract class ProjectChildren extends Children.Keys {
      * @param  keys  DOCUMENT ME!
      */
     protected void setKeysEDT(final Collection keys) {
-        EventQueue.invokeLater(new Runnable() {
+        final Runnable r = new Runnable() {
 
                 @Override
                 public void run() {
@@ -183,7 +183,13 @@ public abstract class ProjectChildren extends Children.Keys {
                         LOG.error("cannot set keys: " + keys + " | " + this, e); // NOI18N
                     }
                 }
-            });
+            };
+
+        if (EventQueue.isDispatchThread()) {
+            r.run();
+        } else {
+            EventQueue.invokeLater(r);
+        }
     }
 
     /**
