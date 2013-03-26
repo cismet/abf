@@ -9,31 +9,32 @@ package de.cismet.cids.abf.domainserver.project.users;
 
 import org.apache.log4j.Logger;
 
-import org.openide.nodes.Children;
+import org.openide.ErrorManager;
 import org.openide.nodes.Node;
+import org.openide.nodes.PropertySupport;
+import org.openide.nodes.Sheet;
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 
-import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.io.IOException;
 
+import java.lang.reflect.InvocationTargetException;
+
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
-import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.RefreshIndicatorAction;
+import de.cismet.cids.abf.domainserver.project.RefreshableNode;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupContextCookie;
 import de.cismet.cids.abf.utilities.Comparators;
-import de.cismet.cids.abf.utilities.Refreshable;
-import de.cismet.cids.abf.utilities.nodes.PropertyRefresh;
 
 import de.cismet.cids.jpa.entity.user.User;
 import de.cismet.cids.jpa.entity.user.UserGroup;
@@ -44,7 +45,7 @@ import de.cismet.cids.jpa.entity.user.UserGroup;
  * @author   martin.scholl@cismet.de
  * @version  1.11
  */
-public final class AllUsersNode extends ProjectNode implements Refreshable, UserGroupContextCookie, PropertyRefresh {
+public final class AllUsersNode extends RefreshableNode implements UserGroupContextCookie {
 
     //~ Static fields/initializers ---------------------------------------------
 
@@ -74,9 +75,12 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
      * @param  project  DOCUMENT ME!
      */
     public AllUsersNode(final DomainserverProject project) {
-        super(new AllUsersChildren(project), project);
-        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "all_users.png");             // NOI18N
-        setDisplayName(org.openide.util.NbBundle.getMessage(AllUsersNode.class, "AllUsersNode.displayName")); // NOI18N
+        super(new AllUsersChildren(project), project, UserManagement.REFRESH_DISPATCHER);
+
+        nodeImage = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "all_users.png"); // NOI18N
+
+        setDisplayName(NbBundle.getMessage(AllUsersNode.class, "AllUsersNode.displayName"));           // NOI18N
+        setShortDescription(NbBundle.getMessage(AllUsersNode.class, "AllUsersNode.shortDescription")); // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -93,65 +97,64 @@ public final class AllUsersNode extends ProjectNode implements Refreshable, User
 
     @Override
     public Action[] getActions(final boolean b) {
-        return new Action[] { CallableSystemAction.get(NewUserWizardAction.class) };
+        if (UserManagement.REFRESH_DISPATCHER.tasksInProgress()) {
+            return new Action[] { CallableSystemAction.get(RefreshIndicatorAction.class) };
+        } else {
+            return new Action[] { CallableSystemAction.get(NewUserWizardAction.class) };
+        }
     }
 
     @Override
-    public void refresh() {
-        final Runnable r = new Runnable() {
+    protected Sheet createSheet() {
+        setSheetInitialised(true);
 
-                @Override
-                public void run() {
-                    final Children c = getChildren();
-                    UserManagement.REFRESH_PROCESSOR.execute(new Runnable() {
+        final Sheet sheet = Sheet.createDefault();
+        final Sheet.Set set = Sheet.createPropertiesSet();
 
-                            @Override
-                            public void run() {
-                                final Future<?> future = ((AllUsersChildren)c).refreshByNotify();
+        try {
+            // <editor-fold defaultstate="collapsed" desc=" Create Property: UserCount ">
+            final Property<Integer> countUser = new PropertySupport<Integer>(
+                    "usercount",                                                                                // NOI18N
+                    Integer.class,
+                    NbBundle.getMessage(AllUsersNode.class, "AllUsersNode.createSheet().countUser.usercount"),  // NOI18N
+                    NbBundle.getMessage(AllUsersNode.class, "AllUsersNode.createSheet().countUser.totalusercount"), // NOI18N
+                    true,
+                    false) {
 
-                                try {
-                                    future.get(30, TimeUnit.SECONDS);
-                                    refreshProperties(false);
-                                } catch (final Exception ex) {
-                                    LOG.warn("unsuccessful refresh: " + this, ex); // NOI18N
-                                }
-                            }
-                        });
-                }
-            };
+                    @Override
+                    public Integer getValue() throws IllegalAccessException, InvocationTargetException {
+                        // this initialises the child nodes!
+                        return AllUsersNode.this.getChildren().getNodesCount(true);
+                    }
 
-        if (EventQueue.isDispatchThread()) {
-            r.run();
-        } else {
-            EventQueue.invokeLater(r);
+                    @Override
+                    public void setValue(final Integer object) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        // not needed
+                    }
+                }; //</editor-fold>
+
+            set.setName("allusersinfo");                                                                               // NOI18N
+            set.setDisplayName(NbBundle.getMessage(AllUsersNode.class, "AllUsersNode.createSheet().set.displayName")); // NOI18N
+            set.setShortDescription(NbBundle.getMessage(
+                    AllUsersNode.class,
+                    "AllUsersNode.createSheet().set.shortDescription"));                                               // NOI18N
+
+            set.put(countUser);
+
+            sheet.put(set);
+        } catch (final Exception ex) {
+            LOG.error("could not create property sheet", ex); // NOI18N
+            ErrorManager.getDefault().notify(ex);
         }
+
+        return sheet;
     }
 
     @Override
     public UserGroup getUserGroup() {
         return ALL_GROUP;
-    }
-
-    @Override
-    public void refreshProperties(final boolean forceInit) {
-        final Runnable r = new Runnable() {
-
-                @Override
-                public void run() {
-                    for (final Node n : getChildren().getNodes()) {
-                        final PropertyRefresh pr = n.getCookie(PropertyRefresh.class);
-                        if (pr != null) {
-                            pr.refreshProperties(forceInit);
-                        }
-                    }
-                }
-            };
-
-        if (EventQueue.isDispatchThread()) {
-            r.run();
-        } else {
-            EventQueue.invokeLater(r);
-        }
     }
 }
 /**
