@@ -61,6 +61,7 @@ import javax.swing.JOptionPane;
 
 import de.cismet.cids.abf.domainserver.project.catalog.CatalogNodeContextCookie;
 import de.cismet.cids.abf.domainserver.project.customizer.DomainserverProjectCustomizer;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.utilities.Connectable;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
@@ -497,8 +498,8 @@ public final class DomainserverProject implements Project, Connectable {
             LOG.error("could not locate runtime.properties file"); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
                     DomainserverProject.class,
-                    "DomainserverProject.storeRuntimeProperties().ErrorUtils.runtimePropsUnfindable"),
-                null);                                             // NOI18N
+                    "DomainserverProject.storeRuntimeProperties().ErrorUtils.runtimePropsUnfindable"), // NOI18N
+                null);
         }
     }
 
@@ -515,6 +516,25 @@ public final class DomainserverProject implements Project, Connectable {
         if ((backend == null) && !connected) {
             return;
         }
+
+        /*
+         * if there are concurrent executions depending on the backend we have to wait until they are finished this is
+         * not a good solution. the whole design is mainly single threaded and thus we have to do this hack. should be
+         * refactored asap but is a lot of work
+         */
+        if (!connected) {
+            if (UserManagement.REFRESH_DISPATCHER.tasksInProgress()) {
+                final WaitDisconnectDialog waitDialog = new WaitDisconnectDialog(UserManagement.REFRESH_DISPATCHER);
+                waitDialog.pack();
+                waitDialog.setLocationRelativeTo(WindowManager.getDefault().getMainWindow());
+                waitDialog.setVisible(true);
+
+                if (waitDialog.isCancelled()) {
+                    return;
+                }
+            }
+        }
+
         connectionInProgress = true;
         fireConnectionStatusIndeterminate();
         if (connected) {
@@ -632,7 +652,7 @@ public final class DomainserverProject implements Project, Connectable {
                 e);                                         // NOI18N
             return false;
         }
-        Connection con = null;
+        final Connection con;
         try {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("receiving database connection"); // NOI18N
