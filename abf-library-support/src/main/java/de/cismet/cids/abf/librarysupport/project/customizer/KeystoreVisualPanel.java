@@ -20,6 +20,8 @@ import javax.swing.text.Document;
 
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 
+import de.cismet.tools.PasswordEncrypter;
+
 /**
  * DOCUMENT ME!
  *
@@ -70,8 +72,8 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
     public void init() {
         final String mainKeyStore = provider.get(
                 PropertyProvider.KEY_GENERAL_KEYSTORE);
-        final String mainKStorePW = provider.get(
-                PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
+        final String mainKStorePW = PasswordEncrypter.decryptString(provider.get(
+                    PropertyProvider.KEY_GENERAL_KEYSTORE_PW));
         final Document doc = mainKeystoreTextField.getDocument();
         doc.addDocumentListener(WeakListeners.document(docL, doc));
         if (mainKeyStore == null) {
