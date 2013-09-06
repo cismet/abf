@@ -364,6 +364,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         final CidsClass c = classTableModel.getCidsClass();
         c.setName(txtClassname.getText());
         c.setTableName(txtTablename.getText());
+        c.setDescription(txtDescription.getText());
         c.setObjectIcon((Icon)cboObjectIcons.getSelectedItem());
         c.setClassIcon((Icon)cboClassIcons.getSelectedItem());
         c.setPrimaryKeyField(txtPrimaryKeyfield.getText());
