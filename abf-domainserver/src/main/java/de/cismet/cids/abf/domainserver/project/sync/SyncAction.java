@@ -13,7 +13,7 @@ import org.openide.util.NbBundle;
 import org.openide.util.actions.CallableSystemAction;
 import org.openide.windows.TopComponent;
 
-import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 
 /**
@@ -21,7 +21,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.1
  */
 public final class SyncAction extends CallableSystemAction {
 
@@ -41,6 +41,7 @@ public final class SyncAction extends CallableSystemAction {
     @Override
     protected void initialize() {
         super.initialize();
+
         putValue("noIconInMenu", Boolean.TRUE); // NOI18N
     }
 
@@ -65,11 +66,14 @@ public final class SyncAction extends CallableSystemAction {
             return false;
         }
 
-        final DomainserverProject project = na[0].getLookup().lookup(DomainserverProject.class);
-        if ((project == null) || !project.isConnected()) {
+        final DomainserverContext context = na[0].getCookie(DomainserverContext.class);
+        if ((context == null) || (context.getDomainserverProject() == null)
+                    || !context.getDomainserverProject().isConnected()) {
             return false;
         }
 
-        return na[0].getLookup().lookup(SyncManagement.class) != null;
+        final SyncManagement sync = na[0].getLookup().lookup(SyncManagement.class);
+
+        return (sync != null) && (sync.getSyncCount() > 0);
     }
 }
