@@ -154,7 +154,7 @@ public abstract class RefreshableNode extends ProjectNode implements Refreshable
             final Future<?> future = ((ProjectChildren)c).refreshByNotify();
 
             // if future == null refresh is already finished
-            if(future != null){
+            if (future != null) {
                 future.get(30, TimeUnit.SECONDS);
             }
         }

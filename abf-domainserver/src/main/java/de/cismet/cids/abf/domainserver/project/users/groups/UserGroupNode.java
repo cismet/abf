@@ -444,7 +444,7 @@ public final class UserGroupNode extends RefreshableNode implements UserGroupCon
             final Future<?> future = ((UserGroupNodeChildren)c).refreshAll(userGroup);
 
             // if future is null the refresh is already finished
-            if(future != null){
+            if (future != null) {
                 future.get(30, TimeUnit.SECONDS);
             }
         }
