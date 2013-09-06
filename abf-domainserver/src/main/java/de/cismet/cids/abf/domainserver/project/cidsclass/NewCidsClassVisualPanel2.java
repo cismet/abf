@@ -181,6 +181,9 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
         ((JXTable)tblRights).setSortOrder(group, SortOrder.ASCENDING);
         final List<UserGroup> groups = backend.getAllEntities(UserGroup.class);
         allUserGroups = groups;
+        ((JXList)lstGroups).setAutoCreateRowSorter(true);
+        ((JXList)lstGroups).setSortable(true);
+        ((JXList)lstGroups).setSortsOnUpdates(true);
         ((JXList)lstGroups).setComparator(ugComp);
         ((JXList)lstGroups).setSortOrder(SortOrder.ASCENDING);
         ((JXList)lstGroups).setCellRenderer(unifiedRenderer);
@@ -379,8 +382,6 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
                 lModel.addElement(ug);
             }
         }
-        list.setSortOrder(SortOrder.ASCENDING);
-        list.setComparator(new Comparators.UserGroups());
         setSelection(selUgs);
     }
 
