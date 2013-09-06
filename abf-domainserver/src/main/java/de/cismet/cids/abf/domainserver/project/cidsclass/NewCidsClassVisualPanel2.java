@@ -191,13 +191,9 @@ public final class NewCidsClassVisualPanel2 extends JPanel {
         if (cperms != null) {
             for (final ClassPermission cp : cperms) {
                 final UserGroup ug = cp.getUserGroup();
-                groups.remove(ug);
                 tModel.addRow(
                     new Object[] { ug, cp.getPermission(), ug.getDomain() });
             }
-        }
-        for (final UserGroup ug : groups) {
-            ((DefaultListModel)lstGroups.getModel()).addElement(ug);
         }
         lstGroups.requestFocusInWindow();
         updateGroupList();
