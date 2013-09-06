@@ -562,7 +562,7 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                     "CidsAttributeNode.createSheet().extensionProp.name")); // NOI18N
             // </editor-fold>
             // <editor-fold defaultstate="collapsed" desc=" Create Property: Description ">
-            final Property descriptionProp = new PropertySupport(
+            final Property<String> descriptionProp = new PropertySupport<String>(
                     "description",                                                  // NOI18N
                     String.class,
                     NbBundle.getMessage(
@@ -575,23 +575,22 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                     true) {
 
                     @Override
-                    public Object getValue() throws IllegalAccessException, InvocationTargetException {
-                        return cidsAttribute.getFieldName();
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
+                        return cidsAttribute.getDescription();
                     }
 
                     @Override
-                    public void setValue(final Object object) throws IllegalAccessException,
+                    public void setValue(final String object) throws IllegalAccessException,
                         IllegalArgumentException,
                         InvocationTargetException {
                         final Attribute old = cidsAttribute;
                         try {
-                            cidsAttribute.setFieldName(object.toString());
-                            project.getCidsDataObjectBackend().store(
-                                cidsAttribute);
+                            cidsAttribute.setDescription(object.toString());
+                            project.getCidsDataObjectBackend().store(cidsAttribute);
                             refreshInDiagram();
                         } catch (final Exception e) {
-                            LOG.error("could not store attr description", // NOI18N
-                                e);
+                            LOG.error("could not store attr description", e); // NOI18N
+
                             cidsAttribute = old;
                             ErrorUtils.showErrorMessage(
                                 NbBundle.getMessage(
