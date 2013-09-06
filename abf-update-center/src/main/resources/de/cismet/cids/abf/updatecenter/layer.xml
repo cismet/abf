@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Services">
+        <folder name="AutoupdateType">
+            <file name="ABF_Update_Center.instance">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="de.cismet.cids.abf.updatecenter.Bundle"/>
+                <attr name="enabled" boolvalue="true"/>
+                <attr name="instanceOf" stringvalue="org.netbeans.spi.autoupdate.UpdateProvider"/>
+                <attr name="instanceCreate" methodvalue="org.netbeans.modules.autoupdate.updateprovider.AutoupdateCatalogFactory.createUpdateProvider"/>
+                <attr name="url" stringvalue="http://www.cismet.de/updatecenters/abf/updates.xml"/>
+            </file>
+
+            <file name="standard-update-provider.instance_hidden"/>
+            <file name="beta-update-provider.instance_hidden"/>
+            <file name="thirdparty-update-provider.instance_hidden"/>
+            <file name="pluginportal-update-provider.instance_hidden"/>
+        </folder>
+
+    </folder>
+</filesystem>
