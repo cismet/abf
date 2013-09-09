@@ -369,7 +369,6 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         c.setClassIcon((Icon)cboClassIcons.getSelectedItem());
         c.setPrimaryKeyField(txtPrimaryKeyfield.getText());
         c.setIndexed(chkIndexed.isSelected());
-        c.setArrayLink(false);
     }
 
     /**
