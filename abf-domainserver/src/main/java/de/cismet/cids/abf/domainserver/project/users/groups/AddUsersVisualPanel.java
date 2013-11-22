@@ -11,11 +11,15 @@ import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.nodes.Children.SortedArray;
 import org.openide.nodes.Node;
+import org.openide.util.NbBundle;
 
+import java.util.Comparator;
 import java.util.Set;
 
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
@@ -71,7 +75,19 @@ public final class AddUsersVisualPanel extends JPanel {
     void init() {
         final UserManagement um = model.getProject().getLookup().lookup(UserManagement.class);
         basicExplorerManager.setRootContext(um);
-        newUserExplorerManager.setRootContext(new AbstractNode(new Children.Array()));
+        final SortedArray children = new Children.SortedArray();
+        children.setComparator(new Comparator<Node>() {
+
+                @Override
+                public int compare(final Node o1, final Node o2) {
+                    return ((UserNode)o1).getUser()
+                                .getLoginname()
+                                .toLowerCase()
+                                .compareTo(((UserNode)o2).getUser().getLoginname().toLowerCase());
+                }
+            });
+        newUserExplorerManager.setRootContext(new AbstractNode(children));
+
         final Set<User> users = model.getUserGroup().getUsers();
         final DomainserverProject project = model.getProject();
         if (users != null) {
@@ -82,6 +98,12 @@ public final class AddUsersVisualPanel extends JPanel {
             }
             addUserNodes(userNodes);
         }
+
+        ((TitledBorder)panRight.getBorder()).setTitle(
+            NbBundle.getMessage(
+                AddUsersVisualPanel.class,
+                "AddUsersVisualPanel.panRight.border.title", // NOI18N
+                model.getUserGroup().getName()));
     }
 
     /**
@@ -133,21 +155,27 @@ public final class AddUsersVisualPanel extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        panLeft.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                NbBundle.getMessage(AddUsersVisualPanel.class, "AddUsersVisualPanel.panLeft.border.title"))); // NOI18N
+
         final org.jdesktop.layout.GroupLayout panLeftLayout = new org.jdesktop.layout.GroupLayout(panLeft);
         panLeft.setLayout(panLeftLayout);
         panLeftLayout.setHorizontalGroup(
             panLeftLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
                 scpUsers,
                 org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                208,
+                184,
                 Short.MAX_VALUE));
         panLeftLayout.setVerticalGroup(
             panLeftLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
                 org.jdesktop.layout.GroupLayout.TRAILING,
                 scpUsers,
                 org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                296,
+                288,
                 Short.MAX_VALUE));
+
+        panRight.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                NbBundle.getMessage(AddUsersVisualPanel.class, "AddUsersVisualPanel.panRight.border.title"))); // NOI18N
 
         final org.jdesktop.layout.GroupLayout panRightLayout = new org.jdesktop.layout.GroupLayout(panRight);
         panRight.setLayout(panRightLayout);
@@ -161,10 +189,12 @@ public final class AddUsersVisualPanel extends JPanel {
             panRightLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
                 scpNewGroupMembers,
                 org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                296,
+                288,
                 Short.MAX_VALUE));
 
-        org.openide.awt.Mnemonics.setLocalizedText(cmdAddToGroup, "-->");
+        org.openide.awt.Mnemonics.setLocalizedText(
+            cmdAddToGroup,
+            NbBundle.getMessage(AddUsersVisualPanel.class, "AddUsersVisualPanel.cmdAddToGroup.text")); // NOI18N
         cmdAddToGroup.addActionListener(new java.awt.event.ActionListener() {
 
                 @Override
@@ -173,7 +203,9 @@ public final class AddUsersVisualPanel extends JPanel {
                 }
             });
 
-        org.openide.awt.Mnemonics.setLocalizedText(cmdRemoveFromNewGroup, "<--");
+        org.openide.awt.Mnemonics.setLocalizedText(
+            cmdRemoveFromNewGroup,
+            NbBundle.getMessage(AddUsersVisualPanel.class, "AddUsersVisualPanel.cmdRemoveFromNewGroup.text")); // NOI18N
         cmdRemoveFromNewGroup.addActionListener(new java.awt.event.ActionListener() {
 
                 @Override
