@@ -17,12 +17,6 @@
     <name>ABF Domainserver</name>
     <description>Project type to administer cids Domainservers</description>
 
-    <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-domainserver/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-domainserver/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-domainserver/</url>
-    </scm>
-
     <dependencies>
         <!-- 
             NOTE: we cannot declare cids-dataobjects as direct dependency because the netbeans nbm plugin will place it

@@ -41,9 +41,9 @@
     </modules>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-parent/</url>
+        <connection>scm:git:https://github.com/cismet/abf.git</connection>
+        <developerConnection>scm:git:git@github.com:cismet/abf.git</developerConnection>
+        <url>https://github.com/cismet/abf</url>
     </scm>
 
     <properties>

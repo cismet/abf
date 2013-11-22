@@ -16,12 +16,6 @@
     <name>ABF Broker</name>
     <description>Simple project to edit runtime properties of cids Brokers/Callservers</description>
 
-    <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-broker/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-broker/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-broker/</url>
-    </scm>
-
     <dependencies>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
