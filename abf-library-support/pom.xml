@@ -5,28 +5,22 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.2.2-SNAPSHOT</version>
-        <relativePath>../abf-parent</relativePath>
+        <version>3.2.3-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-library-support</artifactId>
-    <version>3.2.2-SNAPSHOT</version>
+    <version>3.2.3-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF cids Library Support</name>
     <description>Helps users to administer the libraries of their cids Distribution</description>
 
-    <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-library-support/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-library-support/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-library-support/</url>
-    </scm>
-
     <dependencies>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.2.2-SNAPSHOT</version>
+            <version>3.2.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>

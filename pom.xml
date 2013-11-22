@@ -10,7 +10,7 @@
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf</artifactId>
-    <version>3.2.2-SNAPSHOT</version>
+    <version>3.2.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>ABF</name>
@@ -26,25 +26,26 @@
     </developers>
 
     <modules>
-        <module>../abf-app</module>
-        <module>../abf-branding</module>
-        <module>../abf-update-center</module>
-        <module>../abf-utilities</module>
-        <module>../abf-library-support</module>
+        <module>abf-app</module>
+        <module>abf-branding</module>
+        <module>abf-update-center</module>
+        <module>abf-utilities</module>
+        <module>abf-library-support</module>
 <!--        <module>../abf-cids-java-template</module>-->
-        <module>../abf-registry</module>
-        <module>../abf-broker</module>
-        <module>../abf-client</module>
-        <module>../abf-domainserver</module>
+        <module>abf-registry</module>
+        <module>abf-broker</module>
+        <module>abf-client</module>
+        <module>abf-domainserver</module>
 <!--        <module>../abf-options</module>-->
 <!--        <module>../abf-distribution</module>-->
     </modules>
 
     <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-parent/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-parent/</url>
-    </scm>
+        <connection>scm:git:https://github.com/cismet/abf.git</connection>
+        <developerConnection>scm:git:git@github.com:cismet/abf.git</developerConnection>
+        <url>https://github.com/cismet/abf</url>
+      <tag>HEAD</tag>
+  </scm>
 
     <properties>
         <!-- !!! REMEBER TO UPDATE IMPLEMENTATION VERSION OF MAVEN API IN LIBRARY SUPPORT ON NB UPDATE !!! -->
