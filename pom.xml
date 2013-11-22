@@ -10,7 +10,7 @@
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf</artifactId>
-    <version>3.2.2-SNAPSHOT</version>
+    <version>3.2.2</version>
     <packaging>pom</packaging>
 
     <name>ABF</name>
@@ -44,7 +44,8 @@
         <connection>scm:git:https://github.com/cismet/abf.git</connection>
         <developerConnection>scm:git:git@github.com:cismet/abf.git</developerConnection>
         <url>https://github.com/cismet/abf</url>
-    </scm>
+      <tag>abf-3.2.2</tag>
+  </scm>
 
     <properties>
         <!-- !!! REMEBER TO UPDATE IMPLEMENTATION VERSION OF MAVEN API IN LIBRARY SUPPORT ON NB UPDATE !!! -->
