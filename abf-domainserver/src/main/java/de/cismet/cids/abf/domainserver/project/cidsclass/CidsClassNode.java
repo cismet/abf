@@ -914,8 +914,8 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
                 CallableSystemAction.get(CreateDiagramFromClassAction.class),
                 null,
                 CallableSystemAction.get(DeleteAction.class),
-                null,
-                CallableSystemAction.get(ExportClassesAction.class),
+//                null,
+//                CallableSystemAction.get(ExportClassesAction.class),
                 null,
                 CallableSystemAction.get(IndexAction.class)
             };

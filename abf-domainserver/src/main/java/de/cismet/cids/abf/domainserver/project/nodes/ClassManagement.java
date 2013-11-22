@@ -102,8 +102,8 @@ public class ClassManagement extends ProjectNode implements Refreshable,
                 CallableSystemAction.get(CheckRightsAction.class),
                 null,
                 CallableSystemAction.get(RefreshAction.class),
-                null,
-                CallableSystemAction.get(ImportClassesAction.class)
+//                null,
+//                CallableSystemAction.get(ImportClassesAction.class)
             };
     }
 

@@ -201,6 +201,23 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
         }
     }
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public int getSyncCount() {
+        final int count;
+
+        if (pedantic) {
+            count = allStatementGroups.length;
+        } else {
+            count = statementGroupsNotPedantic.length;
+        }
+
+        return count;
+    }
+
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
         if (event.isConnected() && !event.isIndeterminate()) {

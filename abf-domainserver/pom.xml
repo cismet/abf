@@ -5,23 +5,17 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.2.1</version>
-        <relativePath>../abf-parent</relativePath>
+        <version>3.2.2</version>
+        <relativePath>..</relativePath>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf-domainserver</artifactId>
-    <version>3.2.1</version>
+    <version>3.2.2</version>
     <packaging>nbm</packaging>
 
     <name>ABF Domainserver</name>
     <description>Project type to administer cids Domainservers</description>
-
-    <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.2.1/abf-domainserver</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/tags/abf-3.2.1/abf-domainserver</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/tags/abf-3.2.1/abf-domainserver</url>
-    </scm>
 
     <dependencies>
         <!-- 
@@ -33,7 +27,7 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.2</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.commons</groupId>

@@ -21,6 +21,8 @@ import de.cismet.cids.abf.librarysupport.project.nodes.cookies.LibrarySupportCon
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.ManifestProviderCookie;
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.SourceContextCookie;
 
+import de.cismet.tools.PasswordEncrypter;
+
 /**
  * DOCUMENT ME!
  *
@@ -226,7 +228,8 @@ public final class DeployInformation {
                     libCC.getLibrarySupportContext().getProjectProperties());
             final FileObject keystore = FileUtil.toFileObject(new File(
                         provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE)));
-            final String passwd = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
+            final String passwd = PasswordEncrypter.decryptString(provider.get(
+                        PropertyProvider.KEY_GENERAL_KEYSTORE_PW));
             final String destFile = destFilePath.getAbsolutePath()
                         + System.getProperty("file.separator") // NOI18N
                         + srcFile.getName() + ".jar";          // NOI18N

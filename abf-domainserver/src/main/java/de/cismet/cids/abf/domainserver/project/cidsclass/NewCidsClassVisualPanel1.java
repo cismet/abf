@@ -36,12 +36,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import java.lang.reflect.Field;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
@@ -364,11 +369,11 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         final CidsClass c = classTableModel.getCidsClass();
         c.setName(txtClassname.getText());
         c.setTableName(txtTablename.getText());
+        c.setDescription(txtDescription.getText());
         c.setObjectIcon((Icon)cboObjectIcons.getSelectedItem());
         c.setClassIcon((Icon)cboClassIcons.getSelectedItem());
         c.setPrimaryKeyField(txtPrimaryKeyfield.getText());
         c.setIndexed(chkIndexed.isSelected());
-        c.setArrayLink(false);
     }
 
     /**
@@ -918,8 +923,23 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
         final int selectedRow = tblAttr.getSelectedRow();
         if (selectedRow >= 0) {
             final int modelRow = ((JXTable)tblAttr).convertRowIndexToModel(selectedRow);
-            classTableModel.getCidsClass().getAttributes().remove(
-                classTableModel.getAttributeAt(modelRow));
+
+            final Collection<Attribute> attrs = classTableModel.getCidsClass().getAttributes();
+            final Attribute attr = classTableModel.getAttributeAt(modelRow);
+
+            // workaround to overcome issue https://github.com/cismet/abf/issues/9
+            try {
+                final Field setField = attrs.getClass().getDeclaredField("set");
+                setField.setAccessible(true);
+                final Set s = (Set)setField.get(attrs);
+                final Set t = new HashSet(s);
+                s.clear();
+                s.addAll(t);
+            } catch (final Exception ex) {
+                LOG.warn("cannot reinitialise hashcodes to ensure proper mappings", ex); // NOI18N
+            }
+
+            attrs.remove(attr);
             classTableModel.fireTableDataChanged();
             final int rc = tblAttr.getRowCount();
             if (rc > 0) {
@@ -937,7 +957,7 @@ public final class NewCidsClassVisualPanel1 extends JPanel {
                 model.fireChangeEvent();
             }
         }
-    }                                                                             //GEN-LAST:event_cmdRemoveActionPerformed
+    } //GEN-LAST:event_cmdRemoveActionPerformed
 
     /**
      * DOCUMENT ME!

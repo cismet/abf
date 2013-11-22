@@ -25,6 +25,8 @@ import javax.swing.JComponent;
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProjectNode;
 
+import de.cismet.tools.PasswordEncrypter;
+
 /**
  * DOCUMENT ME!
  *
@@ -147,14 +149,12 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
 
         @Override
         public void actionPerformed(final ActionEvent e) {
-            final PropertyProvider provider = PropertyProvider.getInstance(
-                    project.getProjectProperties());
+            final PropertyProvider provider = PropertyProvider.getInstance(project.getProjectProperties());
             final String mainKeystore = keystoreVis.getMainKeystore();
-            final String mainKeystorePW = keystoreVis.getPassword();
+            final String mainKeystorePW = PasswordEncrypter.encryptString(keystoreVis.getPassword());
             final String basicManPath = manifestVis.getBasicManifestField().getText();
             provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE, mainKeystore);
-            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW,
-                mainKeystorePW);
+            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, mainKeystorePW);
             provider.put(PropertyProvider.KEY_GENERAL_MANIFEST, basicManPath);
             provider.save();
         }
