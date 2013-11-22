@@ -6,7 +6,7 @@
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
         <version>3.2.2-SNAPSHOT</version>
-        <relativePath>../abf-parent</relativePath>
+        <relativePath>..</relativePath>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
