@@ -42,19 +42,18 @@ public class ClientProjectFactory implements ProjectFactory {
 
     @Override
     public void saveProject(final Project project) throws IOException, ClassCastException {
-        final FileObject projectRoot = project.getProjectDirectory();
-        if (projectRoot.getFileObject(PROJECT_DIR) == null) {
-            throw new IOException("Project dir " + projectRoot.getPath() + " deleted, cannot save project"); // NOI18N
+        final FileObject projectDir = project.getProjectDirectory().getFileObject(PROJECT_DIR);
+        if (projectDir == null) {
+            throw new IOException("Project dir " + projectDir.getPath() + " deleted, cannot save project"); // NOI18N
         }
         // Force creation of the scenes/ dir if it was deleted
         ((ClientProject)project).getWebinterfaceFolder(true);
-        // Find the properties file pvproject/project.properties,
+        // Find the properties file project.properties,
         // creating it if necessary
-        final String propsPath = PROJECT_DIR + "/" + PROJECT_PROPFILE; // NOI18N
-        FileObject propertiesFile = projectRoot.getFileObject(propsPath);
+        FileObject propertiesFile = projectDir.getFileObject(PROJECT_PROPFILE);
         if (propertiesFile == null) {
             // Recreate the properties file if needed
-            propertiesFile = projectRoot.createData(propsPath);
+            propertiesFile = projectDir.createData(PROJECT_PROPFILE);
         }
         final Properties properties = project.getLookup().lookup(Properties.class);
         properties.store(new FileOutputStream(FileUtil.toFile(propertiesFile)), "Cids Client Project Properties"); // NOI18N

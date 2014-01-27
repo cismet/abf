@@ -272,8 +272,13 @@ public final class CreateSecurityJarAction implements ActionListener {
                 dispatchMessage(io.getOut(), "Building security jar for '" + fo.getNameExt() + "' ...", false);
 
                 final FileObject src = info.workingFolder.getFileObject("src");
+                final FileObject jnlpDir = src.getFileObject("JNLP-INF");
+                final FileObject jnlp = jnlpDir.getFileObject("APPLICATION.JNLP");
                 try {
-                    fo.copy(src.getFileObject("JNLP-INF"), "APPLICATION", "JNLP"); // NOI18N
+                    if (jnlp != null) {
+                        jnlp.delete();
+                    }
+                    fo.copy(jnlpDir, "APPLICATION", "JNLP"); // NOI18N
                     final FileObject buildxml = info.workingFolder.getFileObject("build.xml");
                     final DeployInformation di = new DeployInformation(
                             buildxml,
