@@ -7,6 +7,7 @@
 ****************************************************/
 package de.cismet.cids.abf.domainserver.project;
 
+import de.cismet.cids.abf.utilities.ProgressIndicatingExecutor;
 import org.openide.util.NbBundle;
 import org.openide.util.WeakListeners;
 import org.openide.windows.WindowManager;
@@ -90,7 +91,8 @@ public class WaitDisconnectDialog extends JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         lblWaitFinished = new javax.swing.JLabel();
@@ -100,9 +102,7 @@ public class WaitDisconnectDialog extends JDialog {
         setResizable(false);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        lblWaitFinished.setText(NbBundle.getMessage(
-                WaitDisconnectDialog.class,
-                "WaitDisconnectDialog.lblWaitFinished.text")); // NOI18N
+        lblWaitFinished.setText(NbBundle.getMessage(WaitDisconnectDialog.class, "WaitDisconnectDialog.lblWaitFinished.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -118,7 +118,7 @@ public class WaitDisconnectDialog extends JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LAST_LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(btnCancel, gridBagConstraints);
-    }                                                                                                              // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
 

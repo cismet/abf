@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.ProgressIndicatingExecutor;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.RefreshableNode;
 import de.cismet.cids.abf.domainserver.project.users.AllUsersNode;
@@ -39,6 +38,7 @@ import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupNode;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
+import de.cismet.cids.abf.utilities.ProgressIndicatingExecutor;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.entity.user.UserGroup;
