@@ -161,14 +161,12 @@
                     <publicPackages>
                         <publicPackage>de.cismet.*</publicPackage>
                         <publicPackage>javassist.*</publicPackage>
+                        <publicPackage>javax.*</publicPackage>
                         <publicPackage>org.objectweb.asm.*</publicPackage>
                         <publicPackage>org.slf4j.*</publicPackage>
                         <publicPackage>net.sf.cglib.*</publicPackage>
-                        <publicPackage>javax.xml.*</publicPackage>
                         <publicPackage>org.xml.*</publicPackage>
                         <publicPackage>org.w3c.dom.*</publicPackage>
-                        
-                        <!-- BEGIN: ABF cids Registry -->
                         <publicPackage>Sirius.*</publicPackage>
                         <publicPackage>com.sun.grizzly.*</publicPackage>
                         <publicPackage>junit.*</publicPackage>
@@ -177,9 +175,7 @@
                         <publicPackage>org.jdesktop.*</publicPackage>
                         <publicPackage>org.postgresql.*</publicPackage>
                         <publicPackage>org.postgis.*</publicPackage>
-                        <publicPackage>javax.activation.*</publicPackage>
                         <publicPackage>org.jdom.*</publicPackage>
-                        <publicPackage>javax.persistence.*</publicPackage>
                         <publicPackage>com.vividsolutions.*</publicPackage>
                         <!-- END: ABF cids Registry -->
                     </publicPackages>
