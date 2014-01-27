@@ -53,8 +53,9 @@ public final class ClientProjectNode extends FilterNode {
                     Lookups.singleton(project),
                     node.getLookup()
                 }));
-        icon = ImageUtilities.loadImage(ClientProject.IMAGE_FOLDER + "client.png"); // NOI18N
-        setDisplayName(project.getProjectDirectory().getName() + " [cidsClient]");  // NOI18N
+        icon = ImageUtilities.loadImage(ClientProjectNode.class.getPackage().getName().replaceAll("\\.", "/") // NOI18N
+                        + "/client.png");                                             // NOI18N
+        setDisplayName(project.getProjectDirectory().getName() + " [cidsClient]");    // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------

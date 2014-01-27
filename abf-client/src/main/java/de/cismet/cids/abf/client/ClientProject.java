@@ -41,8 +41,7 @@ public class ClientProject implements Project {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    public static final String WEBINTERFACE_DIR = "webinterface";                  // NOI18N
-    public static final String IMAGE_FOLDER = "de/cismet/cids/abf/client/images/"; // NOI18N
+    public static final String WEBINTERFACE_DIR = "webinterface"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
@@ -181,7 +180,9 @@ public class ClientProject implements Project {
          * Creates a new Info object.
          */
         Info() {
-            icon = new ImageIcon(ImageUtilities.loadImage(IMAGE_FOLDER + "client.png")); // NOI18N
+            icon = ImageUtilities.loadImageIcon(ClientProject.class.getPackage().getName().replaceAll("\\.", "/") // NOI18N
+                            + "/client.png",                                          // NOI18N
+                    false);
         }
 
         //~ Methods ------------------------------------------------------------

@@ -72,6 +72,7 @@ public class ClientLogicalView implements LogicalViewProvider {
                                     }
                                     if (fo.isFolder()
                                                 || "jnlp".equalsIgnoreCase(ext)       // NOI18N
+                                                || "jar".equalsIgnoreCase(ext)        // NOI18N
                                                 || "cfg".equalsIgnoreCase(ext)        // NOI18N
                                                 || "properties".equalsIgnoreCase(ext) // NOI18N
                                                 || "xml".equalsIgnoreCase(ext)) {     // NOI18N

@@ -38,6 +38,11 @@
             <artifactId>cismet-commons</artifactId>
         </dependency>
         <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
