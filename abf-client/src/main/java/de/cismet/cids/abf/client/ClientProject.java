@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import de.cismet.cids.abf.utilities.project.NotifyProperties;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
@@ -105,6 +104,7 @@ public class ClientProject implements Project {
                         loadProperties(),         // The project properties
                         new Info(),               // Project information implementation
                         logicalView,              // Logical view of project implementation
+                        new ClientProjectCustomizer(this)
                     });
             return lkp;
         }

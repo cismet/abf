@@ -37,9 +37,9 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final String GENERAL_CATEGORY = "general";       // NOI18N
-    private static final String DEPLOY_CATEGORY = "deploy";         // NOI18N
-    private static final String DEPLOY_KEYSTORE = "deployKeystore"; // NOI18N
+    public static final String GENERAL_CATEGORY = "general";       // NOI18N
+    public static final String DEPLOY_CATEGORY = "deploy";         // NOI18N
+    public static final String DEPLOY_KEYSTORE = "deployKeystore"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
