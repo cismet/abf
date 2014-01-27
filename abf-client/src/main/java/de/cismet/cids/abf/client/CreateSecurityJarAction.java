@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
@@ -22,7 +23,6 @@ import org.netbeans.api.project.Project;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
-import org.openide.util.RequestProcessor;
 import org.openide.windows.IOProvider;
 import org.openide.windows.InputOutput;
 import org.openide.windows.OutputWriter;
@@ -35,7 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -51,7 +50,6 @@ import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
 import de.cismet.cids.abf.utilities.ProgressIndicatingExecutor;
 
 import de.cismet.tools.PasswordEncrypter;
-import org.dom4j.io.OutputFormat;
 
 /**
  * DOCUMENT ME!
@@ -227,7 +225,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 LOG.error(message, ex);
                 dispatchMessage(io.getErr(), message, true);
             } finally {
-                if(writer != null) {
+                if (writer != null) {
                     try {
                         writer.close();
                     } catch (final IOException e) {
