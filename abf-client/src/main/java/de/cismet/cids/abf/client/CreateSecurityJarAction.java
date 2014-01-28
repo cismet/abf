@@ -10,9 +10,9 @@ package de.cismet.cids.abf.client;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -63,8 +63,8 @@ public final class CreateSecurityJarAction implements ActionListener {
     /** LOGGER. */
     private static final transient Logger LOG = Logger.getLogger(CreateSecurityJarAction.class);
     private static final Executor EXECUTOR = new ProgressIndicatingExecutor(
-            "Create security jar",
-            "create-security-jar-dispatcher",
+            "Create security jar",            // NOI18N
+            "create-security-jar-dispatcher", // NOI18N
             1);
 
     //~ Instance fields --------------------------------------------------------
@@ -197,11 +197,17 @@ public final class CreateSecurityJarAction implements ActionListener {
                 final List jarNodes = d.selectNodes("//jnlp/resources/jar"); // NOI18N
 
                 Element secNode = null;
-                for (final Iterator it = jarNodes.iterator(); it.hasNext() && (secNode == null);) {
-                    final Node jarNode = (Node)it.next();
-                    final String href = jarNode.valueOf("@href"); // NOI18N
-                    if ((href != null) && href.equals(secHref)) { // NOI18N
-                        secNode = (Element)jarNode;
+                for (final Iterator it = jarNodes.iterator(); it.hasNext();) {
+                    final Element jarNode = (Element)it.next();
+                    final String href = jarNode.valueOf("@href");                      // NOI18N
+                    if ((secNode == null) && (href != null) && href.equals(secHref)) { // NOI18N
+                        secNode = jarNode;
+                    }
+
+                    // remove any other main attribute
+                    final Attribute main = jarNode.attribute("main"); // NOI18N
+                    if (main != null) {
+                        jarNode.remove(main);
                     }
                 }
 
