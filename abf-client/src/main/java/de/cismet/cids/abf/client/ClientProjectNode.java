@@ -25,7 +25,7 @@ import javax.swing.Action;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.3
  */
 public final class ClientProjectNode extends FilterNode {
 
@@ -53,8 +53,9 @@ public final class ClientProjectNode extends FilterNode {
                     Lookups.singleton(project),
                     node.getLookup()
                 }));
-        icon = ImageUtilities.loadImage(ClientProject.IMAGE_FOLDER + "client.png"); // NOI18N
-        setDisplayName(project.getProjectDirectory().getName() + " [cidsClient]");  // NOI18N
+        icon = ImageUtilities.loadImage(ClientProjectNode.class.getPackage().getName().replaceAll("\\.", "/") // NOI18N
+                        + "/client.png");                                             // NOI18N
+        setDisplayName(project.getProjectDirectory().getName() + " [cidsClient]");    // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------

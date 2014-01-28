@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
 
+import de.cismet.cids.abf.utilities.ProgressIndicatingExecutor;
+
 /**
  * Quick and dirty hack, should be refactored asap.
  *

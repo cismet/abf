@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="File">
+            <file name="de-cismet-cids-abf-client-CreateSecurityJarAction.instance">
+                <attr name="delegate" methodvalue="org.openide.awt.Actions.inject"/>
+                <attr name="displayName" bundlevalue="de.cismet.cids.abf.client.Bundle#CTL_CreateSecurityJarAction"/>
+                <attr name="iconBase" stringvalue="de/cismet/cids/abf/client/security-edit_16.png"/>
+                <attr name="injectable" stringvalue="de.cismet.cids.abf.client.CreateSecurityJarAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.context"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+                <attr name="selectionType" stringvalue="ANY"/>
+                <attr name="type" stringvalue="org.openide.loaders.DataObject"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Loaders">
+        <folder name="text">
+            <folder name="x-jnlp+xml">
+                <folder name="Actions">
+                    <file name="de-cismet-cids-abf-client-CreateSecurityJarAction-separatorAfter.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="175"/>
+                    </file>
+                    <file name="de-cismet-cids-abf-client-CreateSecurityJarAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/File/de-cismet-cids-abf-client-CreateSecurityJarAction.instance"/>
+                        <attr name="position" intvalue="150"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+</filesystem>

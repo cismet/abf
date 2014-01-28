@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import de.cismet.cids.abf.utilities.project.NotifyProperties;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
@@ -35,14 +34,13 @@ import de.cismet.cids.abf.utilities.windows.ErrorUtils;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.3
  */
 public class ClientProject implements Project {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    public static final String WEBINTERFACE_DIR = "webinterface";                  // NOI18N
-    public static final String IMAGE_FOLDER = "de/cismet/cids/abf/client/images/"; // NOI18N
+    public static final String WEBINTERFACE_DIR = "webinterface"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
@@ -106,6 +104,7 @@ public class ClientProject implements Project {
                         loadProperties(),         // The project properties
                         new Info(),               // Project information implementation
                         logicalView,              // Logical view of project implementation
+                        new ClientProjectCustomizer(this)
                     });
             return lkp;
         }
@@ -181,7 +180,9 @@ public class ClientProject implements Project {
          * Creates a new Info object.
          */
         Info() {
-            icon = new ImageIcon(ImageUtilities.loadImage(IMAGE_FOLDER + "client.png")); // NOI18N
+            icon = ImageUtilities.loadImageIcon(ClientProject.class.getPackage().getName().replaceAll("\\.", "/") // NOI18N
+                            + "/client.png",                                          // NOI18N
+                    false);
         }
 
         //~ Methods ------------------------------------------------------------
