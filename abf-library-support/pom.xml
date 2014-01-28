@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.2.2</version>
+        <version>3.3</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-library-support</artifactId>
-    <version>3.2.2</version>
+    <version>3.3</version>
     <packaging>nbm</packaging>
 
     <name>ABF cids Library Support</name>
@@ -20,7 +20,21 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.2.2</version>
+            <version>3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>de.cismet.commons</groupId>
+            <artifactId>cismet-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.3.02</version>
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -136,6 +150,11 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
                     <codeNameBase>de.cismet.cids.abf.librarysupport/3</codeNameBase>
+                    <publicPackages>
+                        <publicPackage>de.cismet.cids.abf.librarysupport.*</publicPackage>
+                        <publicPackage>javax.xml.*</publicPackage>
+                        <publicPackage>org.w3c.dom.bootstrap.*</publicPackage>
+                    </publicPackages>
                 </configuration>
             </plugin>
         </plugins>

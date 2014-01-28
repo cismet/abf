@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+X-COMMENT: created with cidsABF, security archive, no main-class
+Permissions: all-permissions
+Codebase: *

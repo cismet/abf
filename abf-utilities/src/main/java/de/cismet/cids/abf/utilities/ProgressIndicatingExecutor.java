@@ -5,7 +5,7 @@
 *              ... and it just works.
 *
 ****************************************************/
-package de.cismet.cids.abf.domainserver.project;
+package de.cismet.cids.abf.utilities;
 
 import org.apache.log4j.Logger;
 

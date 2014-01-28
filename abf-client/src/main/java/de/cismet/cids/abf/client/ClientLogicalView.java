@@ -22,7 +22,7 @@ import org.openide.nodes.Node;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.3
  */
 public class ClientLogicalView implements LogicalViewProvider {
 
@@ -72,6 +72,7 @@ public class ClientLogicalView implements LogicalViewProvider {
                                     }
                                     if (fo.isFolder()
                                                 || "jnlp".equalsIgnoreCase(ext)       // NOI18N
+                                                || "jar".equalsIgnoreCase(ext)        // NOI18N
                                                 || "cfg".equalsIgnoreCase(ext)        // NOI18N
                                                 || "properties".equalsIgnoreCase(ext) // NOI18N
                                                 || "xml".equalsIgnoreCase(ext)) {     // NOI18N

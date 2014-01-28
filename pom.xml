@@ -10,7 +10,7 @@
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf</artifactId>
-    <version>3.2.2</version>
+    <version>3.3</version>
     <packaging>pom</packaging>
 
     <name>ABF</name>
@@ -44,7 +44,7 @@
         <connection>scm:git:https://github.com/cismet/abf.git</connection>
         <developerConnection>scm:git:git@github.com:cismet/abf.git</developerConnection>
         <url>https://github.com/cismet/abf</url>
-      <tag>abf-3.2.2</tag>
+      <tag>abf-3.3</tag>
   </scm>
 
     <properties>
@@ -375,6 +375,45 @@
                     <toDir>home/vhost/home/vhost_cismet/htdocs/www.cismet.de/updatecenters/abf</toDir>
                 </configuration>
             </plugin>
+            <!-- START: direct classpath configuration -->
+            <plugin>
+                <groupId>de.cismet.cids</groupId>
+                <artifactId>cids-maven-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <id>create-compile-classpath</id>
+                        <goals>
+                            <goal>create-direct-cp-property</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!-- version managed by global-parent -->
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>direct-compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <compilerArguments>
+                                <sourcepath>${basedir}/src/main/java</sourcepath>
+                                <classpath>${classpath.directDependencies}</classpath>
+                            </compilerArguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- END: direct classpath configuration -->
         </plugins>
     </build>
 </project>
