@@ -23,6 +23,7 @@ import org.netbeans.api.project.Project;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
+import org.openide.util.NbBundle;
 import org.openide.windows.IOProvider;
 import org.openide.windows.InputOutput;
 import org.openide.windows.OutputWriter;
@@ -54,7 +55,7 @@ import de.cismet.tools.PasswordEncrypter;
 /**
  * DOCUMENT ME!
  *
- * @version  $Revision$, $Date$
+ * @version  1.0
  */
 public final class CreateSecurityJarAction implements ActionListener {
 
@@ -90,7 +91,12 @@ public final class CreateSecurityJarAction implements ActionListener {
 
                 @Override
                 public void run() {
-                    final InputOutput io = IOProvider.getDefault().getIO("Create security jar", false);
+                    final InputOutput io = IOProvider.getDefault()
+                                .getIO(
+                                    NbBundle.getMessage(
+                                        CreateSecurityJarAction.class,
+                                        "CreateSecurityJarAction.actionPerformed(ActionEvent).io.title"), // NOI18N
+                                    false);
                     io.setFocusTaken(true);
                     final Map<DataObject, Info> infos = new HashMap<DataObject, Info>();
                     for (final DataObject dataObject : context) {
@@ -99,7 +105,7 @@ public final class CreateSecurityJarAction implements ActionListener {
 
                         try {
                             if (project == null) {
-                                throw new IllegalStateException("project not available for jnlp: " + dataObject);
+                                throw new IllegalStateException("project not available for jnlp: " + dataObject); // NOI18N
                             } else {
                                 final Info info = getInfo(project, infos.values());
                                 if (info == null) {
@@ -108,7 +114,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                                     final Properties projectProps = project.getLookup().lookup(Properties.class);
                                     if (projectProps == null) {
                                         throw new IllegalStateException(
-                                            "project properties not availabe for project: "
+                                            "project properties not availabe for project: " // NOI18N
                                                     + project);
                                     } else {
                                         final String ksPath = projectProps.getProperty(
@@ -135,7 +141,10 @@ public final class CreateSecurityJarAction implements ActionListener {
                                 }
                             }
                         } catch (final Exception e) {
-                            final String message = "cannot process: " + dataObject.getPrimaryFile().getNameExt();
+                            final String message = NbBundle.getMessage(
+                                    CreateSecurityJarAction.class,
+                                    "CreateSecurityJarAction.actionPerformed(ActionEvent).message.processError", // NOI18N
+                                    dataObject.getPrimaryFile().getNameExt());
                             LOG.warn(message, e);
                             io.getErr().println(message);
                             io.getErr().println(e.getMessage());
@@ -144,7 +153,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                                 try {
                                     workingFolder.delete();
                                 } catch (IOException ex) {
-                                    LOG.warn("cannot delete working folder: " + workingFolder, ex);
+                                    LOG.warn("cannot delete working folder: " + workingFolder, ex); // NOI18N
                                 }
                             }
                         }
@@ -170,7 +179,7 @@ public final class CreateSecurityJarAction implements ActionListener {
             try {
                 info.workingFolder.delete();
             } catch (final IOException e) {
-                LOG.warn("cannot delete working folder: " + info.workingFolder, e);
+                LOG.warn("cannot delete working folder: " + info.workingFolder, e); // NOI18N
             }
         }
     }
@@ -189,18 +198,25 @@ public final class CreateSecurityJarAction implements ActionListener {
             try {
                 final FileObject fo = dataObject.getPrimaryFile();
 
-                dispatchMessage(io.getOut(), "Transforming '" + fo.getNameExt() + "' ...", false);
+                dispatchMessage(io.getOut(),
+                    NbBundle.getMessage(
+                        CreateSecurityJarAction.class,
+                        "CreateSecurityJarAction.transformJnlps(InputOutput,Map<DataObject,Info>).message.start", // NOI18N
+                        fo.getNameExt()),
+                    false);
 
-                final String secHref = "client/" + infos.get(dataObject).project.getProjectDirectory().getName() + "/"
-                            + fo.getName() + "_security.jar";
+                final String secHref = "client/"
+                            + infos.get(dataObject).project.getProjectDirectory().getName() // NOI18N
+                            + "/"                                                           // NOI18N
+                            + fo.getName() + "_security.jar";                               // NOI18N
                 final Document d = reader.read(fo.getInputStream());
-                final List jarNodes = d.selectNodes("//jnlp/resources/jar"); // NOI18N
+                final List jarNodes = d.selectNodes("//jnlp/resources/jar");                // NOI18N
 
                 Element secNode = null;
                 for (final Iterator it = jarNodes.iterator(); it.hasNext();) {
                     final Element jarNode = (Element)it.next();
-                    final String href = jarNode.valueOf("@href");                      // NOI18N
-                    if ((secNode == null) && (href != null) && href.equals(secHref)) { // NOI18N
+                    final String href = jarNode.valueOf("@href"); // NOI18N
+                    if ((secNode == null) && (href != null) && href.equals(secHref)) {
                         secNode = jarNode;
                     }
 
@@ -225,9 +241,15 @@ public final class CreateSecurityJarAction implements ActionListener {
 
                 infos.get(dataObject).transformed = true;
 
-                dispatchMessage(io.getOut(), "DONE", true);
+                dispatchMessage(io.getOut(),
+                    NbBundle.getMessage(
+                        CreateSecurityJarAction.class,
+                        "CreateSecurityJarAction.transformJnlps(InputOutput,Map<DataObject,Info>).message.finished"), // NOI18N
+                    true);
             } catch (final Exception ex) {
-                final String message = "cannot transform jnlp";
+                final String message = NbBundle.getMessage(
+                        CreateSecurityJarAction.class,
+                        "CreateSecurityJarAction.transformJnlps(InputOutput,Map<DataObject,Info>).message.transformError"); // NOI18N
                 LOG.error(message, ex);
                 dispatchMessage(io.getErr(), message, true);
             } finally {
@@ -275,33 +297,44 @@ public final class CreateSecurityJarAction implements ActionListener {
             if (info.transformed) {
                 final FileObject fo = dataObject.getPrimaryFile();
 
-                dispatchMessage(io.getOut(), "Building security jar for '" + fo.getNameExt() + "' ...", false);
+                dispatchMessage(io.getOut(),
+                    NbBundle.getMessage(
+                        CreateSecurityJarAction.class,
+                        "CreateSecurityJarAction.buildSecurityJars(InputOutput,Map<DataObject,Info>).message.buildingJar", // NOI18N
+                        fo.getNameExt()),
+                    false);
 
-                final FileObject src = info.workingFolder.getFileObject("src");
-                final FileObject jnlpDir = src.getFileObject("JNLP-INF");
-                final FileObject jnlp = jnlpDir.getFileObject("APPLICATION.JNLP");
+                final FileObject src = info.workingFolder.getFileObject("src");                // NOI18N
+                final FileObject jnlpDir = src.getFileObject("JNLP-INF");                      // NOI18N
+                final FileObject jnlp = jnlpDir.getFileObject("APPLICATION.JNLP");             // NOI18N
                 try {
                     if (jnlp != null) {
                         jnlp.delete();
                     }
-                    fo.copy(jnlpDir, "APPLICATION", "JNLP"); // NOI18N
-                    final FileObject buildxml = info.workingFolder.getFileObject("build.xml");
+                    fo.copy(jnlpDir, "APPLICATION", "JNLP");                                   // NOI18N
+                    final FileObject buildxml = info.workingFolder.getFileObject("build.xml"); // NOI18N
                     final DeployInformation di = new DeployInformation(
                             buildxml,
                             src,
-                            ".."
+                            ".."                                                               // NOI18N
                                     + File.separator
                                     + fo.getName()
-                                    + "_security.jar",
+                                    + "_security.jar",                                         // NOI18N
                             FileUtil.toFileObject(new File(info.ksPath)),
-                            "cismet",
+                            "cismet",                                                          // NOI18N
                             String.valueOf(PasswordEncrypter.decrypt(info.ksPw.toCharArray(), true)),
-                            src.getFileObject("META-INF").getFileObject("MANIFEST.MF"));
+                            src.getFileObject("META-INF").getFileObject("MANIFEST.MF"));       // NOI18N
                     JarHandler.deployJar(di);
 
-                    dispatchMessage(io.getOut(), "DONE", true);
+                    dispatchMessage(io.getOut(),
+                        NbBundle.getMessage(
+                            CreateSecurityJarAction.class,
+                            "CreateSecurityJarAction.buildSecurityJars(InputOutput,Map<DataObject,Info>).message.finished"), // NOI18N
+                        true);
                 } catch (final IOException ex) {
-                    final String message = "cannot build security jar";
+                    final String message = NbBundle.getMessage(
+                            CreateSecurityJarAction.class,
+                            "CreateSecurityJarAction.buildSecurityJars(InputOutput,Map<DataObject,Info>).message.buildError"); // NOI18N
                     LOG.error(message, ex);
                     dispatchMessage(io.getErr(), message, true);
                 }
@@ -337,20 +370,20 @@ public final class CreateSecurityJarAction implements ActionListener {
      * @throws  IOException  DOCUMENT ME!
      */
     private FileObject prepareWorkingFolder(final Project project) throws IOException {
-        FileObject fo = project.getProjectDirectory().getFileObject("work");
+        FileObject fo = project.getProjectDirectory().getFileObject("work"); // NOI18N
         if (fo != null) {
             fo.delete();
         }
-        fo = project.getProjectDirectory().createFolder("work");
-        final FileObject src = fo.createFolder("src");
-        final FileObject mi = src.createFolder("META-INF");
-        final FileObject mf = mi.createData("MANIFEST.MF");
-        src.createFolder("JNLP-INF");
+        fo = project.getProjectDirectory().createFolder("work");             // NOI18N
+        final FileObject src = fo.createFolder("src");                       // NOI18N
+        final FileObject mi = src.createFolder("META-INF");                  // NOI18N
+        final FileObject mf = mi.createData("MANIFEST.MF");                  // NOI18N
+        src.createFolder("JNLP-INF");                                        // NOI18N
 
-        final InputStream mis = CreateSecurityJarAction.class.getResourceAsStream("MANIFEST.MF");
+        final InputStream mis = CreateSecurityJarAction.class.getResourceAsStream("MANIFEST.MF"); // NOI18N
         final OutputStream mos = mf.getOutputStream();
-        final InputStream bis = CreateSecurityJarAction.class.getResourceAsStream("build.xml");
-        final OutputStream bos = fo.createData("build.xml").getOutputStream();
+        final InputStream bis = CreateSecurityJarAction.class.getResourceAsStream("build.xml");   // NOI18N
+        final OutputStream bos = fo.createData("build.xml").getOutputStream();                    // NOI18N
 
         assert mis != null;
         assert bis != null;

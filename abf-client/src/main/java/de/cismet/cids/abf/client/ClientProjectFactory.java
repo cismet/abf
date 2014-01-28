@@ -24,7 +24,7 @@ import java.util.Properties;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.3
  */
 public class ClientProjectFactory implements ProjectFactory {
 
@@ -44,7 +44,7 @@ public class ClientProjectFactory implements ProjectFactory {
     public void saveProject(final Project project) throws IOException, ClassCastException {
         final FileObject projectDir = project.getProjectDirectory().getFileObject(PROJECT_DIR);
         if (projectDir == null) {
-            throw new IOException("Project dir " + projectDir.getPath() + " deleted, cannot save project"); // NOI18N
+            throw new IOException("Project dir deleted, cannot save project: " + project); // NOI18N
         }
         // Force creation of the scenes/ dir if it was deleted
         ((ClientProject)project).getWebinterfaceFolder(true);

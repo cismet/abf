@@ -22,7 +22,7 @@ import org.openide.nodes.Node;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.3
  */
 public class ClientLogicalView implements LogicalViewProvider {
 

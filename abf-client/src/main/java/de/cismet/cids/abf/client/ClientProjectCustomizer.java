@@ -14,6 +14,7 @@ import org.netbeans.spi.project.ui.support.ProjectCustomizer.Category;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer.CategoryComponentProvider;
 
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 import java.awt.Dialog;
 import java.awt.Image;
@@ -33,7 +34,7 @@ import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
  * DOCUMENT ME!
  *
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.0
  */
 public final class ClientProjectCustomizer implements CustomizerProvider {
 
@@ -58,8 +59,8 @@ public final class ClientProjectCustomizer implements CustomizerProvider {
         this.project = project;
 
         icon = ImageUtilities.loadImage(
-                ClientProjectCustomizer.class.getPackage().getName().replaceAll("\\.", "/")
-                        + "/key.png"); // NOI18N
+                ClientProjectCustomizer.class.getPackage().getName().replaceAll("\\.", "/") // NOI18N
+                        + "/key.png");                                                      // NOI18N
         categories = getCategories();
         provider = getComponentProvider();
     }
@@ -74,7 +75,7 @@ public final class ClientProjectCustomizer implements CustomizerProvider {
     private Category[] getCategories() {
         final ProjectCustomizer.Category deployKeystore = ProjectCustomizer.Category.create(
                 LibrarySupportProjectCustomizer.DEPLOY_KEYSTORE,
-                "Keystore",
+                "Keystore", // NOI18N because this is a fixed term
                 icon,
                 (ProjectCustomizer.Category[])null);
 
@@ -115,7 +116,9 @@ public final class ClientProjectCustomizer implements CustomizerProvider {
                 cancelL,
                 null);
         dialog.addWindowListener(cancelL);
-        dialog.setTitle("Customise project properties");
+        dialog.setTitle(NbBundle.getMessage(
+                ClientProjectCustomizer.class,
+                "ClientProjectCustomizer.showCustomizer().dialog.title")); // NOI18N
         dialog.setVisible(true);
         dialog.requestFocus();
     }

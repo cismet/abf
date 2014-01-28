@@ -34,7 +34,7 @@ import de.cismet.tools.PasswordEncrypter;
  * DOCUMENT ME!
  *
  * @author   mscholl
- * @version  $Revision$, $Date$
+ * @version  1.0
  */
 public class KeystoreVisualPanel extends javax.swing.JPanel {
 
@@ -102,7 +102,7 @@ public class KeystoreVisualPanel extends javax.swing.JPanel {
             throw new IllegalStateException("project properties not availabe for project: " + project); // NOI18N
         }
 
-        final String pwProp = projectProps.getProperty(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, "");
+        final String pwProp = projectProps.getProperty(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, ""); // NOI18N
 
         txtKeystorePath.setText(projectProps.getProperty(PropertyProvider.KEY_GENERAL_KEYSTORE));
         pwKeystorePw.setText(String.valueOf(PasswordEncrypter.decrypt(pwProp.toCharArray(), true)));
@@ -121,7 +121,9 @@ public class KeystoreVisualPanel extends javax.swing.JPanel {
 
             category.setValid(true);
         } else {
-            lblStatus.setText("Invalid keystore path");
+            lblStatus.setText(NbBundle.getMessage(
+                    KeystoreVisualPanel.class,
+                    "KeystoreVisualPanel.isValidPanel().lblStatus.text.invalidPath")); // NOI18N
             lblStatus.setIcon(icon);
 
             category.setValid(false);
@@ -267,7 +269,9 @@ public class KeystoreVisualPanel extends javax.swing.JPanel {
         @Override
         public void actionPerformed(final ActionEvent e) {
             final JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Chooser keystore");
+            chooser.setDialogTitle(NbBundle.getMessage(
+                    KeystoreVisualPanel.class,
+                    "KeystoreVisualPanel.ActionL.actionPerformed(ActionEvent).chooser.title")); // NOI18N
             chooser.setDialogType(JFileChooser.OPEN_DIALOG);
             chooser.setFileHidingEnabled(false);
             chooser.setMultiSelectionEnabled(false);

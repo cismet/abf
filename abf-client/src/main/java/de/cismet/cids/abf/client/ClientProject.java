@@ -34,7 +34,7 @@ import de.cismet.cids.abf.utilities.windows.ErrorUtils;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  $Revision$, $Date$
+ * @version  1.3
  */
 public class ClientProject implements Project {
 
