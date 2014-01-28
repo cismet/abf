@@ -370,11 +370,12 @@ public final class CreateSecurityJarAction implements ActionListener {
      * @throws  IOException  DOCUMENT ME!
      */
     private FileObject prepareWorkingFolder(final Project project) throws IOException {
-        FileObject fo = project.getProjectDirectory().getFileObject("work"); // NOI18N
+        final String wfName = "work_" + System.currentTimeMillis();          // NOI18N
+        FileObject fo = project.getProjectDirectory().getFileObject(wfName); // NOI18N
         if (fo != null) {
             fo.delete();
         }
-        fo = project.getProjectDirectory().createFolder("work");             // NOI18N
+        fo = project.getProjectDirectory().createFolder(wfName);
         final FileObject src = fo.createFolder("src");                       // NOI18N
         final FileObject mi = src.createFolder("META-INF");                  // NOI18N
         final FileObject mf = mi.createData("MANIFEST.MF");                  // NOI18N
