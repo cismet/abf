@@ -5,37 +5,23 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.3</version>
+        <version>3.3.1</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf-domainserver</artifactId>
-    <version>3.3</version>
+    <version>3.3.1</version>
     <packaging>nbm</packaging>
 
     <name>ABF Domainserver</name>
     <description>Project type to administer cids Domainservers</description>
 
     <dependencies>
-        <!-- 
-            NOTE: we cannot declare cids-dataobjects as direct dependency because the netbeans nbm plugin will place it
-            in the modules classpath then. As the Utilities module also has a dependency and in the end creates the 
-            entity objects classcast exceptions will occur as the classes are exactly the same but loaded by different
-            classloaders
-         -->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.3</version>
-        </dependency>
-        <dependency>
-            <groupId>de.cismet.cids</groupId>
-            <artifactId>data-objects</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.cismet.commons</groupId>
-            <artifactId>cismet-commons</artifactId>
+            <version>3.3.1</version>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>
@@ -43,36 +29,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swingx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swing-layout</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>c3p0</groupId>
-            <artifactId>c3p0</artifactId>
-        </dependency>
-        <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -142,18 +100,12 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-modules</artifactId>
         </dependency>
-        <!-- BEGIN: added due to wired compiler issues because of the annotations -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-        </dependency>
-        <!-- END: added due to wired compiler issues because of the annotations -->
     </dependencies>
 
     <repositories>
         <repository>
             <id>cismet-repo</id>
-            <url>https://repo.cismet.de/repo</url>
+            <url>https://repo.cismet.depo</url>
             <releases>
                 <enabled>true</enabled>
                 <checksumPolicy>warn</checksumPolicy>

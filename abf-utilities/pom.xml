@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.3</version>
+        <version>3.3.1</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-utilities</artifactId>
-    <version>3.3</version>
+    <version>3.3.1</version>
     <packaging>nbm</packaging>
 
     <name>ABF Utilities</name>
@@ -168,26 +168,13 @@
                     <codeNameBase>de.cismet.cids.abf.utilities/3</codeNameBase>
                     <moduleType>autoload</moduleType>
                     <publicPackages>
-                        <publicPackage>de.cismet.*</publicPackage>
-                        <publicPackage>javassist.*</publicPackage>
+                        <publicPackage>de.*</publicPackage>
                         <publicPackage>javax.*</publicPackage>
-                        <publicPackage>org.objectweb.asm.*</publicPackage>
-                        <publicPackage>org.slf4j.*</publicPackage>
-                        <publicPackage>net.sf.cglib.*</publicPackage>
-                        <publicPackage>org.xml.*</publicPackage>
-                        <publicPackage>org.w3c.dom.*</publicPackage>
-                        <publicPackage>Sirius.*</publicPackage>
-                        <publicPackage>com.sun.grizzly.*</publicPackage>
+                        <publicPackage>org.*</publicPackage>
                         <publicPackage>junit.*</publicPackage>
-                        <publicPackage>org.apache.commons.*</publicPackage>
-                        <publicPackage>org.dom4j.*</publicPackage>
-                        <publicPackage>org.jaxen.*</publicPackage>
-                        <publicPackage>org.jdesktop.*</publicPackage>
-                        <publicPackage>org.postgresql.*</publicPackage>
-                        <publicPackage>org.postgis.*</publicPackage>
-                        <publicPackage>org.jdom.*</publicPackage>
-                        <publicPackage>com.vividsolutions.*</publicPackage>
-                        <!-- END: ABF cids Registry -->
+                        <publicPackage>Sirius.*</publicPackage>
+                        <publicPackage>com.*</publicPackage>
+                        <publicPackage>javassist.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
