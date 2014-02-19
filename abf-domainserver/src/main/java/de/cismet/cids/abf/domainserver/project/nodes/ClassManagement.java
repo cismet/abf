@@ -32,7 +32,6 @@ import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CheckRightsAction;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CidsClassNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.ClassManagementContextCookie;
-import de.cismet.cids.abf.domainserver.project.cidsclass.ImportClassesAction;
 import de.cismet.cids.abf.domainserver.project.cidsclass.NewCidsClassWizardAction;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
@@ -51,6 +50,11 @@ import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 public class ClassManagement extends ProjectNode implements Refreshable,
     ConnectionListener,
     ClassManagementContextCookie {
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    /** LOGGER. */
+    private static final transient Logger LOG = Logger.getLogger(ClassManagement.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -87,10 +91,14 @@ public class ClassManagement extends ProjectNode implements Refreshable,
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new ClassManagementChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            LOG.fatal("connectionevent: " + event + "|connected=" + event.isConnected() + "|indet="
+                        + event.isIndeterminate());
+            if (event.isConnected()) {
+                setChildrenEDT(new ClassManagementChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 

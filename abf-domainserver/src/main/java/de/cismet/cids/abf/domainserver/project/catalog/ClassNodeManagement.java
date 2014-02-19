@@ -109,10 +109,12 @@ public final class ClassNodeManagement extends ProjectNode implements ClassNodeM
 
         @Override
         public void connectionStatusChanged(final ConnectionEvent event) {
-            if (event.isConnected() && !event.isIndeterminate()) {
-                setChildrenEDT(new ClassNodeManagementChildren(project));
-            } else {
-                setChildrenEDT(Children.LEAF);
+            if (!event.isIndeterminate()) {
+                if (event.isConnected()) {
+                    setChildrenEDT(new ClassNodeManagementChildren(project));
+                } else {
+                    setChildrenEDT(Children.LEAF);
+                }
             }
         }
     }

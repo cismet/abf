@@ -131,10 +131,12 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
 
         @Override
         public void connectionStatusChanged(final ConnectionEvent event) {
-            if (event.isConnected() && !event.isIndeterminate()) {
-                setChildrenEDT(new NavigatorNodeManagementChildren(project));
-            } else {
-                setChildrenEDT(Children.LEAF);
+            if (!event.isIndeterminate()) {
+                if (event.isConnected()) {
+                    setChildrenEDT(new NavigatorNodeManagementChildren(project));
+                } else {
+                    setChildrenEDT(Children.LEAF);
+                }
             }
         }
     }

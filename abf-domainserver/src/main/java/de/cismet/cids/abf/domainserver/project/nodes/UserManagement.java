@@ -97,10 +97,12 @@ public final class UserManagement extends RefreshableNode implements ConnectionL
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new UserGroupChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new UserGroupChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 

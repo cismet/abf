@@ -220,15 +220,17 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            refresh();
-        } else {
-            allStatementGroups = new PSQLStatementGroup[0];
-            statementGroupsNotPedantic = new PSQLStatementGroup[0];
-            inProgress = false;
-            fireIconChange();
-            fireDisplayNameChange(null, getDisplayName());
-            getTopComponent().setSql(getSqlScriptFromGroups());
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                refresh();
+            } else {
+                allStatementGroups = new PSQLStatementGroup[0];
+                statementGroupsNotPedantic = new PSQLStatementGroup[0];
+                inProgress = false;
+                fireIconChange();
+                fireDisplayNameChange(null, getDisplayName());
+                getTopComponent().setSql(getSqlScriptFromGroups());
+            }
         }
     }
 

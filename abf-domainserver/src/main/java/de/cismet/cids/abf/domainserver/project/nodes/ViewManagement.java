@@ -82,10 +82,12 @@ public final class ViewManagement extends ProjectNode implements ConnectionListe
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new ViewManagementChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new ViewManagementChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 

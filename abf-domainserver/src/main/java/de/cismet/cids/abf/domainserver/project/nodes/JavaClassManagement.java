@@ -83,10 +83,12 @@ public final class JavaClassManagement extends ProjectNode implements Connection
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new JavaClassManagementChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new JavaClassManagementChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 

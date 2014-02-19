@@ -98,10 +98,12 @@ public final class QueriesNode extends ProjectNode implements ConnectionListener
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new QueriesNodeChildren());
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new QueriesNodeChildren());
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 
