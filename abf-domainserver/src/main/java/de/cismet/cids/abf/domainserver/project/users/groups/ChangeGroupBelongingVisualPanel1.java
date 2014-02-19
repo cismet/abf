@@ -9,6 +9,8 @@ package de.cismet.cids.abf.domainserver.project.users.groups;
 
 import org.apache.log4j.Logger;
 
+import org.jdesktop.swingx.JXList;
+
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
@@ -28,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.SortOrder;
 
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.domainserver.project.utils.Renderers;
@@ -105,6 +107,9 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
         lstAllGroups.setListData(groups.toArray());
         lstGroupMembership.setListData(membership.toArray());
         touchedGroups.clear();
+
+        ((JXList)lstAllGroups).setSortOrder(SortOrder.ASCENDING);
+        ((JXList)lstGroupMembership).setSortOrder(SortOrder.ASCENDING);
     }
 
     @Override
@@ -180,7 +185,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
      *
      * @version  $Revision$, $Date$
      */
-    class DragJList extends JList implements DragGestureListener, DragSourceListener {
+    class DragJList extends JXList implements DragGestureListener, DragSourceListener {
 
         //~ Methods ------------------------------------------------------------
 
@@ -227,6 +232,9 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
                 DnDConstants.ACTION_COPY_OR_MOVE, // actions
                 this                              // drag gesture recognizer
                 );
+            setComparator(new Comparators.UserGroups());
+            setAutoCreateRowSorter(true);
+            setSortable(true);
         }
 
         //~ Methods ------------------------------------------------------------
@@ -244,7 +252,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
      *
      * @version  $Revision$, $Date$
      */
-    class DropJList extends JList implements DropTargetListener, DragGestureListener, DragSourceListener {
+    class DropJList extends JXList implements DropTargetListener, DragGestureListener, DragSourceListener {
 
         //~ Methods ------------------------------------------------------------
 
@@ -311,6 +319,9 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
                 DnDConstants.ACTION_COPY_OR_MOVE, // actions
                 this                              // drag gesture recognizer
                 );
+            setComparator(new Comparators.UserGroups());
+            setAutoCreateRowSorter(true);
+            setSortable(true);
         }
 
         //~ Methods ------------------------------------------------------------
