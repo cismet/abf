@@ -33,6 +33,8 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.TypeManagement;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.backend.service.Backend;
@@ -228,6 +230,9 @@ public class NewCidsClassWizardAction extends CookieAction {
             }
             project.getLookup().lookup(TypeManagement.class).refresh();
             project.getLookup().lookup(SyncManagement.class).refresh();
+            project.getLookup()
+                    .lookup(UserManagement.class)
+                    .refreshGroups(ProjectUtils.getUserGroupsFromClassPermissions(newClass.getClassPermissions()));
         }
     }
 

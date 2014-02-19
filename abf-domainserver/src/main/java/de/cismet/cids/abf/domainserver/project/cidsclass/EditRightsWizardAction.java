@@ -21,16 +21,22 @@ import java.awt.Dialog;
 
 import java.text.MessageFormat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
+import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
+import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
  * DOCUMENT ME!
@@ -122,9 +128,8 @@ public final class EditRightsWizardAction extends CookieAction {
         for (int i = 0; i < nodes.length; ++i) {
             classes[i] = nodes[i].getCookie(CidsClassContextCookie.class).getCidsClass();
         }
-        final Backend backend = nodes[0].getCookie(DomainserverContext.class)
-                    .getDomainserverProject()
-                    .getCidsDataObjectBackend();
+        final DomainserverProject project = nodes[0].getCookie(DomainserverContext.class).getDomainserverProject();
+        final Backend backend = project.getCidsDataObjectBackend();
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         wizard.setTitleFormat(new MessageFormat("{0}"));                       // NOI18N
         wizard.setTitle(org.openide.util.NbBundle.getMessage(
@@ -141,9 +146,13 @@ public final class EditRightsWizardAction extends CookieAction {
         if (!cancelled) {
             final CidsClass[] success = new CidsClass[classes.length];
             try {
+                final List<UserGroup> toRefresh = new ArrayList<UserGroup>();
                 for (int i = 0; i < classes.length; ++i) {
                     success[i] = backend.store(classes[i]);
+                    toRefresh.addAll(ProjectUtils.getUserGroupsFromClassPermissions(success[i].getClassPermissions()));
                 }
+
+                project.getLookup().lookup(UserManagement.class).refreshGroups(toRefresh);
             } catch (final Exception e) {
                 LOG.error("could not store classes", e);                                           // NOI18N
                 final StringBuffer successful = new StringBuffer();
