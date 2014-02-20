@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.graph.ClassDiagramTopComponent;
@@ -128,8 +129,8 @@ final class ViewManagementChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof ViewNode) {
-            return new Node[] { (ViewNode)o };
+        if (o instanceof KeyContainer) {
+            return new Node[] { (ViewNode)((KeyContainer)o).getObject() };
         } else {
             return new Node[] {};
         }
@@ -164,7 +165,7 @@ final class ViewManagementChildren extends ProjectChildren {
                 }
             }
             Collections.sort(all);
-            setKeysEDT(all);
+            setKeysEDT(KeyContainer.convertCollection(ViewNode.class, all));
         } catch (final Exception ex) {
             LOG.error("could not create diagrams", ex);               // NOI18N
             ErrorUtils.showErrorMessage(

@@ -46,6 +46,7 @@ import javax.swing.event.ChangeListener;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.PolicyPropertyEditor;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
@@ -1122,8 +1123,8 @@ final class CidsClassNodeChildren extends ProjectChildren implements Index {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof Attribute) {
-            return new Node[] { new CidsAttributeNode((Attribute)o, cidsClass, project) };
+        if (o instanceof KeyContainer) {
+            return new Node[] { new CidsAttributeNode((Attribute)((KeyContainer)o).getObject(), cidsClass, project) };
         } else {
             return new Node[] {};
         }
@@ -1185,7 +1186,7 @@ final class CidsClassNodeChildren extends ProjectChildren implements Index {
                 ErrorManager.getDefault().notify(e);
             }
 
-            setKeysEDT(children);
+            setKeysEDT(KeyContainer.convertCollection(Attribute.class, children));
         } catch (final Exception ex) {
             LOG.error("could not create children", ex); // NOI18N
         }

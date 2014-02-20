@@ -28,6 +28,7 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.nodes.CatalogManagement;
@@ -168,8 +169,8 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
 
         @Override
         protected Node[] createUserNodes(final Object o) {
-            if (o instanceof CatNode) {
-                final CatNode catNode = (CatNode)o;
+            if (o instanceof KeyContainer) {
+                final CatNode catNode = (CatNode)((KeyContainer)o).getObject();
                 final CatalogNode cn = new CatalogNode(catNode, project, getNode().getCookie(Refreshable.class));
                 catalogManagement.addOpenNode(catNode, cn);
 
@@ -191,7 +192,7 @@ public final class NavigatorNodeManagement extends ProjectNode implements Naviga
                 }
 
                 Collections.sort(rootNodes, new Comparators.CatNodes());
-                setKeysEDT(rootNodes);
+                setKeysEDT(KeyContainer.convertCollection(CatNode.class, rootNodes));
             } catch (final Exception ex) {
                 LOG.error("NavNodeManChildren: catnode creation failed", ex);       // NOI18N
                 ErrorUtils.showErrorMessage(

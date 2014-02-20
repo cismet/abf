@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.RefreshableNode;
 import de.cismet.cids.abf.domainserver.project.users.AllUsersNode;
@@ -178,13 +179,14 @@ public final class UserManagement extends RefreshableNode implements ConnectionL
 
         @Override
         protected Node[] createUserNodes(final Object o) {
-            if (o instanceof UserGroup) {
-                if (AllUsersNode.ALL_GROUP == o) {
+            if (o instanceof KeyContainer) {
+                final UserGroup ug = (UserGroup)((KeyContainer)o).getObject();
+                if (AllUsersNode.ALL_GROUP == ug) {
                     return new Node[] { new AllUsersNode(project) };
-                } else if (NoGroupUsersNode.NO_GROUP == o) {
+                } else if (NoGroupUsersNode.NO_GROUP == ug) {
                     return new Node[] { new NoGroupUsersNode(project) };
                 } else {
-                    return new Node[] { new UserGroupNode((UserGroup)o, project) };
+                    return new Node[] { new UserGroupNode(ug, project) };
                 }
             } else {
                 throw new IllegalArgumentException("unsupported user object: " + o); // NOI18N
@@ -200,7 +202,7 @@ public final class UserManagement extends RefreshableNode implements ConnectionL
             groupsAndMore.add(NoGroupUsersNode.NO_GROUP);
 
             groupsAndMore.addAll(ugs);
-            setKeysEDT(groupsAndMore);
+            setKeysEDT(KeyContainer.convertCollection(UserGroup.class, groupsAndMore));
         }
     }
 }

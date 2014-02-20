@@ -44,6 +44,7 @@ import javax.swing.JComponent;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
@@ -408,13 +409,15 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                 keys.add(entry.getKey());
             }
 
-            setKeysEDT(keys);
+            setKeysEDT(KeyContainer.convertCollection(ConfigAttrKey.class, keys));
         }
 
         @Override
         protected Node[] createUserNodes(final Object o) {
             if (o instanceof ConfigAttrKey) {
-                return new Node[] { new ConfigAttrKeyNode((ConfigAttrKey)o, type, project) };
+                return new Node[] {
+                        new ConfigAttrKeyNode((ConfigAttrKey)((KeyContainer)o).getObject(), type, project)
+                    };
             } else {
                 return new Node[] {};
             }

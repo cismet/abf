@@ -27,6 +27,7 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CheckRightsAction;
@@ -92,8 +93,6 @@ public class ClassManagement extends ProjectNode implements Refreshable,
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
         if (!event.isIndeterminate()) {
-            LOG.fatal("connectionevent: " + event + "|connected=" + event.isConnected() + "|indet="
-                        + event.isIndeterminate());
             if (event.isConnected()) {
                 setChildrenEDT(new ClassManagementChildren(project));
             } else {
@@ -110,8 +109,6 @@ public class ClassManagement extends ProjectNode implements Refreshable,
                 CallableSystemAction.get(CheckRightsAction.class),
                 null,
                 CallableSystemAction.get(RefreshAction.class),
-//                null,
-//                CallableSystemAction.get(ImportClassesAction.class)
             };
     }
 
@@ -150,8 +147,8 @@ final class ClassManagementChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof CidsClass) {
-            return new Node[] { new CidsClassNode((CidsClass)o, project) };
+        if (o instanceof KeyContainer) {
+            return new Node[] { new CidsClassNode((CidsClass)((KeyContainer)o).getObject(), project) };
         } else {
             return new Node[] {};
         }
@@ -162,7 +159,7 @@ final class ClassManagementChildren extends ProjectChildren {
         try {
             final List<CidsClass> allClasses = project.getCidsDataObjectBackend().getAllEntities(CidsClass.class);
             Collections.sort(allClasses, new Comparators.CidsClasses());
-            setKeysEDT(allClasses);
+            setKeysEDT(KeyContainer.convertCollection(CidsClass.class, allClasses));
         } catch (final Exception ex) {
             LOG.error("could not fetch all classes from backend", ex); // NOI18N
             ErrorUtils.showErrorMessage(
