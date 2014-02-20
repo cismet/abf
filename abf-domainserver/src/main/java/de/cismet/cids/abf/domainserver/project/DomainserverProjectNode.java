@@ -44,7 +44,6 @@ import de.cismet.cids.abf.domainserver.project.nodes.ClassManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.IconManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.JavaClassManagement;
-import de.cismet.cids.abf.domainserver.project.nodes.QueryManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.TypeManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
@@ -92,7 +91,6 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
         final JavaClassManagement javaClassManagement = new JavaClassManagement(project);
         final IconManagement iconManagement = new IconManagement(project);
         final CatalogManagement catManagement = new CatalogManagement(project);
-        final QueryManagement queryManagement = new QueryManagement(project);
         final SyncManagement syncManagement = new SyncManagement(project);
         final ConfigAttrManagement configAttrManagement = new ConfigAttrManagement(project);
         project.addLookup(new ProxyLookup(
@@ -109,7 +107,6 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
                             javaClassManagement,
                             iconManagement,
                             catManagement,
-                            queryManagement,
                             syncManagement
                         })
                 }));
@@ -257,7 +254,6 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
             final ConfigAttrManagement cam = lkp.lookup(ConfigAttrManagement.class);
             final JavaClassManagement jcm = lkp.lookup(JavaClassManagement.class);
             final IconManagement im = lkp.lookup(IconManagement.class);
-            final QueryManagement qm = lkp.lookup(QueryManagement.class);
             final SyncManagement sm = lkp.lookup(SyncManagement.class);
 
             final Node runtimeNode;
@@ -271,7 +267,7 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
                 throw new IllegalStateException(message, e);
             }
 
-            toPopulate.addAll(Arrays.asList(new Node[] { runtimeNode, um, cm, vm, catm, tm, cam, jcm, im, qm, sm }));
+            toPopulate.addAll(Arrays.asList(new Node[] { runtimeNode, um, cm, vm, catm, tm, cam, jcm, im, sm }));
 
             return true;
         }
