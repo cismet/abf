@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.RefreshIndicatorAction;
 import de.cismet.cids.abf.domainserver.project.RefreshableNode;
@@ -186,7 +187,7 @@ final class NoGroupUsersChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        return new Node[] { new UserNode((User)o, project) };
+        return new Node[] { new UserNode((User)((KeyContainer)o).getObject(), project) };
     }
 
     @Override
@@ -200,6 +201,6 @@ final class NoGroupUsersChildren extends ProjectChildren {
         }
 
         Collections.sort(noGroupUsers, new Comparators.Users());
-        setKeysEDT(noGroupUsers);
+        setKeysEDT(KeyContainer.convertCollection(User.class, noGroupUsers));
     }
 }

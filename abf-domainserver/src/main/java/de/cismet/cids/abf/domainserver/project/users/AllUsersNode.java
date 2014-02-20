@@ -29,6 +29,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.RefreshIndicatorAction;
 import de.cismet.cids.abf.domainserver.project.RefreshableNode;
@@ -179,13 +180,13 @@ final class AllUsersChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        return new Node[] { new UserNode((User)o, project) };
+        return new Node[] { new UserNode((User)((KeyContainer)o).getObject(), project) };
     }
 
     @Override
     protected void threadedNotify() throws IOException {
         final List<User> users = project.getCidsDataObjectBackend().getAllEntities(User.class);
         Collections.sort(users, new Comparators.Users());
-        setKeysEDT(users);
+        setKeysEDT(KeyContainer.convertCollection(User.class, users));
     }
 }

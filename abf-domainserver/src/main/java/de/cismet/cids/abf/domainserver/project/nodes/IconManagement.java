@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.icons.IconManagementContextCookie;
@@ -82,10 +83,12 @@ public final class IconManagement extends ProjectNode implements ConnectionListe
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new IconManagementChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new IconManagementChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 
@@ -131,8 +134,8 @@ final class IconManagementChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof Icon) {
-            return new Node[] { new IconNode((Icon)o, project) };
+        if (o instanceof KeyContainer) {
+            return new Node[] { new IconNode((Icon)((KeyContainer)o).getObject(), project) };
         } else {
             return new Node[] {};
         }
@@ -143,7 +146,7 @@ final class IconManagementChildren extends ProjectChildren {
         try {
             final List<Icon> icons = project.getCidsDataObjectBackend().getAllEntities(Icon.class);
             Collections.sort(icons, new Comparators.Icons());
-            setKeysEDT(icons);
+            setKeysEDT(KeyContainer.convertCollection(Icon.class, icons));
         } catch (final Exception ex) {
             final String message = "could not load icons";            // NOI18N
             LOG.error(message, ex);
