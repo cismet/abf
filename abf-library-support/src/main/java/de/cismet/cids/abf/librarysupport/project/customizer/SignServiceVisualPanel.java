@@ -19,6 +19,8 @@ import javax.swing.event.DocumentListener;
 
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 
+import de.cismet.tools.PasswordEncrypter;
+
 /**
  * DOCUMENT ME!
  *
@@ -35,8 +37,13 @@ public class SignServiceVisualPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblServiceUrl;
+    private javax.swing.JLabel lblUsername;
+    private javax.swing.JPasswordField pwdPassword;
     private javax.swing.JTextField txtServiceUrl;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
     //~ Constructors -----------------------------------------------------------
@@ -68,10 +75,22 @@ public class SignServiceVisualPanel extends javax.swing.JPanel {
      */
     private void init() {
         final String url = provider.get(PropertyProvider.KEY_SIGN_SERVICE_URL);
+        final String username = provider.get(PropertyProvider.KEY_SIGN_SERVICE_USERNAME);
+        final String pwCrypt = provider.get(PropertyProvider.KEY_SIGN_SERVICE_PASSWORD);
+
         if (url == null) {
-            txtServiceUrl.setText("https://clerkster.cismet.de");
+            txtServiceUrl.setText("https://clerkster.cismet.de"); // NOI18N
         } else {
             txtServiceUrl.setText(url);
+        }
+
+        txtUsername.setText(username);
+
+        if (pwCrypt == null) {
+            pwdPassword.setText(""); // NOI18N
+        } else {
+            final char[] pw = PasswordEncrypter.decrypt(pwCrypt.toCharArray(), true);
+            pwdPassword.setText(String.valueOf(pw));
         }
 
         docL.changedUpdate(null);
@@ -84,6 +103,24 @@ public class SignServiceVisualPanel extends javax.swing.JPanel {
      */
     String getUrl() {
         return txtServiceUrl.getText();
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    String getUsername() {
+        return txtUsername.getText();
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    char[] getPassWord() {
+        return pwdPassword.getPassword();
     }
 
     /**
@@ -100,6 +137,11 @@ public class SignServiceVisualPanel extends javax.swing.JPanel {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0),
                 new java.awt.Dimension(0, 0),
                 new java.awt.Dimension(0, 32767));
+        lblUsername = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        txtUsername = new javax.swing.JTextField();
+        pwdPassword = new javax.swing.JPasswordField();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setOpaque(false);
         setLayout(new java.awt.GridBagLayout());
@@ -129,11 +171,61 @@ public class SignServiceVisualPanel extends javax.swing.JPanel {
         add(txtServiceUrl, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.weighty = 1.0;
         add(filler1, gridBagConstraints);
-    }                              // </editor-fold>//GEN-END:initComponents
+
+        lblUsername.setText(NbBundle.getMessage(
+                SignServiceVisualPanel.class,
+                "SignServiceVisualPanel.lblUsername.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblUsername, gridBagConstraints);
+
+        lblPassword.setText(NbBundle.getMessage(
+                SignServiceVisualPanel.class,
+                "SignServiceVisualPanel.lblPassword.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblPassword, gridBagConstraints);
+
+        txtUsername.setText(NbBundle.getMessage(
+                SignServiceVisualPanel.class,
+                "SignServiceVisualPanel.txtUsername.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(txtUsername, gridBagConstraints);
+
+        pwdPassword.setText(NbBundle.getMessage(
+                SignServiceVisualPanel.class,
+                "SignServiceVisualPanel.pwdPassword.text"));        // NOI18N
+        pwdPassword.setToolTipText(NbBundle.getMessage(
+                SignServiceVisualPanel.class,
+                "SignServiceVisualPanel.pwdPassword.toolTipText")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(pwdPassword, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(jSeparator1, gridBagConstraints);
+    }                                                               // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
 

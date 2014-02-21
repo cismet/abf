@@ -41,6 +41,8 @@ public final class PropertyProvider {
     public static final String KEY_GENERAL_KEYSTORE_PW = "generalKeystorePW";           // NOI18N
     public static final String KEY_DEPLOYMENT_STRATEGY = "deploymentStrategy";          // NOI18N
     public static final String KEY_SIGN_SERVICE_URL = "signServiceUrl";                 // NOI18N
+    public static final String KEY_SIGN_SERVICE_USERNAME = "signServiceUsername";       // NOI18N
+    public static final String KEY_SIGN_SERVICE_PASSWORD = "signServicePassword";       // NOI18N
 
     public static final String STRATEGY_USE_LOCAL = "USE_LOCAL";               // NOI18N
     public static final String STRATEGY_USE_SIGN_SERVICE = "USE_SIGN_SERVICE"; // NOI18N

@@ -149,11 +149,11 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
                 okListener,
                 null);
         dialog.addWindowListener(okListener);
-        final String title = org.openide.util.NbBundle.getMessage(
-                LibrarySupportProjectCustomizer.class,
-                "LibrarySupportProjectCustomizer.showCustomizer().dialog.title")
-                    + ProjectUtils // NOI18N
-                    .getInformation(project)
+        final String title =
+            org.openide.util.NbBundle.getMessage(
+                        LibrarySupportProjectCustomizer.class,
+                        "LibrarySupportProjectCustomizer.showCustomizer().dialog.title") // NOI18N
+                    + ProjectUtils.getInformation(project)
                     .getDisplayName();
         dialog.setTitle(title);
         dialog.setVisible(true);
@@ -179,11 +179,16 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
             final String basicManPath = manifestVis.getBasicManifestField().getText();
             final String deployStrategy = deployVis.getStrategy();
             final String signServiceUrl = signServiceVis.getUrl();
+            final String signServiceUsername = signServiceVis.getUsername();
+            final String signServicePassword = PasswordEncrypter.encryptString(String.valueOf(
+                        signServiceVis.getPassWord()));
             provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE, mainKeystore);
             provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, mainKeystorePW);
             provider.put(PropertyProvider.KEY_GENERAL_MANIFEST, basicManPath);
             provider.put(PropertyProvider.KEY_DEPLOYMENT_STRATEGY, deployStrategy);
             provider.put(PropertyProvider.KEY_SIGN_SERVICE_URL, signServiceUrl);
+            provider.put(PropertyProvider.KEY_SIGN_SERVICE_USERNAME, signServiceUsername);
+            provider.put(PropertyProvider.KEY_SIGN_SERVICE_PASSWORD, signServicePassword);
             provider.save();
         }
 
