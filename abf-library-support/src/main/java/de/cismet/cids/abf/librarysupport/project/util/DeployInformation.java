@@ -16,6 +16,8 @@ import org.openide.nodes.Node;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import java.util.Arrays;
+
 import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.LibrarySupportContextCookie;
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.ManifestProviderCookie;
@@ -27,14 +29,13 @@ import de.cismet.tools.PasswordEncrypter;
  * DOCUMENT ME!
  *
  * @author   mscholl
- * @version  1.6
+ * @version  1.7
  */
 public final class DeployInformation {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            DeployInformation.class);
+    private static final transient Logger LOG = Logger.getLogger(DeployInformation.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -44,36 +45,51 @@ public final class DeployInformation {
     private FileObject manifest;
     private String destFilePath;
     private String alias;
-    private String storepass;
+    private char[] storepass;
+    private boolean useSignService;
+    private String signServiceUrl;
+    private String signServiceUser;
+    private char[] signServicePass;
 
     //~ Constructors -----------------------------------------------------------
 
     /**
      * Creates a new DeployInformation object.
      *
-     * @param  buildXML      DOCUMENT ME!
-     * @param  sourceDir     DOCUMENT ME!
-     * @param  destFilePath  DOCUMENT ME!
-     * @param  keystore      DOCUMENT ME!
-     * @param  alias         DOCUMENT ME!
-     * @param  storepass     DOCUMENT ME!
-     * @param  manifest      DOCUMENT ME!
+     * @param  buildXML         DOCUMENT ME!
+     * @param  sourceDir        DOCUMENT ME!
+     * @param  keystore         DOCUMENT ME!
+     * @param  manifest         DOCUMENT ME!
+     * @param  destFilePath     DOCUMENT ME!
+     * @param  alias            DOCUMENT ME!
+     * @param  storepass        DOCUMENT ME!
+     * @param  useSignService   DOCUMENT ME!
+     * @param  signServiceUrl   DOCUMENT ME!
+     * @param  signServiceUser  DOCUMENT ME!
+     * @param  signServicePass  DOCUMENT ME!
      */
-    public DeployInformation(
-            final FileObject buildXML,
+    public DeployInformation(final FileObject buildXML,
             final FileObject sourceDir,
-            final String destFilePath,
             final FileObject keystore,
+            final FileObject manifest,
+            final String destFilePath,
             final String alias,
-            final String storepass,
-            final FileObject manifest) {
+            final char[] storepass,
+            final boolean useSignService,
+            final String signServiceUrl,
+            final String signServiceUser,
+            final char[] signServicePass) {
         this.buildXML = buildXML;
         this.sourceDir = sourceDir;
         this.keystore = keystore;
         this.manifest = manifest;
         this.destFilePath = destFilePath;
         this.alias = alias;
-        this.storepass = storepass;
+        this.storepass = Arrays.copyOf(storepass, storepass.length);
+        this.useSignService = useSignService;
+        this.signServiceUrl = signServiceUrl;
+        this.signServiceUser = signServiceUser;
+        this.signServicePass = Arrays.copyOf(signServicePass, signServicePass.length);
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -191,7 +207,7 @@ public final class DeployInformation {
      *
      * @return  DOCUMENT ME!
      */
-    public String getStorepass() {
+    public char[] getStorepass() {
         return storepass;
     }
 
@@ -200,8 +216,80 @@ public final class DeployInformation {
      *
      * @param  storepass  DOCUMENT ME!
      */
-    public void setStorepass(final String storepass) {
+    public void setStorepass(final char[] storepass) {
         this.storepass = storepass;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public boolean isUseSignService() {
+        return useSignService;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  useSignService  DOCUMENT ME!
+     */
+    public void setUseSignService(final boolean useSignService) {
+        this.useSignService = useSignService;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public String getSignServiceUrl() {
+        return signServiceUrl;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  signServiceUrl  DOCUMENT ME!
+     */
+    public void setSignServiceUrl(final String signServiceUrl) {
+        this.signServiceUrl = signServiceUrl;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public String getSignServiceUser() {
+        return signServiceUser;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  signServiceUser  DOCUMENT ME!
+     */
+    public void setSignServiceUser(final String signServiceUser) {
+        this.signServiceUser = signServiceUser;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public char[] getSignServicePass() {
+        return signServicePass;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  signServicePass  DOCUMENT ME!
+     */
+    public void setSignServicePass(final char[] signServicePass) {
+        this.signServicePass = signServicePass;
     }
 
     /**
@@ -228,20 +316,41 @@ public final class DeployInformation {
                     libCC.getLibrarySupportContext().getProjectProperties());
             final FileObject keystore = FileUtil.toFileObject(new File(
                         provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE)));
-            final String passwd = PasswordEncrypter.decryptString(provider.get(
-                        PropertyProvider.KEY_GENERAL_KEYSTORE_PW));
+            final String keystoreAlias = provider.get(PropertyProvider.KEY_KEYSTORE_ALIAS);
+
+            final char[] passwd = PasswordEncrypter.decrypt(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW)
+                            .toCharArray(),
+                    true);
+
             final String destFile = destFilePath.getAbsolutePath()
                         + System.getProperty("file.separator") // NOI18N
                         + srcFile.getName() + ".jar";          // NOI18N
 
-            return new DeployInformation(
+            final boolean useSignService = PropertyProvider.STRATEGY_USE_SIGN_SERVICE.equals(provider.get(
+                        PropertyProvider.KEY_DEPLOYMENT_STRATEGY));
+            final String signServiceUrl = provider.get(PropertyProvider.KEY_SIGN_SERVICE_URL);
+            final String signServiceUser = provider.get(PropertyProvider.KEY_SIGN_SERVICE_USERNAME);
+            final char[] signServicePass = PasswordEncrypter.decrypt(provider.get(
+                        PropertyProvider.KEY_SIGN_SERVICE_PASSWORD).toCharArray(),
+                    true);
+
+            final DeployInformation info = new DeployInformation(
                     libCC.getLibrarySupportContext().getBuildXML(),
                     srcFile,
-                    destFile,
                     keystore,
-                    null,
+                    manifest,
+                    destFile,
+                    keystoreAlias,
                     passwd,
-                    manifest);
+                    useSignService,
+                    signServiceUrl,
+                    signServiceUser,
+                    signServicePass);
+
+            PasswordEncrypter.wipe(passwd);
+            PasswordEncrypter.wipe(signServicePass);
+
+            return info;
         } catch (final FileNotFoundException ex) {
             LOG.error("could not create deploy information", ex); // NOI18N
             return null;
