@@ -7,7 +7,10 @@
 ****************************************************/
 package de.cismet.cids.abf.librarysupport.project.customizer;
 
+import org.netbeans.spi.project.ui.support.ProjectCustomizer.Category;
+
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.util.WeakListeners;
 
 import java.io.File;
@@ -16,7 +19,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 
@@ -26,7 +28,7 @@ import de.cismet.tools.PasswordEncrypter;
  * DOCUMENT ME!
  *
  * @author   mscholl
- * @version  1.3
+ * @version  1.4
  */
 public final class KeystoreVisualPanel extends javax.swing.JPanel {
 
@@ -35,15 +37,20 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
     private final transient PropertyProvider provider;
     private final transient DocumentListener docL;
     private final transient ImageIcon warning;
+    private final transient Category category;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private final transient javax.swing.JButton chooseButton = new javax.swing.JButton();
-    private final transient javax.swing.JLabel errorLabel = new javax.swing.JLabel();
-    private final transient javax.swing.JLabel mainKeystoreLabel = new javax.swing.JLabel();
-    private final transient javax.swing.JTextField mainKeystoreTextField = new javax.swing.JTextField();
-    private final transient javax.swing.JCheckBox multipleKeystoreCheckBox = new javax.swing.JCheckBox();
-    private final transient javax.swing.JPasswordField passwordField = new javax.swing.JPasswordField();
-    private final transient javax.swing.JLabel passwordLabel = new javax.swing.JLabel();
+    private final transient javax.swing.JButton btnChoose = new javax.swing.JButton();
+    private final transient javax.swing.Box.Filler filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 32767));
+    private final transient javax.swing.JLabel lblAlias = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblError = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblKeystore = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblPassword = new javax.swing.JLabel();
+    private final transient javax.swing.JPasswordField pwdKeystore = new javax.swing.JPasswordField();
+    private final transient javax.swing.JTextField txtAlias = new javax.swing.JTextField();
+    private final transient javax.swing.JTextField txtKeystore = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
 
     //~ Constructors -----------------------------------------------------------
@@ -51,15 +58,16 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
     /**
      * Creates new form KeystoreVisualPanel.
      *
-     * @param  project  DOCUMENT ME!
+     * @param  project   DOCUMENT ME!
+     * @param  category  DOCUMENT ME!
      */
-    public KeystoreVisualPanel(final LibrarySupportProject project) {
+    public KeystoreVisualPanel(final LibrarySupportProject project, final Category category) {
         provider = PropertyProvider.getInstance(project.getProjectProperties());
         assert provider != null;
+        this.category = category;
+
         docL = new DocumentListenerImpl();
-        warning = new ImageIcon(ImageUtilities.loadImage(
-                    LibrarySupportProject.IMAGE_FOLDER
-                            + "warning_16.gif")); // NOI18N
+        warning = new ImageIcon(ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER + "warning_16.gif")); // NOI18N
         initComponents();
         init();
     }
@@ -70,20 +78,26 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      * DOCUMENT ME!
      */
     public void init() {
-        final String mainKeyStore = provider.get(
-                PropertyProvider.KEY_GENERAL_KEYSTORE);
-        final String mainKStorePW = PasswordEncrypter.decryptString(provider.get(
-                    PropertyProvider.KEY_GENERAL_KEYSTORE_PW));
-        final Document doc = mainKeystoreTextField.getDocument();
-        doc.addDocumentListener(WeakListeners.document(docL, doc));
-        if (mainKeyStore == null) {
-            mainKeystoreTextField.setText(org.openide.util.NbBundle.getMessage(
+        final String keystorePath = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+        final String keystorePw = String.valueOf(PasswordEncrypter.decrypt(
+                    provider.get(
+                        PropertyProvider.KEY_GENERAL_KEYSTORE_PW).toCharArray(),
+                    true));
+        final String keystoreAlias = provider.get(PropertyProvider.KEY_KEYSTORE_ALIAS);
+
+        if (keystorePath == null) {
+            txtKeystore.setText(org.openide.util.NbBundle.getMessage(
                     KeystoreVisualPanel.class,
-                    "KeystoreVisualPanel.mainKeystoreTextField.text.noKeystore")); // NOI18N
+                    "KeystoreVisualPanel.init().txtKeystore.text.noKeystore")); // NOI18N
         } else {
-            mainKeystoreTextField.setText(mainKeyStore);
+            txtKeystore.setText(keystorePath);
         }
-        passwordField.setText(mainKStorePW);
+        pwdKeystore.setText(keystorePw);
+        txtAlias.setText(keystoreAlias);
+
+        txtKeystore.getDocument().addDocumentListener(WeakListeners.document(docL, txtKeystore.getDocument()));
+        txtAlias.getDocument().addDocumentListener(WeakListeners.document(docL, txtAlias.getDocument()));
+
         validateEntry();
     }
 
@@ -91,22 +105,33 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      * DOCUMENT ME!
      */
     public void validateEntry() {
-        final File file = new File(mainKeystoreTextField.getText());
+        final File file = new File(txtKeystore.getText());
         if (file.exists()) {
             if (file.canRead()) {
-                errorLabel.setIcon(null);
-                errorLabel.setText("");                                                        // NOI18N
+                if (txtAlias.getText().isEmpty()) {
+                    lblError.setIcon(warning);
+                    lblError.setText(NbBundle.getMessage(
+                            KeystoreVisualPanel.class,
+                            "KeystoreVisualPanel.validateEntry().lblError.text.noAlias"));
+                    category.setValid(false);
+                } else {
+                    lblError.setIcon(null);
+                    lblError.setText("");                                                         // NOI18N
+                    category.setValid(true);
+                }
             } else {
-                errorLabel.setIcon(warning);
-                errorLabel.setText(org.openide.util.NbBundle.getMessage(
+                lblError.setIcon(warning);
+                lblError.setText(NbBundle.getMessage(
                         KeystoreVisualPanel.class,
-                        "KeystoreVisualPanel.mainKeystoreTextField.text.keystoreUnreadable")); // NOI18N
+                        "KeystoreVisualPanel.validateEntry().lblError.text.keystoreUnreadable")); // NOI18N
+                category.setValid(false);
             }
         } else {
-            errorLabel.setIcon(warning);
-            errorLabel.setText(org.openide.util.NbBundle.getMessage(
+            lblError.setIcon(warning);
+            lblError.setText(NbBundle.getMessage(
                     KeystoreVisualPanel.class,
-                    "KeystoreVisualPanel.mainKeystoreTextField.text.keystoreNotExistant"));    // NOI18N
+                    "KeystoreVisualPanel.validateEntry().lblError.text.keystoreNotExistent"));    // NOI18N
+            category.setValid(false);
         }
     }
 
@@ -115,8 +140,8 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      *
      * @return  DOCUMENT ME!
      */
-    public String getMainKeystore() {
-        return mainKeystoreTextField.getText();
+    public String getKeystore() {
+        return txtKeystore.getText();
     }
 
     /**
@@ -124,8 +149,17 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      *
      * @return  DOCUMENT ME!
      */
-    public String getPassword() {
-        return String.valueOf(passwordField.getPassword());
+    public char[] getPassword() {
+        return pwdKeystore.getPassword();
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public String getAlias() {
+        return txtAlias.getText();
     }
 
     /**
@@ -134,87 +168,102 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        mainKeystoreLabel.setText(org.openide.util.NbBundle.getMessage(
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        setLayout(new java.awt.GridBagLayout());
+
+        lblKeystore.setText(org.openide.util.NbBundle.getMessage(
                 KeystoreVisualPanel.class,
                 "KeystoreVisualPanel.mainKeystoreLabel.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblKeystore, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(txtKeystore, gridBagConstraints);
 
-        chooseButton.setText(org.openide.util.NbBundle.getMessage(
+        btnChoose.setText(org.openide.util.NbBundle.getMessage(
                 KeystoreVisualPanel.class,
                 "KeystoreVisualPanel.chooseButton.text")); // NOI18N
-        chooseButton.addActionListener(new java.awt.event.ActionListener() {
+        btnChoose.addActionListener(new java.awt.event.ActionListener() {
 
                 @Override
                 public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    chooseButtonActionPerformed(evt);
+                    btnChooseActionPerformed(evt);
                 }
             });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(btnChoose, gridBagConstraints);
 
-        multipleKeystoreCheckBox.setText(org.openide.util.NbBundle.getMessage(
+        lblError.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        lblError.setForeground(new java.awt.Color(255, 204, 0));
+        lblError.setText(org.openide.util.NbBundle.getMessage(
                 KeystoreVisualPanel.class,
-                "KeystoreVisualPanel.multipleKeystoreCheckBox.text")); // NOI18N
-        multipleKeystoreCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        multipleKeystoreCheckBox.setEnabled(false);
+                "KeystoreVisualPanel.errorLabel.text"));             // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblError, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(pwdKeystore, gridBagConstraints);
 
-        errorLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        errorLabel.setForeground(new java.awt.Color(255, 204, 0));
-        errorLabel.setText(org.openide.util.NbBundle.getMessage(
-                KeystoreVisualPanel.class,
-                "KeystoreVisualPanel.errorLabel.text"));               // NOI18N
-
-        passwordLabel.setText(org.openide.util.NbBundle.getMessage(
+        lblPassword.setText(org.openide.util.NbBundle.getMessage(
                 KeystoreVisualPanel.class,
                 "KeystoreVisualPanel.passwordLabel.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblPassword, gridBagConstraints);
 
-        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                layout.createSequentialGroup().addContainerGap().add(
-                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                        errorLabel,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        616,
-                        Short.MAX_VALUE).add(
-                        layout.createSequentialGroup().add(
-                            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                                mainKeystoreLabel).add(passwordLabel)).addPreferredGap(
-                            org.jdesktop.layout.LayoutStyle.RELATED).add(
-                            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                                layout.createSequentialGroup().add(
-                                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING).add(
-                                        org.jdesktop.layout.GroupLayout.LEADING,
-                                        passwordField,
-                                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                                        433,
-                                        Short.MAX_VALUE).add(
-                                        mainKeystoreTextField,
-                                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                                        433,
-                                        Short.MAX_VALUE)).addPreferredGap(
-                                    org.jdesktop.layout.LayoutStyle.RELATED).add(chooseButton)).add(
-                                multipleKeystoreCheckBox,
-                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                                509,
-                                Short.MAX_VALUE)))).addContainerGap()));
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                layout.createSequentialGroup().addContainerGap().add(
-                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(mainKeystoreLabel).add(
-                        chooseButton).add(
-                        mainKeystoreTextField,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).addPreferredGap(
-                    org.jdesktop.layout.LayoutStyle.RELATED).add(
-                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(
-                        passwordField,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(passwordLabel)).add(30, 30, 30).add(
-                    multipleKeystoreCheckBox).addPreferredGap(
-                    org.jdesktop.layout.LayoutStyle.RELATED,
-                    145,
-                    Short.MAX_VALUE).add(errorLabel).addContainerGap()));
+        lblAlias.setText(NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.lblAlias.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblAlias, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(txtAlias, gridBagConstraints);
+
+        filler1.setMaximumSize(new java.awt.Dimension(0, 32767));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        add(filler1, gridBagConstraints);
     } // </editor-fold>//GEN-END:initComponents
 
     /**
@@ -222,8 +271,8 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void chooseButtonActionPerformed(final java.awt.event.ActionEvent evt)                    //GEN-FIRST:event_chooseButtonActionPerformed
-    {                                                                                                 //GEN-HEADEREND:event_chooseButtonActionPerformed
+    private void btnChooseActionPerformed(final java.awt.event.ActionEvent evt)                       //GEN-FIRST:event_btnChooseActionPerformed
+    {                                                                                                 //GEN-HEADEREND:event_btnChooseActionPerformed
         final JFileChooser chooser = new JFileChooser();
         final File userhome = new File(System.getProperty("user.home"));                              // NOI18N
         chooser.setMultiSelectionEnabled(false);
@@ -234,9 +283,9 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
         chooser.setFileHidingEnabled(false);
         final int retVal = chooser.showOpenDialog(this);
         if (retVal == JFileChooser.APPROVE_OPTION) {
-            mainKeystoreTextField.setText(chooser.getSelectedFile().getAbsolutePath());
+            txtKeystore.setText(chooser.getSelectedFile().getAbsolutePath());
         }
-    }                                                                                                 //GEN-LAST:event_chooseButtonActionPerformed
+    }                                                                                                 //GEN-LAST:event_btnChooseActionPerformed
 
     //~ Inner Classes ----------------------------------------------------------
 

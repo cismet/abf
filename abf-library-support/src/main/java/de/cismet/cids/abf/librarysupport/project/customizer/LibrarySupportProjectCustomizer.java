@@ -127,7 +127,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
                 6);
         final GeneralVisualPanel generalVis = new GeneralVisualPanel();
         deployVis = new DeployVisualPanel(project);
-        keystoreVis = new KeystoreVisualPanel(project);
+        keystoreVis = new KeystoreVisualPanel(project, deployKeystore);
         manifestVis = new ManifestVisualPanel(project);
         signServiceVis = new SignServiceVisualPanel(project, deploySignService);
         panels.put(general, generalVis);
@@ -174,16 +174,18 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
         @Override
         public void actionPerformed(final ActionEvent e) {
             final PropertyProvider provider = PropertyProvider.getInstance(project.getProjectProperties());
-            final String mainKeystore = keystoreVis.getMainKeystore();
-            final String mainKeystorePW = PasswordEncrypter.encryptString(keystoreVis.getPassword());
+            final String keystore = keystoreVis.getKeystore();
+            final String keystorePW = PasswordEncrypter.encryptString(String.valueOf(keystoreVis.getPassword()));
+            final String keystoreAlias = keystoreVis.getAlias();
             final String basicManPath = manifestVis.getBasicManifestField().getText();
             final String deployStrategy = deployVis.getStrategy();
             final String signServiceUrl = signServiceVis.getUrl();
             final String signServiceUsername = signServiceVis.getUsername();
             final String signServicePassword = PasswordEncrypter.encryptString(String.valueOf(
                         signServiceVis.getPassWord()));
-            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE, mainKeystore);
-            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, mainKeystorePW);
+            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE, keystore);
+            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, keystorePW);
+            provider.put(PropertyProvider.KEY_KEYSTORE_ALIAS, keystoreAlias);
             provider.put(PropertyProvider.KEY_GENERAL_MANIFEST, basicManPath);
             provider.put(PropertyProvider.KEY_DEPLOYMENT_STRATEGY, deployStrategy);
             provider.put(PropertyProvider.KEY_SIGN_SERVICE_URL, signServiceUrl);
