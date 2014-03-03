@@ -24,8 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import java.net.URL;
-
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -54,9 +53,8 @@ public final class JarHandler {
     public static final String ANT_TARGET_CREATE_JAR = "createJar";                  // NOI18N
     public static final String ANT_TARGET_SIGN_JAR = "signJar";                      // NOI18N
 
-    private static final String TMP_DIR_ADDITION = "_abf_tmp_";                                          // NOI18N
-    private static final String TMP_BUILD_FILE = "__tmp_build.xml";                                      // NOI18N
-    private static final String ANT_PROPERTY_FILE = "/de/cismet/cids/abf/librarysupport/ant.properties"; // NOI18N
+    private static final String TMP_DIR_ADDITION = "_abf_tmp_";     // NOI18N
+    private static final String TMP_BUILD_FILE = "__tmp_build.xml"; // NOI18N
 
     private static final transient Logger LOG = Logger.getLogger(JarHandler.class);
 
@@ -165,62 +163,27 @@ public final class JarHandler {
      * @throws  IOException  DOCUMENT ME!
      */
     public static void deployJar(final DeployInformation info) throws IOException {
-        final Document buildDoc = XMLUtil.createDocument(
-                "project", // NOI18N
-                null,
-                null,
-                null);
-        final Element target = buildDoc.createElement("target"); // NOI18N
-        target.setAttribute("name", "deployJar"); // NOI18N
-        final StringBuilder deps = new StringBuilder();
-
-        buildDoc.getDocumentElement().appendChild(target);
-
-        deps.append(createJarTask(buildDoc, info));
-        deps.append(", ").append(createSignJarTask(buildDoc, info)); // NOI18N
-
-        if (info.isUseSignService()) {
-            deps.append(", ").append(createMoveTask(buildDoc, info));                                           // NOI18N
-            deps.append(", ").append(createSignServiceTask(buildDoc, info));                                    // NOI18N
-            deps.append(", ").append(createDeleteFileTask(buildDoc, info.getDestFilePath() + "_sendToCismet")); // NOI18N
-        }
-
-        target.setAttribute("depends", deps.toString()); // NOI18N
-
-        final FileObject outFile = writeDoc(buildDoc, info);
-
-        final Properties p = new Properties();
-        if (info.getStorepass() != null) {
-            p.put("jar.sign.storepass", String.valueOf(info.getStorepass()));             // NOI18N
-        }
-        if (info.getStorepass() != null) {
-            p.put("jar.sign.upload.password", String.valueOf(info.getSignServicePass())); // NOI18N
-        }
-
-        final ExecutorTask task = ActionUtils.runTarget(outFile, new String[] { ANT_TARGET_DEPLOY_JAR }, p);
-        task.waitFinished();
-        if (task.result() != 0) {
-            LOG.error("deploy jar failed: " + info.getDestFilePath());             // NOI18N
-            throw new IOException("deploy jar failed: " + info.getDestFilePath()); // NOI18N
-        }
+        deployAllJars(Arrays.asList(new DeployInformation[] { info }), ANT_TARGET_DEPLOY_JAR);
     }
 
     /**
      * DOCUMENT ME!
      *
      * @param   buildDoc  DOCUMENT ME!
-     * @param   path      DOCUMENT ME!
+     * @param   paths     DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
      */
-    private static String createDeleteFileTask(final Document buildDoc, final String path) {
-        final Element target = buildDoc.createElement("target"); // NOI18N
-        target.setAttribute("name", ANT_TARGET_DELETE_FILE);     // NOI18N
+    private static String createDeleteFileTask(final Document buildDoc, final String[] paths) {
+        final Element target = buildDoc.createElement("target");     // NOI18N
+        target.setAttribute("name", ANT_TARGET_DELETE_FILE);         // NOI18N
         buildDoc.getDocumentElement().appendChild(target);
-        final Element delete = buildDoc.createElement("delete"); // NOI18N
-        delete.setAttribute("file", path);                       // NOI18N
-        delete.setAttribute("failonerror", "false");             // NOI18N
-        target.appendChild(delete);
+        for (final String path : paths) {
+            final Element delete = buildDoc.createElement("delete"); // NOI18N
+            delete.setAttribute("file", path);                       // NOI18N
+            delete.setAttribute("failonerror", "false");             // NOI18N
+            target.appendChild(delete);
+        }
 
         return ANT_TARGET_DELETE_FILE;
     }
@@ -229,18 +192,20 @@ public final class JarHandler {
      * DOCUMENT ME!
      *
      * @param   buildDoc  DOCUMENT ME!
-     * @param   info      DOCUMENT ME!
+     * @param   infos     DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
      */
-    private static String createMoveTask(final Document buildDoc, final DeployInformation info) {
-        final Element target = buildDoc.createElement("target");               // NOI18N
-        target.setAttribute("name", ANT_TARGET_MOVE_JAR);                      // NOI18N
+    private static String createMoveTask(final Document buildDoc, final DeployInformation[] infos) {
+        final Element target = buildDoc.createElement("target");                   // NOI18N
+        target.setAttribute("name", ANT_TARGET_MOVE_JAR);                          // NOI18N
         buildDoc.getDocumentElement().appendChild(target);
-        final Element move = buildDoc.createElement("move");                   // NOI18N
-        move.setAttribute("file", info.getDestFilePath());                     // NOI18N
-        move.setAttribute("tofile", info.getDestFilePath() + "_sendToCismet"); // NOI18N
-        target.appendChild(move);
+        for (final DeployInformation info : infos) {
+            final Element move = buildDoc.createElement("move");                   // NOI18N
+            move.setAttribute("file", info.getDestFilePath());                     // NOI18N
+            move.setAttribute("tofile", info.getDestFilePath() + "_sendToCismet"); // NOI18N
+            target.appendChild(move);
+        }
 
         return ANT_TARGET_MOVE_JAR;
     }
@@ -249,11 +214,11 @@ public final class JarHandler {
      * DOCUMENT ME!
      *
      * @param   buildDoc  DOCUMENT ME!
-     * @param   info      DOCUMENT ME!
+     * @param   infos     DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
      */
-    private static String createSignServiceTask(final Document buildDoc, final DeployInformation info) {
+    private static String createSignServiceTask(final Document buildDoc, final DeployInformation[] infos) {
         // NOTE: this approach is not very nice as the dependecies have to be watched and the code adapted accordingly
         final InstalledFileLocator locator = InstalledFileLocator.getDefault();
         final Set<File> clerksterCP = new HashSet<File>(6);
@@ -299,17 +264,19 @@ public final class JarHandler {
         }
         taskdef.appendChild(cp);
 
-        final Element target = buildDoc.createElement("target");                          // NOI18N
-        target.setAttribute("name", ANT_TARGET_SIGN_SERVICE_JAR);                         // NOI18N
+        final Element target = buildDoc.createElement("target");                              // NOI18N
+        target.setAttribute("name", ANT_TARGET_SIGN_SERVICE_JAR);                             // NOI18N
         buildDoc.getDocumentElement().appendChild(target);
-        final Element clerksterClient = buildDoc.createElement("clerksterClient");        // NOI18N
-        clerksterClient.setAttribute("url", info.getSignServiceUrl());                    // NOI18N
-        clerksterClient.setAttribute("username", info.getSignServiceUser());
-        clerksterClient.setAttribute("password", "${jar.sign.upload.password}");          // NOI18N
-        clerksterClient.setAttribute("infile", info.getDestFilePath() + "_sendToCismet"); // NOI18N
-        clerksterClient.setAttribute("outfile", info.getDestFilePath());                  // NOI18N
-        clerksterClient.setAttribute("failonerror", "true");                              // NOI18N
-        target.appendChild(clerksterClient);
+        for (final DeployInformation info : infos) {
+            final Element clerksterClient = buildDoc.createElement("clerksterClient");        // NOI18N
+            clerksterClient.setAttribute("url", info.getSignServiceUrl());                    // NOI18N
+            clerksterClient.setAttribute("username", info.getSignServiceUser());
+            clerksterClient.setAttribute("password", "${jar.sign.upload.password}");          // NOI18N
+            clerksterClient.setAttribute("infile", info.getDestFilePath() + "_sendToCismet"); // NOI18N
+            clerksterClient.setAttribute("outfile", info.getDestFilePath());                  // NOI18N
+            clerksterClient.setAttribute("failonerror", "true");                              // NOI18N
+            target.appendChild(clerksterClient);
+        }
 
         return ANT_TARGET_SIGN_SERVICE_JAR;
     }
@@ -318,20 +285,22 @@ public final class JarHandler {
      * DOCUMENT ME!
      *
      * @param   buildDoc  DOCUMENT ME!
-     * @param   info      DOCUMENT ME!
+     * @param   infos     DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
      */
-    private static String createJarTask(final Document buildDoc, final DeployInformation info) {
-        final Element target = buildDoc.createElement("target");                             // NOI18N
-        target.setAttribute("name", ANT_TARGET_CREATE_JAR);                                  // NOI18N
+    private static String createJarTask(final Document buildDoc, final DeployInformation[] infos) {
+        final Element target = buildDoc.createElement("target");                                 // NOI18N
+        target.setAttribute("name", ANT_TARGET_CREATE_JAR);                                      // NOI18N
         buildDoc.getDocumentElement().appendChild(target);
-        final Element jar = buildDoc.createElement("jar");                                   // NOI18N
-        jar.setAttribute("destfile", info.getDestFilePath());                                // NOI18N
-        jar.setAttribute("basedir", FileUtil.toFile(info.getSourceDir()).getAbsolutePath()); // NOI18N
-        jar.setAttribute("manifest", FileUtil.toFile(info.getManifest()).getAbsolutePath()); // NOI18N
+        for (final DeployInformation info : infos) {
+            final Element jar = buildDoc.createElement("jar");                                   // NOI18N
+            jar.setAttribute("destfile", info.getDestFilePath());                                // NOI18N
+            jar.setAttribute("basedir", FileUtil.toFile(info.getSourceDir()).getAbsolutePath()); // NOI18N
+            jar.setAttribute("manifest", FileUtil.toFile(info.getManifest()).getAbsolutePath()); // NOI18N
 
-        target.appendChild(jar);
+            target.appendChild(jar);
+        }
 
         return ANT_TARGET_CREATE_JAR;
     }
@@ -340,21 +309,23 @@ public final class JarHandler {
      * DOCUMENT ME!
      *
      * @param   buildDoc  DOCUMENT ME!
-     * @param   info      DOCUMENT ME!
+     * @param   infos     DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
      */
-    private static String createSignJarTask(final Document buildDoc, final DeployInformation info) {
-        final Element target = buildDoc.createElement("target");                              // NOI18N
-        target.setAttribute("name", ANT_TARGET_SIGN_JAR);                                     // NOI18N
+    private static String createSignJarTask(final Document buildDoc, final DeployInformation[] infos) {
+        final Element target = buildDoc.createElement("target");                                  // NOI18N
+        target.setAttribute("name", ANT_TARGET_SIGN_JAR);                                         // NOI18N
         buildDoc.getDocumentElement().appendChild(target);
-        final Element sign = buildDoc.createElement("signjar");                               // NOI18N
-        sign.setAttribute("jar", info.getDestFilePath());                                     // NOI18N
-        sign.setAttribute("alias", info.getAlias());                                          // NOI18N
-        sign.setAttribute("storepass", "${jar.sign.storepass}");                              // NOI18N
-        sign.setAttribute("keystore", FileUtil.toFile(info.getKeystore()).getAbsolutePath()); // NOI18N
+        for (final DeployInformation info : infos) {
+            final Element sign = buildDoc.createElement("signjar");                               // NOI18N
+            sign.setAttribute("jar", info.getDestFilePath());                                     // NOI18N
+            sign.setAttribute("alias", info.getAlias());                                          // NOI18N
+            sign.setAttribute("storepass", "${jar.sign.storepass}");                              // NOI18N
+            sign.setAttribute("keystore", FileUtil.toFile(info.getKeystore()).getAbsolutePath()); // NOI18N
 
-        target.appendChild(sign);
+            target.appendChild(sign);
+        }
 
         return ANT_TARGET_SIGN_JAR;
     }
@@ -399,73 +370,44 @@ public final class JarHandler {
         if (infos.size() < 1) {
             return;
         }
-        final Properties p = new Properties();
-        if (infos.get(0).getKeystore() != null) {
-            p.put("jar.sign.keystorepath", FileUtil.toFile( // NOI18N
-                    infos.get(0).getKeystore()).getAbsolutePath());
-        }
-        if (infos.get(0).getAlias() != null) {
-            p.put("jar.sign.alias", infos.get(0).getAlias()); // NOI18N
-        }
-        if (infos.get(0).getStorepass() != null) {
-            p.put("jar.sign.storepass", infos.get(0).getStorepass()); // NOI18N
-        }
         final Document buildDoc = XMLUtil.createDocument(
-                "project",
+                "project", // NOI18N
                 null,
                 null,
-                null);           // NOI18N
+                null);
         final Element target = buildDoc.createElement("target"); // NOI18N
         target.setAttribute("name", targetName); // NOI18N
+        final StringBuilder deps = new StringBuilder();
+
         buildDoc.getDocumentElement().appendChild(target);
-        for (final DeployInformation info : infos) {
-            final Element jar = buildDoc.createElement("jar"); // NOI18N
-            jar.setAttribute("destfile", info.getDestFilePath()); // NOI18N
-            if (info.getSourceDir() != null) {
-                jar.setAttribute("basedir", FileUtil.toFile( // NOI18N
-                        info.getSourceDir()).getAbsolutePath());
+
+        final DeployInformation[] dis = infos.toArray(new DeployInformation[infos.size()]);
+        deps.append(createJarTask(buildDoc, dis));
+        deps.append(", ").append(createSignJarTask(buildDoc, dis)); // NOI18N
+
+        if (dis[0].isUseSignService()) {
+            deps.append(", ").append(createMoveTask(buildDoc, dis));        // NOI18N
+            deps.append(", ").append(createSignServiceTask(buildDoc, dis)); // NOI18N
+            final String[] paths = new String[dis.length];
+            for (int i = 0; i < dis.length; ++i) {
+                paths[i] = dis[i].getDestFilePath() + "_sendToCismet";      // NOI18N
             }
-            if (info.getManifest() != null) {
-                jar.setAttribute("manifest", FileUtil.toFile( // NOI18N
-                        info.getManifest()).getAbsolutePath());
-            }
-            target.appendChild(jar);
-            final Element sign = buildDoc.createElement("signjar"); // NOI18N
-            sign.setAttribute("jar", info.getDestFilePath()); // NOI18N
-            sign.setAttribute("alias", "${jar.sign.alias}"); // NOI18N
-            sign.setAttribute("storepass", "${jar.sign.storepass}"); // NOI18N
-            sign.setAttribute("keystore", "${jar.sign.keystorepath}"); // NOI18N
-            target.appendChild(sign);
+            deps.append(", ").append(createDeleteFileTask(buildDoc, paths));
         }
-        final File outFile = new File(FileUtil.toFile(infos.get(0).getBuildXML().getParent()), TMP_BUILD_FILE);
-        if (outFile.exists() && !outFile.delete()) {
-            LOG.error("outfile could not be deleted"); // NOI18N
-            throw new IOException("outfile '" // NOI18N
-                        + outFile.getAbsolutePath()
-                        + "' could not be deleted"); // NOI18N
-        }
-        final BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(outFile));
-        try {
-            XMLUtil.write(buildDoc, bos, "UTF-8"); // NOI18N
-        } catch (final IOException ex) {
-            LOG.error("could not write tmp build file", ex); // NOI18N
-            throw ex;
-        } finally {
-            bos.close();
-        }
-        final ExecutorTask task = ActionUtils.runTarget(FileUtil.toFileObject(
-                    outFile), new String[] { targetName }, p);
+
+        target.setAttribute("depends", deps.toString()); // NOI18N
+
+        final FileObject outFile = writeDoc(buildDoc, dis[0]);
+
+        final Properties p = new Properties();
+        p.put("jar.sign.storepass", String.valueOf(dis[0].getStorepass()));             // NOI18N
+        p.put("jar.sign.upload.password", String.valueOf(dis[0].getSignServicePass())); // NOI18N
+
+        final ExecutorTask task = ActionUtils.runTarget(outFile, new String[] { targetName }, p);
         task.waitFinished();
         if (task.result() != 0) {
-            task.stop();
-            LOG.error("deploy all jars failed"); // NOI18N
-            throw new IOException("deploy all jars failed"); // NOI18N
-        }
-        if (outFile.exists() && !outFile.delete()) {
-            LOG.error("outfile could not be deleted"); // NOI18N
-            throw new IOException("outfile '" // NOI18N
-                        + outFile.getAbsolutePath()
-                        + "' could not be deleted"); // NOI18N
+            LOG.error("deploy jar failed: " + dis[0].getDestFilePath());             // NOI18N
+            throw new IOException("deploy jar failed: " + dis[0].getDestFilePath()); // NOI18N
         }
     }
 }
