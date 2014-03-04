@@ -129,11 +129,19 @@ public final class DeployInformation {
         this.manifest = manifest;
         this.destFilePath = destFilePath;
         this.alias = alias;
-        this.storepass = Arrays.copyOf(storepass, storepass.length);
+        if (storepass == null) {
+            this.storepass = null;
+        } else {
+            this.storepass = Arrays.copyOf(storepass, storepass.length);
+        }
         this.useSignService = useSignService;
         this.signServiceUrl = signServiceUrl;
         this.signServiceUser = signServiceUser;
-        this.signServicePass = Arrays.copyOf(signServicePass, signServicePass.length);
+        if (signServicePass == null) {
+            this.signServicePass = null;
+        } else {
+            this.signServicePass = Arrays.copyOf(signServicePass, signServicePass.length);
+        }
         this.signServiceLoglevel = signServiceLoglevel;
     }
 
@@ -377,25 +385,40 @@ public final class DeployInformation {
             final File destFilePath = FileUtil.toFile(srcFile.getParent().getParent().getParent());
             final PropertyProvider provider = PropertyProvider.getInstance(
                     libCC.getLibrarySupportContext().getProjectProperties());
-            final FileObject keystore = FileUtil.toFileObject(new File(
-                        provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE)));
+
+            final String ks = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+            final FileObject keystore;
+            if (ks == null) {
+                keystore = null;
+            } else {
+                keystore = FileUtil.toFileObject(new File(ks));
+            }
+
             final String keystoreAlias = provider.get(PropertyProvider.KEY_KEYSTORE_ALIAS);
 
-            final char[] passwd = PasswordEncrypter.decrypt(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW)
-                            .toCharArray(),
-                    true);
+            final String kspw = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
+            final char[] passwd;
+            if (kspw == null) {
+                passwd = null;
+            } else {
+                passwd = PasswordEncrypter.decrypt(kspw.toCharArray(), true);
+            }
 
-            final String destFile = destFilePath.getAbsolutePath()
-                        + System.getProperty("file.separator") // NOI18N
-                        + srcFile.getName() + ".jar";          // NOI18N
+            final String destFile = destFilePath.getAbsolutePath() + File.separator + srcFile.getName() + ".jar"; // NOI18N
 
             final boolean useSignService = PropertyProvider.STRATEGY_USE_SIGN_SERVICE.equals(provider.get(
                         PropertyProvider.KEY_DEPLOYMENT_STRATEGY));
             final String signServiceUrl = provider.get(PropertyProvider.KEY_SIGN_SERVICE_URL);
             final String signServiceUser = provider.get(PropertyProvider.KEY_SIGN_SERVICE_USERNAME);
-            final char[] signServicePass = PasswordEncrypter.decrypt(provider.get(
-                        PropertyProvider.KEY_SIGN_SERVICE_PASSWORD).toCharArray(),
-                    true);
+
+            final String sspw = provider.get(PropertyProvider.KEY_SIGN_SERVICE_PASSWORD);
+            final char[] signServicePass;
+            if (sspw == null) {
+                signServicePass = null;
+            } else {
+                signServicePass = PasswordEncrypter.decrypt(sspw.toCharArray(), true);
+            }
+
             final String signServiceLoglevel = provider.get(PropertyProvider.KEY_SIGN_SERVICE_LOG_LEVEL);
 
             final DeployInformation info = new DeployInformation(
@@ -412,8 +435,12 @@ public final class DeployInformation {
                     signServicePass,
                     signServiceLoglevel);
 
-            PasswordEncrypter.wipe(passwd);
-            PasswordEncrypter.wipe(signServicePass);
+            if (passwd != null) {
+                PasswordEncrypter.wipe(passwd);
+            }
+            if (signServicePass != null) {
+                PasswordEncrypter.wipe(signServicePass);
+            }
 
             return info;
         } catch (final FileNotFoundException ex) {

@@ -79,10 +79,14 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      */
     public void init() {
         final String keystorePath = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
-        final String keystorePw = String.valueOf(PasswordEncrypter.decrypt(
-                    provider.get(
-                        PropertyProvider.KEY_GENERAL_KEYSTORE_PW).toCharArray(),
-                    true));
+
+        final String kspw = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
+        if (kspw == null) {
+            pwdKeystore.setText(null);
+        } else {
+            pwdKeystore.setText(String.valueOf(PasswordEncrypter.decrypt(kspw.toCharArray(), true)));
+        }
+
         final String keystoreAlias = provider.get(PropertyProvider.KEY_KEYSTORE_ALIAS);
 
         if (keystorePath == null) {
@@ -92,7 +96,6 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
         } else {
             txtKeystore.setText(keystorePath);
         }
-        pwdKeystore.setText(keystorePw);
         txtAlias.setText(keystoreAlias);
 
         txtKeystore.getDocument().addDocumentListener(WeakListeners.document(docL, txtKeystore.getDocument()));

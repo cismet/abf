@@ -401,8 +401,16 @@ public final class JarHandler {
         final FileObject outFile = writeDoc(buildDoc, dis[0]);
 
         final Properties p = new Properties();
-        p.put("jar.sign.storepass", String.valueOf(dis[0].getStorepass()));             // NOI18N
-        p.put("jar.sign.upload.password", String.valueOf(dis[0].getSignServicePass())); // NOI18N
+        if (dis[0].getStorepass() == null) {
+            p.put("jar.sign.storepass", "");                                                // NOI18N
+        } else {
+            p.put("jar.sign.storepass", String.valueOf(dis[0].getStorepass()));             // NOI18N
+        }
+        if (dis[0].getSignServicePass() == null) {
+            p.put("jar.sign.upload.password", "");                                          // NOI18N
+        } else {
+            p.put("jar.sign.upload.password", String.valueOf(dis[0].getSignServicePass())); // NOI18N
+        }
 
         final ExecutorTask task = ActionUtils.runTarget(outFile, new String[] { targetName }, p);
         task.waitFinished();

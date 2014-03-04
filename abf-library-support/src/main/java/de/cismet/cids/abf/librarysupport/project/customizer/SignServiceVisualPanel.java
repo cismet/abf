@@ -83,7 +83,7 @@ public class SignServiceVisualPanel extends javax.swing.JPanel {
         final String logLevel = provider.get(PropertyProvider.KEY_SIGN_SERVICE_LOG_LEVEL);
 
         if (url == null) {
-            txtServiceUrl.setText("https://clerkster.cismet.de"); // NOI18N
+            txtServiceUrl.setText("https://clerkster.cismet.de/upload"); // NOI18N
         } else {
             txtServiceUrl.setText(url);
         }
