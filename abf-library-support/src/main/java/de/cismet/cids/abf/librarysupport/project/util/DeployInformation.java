@@ -50,6 +50,7 @@ public final class DeployInformation {
     private String signServiceUrl;
     private String signServiceUser;
     private char[] signServicePass;
+    private String signServiceLoglevel;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -79,6 +80,49 @@ public final class DeployInformation {
             final String signServiceUrl,
             final String signServiceUser,
             final char[] signServicePass) {
+        this(
+            buildXML,
+            sourceDir,
+            keystore,
+            manifest,
+            destFilePath,
+            alias,
+            storepass,
+            useSignService,
+            signServiceUrl,
+            signServiceUser,
+            signServicePass,
+            null);
+    }
+    
+    /**
+     * Creates a new DeployInformation object.
+     *
+     * @param  buildXML             DOCUMENT ME!
+     * @param  sourceDir            DOCUMENT ME!
+     * @param  keystore             DOCUMENT ME!
+     * @param  manifest             DOCUMENT ME!
+     * @param  destFilePath         DOCUMENT ME!
+     * @param  alias                DOCUMENT ME!
+     * @param  storepass            DOCUMENT ME!
+     * @param  useSignService       DOCUMENT ME!
+     * @param  signServiceUrl       DOCUMENT ME!
+     * @param  signServiceUser      DOCUMENT ME!
+     * @param  signServicePass      DOCUMENT ME!
+     * @param  signServiceLoglevel  DOCUMENT ME!
+     */
+    public DeployInformation(final FileObject buildXML,
+            final FileObject sourceDir,
+            final FileObject keystore,
+            final FileObject manifest,
+            final String destFilePath,
+            final String alias,
+            final char[] storepass,
+            final boolean useSignService,
+            final String signServiceUrl,
+            final String signServiceUser,
+            final char[] signServicePass,
+            final String signServiceLoglevel) {
         this.buildXML = buildXML;
         this.sourceDir = sourceDir;
         this.keystore = keystore;
@@ -90,6 +134,7 @@ public final class DeployInformation {
         this.signServiceUrl = signServiceUrl;
         this.signServiceUser = signServiceUser;
         this.signServicePass = Arrays.copyOf(signServicePass, signServicePass.length);
+        this.signServiceLoglevel = signServiceLoglevel;
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -295,6 +340,24 @@ public final class DeployInformation {
     /**
      * DOCUMENT ME!
      *
+     * @return  DOCUMENT ME!
+     */
+    public String getSignServiceLoglevel() {
+        return signServiceLoglevel;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  signServiceLoglevel  DOCUMENT ME!
+     */
+    public void setSignServiceLoglevel(final String signServiceLoglevel) {
+        this.signServiceLoglevel = signServiceLoglevel;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
      * @param   n  DOCUMENT ME!
      *
      * @return  DOCUMENT ME!
@@ -333,6 +396,7 @@ public final class DeployInformation {
             final char[] signServicePass = PasswordEncrypter.decrypt(provider.get(
                         PropertyProvider.KEY_SIGN_SERVICE_PASSWORD).toCharArray(),
                     true);
+            final String signServiceLoglevel = provider.get(PropertyProvider.KEY_SIGN_SERVICE_LOG_LEVEL);
 
             final DeployInformation info = new DeployInformation(
                     libCC.getLibrarySupportContext().getBuildXML(),
@@ -345,7 +409,8 @@ public final class DeployInformation {
                     useSignService,
                     signServiceUrl,
                     signServiceUser,
-                    signServicePass);
+                    signServicePass,
+                    signServiceLoglevel);
 
             PasswordEncrypter.wipe(passwd);
             PasswordEncrypter.wipe(signServicePass);

@@ -183,6 +183,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
             final String signServiceUsername = signServiceVis.getUsername();
             final String signServicePassword = PasswordEncrypter.encryptString(String.valueOf(
                         signServiceVis.getPassWord()));
+            final String signServiceLogLevel = signServiceVis.getLogLevel();
             provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE, keystore);
             provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, keystorePW);
             provider.put(PropertyProvider.KEY_KEYSTORE_ALIAS, keystoreAlias);
@@ -191,6 +192,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
             provider.put(PropertyProvider.KEY_SIGN_SERVICE_URL, signServiceUrl);
             provider.put(PropertyProvider.KEY_SIGN_SERVICE_USERNAME, signServiceUsername);
             provider.put(PropertyProvider.KEY_SIGN_SERVICE_PASSWORD, signServicePassword);
+            provider.put(PropertyProvider.KEY_SIGN_SERVICE_LOG_LEVEL, signServiceLogLevel);
             provider.save();
         }
 

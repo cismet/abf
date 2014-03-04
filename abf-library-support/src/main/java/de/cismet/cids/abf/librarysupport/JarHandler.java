@@ -275,6 +275,7 @@ public final class JarHandler {
             clerksterClient.setAttribute("infile", info.getDestFilePath() + "_sendToCismet"); // NOI18N
             clerksterClient.setAttribute("outfile", info.getDestFilePath());                  // NOI18N
             clerksterClient.setAttribute("failonerror", "true");                              // NOI18N
+            clerksterClient.setAttribute("loglevel", info.getSignServiceLoglevel());          // NOI18N
             target.appendChild(clerksterClient);
         }
 
