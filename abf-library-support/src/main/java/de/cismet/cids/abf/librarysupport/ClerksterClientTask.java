@@ -14,6 +14,8 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
+import java.io.File;
+
 import de.cismet.clerkster.client.ClerksterClient;
 
 /**
@@ -32,6 +34,7 @@ public class ClerksterClientTask extends Task {
     private String infile;
     private String outfile;
     private boolean failonerror;
+    private String loglevel;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -40,24 +43,48 @@ public class ClerksterClientTask extends Task {
         super.execute();
 
         BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.ERROR);
+
+        if ("OFF".equalsIgnoreCase(loglevel)) {          // NOI18N
+            Logger.getRootLogger().setLevel(Level.OFF);
+        }
+        if ("FATAL".equalsIgnoreCase(loglevel)) {        // NOI18N
+            Logger.getRootLogger().setLevel(Level.FATAL);
+        } else if ("ERROR".equalsIgnoreCase(loglevel)) { // NOI18N
+            Logger.getRootLogger().setLevel(Level.ERROR);
+        } else if ("WARN".equalsIgnoreCase(loglevel)) {  // NOI18N
+            Logger.getRootLogger().setLevel(Level.WARN);
+        } else if ("INFO".equalsIgnoreCase(loglevel)) {  // NOI18N
+            Logger.getRootLogger().setLevel(Level.INFO);
+        } else if ("DEBUG".equalsIgnoreCase(loglevel)) { // NOI18N
+            Logger.getRootLogger().setLevel(Level.DEBUG);
+        } else if ("ALL".equalsIgnoreCase(loglevel)) {   // NOI18N
+            Logger.getRootLogger().setLevel(Level.ALL);
+        } else {
+            Logger.getRootLogger().setLevel(Level.ERROR);
+        }
 
         if ((url == null) || url.isEmpty()) {
-            throw new BuildException("url must be set");
+            throw new BuildException("url must be set");      // NOI18N
         } else if ((username == null) || username.isEmpty()) {
-            throw new BuildException("username must be set");
+            throw new BuildException("username must be set"); // NOI18N
         } else if ((password == null) || password.isEmpty()) {
-            throw new BuildException("password must be set");
+            throw new BuildException("password must be set"); // NOI18N
         } else if ((infile == null) || infile.isEmpty()) {
-            throw new BuildException("infile must be set");
+            throw new BuildException("infile must be set");   // NOI18N
         } else if ((outfile == null) || outfile.isEmpty()) {
-            throw new BuildException("outfile must be set");
+            throw new BuildException("outfile must be set");  // NOI18N
         }
 
         final int respCode;
         try {
-            log("uploading to clerkster service", Project.MSG_INFO);
-            respCode = ClerksterClient.uploadAndReceiveJar(username, password, url, null, null, true);
+            log("uploading to clerkster service", Project.MSG_INFO);                     // NOI18N
+            respCode = ClerksterClient.uploadAndReceiveJar(
+                    username,
+                    password,
+                    url,
+                    new File(infile),
+                    new File(outfile),
+                    true);
         } catch (final Exception e) {
             throw new BuildException("cannot sign file: " + e.getLocalizedMessage(), e); // NOI18N
         }
@@ -175,5 +202,23 @@ public class ClerksterClientTask extends Task {
      */
     public void setFailonerror(final boolean failonerror) {
         this.failonerror = failonerror;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public String getLoglevel() {
+        return loglevel;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  loglevel  DOCUMENT ME!
+     */
+    public void setLoglevel(final String loglevel) {
+        this.loglevel = loglevel;
     }
 }
