@@ -23,6 +23,16 @@
             <version>3.4-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>de.cismet.clerkster</groupId>
+            <artifactId>clerkster-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+        <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
         </dependency>

@@ -316,14 +316,18 @@ public final class CreateSecurityJarAction implements ActionListener {
                     final DeployInformation di = new DeployInformation(
                             buildxml,
                             src,
+                            FileUtil.toFileObject(new File(info.ksPath)),
+                            src.getFileObject("META-INF").getFileObject("MANIFEST.MF"),        // NOI18N
                             ".."                                                               // NOI18N
                                     + File.separator
                                     + fo.getName()
                                     + "_security.jar",                                         // NOI18N
-                            FileUtil.toFileObject(new File(info.ksPath)),
                             "cismet",                                                          // NOI18N
-                            String.valueOf(PasswordEncrypter.decrypt(info.ksPw.toCharArray(), true)),
-                            src.getFileObject("META-INF").getFileObject("MANIFEST.MF"));       // NOI18N
+                            PasswordEncrypter.decrypt(info.ksPw.toCharArray(), true),
+                            false,
+                            null,
+                            null,
+                            null);
                     JarHandler.deployJar(di);
 
                     dispatchMessage(io.getOut(),

@@ -87,7 +87,7 @@ public final class DeployJarAction extends NodeAction {
             JarHandler.deployJar(DeployInformation.getDeployInformation(n));
             // remove all modifications that were created on basis of change of
             // this sourcefoldernode and all its children
-            final SourceContextCookie sourceCookie = (SourceContextCookie)n.getCookie(SourceContextCookie.class);
+            final SourceContextCookie sourceCookie = n.getCookie(SourceContextCookie.class);
             ModificationStore.getInstance()
                     .removeAllModificationsInContext(
                         FileUtil.toFile(sourceCookie.getSourceObject()).getAbsolutePath(),
@@ -122,15 +122,20 @@ public final class DeployJarAction extends NodeAction {
                 return false;
             }
         }
-        final LibrarySupportContextCookie lscc = (LibrarySupportContextCookie)nodes[0].getCookie(
-                LibrarySupportContextCookie.class);
+        final LibrarySupportContextCookie lscc = nodes[0].getCookie(LibrarySupportContextCookie.class);
         if (lscc == null) {
             return false;
         }
         final PropertyProvider provider = PropertyProvider.getInstance(lscc.getLibrarySupportContext()
                         .getProjectProperties());
-        final File f = new File(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));
-        enableAction = f.exists() && f.canRead();
-        return enableAction;
+        final String ks = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+        if (ks == null) {
+            return false;
+        } else {
+            final File f = new File(ks);
+            enableAction = f.exists() && f.canRead();
+
+            return enableAction;
+        }
     }
 }
