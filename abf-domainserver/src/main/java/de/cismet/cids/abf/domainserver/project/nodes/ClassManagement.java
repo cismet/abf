@@ -27,12 +27,12 @@ import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CheckRightsAction;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CidsClassNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.ClassManagementContextCookie;
-import de.cismet.cids.abf.domainserver.project.cidsclass.ImportClassesAction;
 import de.cismet.cids.abf.domainserver.project.cidsclass.NewCidsClassWizardAction;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
@@ -51,6 +51,11 @@ import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 public class ClassManagement extends ProjectNode implements Refreshable,
     ConnectionListener,
     ClassManagementContextCookie {
+
+    //~ Static fields/initializers ---------------------------------------------
+
+    /** LOGGER. */
+    private static final transient Logger LOG = Logger.getLogger(ClassManagement.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -87,10 +92,12 @@ public class ClassManagement extends ProjectNode implements Refreshable,
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new ClassManagementChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new ClassManagementChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 
@@ -102,8 +109,6 @@ public class ClassManagement extends ProjectNode implements Refreshable,
                 CallableSystemAction.get(CheckRightsAction.class),
                 null,
                 CallableSystemAction.get(RefreshAction.class),
-//                null,
-//                CallableSystemAction.get(ImportClassesAction.class)
             };
     }
 
@@ -142,8 +147,8 @@ final class ClassManagementChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof CidsClass) {
-            return new Node[] { new CidsClassNode((CidsClass)o, project) };
+        if (o instanceof KeyContainer) {
+            return new Node[] { new CidsClassNode((CidsClass)((KeyContainer)o).getObject(), project) };
         } else {
             return new Node[] {};
         }
@@ -154,7 +159,7 @@ final class ClassManagementChildren extends ProjectChildren {
         try {
             final List<CidsClass> allClasses = project.getCidsDataObjectBackend().getAllEntities(CidsClass.class);
             Collections.sort(allClasses, new Comparators.CidsClasses());
-            setKeysEDT(allClasses);
+            setKeysEDT(KeyContainer.convertCollection(CidsClass.class, allClasses));
         } catch (final Exception ex) {
             LOG.error("could not fetch all classes from backend", ex); // NOI18N
             ErrorUtils.showErrorMessage(

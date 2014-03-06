@@ -126,7 +126,13 @@ public final class DeployChangedJarsAction extends NodeAction {
         }
         final PropertyProvider provider = PropertyProvider.getInstance(lscc.getLibrarySupportContext()
                         .getProjectProperties());
-        final File f = new File(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));
-        return f.exists() && f.canRead();
+        final String ks = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+        if (ks == null) {
+            return false;
+        } else {
+            final File f = new File(ks);
+
+            return f.exists() && f.canRead();
+        }
     }
 }

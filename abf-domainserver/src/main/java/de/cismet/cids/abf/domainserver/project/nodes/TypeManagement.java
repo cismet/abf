@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.types.TypeNode;
@@ -77,10 +78,12 @@ public final class TypeManagement extends ProjectNode implements ConnectionListe
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new TypeManagementChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new TypeManagementChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 
@@ -122,8 +125,8 @@ final class TypeManagementChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof Type) {
-            return new Node[] { new TypeNode((Type)o, project) };
+        if (o instanceof KeyContainer) {
+            return new Node[] { new TypeNode((Type)((KeyContainer)o).getObject(), project) };
         } else {
             return new Node[] {};
         }
@@ -141,7 +144,7 @@ final class TypeManagementChildren extends ProjectChildren {
             }
 
             Collections.sort(onlyUserDefined, new Comparators.AttrTypes());
-            setKeysEDT(onlyUserDefined);
+            setKeysEDT(KeyContainer.convertCollection(Type.class, onlyUserDefined));
         } catch (final Exception ex) {
             LOG.error("could not create children", ex);               // NOI18N
             ErrorUtils.showErrorMessage(

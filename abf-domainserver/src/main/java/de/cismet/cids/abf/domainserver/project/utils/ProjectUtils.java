@@ -15,12 +15,17 @@ import java.awt.Image;
 
 import java.io.File;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 
 import de.cismet.cids.jpa.entity.cidsclass.Icon;
 import de.cismet.cids.jpa.entity.common.Domain;
+import de.cismet.cids.jpa.entity.permission.ClassPermission;
 import de.cismet.cids.jpa.entity.user.UserGroup;
 
 /**
@@ -108,6 +113,22 @@ public final class ProjectUtils {
         }
 
         return !(LOCAL_DOMAIN_NAME.equals(ugDomainName) || domainname.equals(ugDomainName));
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param   perms  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public static Collection<UserGroup> getUserGroupsFromClassPermissions(final Collection<ClassPermission> perms) {
+        final List<UserGroup> ugs = new ArrayList<UserGroup>();
+        for (final ClassPermission perm : perms) {
+            ugs.add(perm.getUserGroup());
+        }
+
+        return ugs;
     }
 
     // TODO: move to commons

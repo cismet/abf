@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.javaclass.JavaClassManagementContextCookie;
@@ -83,10 +84,12 @@ public final class JavaClassManagement extends ProjectNode implements Connection
 
     @Override
     public void connectionStatusChanged(final ConnectionEvent event) {
-        if (event.isConnected() && !event.isIndeterminate()) {
-            setChildrenEDT(new JavaClassManagementChildren(project));
-        } else {
-            setChildrenEDT(Children.LEAF);
+        if (!event.isIndeterminate()) {
+            if (event.isConnected()) {
+                setChildrenEDT(new JavaClassManagementChildren(project));
+            } else {
+                setChildrenEDT(Children.LEAF);
+            }
         }
     }
 
@@ -133,8 +136,8 @@ final class JavaClassManagementChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof JavaClass) {
-            return new Node[] { new JavaClassNode((JavaClass)o, project) };
+        if (o instanceof KeyContainer) {
+            return new Node[] { new JavaClassNode((JavaClass)((KeyContainer)o).getObject(), project) };
         } else {
             return new Node[] {};
         }
@@ -145,7 +148,7 @@ final class JavaClassManagementChildren extends ProjectChildren {
         try {
             final List<JavaClass> allClasses = project.getCidsDataObjectBackend().getAllEntities(JavaClass.class);
             Collections.sort(allClasses, new Comparators.JavaClasses());
-            setKeysEDT(allClasses);
+            setKeysEDT(KeyContainer.convertCollection(JavaClass.class, allClasses));
         } catch (final Exception ex) {
             LOG.error("could not load javaclasses", ex);                   // NOI18N
             ErrorUtils.showErrorMessage(

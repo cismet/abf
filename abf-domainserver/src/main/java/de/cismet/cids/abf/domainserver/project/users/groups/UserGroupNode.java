@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.RefreshIndicatorAction;
 import de.cismet.cids.abf.domainserver.project.RefreshableNode;
@@ -494,7 +495,7 @@ final class UserGroupNodeChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        return new Node[] { new UserNode((User)o, project) };
+        return new Node[] { new UserNode((User)((KeyContainer)o).getObject(), project) };
     }
 
     @Override
@@ -502,6 +503,6 @@ final class UserGroupNodeChildren extends ProjectChildren {
         final Set<User> users = userGroup.getUsers();
         final List<User> l = new ArrayList<User>(users);
         Collections.sort(l, new Comparators.Users());
-        setKeysEDT(l);
+        setKeysEDT(KeyContainer.convertCollection(User.class, l));
     }
 }

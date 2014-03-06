@@ -46,6 +46,7 @@ import javax.swing.event.ChangeListener;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.PolicyPropertyEditor;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
@@ -57,6 +58,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.TypeManagement;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
@@ -74,7 +76,7 @@ import de.cismet.cids.jpa.entity.permission.Policy;
  *
  * @author   thorsten.hell@cismet.de
  * @author   martin.scholl@cismet.de
- * @version  1.30
+ * @version  1.31
  */
 public final class CidsClassNode extends ProjectNode implements Refreshable, CidsClassContextCookie {
 
@@ -804,6 +806,18 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
             // <editor-fold defaultstate="collapsed" desc=" Create Properties: ClassPermission ">
             final List<ClassPermission> allClassPermissions = new ArrayList<ClassPermission>(
                     cidsClass.getClassPermissions());
+            Collections.sort(allClassPermissions, new Comparator<ClassPermission>() {
+
+                    private final Comparator p = new Comparators.Permissions();
+                    private final Comparator u = new Comparators.UserGroups();
+
+                    @Override
+                    public int compare(final ClassPermission o1, final ClassPermission o2) {
+                        final int comp = u.compare(o1.getUserGroup(), o2.getUserGroup());
+
+                        return (comp == 0) ? p.compare(o1.getPermission(), o2.getPermission()) : comp;
+                    }
+                });
             for (final ClassPermission perm : allClassPermissions) {
                 final String ug;
                 if (ProjectUtils.isRemoteGroup(perm.getUserGroup(), project)) {
@@ -1109,8 +1123,8 @@ final class CidsClassNodeChildren extends ProjectChildren implements Index {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof Attribute) {
-            return new Node[] { new CidsAttributeNode((Attribute)o, cidsClass, project) };
+        if (o instanceof KeyContainer) {
+            return new Node[] { new CidsAttributeNode((Attribute)((KeyContainer)o).getObject(), cidsClass, project) };
         } else {
             return new Node[] {};
         }
@@ -1172,7 +1186,7 @@ final class CidsClassNodeChildren extends ProjectChildren implements Index {
                 ErrorManager.getDefault().notify(e);
             }
 
-            setKeysEDT(children);
+            setKeysEDT(KeyContainer.convertCollection(Attribute.class, children));
         } catch (final Exception ex) {
             LOG.error("could not create children", ex); // NOI18N
         }

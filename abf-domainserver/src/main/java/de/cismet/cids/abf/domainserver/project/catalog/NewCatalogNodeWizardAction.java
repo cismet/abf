@@ -172,10 +172,7 @@ public class NewCatalogNodeWizardAction extends CookieAction {
         wizard.setTitleFormat(new MessageFormat("{0}")); // NOI18N
         if (catNode == null) {
             catNode = new CatNode();
-            catNode.setIsRoot((nodes[0].getCookie(
-                        NavigatorNodeManagementContextCookie.class) != null)
-                        || (nodes[0].getCookie(ClassNodeManagementContextCookie.class)
-                            != null));
+            catNode.setIsRoot(nodes[0].getCookie(NavigatorNodeManagementContextCookie.class) != null);
         } else {
             perms = new LinkedList<NodePermission>(catNode.getNodePermissions());
         }
@@ -231,9 +228,7 @@ public class NewCatalogNodeWizardAction extends CookieAction {
                     ex);                                                // NOI18N
             } finally {
                 nodes[0].getCookie(Refreshable.class).refresh();
-                if ((nodes[0].getCookie(NavigatorNodeManagementContextCookie.class) == null)
-                            && (nodes[0].getCookie(
-                                    ClassNodeManagementContextCookie.class) == null)) {
+                if (nodes[0].getCookie(NavigatorNodeManagementContextCookie.class) == null) {
                     project.getLookup()
                             .lookup(CatalogManagement.class)
                             .addedNode(nodes[0].getCookie(

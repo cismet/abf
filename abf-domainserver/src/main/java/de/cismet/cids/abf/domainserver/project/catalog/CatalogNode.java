@@ -65,6 +65,7 @@ import javax.swing.plaf.metal.MetalIconFactory;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
+import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.PolicyPropertyEditor;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
@@ -1421,8 +1422,8 @@ final class DynamicCatalogNodeChildren extends ProjectChildren {
 
     @Override
     protected Node[] createUserNodes(final Object o) {
-        if (o instanceof CatNode) {
-            final CatNode catNode = (CatNode)o;
+        if (o instanceof KeyContainer) {
+            final CatNode catNode = (CatNode)((KeyContainer)o).getObject();
             return new Node[] { new CatalogNode(catNode, project, (Refreshable)getNode()) };
         } else {
             final AbstractNode node = new AbstractNode(Children.LEAF);
@@ -1517,7 +1518,7 @@ final class DynamicCatalogNodeChildren extends ProjectChildren {
             if ((parentNode.getSqlSort() == null) || !parentNode.getSqlSort()) {
                 Collections.sort(catNodes, new Comparators.CatNodes());
             }
-            setKeysEDT(catNodes);
+            setKeysEDT(KeyContainer.convertCollection(CatNode.class, catNodes));
         } catch (final SQLException ex) {
             LOG.error("could not evaluate resultset", ex);                                          // NOI18N
             setKeysEDT(

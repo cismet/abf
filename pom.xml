@@ -10,7 +10,7 @@
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf</artifactId>
-    <version>3.3.1</version>
+    <version>3.4</version>
     <packaging>pom</packaging>
 
     <name>ABF</name>
@@ -44,7 +44,7 @@
         <connection>scm:git:https://github.com/cismet/abf.git</connection>
         <developerConnection>scm:git:git@github.com:cismet/abf.git</developerConnection>
         <url>https://github.com/cismet/abf</url>
-      <tag>abf-3.3.1</tag>
+      <tag>abf-3.4</tag>
   </scm>
 
     <properties>
@@ -55,6 +55,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+               <groupId>de.cismet.clerkster</groupId>
+                <artifactId>clerkster-client</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant</artifactId>
+                <version>1.8.2</version>
+            </dependency>
             <dependency>
                 <groupId>javax.transaction</groupId>
                 <artifactId>jta</artifactId>
