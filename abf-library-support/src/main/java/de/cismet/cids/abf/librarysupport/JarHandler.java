@@ -243,7 +243,7 @@ public final class JarHandler {
                 "de.cismet.cids.abf.librarysupport/3",
                 false));
         clerksterCP.add(locator.locate(
-                "modules/ext/de.cismet.clerkster/clerkster-client-1.0-SNAPSHOT.jar",
+                "modules/ext/de.cismet.clerkster/clerkster-client-1.0.jar",
                 "de.cismet.cids.abf.librarysupport/3",
                 false));
         clerksterCP.add(locator.locate(
