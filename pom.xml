@@ -56,6 +56,16 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+               <groupId>de.cismet.clerkster</groupId>
+                <artifactId>clerkster-client</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant</artifactId>
+                <version>1.8.2</version>
+            </dependency>
+            <dependency>
                 <groupId>javax.transaction</groupId>
                 <artifactId>jta</artifactId>
                 <version>1.1</version>
