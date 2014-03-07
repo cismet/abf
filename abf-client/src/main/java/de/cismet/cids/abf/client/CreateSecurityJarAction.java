@@ -187,6 +187,17 @@ public final class CreateSecurityJarAction implements ActionListener {
     /**
      * DOCUMENT ME!
      *
+     * @param   info  DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    private boolean isLegacyStructure(final Info info) {
+        return "client".equals(info.project.getProjectDirectory().getName()); // NOI18N
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
      * @param  io     DOCUMENT ME!
      * @param  infos  DOCUMENT ME!
      */
@@ -205,12 +216,23 @@ public final class CreateSecurityJarAction implements ActionListener {
                         fo.getNameExt()),
                     false);
 
-                final String secHref = "client/"
-                            + infos.get(dataObject).project.getProjectDirectory().getName() // NOI18N
-                            + "/"                                                           // NOI18N
-                            + fo.getName() + "_security.jar";                               // NOI18N
+                final StringBuilder secHref = new StringBuilder("client/");                                                          // NOI18N
+                if (isLegacyStructure(infos.get(dataObject))) {
+                    dispatchMessage(io.getErr(), "", true);                                                                          // NOI18N
+                    dispatchMessage(io.getErr(),
+                        NbBundle.getMessage(
+                            CreateSecurityJarAction.class,
+                            "CreateSecurityJarAction.transformJnlps(InputOutput,Map<DataObject,Info>).message.warnLegacyStructure"), // NOI18N
+                        true);
+                } else {
+                    secHref.append(infos.get(dataObject).project.getProjectDirectory().getName());
+                    secHref.append("/");                                                                                             // NOI18N
+                }
+                secHref.append(fo.getName());
+                secHref.append("_security.jar");                                                                                     // NOI18N
+
                 final Document d = reader.read(fo.getInputStream());
-                final List jarNodes = d.selectNodes("//jnlp/resources/jar");                // NOI18N
+                final List jarNodes = d.selectNodes("//jnlp/resources/jar"); // NOI18N
 
                 Element secNode = null;
                 for (final Iterator it = jarNodes.iterator(); it.hasNext();) {
@@ -230,7 +252,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 if (secNode == null) {
                     final Element resources = (Element)d.selectSingleNode("//jnlp/resources"); // NOI18N
                     secNode = resources.addElement("jar");                                     // NOI18N
-                    secNode.addAttribute("href", secHref);                                     // NOI18N
+                    secNode.addAttribute("href", secHref.toString());                          // NOI18N
                 }
 
                 secNode.addAttribute("main", "true"); // NOI18N
