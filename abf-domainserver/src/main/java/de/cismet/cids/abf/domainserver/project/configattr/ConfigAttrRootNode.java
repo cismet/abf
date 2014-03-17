@@ -414,7 +414,7 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
 
         @Override
         protected Node[] createUserNodes(final Object o) {
-            if (o instanceof ConfigAttrKey) {
+            if ((o instanceof KeyContainer) && (((KeyContainer)o).getObject() instanceof ConfigAttrKey)) {
                 return new Node[] {
                         new ConfigAttrKeyNode((ConfigAttrKey)((KeyContainer)o).getObject(), type, project)
                     };
