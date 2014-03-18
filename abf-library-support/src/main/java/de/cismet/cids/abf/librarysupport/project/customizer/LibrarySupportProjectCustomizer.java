@@ -198,7 +198,7 @@ public final class LibrarySupportProjectCustomizer implements CustomizerProvider
 
         @Override
         public void windowClosed(final WindowEvent we) {
-            PropertyProvider.getInstance(project.getProjectProperties()).clearInternal();
+            PropertyProvider.getInstance(project.getProjectProperties()).clear();
             project.getLookup().lookup(LibrarySupportProjectNode.class).firePropertiesChange();
         }
     }

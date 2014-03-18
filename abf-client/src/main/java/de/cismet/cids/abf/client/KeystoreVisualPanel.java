@@ -7,25 +7,20 @@
 ****************************************************/
 package de.cismet.cids.abf.client;
 
-import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer.Category;
 
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
 import org.openide.util.WeakListeners;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import java.io.File;
-
-import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
 
 import de.cismet.tools.PasswordEncrypter;
@@ -34,58 +29,47 @@ import de.cismet.tools.PasswordEncrypter;
  * DOCUMENT ME!
  *
  * @author   mscholl
- * @version  1.0
+ * @version  1.4
  */
-public class KeystoreVisualPanel extends javax.swing.JPanel {
+public final class KeystoreVisualPanel extends javax.swing.JPanel {
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient Project project;
-    private final transient Category category;
-    private final transient ImageIcon icon;
+    private final transient PropertyProvider provider;
     private final transient DocumentListener docL;
-    private final transient ActionListener actionL;
+    private final transient ImageIcon warning;
+    private final transient Category category;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBrowse;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.JLabel lblKeystorePath;
-    private javax.swing.JLabel lblKeystorePw;
-    private javax.swing.JLabel lblStatus;
-    private javax.swing.JPasswordField pwKeystorePw;
-    private javax.swing.JTextField txtKeystorePath;
+    private final transient javax.swing.JButton btnChoose = new javax.swing.JButton();
+    private final transient javax.swing.Box.Filler filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 32767));
+    private final transient javax.swing.JLabel lblAlias = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblError = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblKeystore = new javax.swing.JLabel();
+    private final transient javax.swing.JLabel lblPassword = new javax.swing.JLabel();
+    private final transient javax.swing.JPasswordField pwdKeystore = new javax.swing.JPasswordField();
+    private final transient javax.swing.JTextField txtAlias = new javax.swing.JTextField();
+    private final transient javax.swing.JTextField txtKeystore = new javax.swing.JTextField();
     // End of variables declaration//GEN-END:variables
 
     //~ Constructors -----------------------------------------------------------
 
     /**
-     * Creates a new KeystoreVisualPanel object.
+     * Creates new form KeystoreVisualPanel.
      *
-     * @param   project   DOCUMENT ME!
-     * @param   category  DOCUMENT ME!
-     *
-     * @throws  NullPointerException  DOCUMENT ME!
+     * @param  project   DOCUMENT ME!
+     * @param  category  DOCUMENT ME!
      */
-    public KeystoreVisualPanel(final Project project, final Category category) {
-        if (project == null) {
-            throw new NullPointerException("project must not be null"); // NOI18N
-        }
-
-        icon = ImageUtilities.loadImageIcon(
-                KeystoreVisualPanel.class.getPackage().getName().replaceAll("\\.", "/") // NOI18N
-                        + "/error.png",                                                 // NOI18N
-                false);
-        this.project = project;
+    public KeystoreVisualPanel(final ClientProject project, final Category category) {
+        provider = PropertyProvider.getInstance(project.getProjectProperties());
+        assert provider != null;
         this.category = category;
-        this.docL = new DocL();
-        this.actionL = new ActionL();
 
+        docL = new DocumentListenerImpl();
+        warning = new ImageIcon(ImageUtilities.loadImage(LibrarySupportProject.IMAGE_FOLDER + "warning_16.gif")); // NOI18N
         initComponents();
-
-        txtKeystorePath.getDocument().addDocumentListener(WeakListeners.document(docL, txtKeystorePath.getDocument()));
-        pwKeystorePw.getDocument().addDocumentListener(WeakListeners.document(docL, pwKeystorePw.getDocument()));
-        btnBrowse.addActionListener(WeakListeners.create(ActionListener.class, actionL, btnBrowse));
-
         init();
     }
 
@@ -93,19 +77,66 @@ public class KeystoreVisualPanel extends javax.swing.JPanel {
 
     /**
      * DOCUMENT ME!
-     *
-     * @throws  IllegalStateException  DOCUMENT ME!
      */
-    private void init() {
-        final Properties projectProps = project.getLookup().lookup(Properties.class);
-        if (projectProps == null) {
-            throw new IllegalStateException("project properties not availabe for project: " + project); // NOI18N
+    public void init() {
+        final String keystorePath = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+
+        final String kspw = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
+        if (kspw == null) {
+            pwdKeystore.setText(null);
+        } else {
+            pwdKeystore.setText(String.valueOf(PasswordEncrypter.decrypt(kspw.toCharArray(), true)));
         }
 
-        final String pwProp = projectProps.getProperty(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, ""); // NOI18N
+        final String keystoreAlias = provider.get(PropertyProvider.KEY_KEYSTORE_ALIAS);
 
-        txtKeystorePath.setText(projectProps.getProperty(PropertyProvider.KEY_GENERAL_KEYSTORE));
-        pwKeystorePw.setText(String.valueOf(PasswordEncrypter.decrypt(pwProp.toCharArray(), true)));
+        if (keystorePath == null) {
+            txtKeystore.setText(org.openide.util.NbBundle.getMessage(
+                    KeystoreVisualPanel.class,
+                    "KeystoreVisualPanel.init().txtKeystore.text.noKeystore")); // NOI18N
+        } else {
+            txtKeystore.setText(keystorePath);
+        }
+        txtAlias.setText(keystoreAlias);
+
+        txtKeystore.getDocument().addDocumentListener(WeakListeners.document(docL, txtKeystore.getDocument()));
+        txtAlias.getDocument().addDocumentListener(WeakListeners.document(docL, txtAlias.getDocument()));
+
+        validateEntry();
+    }
+
+    /**
+     * DOCUMENT ME!
+     */
+    public void validateEntry() {
+        final File file = new File(txtKeystore.getText());
+        if (file.exists()) {
+            if (file.canRead()) {
+                if (txtAlias.getText().isEmpty()) {
+                    lblError.setIcon(warning);
+                    lblError.setText(NbBundle.getMessage(
+                            KeystoreVisualPanel.class,
+                            "KeystoreVisualPanel.validateEntry().lblError.text.noAlias"));
+                    category.setValid(false);
+                } else {
+                    lblError.setIcon(null);
+                    lblError.setText("");                                                         // NOI18N
+                    category.setValid(true);
+                }
+            } else {
+                lblError.setIcon(warning);
+                lblError.setText(NbBundle.getMessage(
+                        KeystoreVisualPanel.class,
+                        "KeystoreVisualPanel.validateEntry().lblError.text.keystoreUnreadable")); // NOI18N
+                category.setValid(false);
+            }
+        } else {
+            lblError.setIcon(warning);
+            lblError.setText(NbBundle.getMessage(
+                    KeystoreVisualPanel.class,
+                    "KeystoreVisualPanel.validateEntry().lblError.text.keystoreNotExistent"));    // NOI18N
+            category.setValid(false);
+        }
     }
 
     /**
@@ -113,122 +144,152 @@ public class KeystoreVisualPanel extends javax.swing.JPanel {
      *
      * @return  DOCUMENT ME!
      */
-    private boolean isValidPanel() {
-        final File file = new File(txtKeystorePath.getText());
-        if (file.exists() && file.isFile()) {
-            lblStatus.setText(null);
-            lblStatus.setIcon(null);
-
-            category.setValid(true);
-        } else {
-            lblStatus.setText(NbBundle.getMessage(
-                    KeystoreVisualPanel.class,
-                    "KeystoreVisualPanel.isValidPanel().lblStatus.text.invalidPath")); // NOI18N
-            lblStatus.setIcon(icon);
-
-            category.setValid(false);
-        }
-
-        return category.isValid();
+    public String getKeystore() {
+        return txtKeystore.getText();
     }
 
     /**
      * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
      */
-    private void updateProperties() {
-        if (isValidPanel()) {
-            final Properties props = project.getLookup().lookup(Properties.class);
-            props.put(PropertyProvider.KEY_GENERAL_KEYSTORE, txtKeystorePath.getText());
-            props.put(
-                PropertyProvider.KEY_GENERAL_KEYSTORE_PW,
-                // TODO: use new password encryption
-                PasswordEncrypter.encryptString(String.valueOf(pwKeystorePw.getPassword())));
-        }
+    public char[] getPassword() {
+        return pwdKeystore.getPassword();
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public String getAlias() {
+        return txtAlias.getText();
     }
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
      * content of this method is always regenerated by the Form Editor.
      */
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        lblKeystorePath = new javax.swing.JLabel();
-        txtKeystorePath = new javax.swing.JTextField();
-        lblKeystorePw = new javax.swing.JLabel();
-        pwKeystorePw = new javax.swing.JPasswordField();
-        btnBrowse = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0),
-                new java.awt.Dimension(0, 0),
-                new java.awt.Dimension(0, 32767));
-        lblStatus = new javax.swing.JLabel();
-
         setLayout(new java.awt.GridBagLayout());
 
-        lblKeystorePath.setText(NbBundle.getMessage(
+        lblKeystore.setText(org.openide.util.NbBundle.getMessage(
                 KeystoreVisualPanel.class,
-                "KeystoreVisualPanel.lblKeystorePath.text")); // NOI18N
+                "KeystoreVisualPanel.mainKeystoreLabel.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(lblKeystorePath, gridBagConstraints);
-
-        txtKeystorePath.setText(NbBundle.getMessage(
-                KeystoreVisualPanel.class,
-                "KeystoreVisualPanel.txtKeystorePath.text")); // NOI18N
+        add(lblKeystore, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(txtKeystorePath, gridBagConstraints);
+        add(txtKeystore, gridBagConstraints);
 
-        lblKeystorePw.setText(NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.lblKeystorePw.text")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(lblKeystorePw, gridBagConstraints);
+        btnChoose.setText(org.openide.util.NbBundle.getMessage(
+                KeystoreVisualPanel.class,
+                "KeystoreVisualPanel.chooseButton.text")); // NOI18N
+        btnChoose.addActionListener(new java.awt.event.ActionListener() {
 
-        pwKeystorePw.setText(NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.pwKeystorePw.text")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(pwKeystorePw, gridBagConstraints);
-
-        btnBrowse.setText(NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.btnBrowse.text")); // NOI18N
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    btnChooseActionPerformed(evt);
+                }
+            });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(btnBrowse, gridBagConstraints);
+        add(btnChoose, gridBagConstraints);
+
+        lblError.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        lblError.setForeground(new java.awt.Color(255, 204, 0));
+        lblError.setText(org.openide.util.NbBundle.getMessage(
+                KeystoreVisualPanel.class,
+                "KeystoreVisualPanel.errorLabel.text"));             // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblError, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(pwdKeystore, gridBagConstraints);
+
+        lblPassword.setText(org.openide.util.NbBundle.getMessage(
+                KeystoreVisualPanel.class,
+                "KeystoreVisualPanel.passwordLabel.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblPassword, gridBagConstraints);
+
+        lblAlias.setText(NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.lblAlias.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 1.0;
-        add(filler1, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(lblAlias, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(txtAlias, gridBagConstraints);
 
-        lblStatus.setText(NbBundle.getMessage(KeystoreVisualPanel.class, "KeystoreVisualPanel.lblStatus.text")); // NOI18N
+        filler1.setMaximumSize(new java.awt.Dimension(0, 32767));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        add(lblStatus, gridBagConstraints);
-    }                                                                                                            // </editor-fold>//GEN-END:initComponents
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        add(filler1, gridBagConstraints);
+    } // </editor-fold>//GEN-END:initComponents
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void btnChooseActionPerformed(final java.awt.event.ActionEvent evt)                       //GEN-FIRST:event_btnChooseActionPerformed
+    {                                                                                                 //GEN-HEADEREND:event_btnChooseActionPerformed
+        final JFileChooser chooser = new JFileChooser();
+        final File userhome = new File(System.getProperty("user.home"));                              // NOI18N
+        chooser.setMultiSelectionEnabled(false);
+        chooser.setCurrentDirectory(userhome);
+        chooser.setDialogTitle(org.openide.util.NbBundle.getMessage(
+                KeystoreVisualPanel.class,
+                "KeystoreVisualPanel.chooseButtonActionPerformed(ActionEvent).chooser.dialogTitle")); // NOI18N
+        chooser.setFileHidingEnabled(false);
+        final int retVal = chooser.showOpenDialog(this);
+        if (retVal == JFileChooser.APPROVE_OPTION) {
+            txtKeystore.setText(chooser.getSelectedFile().getAbsolutePath());
+        }
+    }                                                                                                 //GEN-LAST:event_btnChooseActionPerformed
 
     //~ Inner Classes ----------------------------------------------------------
 
@@ -237,53 +298,23 @@ public class KeystoreVisualPanel extends javax.swing.JPanel {
      *
      * @version  $Revision$, $Date$
      */
-    private final class DocL implements DocumentListener {
+    private class DocumentListenerImpl implements DocumentListener {
 
         //~ Methods ------------------------------------------------------------
 
         @Override
-        public void insertUpdate(final DocumentEvent e) {
-            updateProperties();
+        public void insertUpdate(final DocumentEvent documentEvent) {
+            validateEntry();
         }
 
         @Override
-        public void removeUpdate(final DocumentEvent e) {
-            updateProperties();
+        public void removeUpdate(final DocumentEvent documentEvent) {
+            validateEntry();
         }
 
         @Override
-        public void changedUpdate(final DocumentEvent e) {
-            updateProperties();
-        }
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @version  $Revision$, $Date$
-     */
-    private final class ActionL implements ActionListener {
-
-        //~ Methods ------------------------------------------------------------
-
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-            final JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle(NbBundle.getMessage(
-                    KeystoreVisualPanel.class,
-                    "KeystoreVisualPanel.ActionL.actionPerformed(ActionEvent).chooser.title")); // NOI18N
-            chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-            chooser.setFileHidingEnabled(false);
-            chooser.setMultiSelectionEnabled(false);
-            final File initPath = new File(txtKeystorePath.getText());
-            if (initPath.exists()) {
-                chooser.setSelectedFile(initPath);
-            }
-
-            final int answer = chooser.showOpenDialog(KeystoreVisualPanel.this);
-            if (answer == JFileChooser.APPROVE_OPTION) {
-                txtKeystorePath.setText(chooser.getSelectedFile().getAbsolutePath());
-            }
+        public void changedUpdate(final DocumentEvent documentEvent) {
+            validateEntry();
         }
     }
 }

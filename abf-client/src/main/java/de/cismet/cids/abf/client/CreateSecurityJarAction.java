@@ -42,7 +42,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.Executor;
 
 import de.cismet.cids.abf.librarysupport.JarHandler;
@@ -100,45 +99,53 @@ public final class CreateSecurityJarAction implements ActionListener {
                     io.setFocusTaken(true);
                     final Map<DataObject, Info> infos = new HashMap<DataObject, Info>();
                     for (final DataObject dataObject : context) {
-                        final Project project = FileOwnerQuery.getOwner(dataObject.getPrimaryFile());
+                        final Project p = FileOwnerQuery.getOwner(dataObject.getPrimaryFile());
+                        if (!(p instanceof ClientProject)) {
+                            throw new IllegalStateException("this action can only be used for client projects");
+                        }
+                        final ClientProject project = (ClientProject)p;
+
                         FileObject workingFolder = null;
 
                         try {
-                            if (project == null) {
-                                throw new IllegalStateException("project not available for jnlp: " + dataObject); // NOI18N
-                            } else {
-                                final Info info = getInfo(project, infos.values());
-                                if (info == null) {
-                                    workingFolder = prepareWorkingFolder(project);
+                            final Info info = getInfo(project, infos.values());
+                            if (info == null) {
+                                workingFolder = prepareWorkingFolder(project);
 
-                                    final Properties projectProps = project.getLookup().lookup(Properties.class);
-                                    if (projectProps == null) {
-                                        throw new IllegalStateException(
-                                            "project properties not availabe for project: " // NOI18N
-                                                    + project);
-                                    } else {
-                                        final String ksPath = projectProps.getProperty(
-                                                PropertyProvider.KEY_GENERAL_KEYSTORE);
-                                        final String ksPw = projectProps.getProperty(
-                                                PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
+                                final PropertyProvider provider = PropertyProvider.getInstance(
+                                        project.getProjectProperties());
+                                final String ksPath = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+                                final String ksPw = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
 
-                                        if ((ksPath == null) || ksPath.isEmpty() || (ksPw == null) || ksPw.isEmpty()) {
-                                            throw new IllegalStateException(
-                                                "project properties do not contain keystore path and pw properties"); // NOI18N
-                                        } else {
-                                            final Info i = new Info();
-                                            i.project = project;
-                                            i.workingFolder = workingFolder;
-                                            i.ksPath = ksPath;
-                                            i.ksPw = ksPw;
-                                            i.transformed = false;
-
-                                            infos.put(dataObject, i);
-                                        }
-                                    }
+                                if ((ksPath == null) || ksPath.isEmpty() || (ksPw == null) || ksPw.isEmpty()) {
+                                    throw new IllegalStateException(
+                                        "project properties do not contain keystore path and pw properties"); // NOI18N
                                 } else {
-                                    infos.put(dataObject, info);
+                                    final Info i = new Info();
+                                    i.project = project;
+                                    i.workingFolder = workingFolder;
+                                    i.ksPath = ksPath;
+                                    i.ksPw = ksPw;
+                                    i.transformed = false;
+                                    i.alias = provider.get(PropertyProvider.KEY_KEYSTORE_ALIAS);
+                                    i.useSignService = PropertyProvider.STRATEGY_USE_SIGN_SERVICE.equals(
+                                            provider.get(PropertyProvider.KEY_DEPLOYMENT_STRATEGY));
+                                    i.signServiceUrl = provider.get(PropertyProvider.KEY_SIGN_SERVICE_URL);
+                                    i.signServiceUser = provider.get(PropertyProvider.KEY_SIGN_SERVICE_USERNAME);
+
+                                    final String sspw = provider.get(PropertyProvider.KEY_SIGN_SERVICE_PASSWORD);
+                                    if (sspw == null) {
+                                        i.signServicePass = null;
+                                    } else {
+                                        i.signServicePass = PasswordEncrypter.decrypt(sspw.toCharArray(), true);
+                                    }
+
+                                    i.signServiceLoglevel = provider.get(PropertyProvider.KEY_SIGN_SERVICE_LOG_LEVEL);
+
+                                    infos.put(dataObject, i);
                                 }
+                            } else {
+                                infos.put(dataObject, info);
                             }
                         } catch (final Exception e) {
                             final String message = NbBundle.getMessage(
@@ -335,21 +342,25 @@ public final class CreateSecurityJarAction implements ActionListener {
                     }
                     fo.copy(jnlpDir, "APPLICATION", "JNLP");                                   // NOI18N
                     final FileObject buildxml = info.workingFolder.getFileObject("build.xml"); // NOI18N
+                    final File outfile = new File(info.workingFolder.getPath()
+                                    + File.separator
+                                    + ".."                                                     // NOI18N
+                                    + File.separator
+                                    + fo.getName()
+                                    + "_security.jar");                                        // NOI18N
                     final DeployInformation di = new DeployInformation(
                             buildxml,
                             src,
                             FileUtil.toFileObject(new File(info.ksPath)),
                             src.getFileObject("META-INF").getFileObject("MANIFEST.MF"),        // NOI18N
-                            ".."                                                               // NOI18N
-                                    + File.separator
-                                    + fo.getName()
-                                    + "_security.jar",                                         // NOI18N
-                            "cismet",                                                          // NOI18N
+                            outfile.getAbsolutePath(),
+                            (info.alias == null) ? "cismet" : info.alias,                      // NOI18N
                             PasswordEncrypter.decrypt(info.ksPw.toCharArray(), true),
-                            false,
-                            null,
-                            null,
-                            null);
+                            info.useSignService,
+                            info.signServiceUrl,
+                            info.signServiceUser,
+                            info.signServicePass,
+                            info.signServiceLoglevel);
                     JarHandler.deployJar(di);
 
                     dispatchMessage(io.getOut(),
@@ -443,5 +454,11 @@ public final class CreateSecurityJarAction implements ActionListener {
         String ksPath;
         String ksPw;
         boolean transformed;
+        String alias;
+        boolean useSignService;
+        String signServiceUrl;
+        String signServiceUser;
+        char[] signServicePass;
+        String signServiceLoglevel;
     }
 }
