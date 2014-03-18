@@ -101,7 +101,6 @@ public class ClientProject implements Project {
                         this,                     // project spec requires a project be in its own lookup
                         state,                    // allow outside code to mark the project eg. need saving
                         new ActionProviderImpl(), // Provides standard actions
-                        loadProperties(),         // The project properties
                         new Info(),               // Project information implementation
                         logicalView,              // Logical view of project implementation
                         new ClientProjectCustomizer(this)
@@ -109,6 +108,15 @@ public class ClientProject implements Project {
             return lkp;
         }
         return lkp;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public FileObject getProjectProperties() {
+        return projectDir.getFileObject(ClientProjectFactory.PROJECT_DIR + "/" + ClientProjectFactory.PROJECT_PROPFILE); // NOI18N
     }
 
     /**

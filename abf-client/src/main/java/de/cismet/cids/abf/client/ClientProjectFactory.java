@@ -42,21 +42,7 @@ public class ClientProjectFactory implements ProjectFactory {
 
     @Override
     public void saveProject(final Project project) throws IOException, ClassCastException {
-        final FileObject projectDir = project.getProjectDirectory().getFileObject(PROJECT_DIR);
-        if (projectDir == null) {
-            throw new IOException("Project dir deleted, cannot save project: " + project); // NOI18N
-        }
-        // Force creation of the scenes/ dir if it was deleted
-        ((ClientProject)project).getWebinterfaceFolder(true);
-        // Find the properties file project.properties,
-        // creating it if necessary
-        FileObject propertiesFile = projectDir.getFileObject(PROJECT_PROPFILE);
-        if (propertiesFile == null) {
-            // Recreate the properties file if needed
-            propertiesFile = projectDir.createData(PROJECT_PROPFILE);
-        }
-        final Properties properties = project.getLookup().lookup(Properties.class);
-        properties.store(new FileOutputStream(FileUtil.toFile(propertiesFile)), "Cids Client Project Properties"); // NOI18N
+        // noop
     }
 
     @Override

@@ -7,14 +7,11 @@
 ****************************************************/
 package de.cismet.cids.abf.client;
 
-import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectUtils;
 import org.netbeans.spi.project.ui.CustomizerProvider;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer;
-import org.netbeans.spi.project.ui.support.ProjectCustomizer.Category;
-import org.netbeans.spi.project.ui.support.ProjectCustomizer.CategoryComponentProvider;
 
 import org.openide.util.ImageUtilities;
-import org.openide.util.NbBundle;
 
 import java.awt.Dialog;
 import java.awt.Image;
@@ -23,12 +20,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 
 import de.cismet.cids.abf.librarysupport.project.customizer.LibrarySupportProjectCustomizer;
+import de.cismet.cids.abf.librarysupport.project.customizer.PanelProvider;
 import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
+
+import de.cismet.tools.PasswordEncrypter;
 
 /**
  * DOCUMENT ME!
@@ -40,85 +41,93 @@ public final class ClientProjectCustomizer implements CustomizerProvider {
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient Image icon;
-    private final transient Project project;
-    private final transient Category[] categories;
-    private final transient CategoryComponentProvider provider;
+    private final transient ClientProject project;
+    private final transient Image keystoreIcon;
+    private final transient Image deployIcon;
+    private final transient Image serviceIcon;
+    private final transient Image preferencesIcon;
 
-    private transient String keystorePathBackup;
-    private transient String keystorePwBackup;
+    private transient ProjectCustomizer.Category[] categories;
+    private transient ProjectCustomizer.CategoryComponentProvider panelProvider;
+    private transient DeployVisualPanel deployVis;
+    private transient KeystoreVisualPanel keystoreVis;
+    private transient SignServiceVisualPanel signServiceVis;
 
     //~ Constructors -----------------------------------------------------------
 
     /**
-     * Creates a new ClientProjectCustomizer object.
+     * Creates a new instance of ClientProjectCustomizer.
      *
      * @param  project  DOCUMENT ME!
      */
-    public ClientProjectCustomizer(final Project project) {
+    public ClientProjectCustomizer(final ClientProject project) {
         this.project = project;
-
-        icon = ImageUtilities.loadImage(
-                ClientProjectCustomizer.class.getPackage().getName().replaceAll("\\.", "/") // NOI18N
-                        + "/key.png");                                                      // NOI18N
-        categories = getCategories();
-        provider = getComponentProvider();
+        final String pakkage = ClientProjectCustomizer.class.getPackage().getName().replaceAll("\\.", "/"); // NOI18N
+        keystoreIcon = ImageUtilities.loadImage(pakkage + "/key.png");                                      // NOI18N
+        deployIcon = ImageUtilities.loadImage(pakkage + "/jar_16.png");                                     // NOI18N
+        serviceIcon = ImageUtilities.loadImage(pakkage + "/service_16.png");                                // NOI18N
+        preferencesIcon = ImageUtilities.loadImage(pakkage + "/preferences_16.png");                        // NOI18N
     }
 
     //~ Methods ----------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
-     *
-     * @return  DOCUMENT ME!
      */
-    private Category[] getCategories() {
+    private void init() {
         final ProjectCustomizer.Category deployKeystore = ProjectCustomizer.Category.create(
                 LibrarySupportProjectCustomizer.DEPLOY_KEYSTORE,
-                "Keystore", // NOI18N because this is a fixed term
-                icon,
+                org.openide.util.NbBundle.getMessage(
+                    ClientProjectCustomizer.class,
+                    "ClientProjectCustomizer.init().deployKeystore.label"), // NOI18N
+                keystoreIcon,
                 (ProjectCustomizer.Category[])null);
-
-        return new ProjectCustomizer.Category[] { deployKeystore };
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return  DOCUMENT ME!
-     */
-    private CategoryComponentProvider getComponentProvider() {
-        // currently only one category available
-        return new CategoryComponentProvider() {
-
-                @Override
-                public JComponent create(final Category ctgr) {
-                    return new KeystoreVisualPanel(project, ctgr);
-                }
-            };
+        final ProjectCustomizer.Category deploySignService = ProjectCustomizer.Category.create(
+                LibrarySupportProjectCustomizer.DEPLOY_KEYSTORE,
+                "Sign Service",
+                serviceIcon,
+                (ProjectCustomizer.Category[])null);
+        final ProjectCustomizer.Category[] deployCategories = new ProjectCustomizer.Category[2];
+        deployCategories[0] = deployKeystore;
+        deployCategories[1] = deploySignService;
+        final ProjectCustomizer.Category deploy = ProjectCustomizer.Category.create(
+                LibrarySupportProjectCustomizer.DEPLOY_CATEGORY,
+                org.openide.util.NbBundle.getMessage(
+                    ClientProjectCustomizer.class,
+                    "ClientProjectCustomizer.init().deploy.label"), // NOI18N
+                deployIcon,
+                deployCategories);
+        categories = new ProjectCustomizer.Category[1];
+        categories[0] = deploy;
+        final Map<ProjectCustomizer.Category, JComponent> panels = new HashMap<ProjectCustomizer.Category, JComponent>(
+                6);
+        deployVis = new DeployVisualPanel(project);
+        keystoreVis = new KeystoreVisualPanel(project, deployKeystore);
+        signServiceVis = new SignServiceVisualPanel(project, deploySignService);
+        panels.put(deploy, deployVis);
+        panels.put(deployKeystore, keystoreVis);
+        panels.put(deploySignService, signServiceVis);
+        panelProvider = new PanelProvider(panels);
     }
 
     @Override
     public void showCustomizer() {
-        final Properties projectProperties = project.getLookup().lookup(Properties.class);
-        if (projectProperties == null) {
-            throw new IllegalStateException("no project properties available"); // NOI18N
-        }
-
-        keystorePathBackup = projectProperties.getProperty(PropertyProvider.KEY_GENERAL_KEYSTORE);
-        keystorePwBackup = projectProperties.getProperty(PropertyProvider.KEY_GENERAL_KEYSTORE_PW);
-
-        final CancelL cancelL = new CancelL();
+        init();
+        final OptionListener okListener = new OptionListener();
         final Dialog dialog = ProjectCustomizer.createCustomizerDialog(
                 categories,
-                provider,
-                null,
-                cancelL,
+                panelProvider,
+                LibrarySupportProjectCustomizer.DEPLOY_CATEGORY,
+                okListener,
                 null);
-        dialog.addWindowListener(cancelL);
-        dialog.setTitle(NbBundle.getMessage(
-                ClientProjectCustomizer.class,
-                "ClientProjectCustomizer.showCustomizer().dialog.title")); // NOI18N
+        dialog.addWindowListener(okListener);
+        final String title =
+            org.openide.util.NbBundle.getMessage(
+                        ClientProjectCustomizer.class,
+                        "ClientProjectCustomizer.showCustomizer().dialog.title") // NOI18N
+                    + ProjectUtils.getInformation(project)
+                    .getDisplayName();
+        dialog.setTitle(title);
         dialog.setVisible(true);
         dialog.requestFocus();
     }
@@ -130,30 +139,36 @@ public final class ClientProjectCustomizer implements CustomizerProvider {
      *
      * @version  $Revision$, $Date$
      */
-    private final class CancelL extends WindowAdapter implements ActionListener {
-
-        //~ Instance fields ----------------------------------------------------
-
-        private boolean cancelled = true;
+    private final class OptionListener extends WindowAdapter implements ActionListener {
 
         //~ Methods ------------------------------------------------------------
 
         @Override
         public void actionPerformed(final ActionEvent e) {
-            cancelled = false;
+            final PropertyProvider provider = PropertyProvider.getInstance(project.getProjectProperties());
+            final String keystore = keystoreVis.getKeystore();
+            final String keystorePW = PasswordEncrypter.encryptString(String.valueOf(keystoreVis.getPassword()));
+            final String keystoreAlias = keystoreVis.getAlias();
+            final String deployStrategy = deployVis.getStrategy();
+            final String signServiceUrl = signServiceVis.getUrl();
+            final String signServiceUsername = signServiceVis.getUsername();
+            final String signServicePassword = PasswordEncrypter.encryptString(String.valueOf(
+                        signServiceVis.getPassWord()));
+            final String signServiceLogLevel = signServiceVis.getLogLevel();
+            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE, keystore);
+            provider.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, keystorePW);
+            provider.put(PropertyProvider.KEY_KEYSTORE_ALIAS, keystoreAlias);
+            provider.put(PropertyProvider.KEY_DEPLOYMENT_STRATEGY, deployStrategy);
+            provider.put(PropertyProvider.KEY_SIGN_SERVICE_URL, signServiceUrl);
+            provider.put(PropertyProvider.KEY_SIGN_SERVICE_USERNAME, signServiceUsername);
+            provider.put(PropertyProvider.KEY_SIGN_SERVICE_PASSWORD, signServicePassword);
+            provider.put(PropertyProvider.KEY_SIGN_SERVICE_LOG_LEVEL, signServiceLogLevel);
+            provider.save();
         }
 
         @Override
-        public void windowClosed(final WindowEvent e) {
-            if (cancelled) {
-                final Properties projectProps = project.getLookup().lookup(Properties.class);
-                if (projectProps == null) {
-                    throw new IllegalStateException("project properties not availabe for project: " + project); // NOI18N
-                }
-
-                projectProps.put(PropertyProvider.KEY_GENERAL_KEYSTORE, keystorePathBackup);
-                projectProps.put(PropertyProvider.KEY_GENERAL_KEYSTORE_PW, keystorePwBackup);
-            }
+        public void windowClosed(final WindowEvent we) {
+            PropertyProvider.getInstance(project.getProjectProperties()).clear();
         }
     }
 }

@@ -20,6 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -49,7 +51,7 @@ public final class PropertyProvider {
     public static final String STRATEGY_USE_LOCAL = "USE_LOCAL";               // NOI18N
     public static final String STRATEGY_USE_SIGN_SERVICE = "USE_SIGN_SERVICE"; // NOI18N
 
-    private static PropertyProvider provider;
+    private static final Map<FileObject, PropertyProvider> INSTANCES = new HashMap<FileObject, PropertyProvider>(3);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -77,9 +79,15 @@ public final class PropertyProvider {
      *
      * @return  DOCUMENT ME!
      */
-    public static synchronized PropertyProvider getInstance(final FileObject propFile) {
-        if (provider == null) {
-            provider = new PropertyProvider(propFile);
+    public static PropertyProvider getInstance(final FileObject propFile) {
+        final PropertyProvider provider;
+        synchronized (INSTANCES) {
+            if (INSTANCES.containsKey(propFile)) {
+                provider = INSTANCES.get(propFile);
+            } else {
+                provider = new PropertyProvider(propFile);
+                INSTANCES.put(propFile, provider);
+            }
         }
 
         return provider;
@@ -125,7 +133,7 @@ public final class PropertyProvider {
                         LOG.warn("outputstream could not be closed", ex); // NOI18N
                     }
                 }
-                clearInternal();
+                clear();
             }
         }
     }
@@ -166,7 +174,7 @@ public final class PropertyProvider {
     /**
      * DOCUMENT ME!
      */
-    void clearInternal() {
+    public void clear() {
         properties = null;
     }
 }
