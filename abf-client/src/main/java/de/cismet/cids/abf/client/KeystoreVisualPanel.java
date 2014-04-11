@@ -22,6 +22,7 @@ import javax.swing.event.DocumentListener;
 
 import de.cismet.cids.abf.librarysupport.project.LibrarySupportProject;
 import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
+import de.cismet.cids.abf.librarysupport.project.util.Utils;
 
 import de.cismet.tools.PasswordEncrypter;
 
@@ -109,8 +110,9 @@ public final class KeystoreVisualPanel extends javax.swing.JPanel {
      * DOCUMENT ME!
      */
     public void validateEntry() {
-        final File file = new File(txtKeystore.getText());
-        if (file.exists()) {
+        final String ksPath = Utils.getPath(txtKeystore.getText());
+        final File file = new File(ksPath);
+        if (file.exists() && file.isFile()) {
             if (file.canRead()) {
                 if (txtAlias.getText().isEmpty()) {
                     lblError.setIcon(warning);

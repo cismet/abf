@@ -74,6 +74,7 @@ import de.cismet.cids.abf.librarysupport.project.nodes.actions.DeployChangedJars
 import de.cismet.cids.abf.librarysupport.project.nodes.actions.RefreshAction;
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.RefreshCookie;
 import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
+import de.cismet.cids.abf.librarysupport.project.util.Utils;
 import de.cismet.cids.abf.utilities.ModificationStore;
 
 /**
@@ -141,7 +142,7 @@ public final class LibrarySupportProjectNode extends AbstractNode implements Ref
     @Override
     public Image getIcon(final int i) {
         final PropertyProvider provider = PropertyProvider.getInstance(project.getProjectProperties());
-        final String path = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+        final String path = Utils.getPath(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));
         if ((path == null) || path.trim().equals(""))                                                         // NOI18N
         {
             final Image badge = ImageUtilities.loadImage(
