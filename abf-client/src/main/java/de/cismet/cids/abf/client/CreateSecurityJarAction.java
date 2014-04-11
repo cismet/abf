@@ -239,6 +239,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 secHref.append(fo.getName());
                 secHref.append("_security.jar");                                                                                     // NOI18N
 
+                final String secHrefString = secHref.toString();             // NOI18N
                 final Document d = reader.read(fo.getInputStream());
                 final List jarNodes = d.selectNodes("//jnlp/resources/jar"); // NOI18N
 
@@ -246,7 +247,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 for (final Iterator it = jarNodes.iterator(); it.hasNext();) {
                     final Element jarNode = (Element)it.next();
                     final String href = jarNode.valueOf("@href"); // NOI18N
-                    if ((secNode == null) && (href != null) && href.equals(secHref)) {
+                    if ((secNode == null) && (href != null) && href.equals(secHrefString)) {
                         secNode = jarNode;
                     }
 
@@ -260,7 +261,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 if (secNode == null) {
                     final Element resources = (Element)d.selectSingleNode("//jnlp/resources"); // NOI18N
                     secNode = resources.addElement("jar");                                     // NOI18N
-                    secNode.addAttribute("href", secHref.toString());                          // NOI18N
+                    secNode.addAttribute("href", secHrefString);                               // NOI18N
                 }
 
                 secNode.addAttribute("main", "true"); // NOI18N
