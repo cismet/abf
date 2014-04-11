@@ -386,7 +386,7 @@ public final class DeployInformation {
             final PropertyProvider provider = PropertyProvider.getInstance(
                     libCC.getLibrarySupportContext().getProjectProperties());
 
-            final String ks = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+            final String ks = Utils.getPath(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));
             final FileObject keystore;
             if (ks == null) {
                 keystore = null;

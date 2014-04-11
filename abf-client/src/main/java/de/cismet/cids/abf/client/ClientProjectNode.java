@@ -25,6 +25,7 @@ import java.io.File;
 import javax.swing.Action;
 
 import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
+import de.cismet.cids.abf.librarysupport.project.util.Utils;
 
 /**
  * DOCUMENT ME!
@@ -71,7 +72,7 @@ public final class ClientProjectNode extends FilterNode {
     @Override
     public Image getIcon(final int i) {
         final PropertyProvider provider = PropertyProvider.getInstance(project.getProjectProperties());
-        final String path = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+        final String path = Utils.getPath(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));
         if ((path == null) || path.trim().equals(""))                                   // NOI18N
         {
             final Image badge = ImageUtilities.loadImage(

@@ -30,6 +30,7 @@ import de.cismet.cids.abf.librarysupport.project.nodes.cookies.LocalManagementCo
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.SourceContextCookie;
 import de.cismet.cids.abf.librarysupport.project.nodes.cookies.StarterManagementContextCookie;
 import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
+import de.cismet.cids.abf.librarysupport.project.util.Utils;
 import de.cismet.cids.abf.utilities.ModificationStore;
 import de.cismet.cids.abf.utilities.files.FileUtils;
 
@@ -117,7 +118,7 @@ public final class DeployAllJarsAction extends NodeAction {
 
         final PropertyProvider provider = PropertyProvider.getInstance(lscc.getLibrarySupportContext()
                         .getProjectProperties());
-        final String ks = provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE);
+        final String ks = Utils.getPath(provider.get(PropertyProvider.KEY_GENERAL_KEYSTORE));
         if (ks == null) {
             return false;
         } else {

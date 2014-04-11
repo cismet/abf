@@ -47,6 +47,7 @@ import java.util.concurrent.Executor;
 import de.cismet.cids.abf.librarysupport.JarHandler;
 import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
 import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
+import de.cismet.cids.abf.librarysupport.project.util.Utils;
 import de.cismet.cids.abf.utilities.ProgressIndicatingExecutor;
 
 import de.cismet.tools.PasswordEncrypter;
@@ -348,10 +349,11 @@ public final class CreateSecurityJarAction implements ActionListener {
                                     + File.separator
                                     + fo.getName()
                                     + "_security.jar");                                        // NOI18N
+                    final String ksPath = Utils.getPath(info.ksPath);
                     final DeployInformation di = new DeployInformation(
                             buildxml,
                             src,
-                            FileUtil.toFileObject(new File(info.ksPath)),
+                            FileUtil.toFileObject(new File(ksPath)),
                             src.getFileObject("META-INF").getFileObject("MANIFEST.MF"),        // NOI18N
                             outfile.getAbsolutePath(),
                             (info.alias == null) ? "cismet" : info.alias,                      // NOI18N
