@@ -368,7 +368,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                             CreateSecurityJarAction.class,
                             "CreateSecurityJarAction.buildSecurityJars(InputOutput,Map<DataObject,Info>).message.finished"), // NOI18N
                         true);
-                } catch (final IOException ex) {
+                } catch (final Exception ex) {
                     final String message = NbBundle.getMessage(
                             CreateSecurityJarAction.class,
                             "CreateSecurityJarAction.buildSecurityJars(InputOutput,Map<DataObject,Info>).message.buildError"); // NOI18N
