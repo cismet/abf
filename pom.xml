@@ -36,7 +36,7 @@
         <module>abf-broker</module>
         <module>abf-client</module>
         <module>abf-domainserver</module>
-<!--        <module>../abf-options</module>-->
+        <module>abf-options</module>
 <!--        <module>../abf-distribution</module>-->
     </modules>
 

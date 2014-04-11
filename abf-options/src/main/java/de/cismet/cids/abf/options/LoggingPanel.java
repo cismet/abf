@@ -53,7 +53,6 @@ final class LoggingPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final transient javax.swing.JComboBox cboLogLevel = new JComboBox(LogLevel.values());
     private final transient javax.swing.JLabel lblLogLevel = new javax.swing.JLabel();
-    private final transient javax.swing.JPanel pnlFiller = new javax.swing.JPanel();
     private final transient javax.swing.JPanel pnlLogLevel = new javax.swing.JPanel();
     // End of variables declaration//GEN-END:variables
 
@@ -91,6 +90,13 @@ final class LoggingPanel extends javax.swing.JPanel {
         pnlLogLevel.setOpaque(false);
         pnlLogLevel.setLayout(new java.awt.GridBagLayout());
 
+        cboLogLevel.addActionListener(new java.awt.event.ActionListener() {
+
+                @Override
+                public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                    cboLogLevelActionPerformed(evt);
+                }
+            });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -117,29 +123,17 @@ final class LoggingPanel extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         add(pnlLogLevel, gridBagConstraints);
-
-        pnlFiller.setOpaque(false);
-
-        final javax.swing.GroupLayout pnlFillerLayout = new javax.swing.GroupLayout(pnlFiller);
-        pnlFiller.setLayout(pnlFillerLayout);
-        pnlFillerLayout.setHorizontalGroup(
-            pnlFillerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(
-                0,
-                100,
-                Short.MAX_VALUE));
-        pnlFillerLayout.setVerticalGroup(
-            pnlFillerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(
-                0,
-                100,
-                Short.MAX_VALUE));
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.weighty = 1.0;
-        add(pnlFiller, gridBagConstraints);
     } // </editor-fold>//GEN-END:initComponents
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  evt  DOCUMENT ME!
+     */
+    private void cboLogLevelActionPerformed(final java.awt.event.ActionEvent evt) //GEN-FIRST:event_cboLogLevelActionPerformed
+    {                                                                             //GEN-HEADEREND:event_cboLogLevelActionPerformed
+                                                                                  // TODO add your handling code here:
+    }                                                                             //GEN-LAST:event_cboLogLevelActionPerformed
 
     /**
      * DOCUMENT ME!

@@ -29,12 +29,12 @@ import javax.swing.JComponent;
  *
  * @version  $Revision$, $Date$
  */
-@OptionsPanelController.SubRegistration(
-    location = "ABF",
-    displayName = "#AdvancedOption_DisplayName_Logging",
-    keywords = "#AdvancedOption_Keywords_Logging",
-    keywordsCategory = "ABF/Logging"
-)
+//@OptionsPanelController.SubRegistration(
+//    location = "ABF",
+//    displayName = "#AdvancedOption_DisplayName_Logging",
+//    keywords = "#AdvancedOption_Keywords_Logging",
+//    keywordsCategory = "ABF/Logging"
+//)
 // TODO: more control over logging facilities
 public final class LoggingOptionsPanelController extends OptionsPanelController {
 

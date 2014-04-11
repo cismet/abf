@@ -5,22 +5,16 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.1-SNAPSHOT</version>
-        <relativePath>../abf-parent</relativePath>
+        <version>3.6-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-options</artifactId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.6-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Options</name>
     <description>Options provider for cids ABF</description>
-
-    <scm>
-        <connection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-options/</connection>
-        <developerConnection>scm:svn:svn+ssh://repositories/svn/repositories/experimental/de/cismet/cids/abf/trunk/abf-options/</developerConnection>
-        <url>http://repositories:8082/central/experimental/de/cismet/cids/abf/trunk/abf-options/</url>
-    </scm>
     
     <dependencies>
         <dependency>
@@ -88,9 +82,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <publicPackages>
-                        <publicPackage>de.cismet.*</publicPackage>
-                    </publicPackages>
+                    <codeNameBase>de.cismet.cids.abf.options/3</codeNameBase>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.0//EN" "http://www.netbeans.org/dtds/filesystem-1_0.dtd">
 <filesystem>
- 
+    <folder name="Menu">
+        <folder name="File">
+            <file name="de-cismet-cids-abf-options-OptionsAction.instance">
+                <attr name="delegate" newvalue="de.cismet.cids.abf.options.OptionsAction"/>
+                <attr name="displayName" bundlevalue="de.cismet.cids.abf.options.Bundle#CTL_OptionsAction"/>
+                <attr name="injectable" stringvalue="de.cismet.cids.abf.options.OptionsAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="selectionType" stringvalue="ANY"/>
+            </file>
+        </folder>
+    </folder>
 </filesystem>
