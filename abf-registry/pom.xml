@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.6-SNAPSHOT</version>
+        <version>3.6</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-registry</artifactId>
-    <version>3.6-SNAPSHOT</version>
+    <version>3.6</version>
     <packaging>nbm</packaging>
 
     <name>ABF cids Registry</name>
@@ -20,12 +20,12 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>3.6-SNAPSHOT</version>
+            <version>3.6</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.6-SNAPSHOT</version>
+            <version>3.6</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids</groupId>
