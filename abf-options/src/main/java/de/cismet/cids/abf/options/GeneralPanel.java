@@ -23,13 +23,13 @@ import javax.swing.JComboBox;
  *
  * @version  $Revision$, $Date$
  */
-final class LoggingPanel extends javax.swing.JPanel {
+final class GeneralPanel extends javax.swing.JPanel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    public static final String PROP_LOGLEVEL = "loglevel";
+    public static final String PROP_LOGLEVEL = "__prop_loglevel__";
 
-    private static final transient Logger LOG = Logger.getLogger(LoggingPanel.class);
+    private static final transient Logger LOG = Logger.getLogger(GeneralPanel.class);
 
     //~ Enums ------------------------------------------------------------------
 
@@ -42,18 +42,26 @@ final class LoggingPanel extends javax.swing.JPanel {
 
         //~ Enum constants -----------------------------------------------------
 
-        DEBUG, INFO, WARN, ERROR, FATAL, OFF;
+        ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF;
     }
 
     //~ Instance fields --------------------------------------------------------
 
-    private final LoggingOptionsPanelController controller;
+    private final GeneralOptionsPanelController controller;
     private final ItemListener logLevelL;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private final transient javax.swing.JComboBox cboLogLevel = new JComboBox(LogLevel.values());
+    private final transient javax.swing.Box.Filler filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 0));
+    private final transient javax.swing.Box.Filler filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 0),
+            new java.awt.Dimension(0, 32767));
+    private final transient javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
+    private final transient javax.swing.JPanel jPanel2 = new javax.swing.JPanel();
     private final transient javax.swing.JLabel lblLogLevel = new javax.swing.JLabel();
-    private final transient javax.swing.JPanel pnlLogLevel = new javax.swing.JPanel();
+    private final transient javax.swing.JLabel lblLogging = new javax.swing.JLabel();
     // End of variables declaration//GEN-END:variables
 
     //~ Constructors -----------------------------------------------------------
@@ -63,7 +71,7 @@ final class LoggingPanel extends javax.swing.JPanel {
      *
      * @param  controller  DOCUMENT ME!
      */
-    LoggingPanel(final LoggingOptionsPanelController controller) {
+    GeneralPanel(final GeneralOptionsPanelController controller) {
         this.controller = controller;
         this.logLevelL = new LogLevelItemListener();
 
@@ -82,65 +90,86 @@ final class LoggingPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        setBackground(new java.awt.Color(0, 0, 0));
         setOpaque(false);
         setLayout(new java.awt.GridBagLayout());
 
-        pnlLogLevel.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                NbBundle.getMessage(LoggingPanel.class, "LoggingPanel.pnlLogLevel.border.title"))); // NOI18N
-        pnlLogLevel.setOpaque(false);
-        pnlLogLevel.setLayout(new java.awt.GridBagLayout());
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        cboLogLevel.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    cboLogLevelActionPerformed(evt);
-                }
-            });
+        cboLogLevel.setPreferredSize(new java.awt.Dimension(100, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        pnlLogLevel.add(cboLogLevel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 15, 5, 5);
+        jPanel1.add(cboLogLevel, gridBagConstraints);
 
         org.openide.awt.Mnemonics.setLocalizedText(
             lblLogLevel,
-            NbBundle.getMessage(LoggingPanel.class, "LoggingPanel.lblLogLevel.text")); // NOI18N
+            NbBundle.getMessage(GeneralPanel.class, "GeneralPanel.lblLogLevel.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 5);
+        jPanel1.add(lblLogLevel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(filler1, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(
+            lblLogging,
+            NbBundle.getMessage(GeneralPanel.class, "GeneralPanel.lblLogging.text")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        pnlLogLevel.add(lblLogLevel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        jPanel1.add(lblLogging, gridBagConstraints);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 1));
+        jPanel2.setMinimumSize(new java.awt.Dimension(12, 1));
+        jPanel2.setPreferredSize(new java.awt.Dimension(12, 1));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 10, 5);
+        jPanel1.add(jPanel2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        add(pnlLogLevel, gridBagConstraints);
-    } // </editor-fold>//GEN-END:initComponents
+        add(jPanel1, gridBagConstraints);
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param  evt  DOCUMENT ME!
-     */
-    private void cboLogLevelActionPerformed(final java.awt.event.ActionEvent evt) //GEN-FIRST:event_cboLogLevelActionPerformed
-    {                                                                             //GEN-HEADEREND:event_cboLogLevelActionPerformed
-                                                                                  // TODO add your handling code here:
-    }                                                                             //GEN-LAST:event_cboLogLevelActionPerformed
+        filler2.setMaximumSize(new java.awt.Dimension(0, 32767));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        add(filler2, gridBagConstraints);
+    } // </editor-fold>//GEN-END:initComponents
 
     /**
      * DOCUMENT ME!
      */
     void load() {
-        final String loglevel = NbPreferences.forModule(LoggingPanel.class).get(PROP_LOGLEVEL, "DEBUG"); // NOI18N
-        LogLevel level = LogLevel.DEBUG;
+        final String loglevel = NbPreferences.forModule(GeneralPanel.class).get(PROP_LOGLEVEL, "WARN"); // NOI18N
+        LogLevel level = LogLevel.WARN;
 
         try {
             level = LogLevel.valueOf(loglevel);
@@ -156,7 +185,7 @@ final class LoggingPanel extends javax.swing.JPanel {
      */
     void store() {
         final String loglevel = cboLogLevel.getSelectedItem().toString();
-        NbPreferences.forModule(LoggingPanel.class).put(PROP_LOGLEVEL, loglevel); // NOI18N
+        NbPreferences.forModule(GeneralPanel.class).put(PROP_LOGLEVEL, loglevel);
     }
 
     /**

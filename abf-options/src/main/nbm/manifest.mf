@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
+OpenIDE-Module-Install: de/cismet/cids/abf/options/Installer.class
 OpenIDE-Module-Localizing-Bundle: de/cismet/cids/abf/options/Bundle.properties
 OpenIDE-Module-Layer: de/cismet/cids/abf/options/layer.xml

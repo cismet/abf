@@ -12,7 +12,6 @@ import org.apache.log4j.PropertyConfigurator;
 
 import org.netbeans.spi.options.OptionsPanelController;
 
-import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 import org.openide.util.Lookup;
 import org.openide.util.NbPreferences;
@@ -29,22 +28,22 @@ import javax.swing.JComponent;
  *
  * @version  $Revision$, $Date$
  */
-//@OptionsPanelController.SubRegistration(
-//    location = "ABF",
-//    displayName = "#AdvancedOption_DisplayName_Logging",
-//    keywords = "#AdvancedOption_Keywords_Logging",
-//    keywordsCategory = "ABF/Logging"
-//)
+@OptionsPanelController.SubRegistration(
+    location = "ABF",
+    displayName = "#AdvancedOption_DisplayName_General",
+    keywords = "#AdvancedOption_Keywords_General",
+    keywordsCategory = "ABF/General"
+)
 // TODO: more control over logging facilities
-public final class LoggingOptionsPanelController extends OptionsPanelController {
+public final class GeneralOptionsPanelController extends OptionsPanelController {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(LoggingOptionsPanelController.class);
+    private static final transient Logger LOG = Logger.getLogger(GeneralOptionsPanelController.class);
 
     //~ Instance fields --------------------------------------------------------
 
-    private LoggingPanel panel;
+    private GeneralPanel panel;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;
 
@@ -54,7 +53,7 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
      * DOCUMENT ME!
      */
     public static void adjustLogLevel() {
-        final String loglevel = NbPreferences.forModule(LoggingPanel.class).get(LoggingPanel.PROP_LOGLEVEL, "DEBUG"); // NOI18N
+        final String loglevel = NbPreferences.forModule(GeneralPanel.class).get(GeneralPanel.PROP_LOGLEVEL, "WARN"); // NOI18N
 
         final Properties p = new Properties();
         p.put("log4j.appender.Remote", "org.apache.log4j.net.SocketAppender"); // NOI18N
@@ -62,12 +61,8 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
         p.put("log4j.appender.Remote.port", "4445");                           // NOI18N
         p.put("log4j.appender.Remote.locationInfo", "true");                   // NOI18N
 
-        p.put("log4j.rootLogger", "ALL,Remote"); // NOI18N
+        p.put("log4j.rootLogger", loglevel + ",Remote"); // NOI18N
 
-        p.put("log4j.logger.org.hibernate", "WARN,Remote");                     // NOI18N
-        p.put("log4j.logger.com.mchange.v2", "WARN,Remote");                    // NOI18N
-        p.put("log4j.logger.net.sf.ehcache", "WARN,Remote");                    // NOI18N
-        p.put("log4j.logger.de.cismet.cids.abf", loglevel + ",Remote,Console"); // NOI18N
         PropertyConfigurator.configure(p);
 
         if (LOG.isDebugEnabled()) {
@@ -105,7 +100,7 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
 
     @Override
     public HelpCtx getHelpCtx() {
-        return null; // new HelpCtx("...ID") if you have a help set
+        return HelpCtx.DEFAULT_HELP;
     }
 
     @Override
@@ -128,9 +123,9 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
      *
      * @return  DOCUMENT ME!
      */
-    private LoggingPanel getPanel() {
+    private GeneralPanel getPanel() {
         if (panel == null) {
-            panel = new LoggingPanel(this);
+            panel = new GeneralPanel(this);
         }
 
         return panel;
