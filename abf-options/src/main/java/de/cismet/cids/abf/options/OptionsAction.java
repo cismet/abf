@@ -24,6 +24,6 @@ public final class OptionsAction implements ActionListener {
 
     @Override
     public void actionPerformed(final ActionEvent e) {
-        System.out.println(OptionsDisplayer.getDefault().open("ABF"));
+        OptionsDisplayer.getDefault().open("ABF");
     }
 }

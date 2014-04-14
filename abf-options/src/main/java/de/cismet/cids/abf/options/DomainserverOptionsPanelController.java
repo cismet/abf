@@ -7,19 +7,13 @@
 ****************************************************/
 package de.cismet.cids.abf.options;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-
 import org.netbeans.spi.options.OptionsPanelController;
 
 import org.openide.util.HelpCtx;
 import org.openide.util.Lookup;
-import org.openide.util.NbPreferences;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-
-import java.util.Properties;
 
 import javax.swing.JComponent;
 
@@ -30,46 +24,20 @@ import javax.swing.JComponent;
  */
 @OptionsPanelController.SubRegistration(
     location = "ABF",
-    displayName = "#AdvancedOption_DisplayName_General",
-    keywords = "#AdvancedOption_Keywords_General",
-    keywordsCategory = "ABF/General",
-    position = 1
+    displayName = "#AdvancedOption_DisplayName_Domainserver",
+    keywords = "#AdvancedOption_Keywords_Domainserver",
+    keywordsCategory = "ABF/Domainserver",
+    position = 100
 )
-// TODO: more control over logging facilities
-public final class GeneralOptionsPanelController extends OptionsPanelController {
-
-    //~ Static fields/initializers ---------------------------------------------
-
-    private static final transient Logger LOG = Logger.getLogger(GeneralOptionsPanelController.class);
+public final class DomainserverOptionsPanelController extends OptionsPanelController {
 
     //~ Instance fields --------------------------------------------------------
 
-    private GeneralPanel panel;
+    private DomainserverPanel panel;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;
 
     //~ Methods ----------------------------------------------------------------
-
-    /**
-     * DOCUMENT ME!
-     */
-    public static void adjustLogLevel() {
-        final String loglevel = NbPreferences.forModule(GeneralPanel.class).get(GeneralPanel.PROP_LOGLEVEL, "WARN"); // NOI18N
-
-        final Properties p = new Properties();
-        p.put("log4j.appender.Remote", "org.apache.log4j.net.SocketAppender"); // NOI18N
-        p.put("log4j.appender.Remote.remoteHost", "localhost");                // NOI18N
-        p.put("log4j.appender.Remote.port", "4445");                           // NOI18N
-        p.put("log4j.appender.Remote.locationInfo", "true");                   // NOI18N
-
-        p.put("log4j.rootLogger", loglevel + ",Remote"); // NOI18N
-
-        PropertyConfigurator.configure(p);
-
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("abf loglevel adjusted to: " + loglevel); // NOI18N
-        }
-    }
 
     @Override
     public void update() {
@@ -81,7 +49,6 @@ public final class GeneralOptionsPanelController extends OptionsPanelController 
     public void applyChanges() {
         getPanel().store();
         changed = false;
-        adjustLogLevel();
     }
 
     @Override
@@ -124,9 +91,9 @@ public final class GeneralOptionsPanelController extends OptionsPanelController 
      *
      * @return  DOCUMENT ME!
      */
-    private GeneralPanel getPanel() {
+    private DomainserverPanel getPanel() {
         if (panel == null) {
-            panel = new GeneralPanel(this);
+            panel = new DomainserverPanel(this);
         }
 
         return panel;
