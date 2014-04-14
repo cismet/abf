@@ -25,6 +25,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserContextCookie;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
 import de.cismet.cids.jpa.backend.service.Backend;
@@ -93,33 +94,48 @@ public final class RemoveGroupMembershipAction extends CookieAction {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (answer == JOptionPane.YES_OPTION) {
-            for (final Node n : nodes) {
-                final DomainserverProject project = n.getCookie(DomainserverContext.class).getDomainserverProject();
-                final Backend backend = project.getCidsDataObjectBackend();
-                final UserGroupNode ugn = n.getParentNode().getLookup().lookup(UserGroupNode.class);
-                final User usr = n.getCookie(UserContextCookie.class).getUser();
-                if (ugn != null) {
-                    final UserGroup ug = ugn.getUserGroup();
-                    try {
-                        backend.removeMembership(usr, ug);
-                    } catch (final RuntimeException e) {
-                        LOG.error("could not store usergroup '" + ug                        // NOI18N
-                                    + "' and hence user '" + usr                            // NOI18N
-                                    + "' was not removed",                                  // NOI18N
-                            e);
-                        ErrorUtils.showErrorMessage("Could not store usergroup or user", "Store error", e);
-                    }
-                    final List<UserGroup> toRefresh = new ArrayList<UserGroup>(usr.getUserGroups());
-                    toRefresh.add(ug);
+            UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
-                    project.getLookup().lookup(UserManagement.class).refreshGroups(toRefresh);
-                    project.getLookup().lookup(ConfigAttrManagement.class).refresh();
-                } else {
-                    LOG.warn("the usergroup the user '"                             // NOI18N
-                                + usr + "' was supposed to be in a group which could not" // NOI18N
-                                + " be found in lookup, nothing is done");          // NOI18N
-                }
-            }
+                    @Override
+                    public void run() {
+                        for (final Node n : nodes) {
+                            final DomainserverProject project = n.getCookie(DomainserverContext.class)
+                                        .getDomainserverProject();
+                            final Backend backend = project.getCidsDataObjectBackend();
+                            final UserGroupNode ugn = n.getParentNode().getLookup().lookup(UserGroupNode.class);
+                            final User usr = n.getCookie(UserContextCookie.class).getUser();
+                            if (ugn != null) {
+                                final UserGroup ug = ugn.getUserGroup();
+                                try {
+                                    backend.removeMembership(usr, ug);
+                                } catch (final RuntimeException e) {
+                                    LOG.error(
+                                        "could not store usergroup '"
+                                                + ug                   // NOI18N
+                                                + "' and hence user '"
+                                                + usr                  // NOI18N
+                                                + "' was not removed", // NOI18N
+                                        e);
+                                    ErrorUtils.showErrorMessage("Could not store usergroup or user", "Store error", e);
+                                }
+
+                                if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                                    final List<UserGroup> toRefresh = new ArrayList<UserGroup>(usr.getUserGroups());
+                                    toRefresh.add(ug);
+
+                                    project.getLookup().lookup(UserManagement.class).refreshGroups(toRefresh);
+                                    project.getLookup().lookup(ConfigAttrManagement.class).refresh();
+                                }
+                            } else {
+                                LOG.warn(
+                                    "the usergroup the user '"                                  // NOI18N
+                                            + usr
+                                            + "' was supposed to be in a group which could not" // NOI18N
+                                            + " be found in lookup, nothing is done");          // NOI18N
+                            }
+                        }
+                    }
+                });
         }
     }
 

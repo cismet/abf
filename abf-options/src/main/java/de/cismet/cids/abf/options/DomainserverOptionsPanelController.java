@@ -11,11 +11,16 @@ import org.netbeans.spi.options.OptionsPanelController;
 
 import org.openide.util.HelpCtx;
 import org.openide.util.Lookup;
+import org.openide.util.NbPreferences;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import javax.swing.JComponent;
+
+import de.cismet.cids.abf.options.DomainserverPanel.UserRefreshPolicy;
+
+import static de.cismet.cids.abf.options.DomainserverPanel.PROP_DOMAINSERVER_USER_REFRESH_POLICY;
 
 /**
  * DOCUMENT ME!
@@ -38,6 +43,17 @@ public final class DomainserverOptionsPanelController extends OptionsPanelContro
     private boolean changed;
 
     //~ Methods ----------------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public static boolean isAutoRefresh() {
+        return NbPreferences
+                    .forModule(DomainserverPanel.class).get(PROP_DOMAINSERVER_USER_REFRESH_POLICY, "AUTO")         // NOI18N
+            .equals(UserRefreshPolicy.AUTO.toString());
+    }
 
     @Override
     public void update() {

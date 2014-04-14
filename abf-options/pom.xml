@@ -86,6 +86,7 @@
                 <configuration>
                     <codeNameBase>de.cismet.cids.abf.options/3</codeNameBase>
                     <publicPackages>
+                        <publicPackage>de.cismet.cids.abf.options.*</publicPackage>
                         <publicPackage>org.apache.log4j.*</publicPackage>
                     </publicPackages>
                 </configuration>

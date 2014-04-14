@@ -36,6 +36,7 @@ import javax.swing.JComponent;
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.UserGroup;
@@ -160,44 +161,59 @@ public final class CopyUsergroupWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            final Task task = RequestProcessor.getDefault().create(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            final UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
-                            final Backend backend = project.getCidsDataObjectBackend();
-                            try {
-                                backend.copy(ug, newGroup);
-                            } catch (final Exception e) {
-                                LOG.error("could not copy usergroup: " + ug, e); // NOI18N
-                                ErrorManager.getDefault().notify(e);
-                            }
-                        }
-                    });
-
-            final ProgressHandle handle = ProgressHandleFactory.createHandle(NbBundle.getMessage(
-                        CopyUsergroupWizardAction.class,
-                        "CopyUsergroupWizardAction.performAction(Node[]).handle.title")); // NOI18N
-            handle.start();
-            handle.switchToIndeterminate();
-
-            final TaskListener tl = new TaskListener() {
+            UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
                     @Override
-                    public void taskFinished(final org.openide.util.Task task) {
+                    public void run() {
+                        final Task task = RequestProcessor.getDefault().create(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        final UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
+                                        final Backend backend = project.getCidsDataObjectBackend();
+                                        try {
+                                            backend.copy(ug, newGroup);
+                                        } catch (final Exception e) {
+                                            LOG.error("could not copy usergroup: " + ug, e); // NOI18N
+                                            ErrorManager.getDefault().notify(e);
+                                        }
+                                    }
+                                });
+
+                        final ProgressHandle handle = ProgressHandleFactory.createHandle(
+                                NbBundle.getMessage(
+                                    CopyUsergroupWizardAction.class,
+                                    "CopyUsergroupWizardAction.performAction(Node[]).handle.title")); // NOI18N
                         EventQueue.invokeLater(new Runnable() {
 
                                 @Override
                                 public void run() {
-                                    handle.finish();
-                                    project.getLookup().lookup(UserManagement.class).refresh();
+                                    handle.start();
+                                    handle.switchToIndeterminate();
                                 }
                             });
-                    }
-                };
 
-            task.addTaskListener(tl);
-            RequestProcessor.getDefault().post(task);
+                        final TaskListener tl = new TaskListener() {
+
+                                @Override
+                                public void taskFinished(final org.openide.util.Task task) {
+                                    EventQueue.invokeLater(new Runnable() {
+
+                                            @Override
+                                            public void run() {
+                                                handle.finish();
+                                                if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                                                    project.getLookup().lookup(UserManagement.class).refresh();
+                                                }
+                                            }
+                                        });
+                                }
+                            };
+
+                        task.addTaskListener(tl);
+                        RequestProcessor.getDefault().post(task);
+                    }
+                });
         }
     }
 

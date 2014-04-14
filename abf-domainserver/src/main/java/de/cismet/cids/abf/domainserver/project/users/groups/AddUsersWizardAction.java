@@ -32,6 +32,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.User;
@@ -149,33 +150,41 @@ public final class AddUsersWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            final Set<UserGroup> touchedGroups = new HashSet<UserGroup>();
-            touchedGroups.add(userGroup);
+            UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
-            final Backend backend = project.getCidsDataObjectBackend();
-            try {
-                backend.store(userGroup);
-                for (final User user : userGroup.getUsers()) {
-                    // the user may still be present, thus remove from the cached set
-                    oldUsers.remove(user);
-                    user.getUserGroups().add(userGroup);
-                    backend.store(user);
+                    @Override
+                    public void run() {
+                        final Set<UserGroup> touchedGroups = new HashSet<UserGroup>();
+                        touchedGroups.add(userGroup);
 
-                    touchedGroups.addAll(user.getUserGroups());
-                }
+                        final Backend backend = project.getCidsDataObjectBackend();
+                        try {
+                            backend.store(userGroup);
+                            for (final User user : userGroup.getUsers()) {
+                                // the user may still be present, thus remove from the cached set
+                                oldUsers.remove(user);
+                                user.getUserGroups().add(userGroup);
+                                backend.store(user);
 
-                // process the users, that are removed
-                for (final User user : oldUsers) {
-                    backend.removeMembership(user, userGroup);
+                                touchedGroups.addAll(user.getUserGroups());
+                            }
 
-                    touchedGroups.addAll(user.getUserGroups());
-                }
-            } catch (final Exception e) {
-                LOG.error("could not store usergroup", e); // NOI18N
-                ErrorManager.getDefault().notify(e);
-            }
-            project.getLookup().lookup(UserManagement.class).refreshGroups(touchedGroups);
-            project.getLookup().lookup(ConfigAttrManagement.class).refresh();
+                            // process the users, that are removed
+                            for (final User user : oldUsers) {
+                                backend.removeMembership(user, userGroup);
+
+                                touchedGroups.addAll(user.getUserGroups());
+                            }
+                        } catch (final Exception e) {
+                            LOG.error("could not store usergroup", e); // NOI18N
+                            ErrorManager.getDefault().notify(e);
+                        }
+                        if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                            project.getLookup().lookup(UserManagement.class).refreshGroups(touchedGroups);
+                            project.getLookup().lookup(ConfigAttrManagement.class).refresh();
+                        }
+                    }
+                });
         }
     }
 
