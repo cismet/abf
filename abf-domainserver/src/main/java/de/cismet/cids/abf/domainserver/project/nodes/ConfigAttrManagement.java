@@ -11,15 +11,20 @@ import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.actions.CallableSystemAction;
 
 import java.awt.EventQueue;
 import java.awt.Image;
 
+import javax.swing.Action;
+
+import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.configattr.ActionConfigAttrRootNode;
 import de.cismet.cids.abf.domainserver.project.configattr.StringConfigAttrRootNode;
 import de.cismet.cids.abf.domainserver.project.configattr.XMLConfigAttrRootNode;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 /**
@@ -59,6 +64,15 @@ public final class ConfigAttrManagement extends ProjectNode implements Refreshab
     @Override
     public Image getOpenedIcon(final int type) {
         return getIcon(type);
+    }
+
+    @Override
+    public Action[] getActions(final boolean context) {
+        if (DomainserverOptionsPanelController.isAutoRefresh()) {
+            return super.getActions(context);
+        } else {
+            return new Action[] { CallableSystemAction.get(RefreshAction.class) };
+        }
     }
 
     @Override

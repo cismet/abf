@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.Action;
 
+import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
@@ -47,6 +48,7 @@ import de.cismet.cids.abf.domainserver.project.users.NewUserWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.UserNode;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.Comparators;
 
 import de.cismet.cids.jpa.backend.service.Backend;
@@ -396,7 +398,7 @@ public final class UserGroupNode extends RefreshableNode implements UserGroupCon
 
     @Override
     public Action[] getActions(final boolean b) {
-        if (UserManagement.REFRESH_DISPATCHER.tasksInProgress()) {
+        if (UserManagement.REFRESH_DISPATCHER.tasksInProgress() || UserManagement.ACTION_DISPATCHER.tasksInProgress()) {
             return new Action[] { CallableSystemAction.get(RefreshIndicatorAction.class) };
         } else {
             SystemAction newUser = null;
@@ -405,12 +407,22 @@ public final class UserGroupNode extends RefreshableNode implements UserGroupCon
                 newUser = CallableSystemAction.get(NewUserWizardAction.class);
                 addUser = CallableSystemAction.get(AddUsersWizardAction.class);
             }
+
+            final Action refreshAction;
+            if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                refreshAction = null;
+            } else {
+                refreshAction = CallableSystemAction.get(RefreshAction.class);
+            }
+
             return new Action[] {
                     newUser,
                     addUser,
                     null,
                     CallableSystemAction.get(CopyUsergroupWizardAction.class),
-                    CallableSystemAction.get(DeleteUsergroupAction.class)
+                    CallableSystemAction.get(DeleteUsergroupAction.class),
+                    null,
+                    refreshAction
                 };
         }
     }

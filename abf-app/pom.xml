@@ -135,12 +135,12 @@
             <type>nbm</type>
             <version>3.6-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>
+        <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
             <type>nbm</type>
-            <version>3.1-SNAPSHOT</version>
-        </dependency>-->
+            <version>3.6-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <repositories>

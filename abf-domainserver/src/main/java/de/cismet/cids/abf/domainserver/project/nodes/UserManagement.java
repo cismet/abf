@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
@@ -36,6 +37,7 @@ import de.cismet.cids.abf.domainserver.project.users.UserManagementContextCookie
 import de.cismet.cids.abf.domainserver.project.users.groups.NewUsergroupWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupContextCookie;
 import de.cismet.cids.abf.domainserver.project.users.groups.UserGroupNode;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
@@ -56,11 +58,16 @@ public final class UserManagement extends RefreshableNode implements ConnectionL
     //~ Static fields/initializers ---------------------------------------------
 
     public static final ProgressIndicatingExecutor REFRESH_DISPATCHER;
+    public static final ProgressIndicatingExecutor ACTION_DISPATCHER;
 
     static {
         REFRESH_DISPATCHER = new ProgressIndicatingExecutor(
                 NbBundle.getMessage(UserManagement.class, "UserManagement.REFRESH_DISPATCHER.displayName"), // NOI18N
                 "user-refresh-dispatcher", // NOI18N
+                10);
+        ACTION_DISPATCHER = new ProgressIndicatingExecutor(
+                NbBundle.getMessage(UserManagement.class, "UserManagement.ACTION_DISPATCHER.displayName"), // NOI18N
+                "user-action-dispatcher",  // NOI18N
                 10);
     }
 
@@ -149,9 +156,18 @@ public final class UserManagement extends RefreshableNode implements ConnectionL
 
     @Override
     public Action[] getActions(final boolean b) {
+        final Action refreshAction;
+        if (DomainserverOptionsPanelController.isAutoRefresh()) {
+            refreshAction = null;
+        } else {
+            refreshAction = CallableSystemAction.get(RefreshAction.class);
+        }
+
         return new Action[] {
                 CallableSystemAction.get(NewUserWizardAction.class),
                 CallableSystemAction.get(NewUsergroupWizardAction.class),
+                null,
+                refreshAction
             };
     }
 

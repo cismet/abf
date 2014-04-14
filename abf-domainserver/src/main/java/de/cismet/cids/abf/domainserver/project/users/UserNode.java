@@ -41,6 +41,7 @@ import java.util.TreeMap;
 
 import javax.swing.Action;
 
+import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.RefreshIndicatorAction;
@@ -49,6 +50,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.groups.ChangeGroupBelongingWizardAction;
 import de.cismet.cids.abf.domainserver.project.users.groups.RemoveGroupMembershipAction;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.nodes.PropertyRefresh;
@@ -714,12 +716,19 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
 
     @Override
     public Action[] getActions(final boolean b) {
-        if (UserManagement.REFRESH_DISPATCHER.tasksInProgress()) {
+        if (UserManagement.REFRESH_DISPATCHER.tasksInProgress() || UserManagement.ACTION_DISPATCHER.tasksInProgress()) {
             return new Action[] { CallableSystemAction.get(RefreshIndicatorAction.class) };
         } else {
             Action removeGrpMbrShip = null;
             if (!((getParentNode() instanceof AllUsersNode) || (getParentNode() instanceof NoGroupUsersNode))) {
                 removeGrpMbrShip = CallableSystemAction.get(RemoveGroupMembershipAction.class);
+            }
+
+            final Action refreshAction;
+            if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                refreshAction = null;
+            } else {
+                refreshAction = CallableSystemAction.get(RefreshAction.class);
             }
 
             return new Action[] {
@@ -728,6 +737,8 @@ public final class UserNode extends ProjectNode implements UserContextCookie, Re
                     null,
                     CallableSystemAction.get(CopyUserWizardAction.class),
                     CallableSystemAction.get(DeleteUserAction.class),
+                    null,
+                    refreshAction
                 };
         }
     }

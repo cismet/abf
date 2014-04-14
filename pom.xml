@@ -36,7 +36,7 @@
         <module>abf-broker</module>
         <module>abf-client</module>
         <module>abf-domainserver</module>
-<!--        <module>../abf-options</module>-->
+        <module>abf-options</module>
 <!--        <module>../abf-distribution</module>-->
     </modules>
 
@@ -365,7 +365,7 @@
                         <cluster>${branding.token}</cluster>
                         <distributionUrl>http://www.cismet.de/updatecenters/abf69/</distributionUrl>
                         <licenseName>LGPL</licenseName>
-                        <licenseFile>${basedir}/../abf-parent/src/main/license/lgpl-3.0.txt</licenseFile>
+                        <licenseFile>${basedir}/../src/main/license/lgpl-3.0.txt</licenseFile>
                         <homePageUrl>http://github.com/cismet/abf</homePageUrl>
                         <keystore>${de.cismet.keystore.path}</keystore>
                         <keystorealias>cismet</keystorealias>

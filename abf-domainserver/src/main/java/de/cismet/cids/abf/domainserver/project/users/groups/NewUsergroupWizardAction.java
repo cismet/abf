@@ -30,6 +30,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserManagementContextCookie;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.User;
@@ -141,21 +142,29 @@ public final class NewUsergroupWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
-            try {
-                final Backend b = project.getCidsDataObjectBackend();
-                newGroup.setPriority(b.getLowestUGPrio());
-                newGroup = b.store(newGroup);
+            UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
-                for (final User u : newGroup.getUsers()) {
-                    u.getUserGroups().add(newGroup);
-                    b.store(u);
-                }
-            } catch (final Exception e) {
-                LOG.error("could not store new usergroup", e); // NOI18N
-                ErrorManager.getDefault().notify(e);
-            }
-            project.getLookup().lookup(UserManagement.class).refresh();
+                    @Override
+                    public void run() {
+                        UserGroup newGroup = (UserGroup)wizard.getProperty(USERGROUP_PROP);
+                        try {
+                            final Backend b = project.getCidsDataObjectBackend();
+                            newGroup.setPriority(b.getLowestUGPrio());
+                            newGroup = b.store(newGroup);
+
+                            for (final User u : newGroup.getUsers()) {
+                                u.getUserGroups().add(newGroup);
+                                b.store(u);
+                            }
+                        } catch (final Exception e) {
+                            LOG.error("could not store new usergroup", e); // NOI18N
+                            ErrorManager.getDefault().notify(e);
+                        }
+                        if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                            project.getLookup().lookup(UserManagement.class).refresh();
+                        }
+                    }
+                });
         }
     }
 
