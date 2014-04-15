@@ -34,6 +34,7 @@ import de.cismet.cids.abf.domainserver.project.cidsclass.CheckRightsAction;
 import de.cismet.cids.abf.domainserver.project.cidsclass.CidsClassNode;
 import de.cismet.cids.abf.domainserver.project.cidsclass.ClassManagementContextCookie;
 import de.cismet.cids.abf.domainserver.project.cidsclass.NewCidsClassWizardAction;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
@@ -103,12 +104,19 @@ public class ClassManagement extends ProjectNode implements Refreshable,
 
     @Override
     public Action[] getActions(final boolean context) {
+        final Action refreshAction;
+        if (DomainserverOptionsPanelController.isAutoRefresh()) {
+            refreshAction = null;
+        } else {
+            refreshAction = CallableSystemAction.get(RefreshAction.class);
+        }
+
         return new Action[] {
                 CallableSystemAction.get(NewCidsClassWizardAction.class),
                 null,
                 CallableSystemAction.get(CheckRightsAction.class),
                 null,
-                CallableSystemAction.get(RefreshAction.class),
+                refreshAction
             };
     }
 

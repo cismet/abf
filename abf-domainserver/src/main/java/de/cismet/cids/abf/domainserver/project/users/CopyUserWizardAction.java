@@ -31,6 +31,7 @@ import javax.swing.JComponent;
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
@@ -156,55 +157,69 @@ public final class CopyUserWizardAction extends CookieAction {
 
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            User newUser = (User)wizard.getProperty(NewUserWizardAction.USER_PROP);
+            UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
-            // TODO: add attributes
-            final List<UserGroup> ugs = (List<UserGroup>)wizard.getProperty(NewUserWizardAction.USERGROUP_PROP);
-            final Backend backend = project.getCidsDataObjectBackend();
-            try {
-                newUser = backend.store(newUser);
-                for (final UserGroup ug : ugs) {
-                    ug.getUsers().add(newUser);
-                    try {
-                        backend.store(ug);
-                    } catch (final Exception e) {
-                        LOG.error("could not store usergroup: " + ug.getName(), e); // NOI18N
-                    }
+                    @Override
+                    public void run() {
+                        User newUser = (User)wizard.getProperty(NewUserWizardAction.USER_PROP);
 
-                    try {
-                        for (final UserGroup group : u.getUserGroups()) {
-                            if (group.equals(ug)) {
-                                final List<ConfigAttrEntry> caes = backend.getEntries(group.getDomain(),
-                                        group,
-                                        u,
-                                        project.getRuntimeProps().getProperty("serverName"), // NOI18N
-                                        false);
-                                for (final ConfigAttrEntry cae : caes) {
-                                    final ConfigAttrEntry clone = new ConfigAttrEntry();
-                                    clone.setDomain(cae.getDomain());
-                                    clone.setKey(cae.getKey());
-                                    clone.setType(cae.getType());
-                                    clone.setUser(newUser);
-                                    clone.setUsergroup(group);
-                                    clone.setValue(cae.getValue());
+                        // TODO: add attributes
+                        final List<UserGroup> ugs = (List<UserGroup>)wizard.getProperty(
+                                NewUserWizardAction.USERGROUP_PROP);
+                        final Backend backend = project.getCidsDataObjectBackend();
+                        try {
+                            newUser = backend.store(newUser);
+                            for (final UserGroup ug : ugs) {
+                                ug.getUsers().add(newUser);
+                                try {
+                                    backend.store(ug);
+                                } catch (final Exception e) {
+                                    LOG.error("could not store usergroup: " + ug.getName(), e); // NOI18N
+                                }
 
-                                    backend.storeEntry(clone);
+                                try {
+                                    for (final UserGroup group : u.getUserGroups()) {
+                                        if (group.equals(ug)) {
+                                            final List<ConfigAttrEntry> caes = backend.getEntries(
+                                                    group.getDomain(),
+                                                    group,
+                                                    u,
+                                                    project.getRuntimeProps().getProperty("serverName"), // NOI18N
+                                                    false);
+                                            for (final ConfigAttrEntry cae : caes) {
+                                                final ConfigAttrEntry clone = new ConfigAttrEntry();
+                                                clone.setDomain(cae.getDomain());
+                                                clone.setKey(cae.getKey());
+                                                clone.setType(cae.getType());
+                                                clone.setUser(newUser);
+                                                clone.setUsergroup(group);
+                                                clone.setValue(cae.getValue());
+
+                                                backend.storeEntry(clone);
+                                            }
+                                        }
+                                    }
+                                } catch (final Exception e) {
+                                    LOG.error(
+                                        "could not store config attr entries for user in usergroup: [user="
+                                                + newUser
+                                                + "|ug="
+                                                + ug
+                                                + "]",
+                                        e);
+                                    ErrorManager.getDefault().notify(e);
                                 }
                             }
+                        } catch (final Exception e) {
+                            LOG.error("could not store new user: " + newUser.getLoginname(), e); // NOI18N
+                            ErrorManager.getDefault().notify(e);
+                        } finally {
+                            if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                                project.getLookup().lookup(UserManagement.class).refreshGroups(ugs);
+                            }
                         }
-                    } catch (final Exception e) {
-                        LOG.error("could not store config attr entries for user in usergroup: [user=" + newUser + "|ug="
-                                    + ug + "]",
-                            e);
-                        ErrorManager.getDefault().notify(e);
                     }
-                }
-            } catch (final Exception e) {
-                LOG.error("could not store new user: " + newUser.getLoginname(), e); // NOI18N
-                ErrorManager.getDefault().notify(e);
-            } finally {
-                project.getLookup().lookup(UserManagement.class).refreshGroups(ugs);
-            }
+                });
         }
     }
 

@@ -5,13 +5,13 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.5</version>
+        <version>3.6</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf-domainserver</artifactId>
-    <version>3.5</version>
+    <version>3.6</version>
     <packaging>nbm</packaging>
 
     <name>ABF Domainserver</name>
@@ -20,8 +20,13 @@
     <dependencies>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
+            <artifactId>abf-options</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.5</version>
+            <version>3.6</version>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>

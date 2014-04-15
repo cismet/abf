@@ -8,7 +8,6 @@
 package de.cismet.cids.abf.domainserver.project;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ProjectFactory;
@@ -16,7 +15,6 @@ import org.netbeans.spi.project.ProjectState;
 
 import org.openide.filesystems.FileObject;
 
-import java.io.File;
 import java.io.IOException;
 
 import java.util.Properties;
@@ -36,24 +34,6 @@ public final class DomainserverProjectFactory implements ProjectFactory {
 
     public static final String PROJECT_DIR = "cidsDomainServer";        // NOI18N
     public static final String PROJECT_PROPFILE = "project.properties"; // NOI18N
-
-    private static final String LOGGING_ENABLE_ALL_NAME = "abf_logging_enable_all";     // NOI18N
-    private static final String LOGGING_ENABLE_DEBUG_NAME = "abf_logging_enable_debug"; // NOI18N
-
-    static {
-        final File userHome = new File(System.getProperty("user.home"));
-
-        final String log4jCfg;
-        if (new File(userHome, LOGGING_ENABLE_ALL_NAME).exists()) {
-            log4jCfg = "log4j_all.xml";   // NOI18N
-        } else if (new File(userHome, LOGGING_ENABLE_DEBUG_NAME).exists()) {
-            log4jCfg = "log4j_debug.xml"; // NOI18N
-        } else {
-            log4jCfg = "log4j_error.xml"; // NOI18N
-        }
-
-        DOMConfigurator.configure(DomainserverProjectFactory.class.getResource(log4jCfg)); // NOI18N
-    }
 
     //~ Constructors -----------------------------------------------------------
 

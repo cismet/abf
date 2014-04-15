@@ -30,6 +30,7 @@ import javax.swing.JComponent;
 import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.User;
@@ -129,36 +130,44 @@ public final class NewUserWizardAction extends CookieAction {
         final DomainserverProject project = cookie.getDomainserverProject();
         final WizardDescriptor wizard = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
-        wizard.setTitleFormat(new MessageFormat("{0}"));                             // NOI18N
+        wizard.setTitleFormat(new MessageFormat("{0}"));                    // NOI18N
         wizard.setTitle(NbBundle.getMessage(
                 NewUserWizardAction.class,
-                "NewUserWizardAction.performAction(Node[]).wizard.title"));          // NOI18N
+                "NewUserWizardAction.performAction(Node[]).wizard.title")); // NOI18N
         wizard.putProperty(PROJECT_PROP, project);
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            User newUser = (User)wizard.getProperty(USER_PROP);
-            final List<UserGroup> ugs = (List<UserGroup>)wizard.getProperty(USERGROUP_PROP);
-            final Backend backend = project.getCidsDataObjectBackend();
-            try {
-                newUser = backend.store(newUser);
-                for (final UserGroup ug : ugs) {
-                    ug.getUsers().add(newUser);
-                    try {
-                        newUser.getUserGroups().add(backend.store(ug));
-                    } catch (final Exception e) {
-                        LOG.error("could not store usergroup: " + ug.getName(), e);  // NOI18N
+            UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        User newUser = (User)wizard.getProperty(USER_PROP);
+                        final List<UserGroup> ugs = (List<UserGroup>)wizard.getProperty(USERGROUP_PROP);
+                        final Backend backend = project.getCidsDataObjectBackend();
+                        try {
+                            newUser = backend.store(newUser);
+                            for (final UserGroup ug : ugs) {
+                                ug.getUsers().add(newUser);
+                                try {
+                                    newUser.getUserGroups().add(backend.store(ug));
+                                } catch (final Exception e) {
+                                    LOG.error("could not store usergroup: " + ug.getName(), e); // NOI18N
+                                }
+                            }
+                            backend.store(newUser);
+                        } catch (final Exception e) {
+                            LOG.error("could not store new user: " + newUser.getLoginname(), e); // NOI18N
+                            ErrorManager.getDefault().notify(e);
+                        } finally {
+                            if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                                project.getLookup().lookup(UserManagement.class).refreshGroups(ugs);
+                            }
+                        }
                     }
-                }
-                backend.store(newUser);
-            } catch (final Exception e) {
-                LOG.error("could not store new user: " + newUser.getLoginname(), e); // NOI18N
-                ErrorManager.getDefault().notify(e);
-            } finally {
-                project.getLookup().lookup(UserManagement.class).refreshGroups(ugs);
-            }
+                });
         }
     }
 

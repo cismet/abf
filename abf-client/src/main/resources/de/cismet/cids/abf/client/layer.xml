@@ -13,6 +13,11 @@
                 <attr name="selectionType" stringvalue="ANY"/>
                 <attr name="type" stringvalue="org.openide.loaders.DataObject"/>
             </file>
+            <file name="de-cismet-cids-abf-client-DiffAction.instance">
+                <attr name="delegate" methodvalue="org.openide.awt.Actions.inject"/>
+                <attr name="injectable" stringvalue="de.cismet.cids.abf.client.DiffAction"/>
+                <attr name="instanceCreate" methodvalue="de.cismet.cids.abf.client.DiffAction.createAction"/>
+            </file>
         </folder>
     </folder>
     <folder name="Loaders">
@@ -25,6 +30,24 @@
                     </file>
                     <file name="de-cismet-cids-abf-client-CreateSecurityJarAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/File/de-cismet-cids-abf-client-CreateSecurityJarAction.instance"/>
+                        <attr name="position" intvalue="150"/>
+                    </file>
+                    <file name="de-cismet-cids-abf-client-DiffAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/File/de-cismet-cids-abf-client-DiffAction.instance"/>
+                        <attr name="position" intvalue="160"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+        <folder name="application">
+            <folder name="x-java-archive">
+                <folder name="Actions">
+                    <file name="de-cismet-cids-abf-client-DiffAction-separatorAfter.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
+                        <attr name="position" intvalue="175"/>
+                    </file>
+                    <file name="de-cismet-cids-abf-client-DiffAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/File/de-cismet-cids-abf-client-DiffAction.instance"/>
                         <attr name="position" intvalue="150"/>
                     </file>
                 </folder>

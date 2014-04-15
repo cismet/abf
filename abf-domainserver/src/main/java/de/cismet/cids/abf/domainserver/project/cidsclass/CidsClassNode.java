@@ -58,6 +58,7 @@ import de.cismet.cids.abf.domainserver.project.nodes.SyncManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.TypeManagement;
 import de.cismet.cids.abf.domainserver.project.utils.PermissionResolver;
 import de.cismet.cids.abf.domainserver.project.utils.ProjectUtils;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.Comparators;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
@@ -912,8 +913,15 @@ public final class CidsClassNode extends ProjectNode implements Refreshable, Cid
 
     @Override
     public Action[] getActions(final boolean b) {
+        final Action refreshAction;
+        if (DomainserverOptionsPanelController.isAutoRefresh()) {
+            refreshAction = null;
+        } else {
+            refreshAction = CallableSystemAction.get(RefreshAction.class);
+        }
+
         return new Action[] {
-                CallableSystemAction.get(RefreshAction.class),
+                refreshAction,
                 null,
                 CallableSystemAction.get(EditCidsClassWizardAction.class),
                 CallableSystemAction.get(EditRightsWizardAction.class),

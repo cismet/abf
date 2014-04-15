@@ -31,6 +31,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverContext;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.domainserver.project.users.UserContextCookie;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 
 import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.entity.user.User;
@@ -151,20 +152,29 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
         if (!cancelled) {
-            // the api only delivers objects, no chance to achieve type safety
-            @SuppressWarnings("unchecked")
-            final List<UserGroup> groups = (List<UserGroup>)wizard.getProperty(TOUCHED_GROUPS_PROP);
-            final Backend backend = project.getCidsDataObjectBackend();
-            for (final UserGroup ug : groups) {
-                try {
-                    backend.store(ug);
-                    backend.store(user);
-                } catch (final Exception ex) {
-                    LOG.error("could not store usergroup: " + ug.getName(), ex); // NOI18N
-                    ErrorManager.getDefault().notify(ex);
-                }
-            }
-            project.getLookup().lookup(UserManagement.class).refreshGroups(groups);
+            UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // the api only delivers objects, no chance to achieve type safety
+                        @SuppressWarnings("unchecked")
+                        final List<UserGroup> groups = (List<UserGroup>)wizard.getProperty(TOUCHED_GROUPS_PROP);
+                        final Backend backend = project.getCidsDataObjectBackend();
+                        for (final UserGroup ug : groups) {
+                            try {
+                                backend.store(ug);
+                                backend.store(user);
+                            } catch (final Exception ex) {
+                                LOG.error("could not store usergroup: " + ug.getName(), ex); // NOI18N
+                                ErrorManager.getDefault().notify(ex);
+                            }
+                        }
+
+                        if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                            project.getLookup().lookup(UserManagement.class).refreshGroups(groups);
+                        }
+                    }
+                });
         }
     }
 

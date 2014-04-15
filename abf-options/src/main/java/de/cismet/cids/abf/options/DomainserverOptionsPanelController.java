@@ -7,12 +7,8 @@
 ****************************************************/
 package de.cismet.cids.abf.options;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-
 import org.netbeans.spi.options.OptionsPanelController;
 
-import org.openide.util.Exceptions;
 import org.openide.util.HelpCtx;
 import org.openide.util.Lookup;
 import org.openide.util.NbPreferences;
@@ -20,9 +16,11 @@ import org.openide.util.NbPreferences;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import java.util.Properties;
-
 import javax.swing.JComponent;
+
+import de.cismet.cids.abf.options.DomainserverPanel.UserRefreshPolicy;
+
+import static de.cismet.cids.abf.options.DomainserverPanel.PROP_DOMAINSERVER_USER_REFRESH_POLICY;
 
 /**
  * DOCUMENT ME!
@@ -31,20 +29,16 @@ import javax.swing.JComponent;
  */
 @OptionsPanelController.SubRegistration(
     location = "ABF",
-    displayName = "#AdvancedOption_DisplayName_Logging",
-    keywords = "#AdvancedOption_Keywords_Logging",
-    keywordsCategory = "ABF/Logging"
+    displayName = "#AdvancedOption_DisplayName_Domainserver",
+    keywords = "#AdvancedOption_Keywords_Domainserver",
+    keywordsCategory = "ABF/Domainserver",
+    position = 100
 )
-// TODO: more control over logging facilities
-public final class LoggingOptionsPanelController extends OptionsPanelController {
-
-    //~ Static fields/initializers ---------------------------------------------
-
-    private static final transient Logger LOG = Logger.getLogger(LoggingOptionsPanelController.class);
+public final class DomainserverOptionsPanelController extends OptionsPanelController {
 
     //~ Instance fields --------------------------------------------------------
 
-    private LoggingPanel panel;
+    private DomainserverPanel panel;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;
 
@@ -52,27 +46,13 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
 
     /**
      * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
      */
-    public static void adjustLogLevel() {
-        final String loglevel = NbPreferences.forModule(LoggingPanel.class).get(LoggingPanel.PROP_LOGLEVEL, "DEBUG"); // NOI18N
-
-        final Properties p = new Properties();
-        p.put("log4j.appender.Remote", "org.apache.log4j.net.SocketAppender"); // NOI18N
-        p.put("log4j.appender.Remote.remoteHost", "localhost");                // NOI18N
-        p.put("log4j.appender.Remote.port", "4445");                           // NOI18N
-        p.put("log4j.appender.Remote.locationInfo", "true");                   // NOI18N
-
-        p.put("log4j.rootLogger", "ALL,Remote"); // NOI18N
-
-        p.put("log4j.logger.org.hibernate", "WARN,Remote");                     // NOI18N
-        p.put("log4j.logger.com.mchange.v2", "WARN,Remote");                    // NOI18N
-        p.put("log4j.logger.net.sf.ehcache", "WARN,Remote");                    // NOI18N
-        p.put("log4j.logger.de.cismet.cids.abf", loglevel + ",Remote,Console"); // NOI18N
-        PropertyConfigurator.configure(p);
-
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("abf loglevel adjusted to: " + loglevel); // NOI18N
-        }
+    public static boolean isAutoRefresh() {
+        return NbPreferences
+                    .forModule(DomainserverPanel.class).get(PROP_DOMAINSERVER_USER_REFRESH_POLICY, "AUTO")         // NOI18N
+            .equals(UserRefreshPolicy.AUTO.toString());
     }
 
     @Override
@@ -85,7 +65,6 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
     public void applyChanges() {
         getPanel().store();
         changed = false;
-        adjustLogLevel();
     }
 
     @Override
@@ -105,7 +84,7 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
 
     @Override
     public HelpCtx getHelpCtx() {
-        return null; // new HelpCtx("...ID") if you have a help set
+        return HelpCtx.DEFAULT_HELP;
     }
 
     @Override
@@ -128,9 +107,9 @@ public final class LoggingOptionsPanelController extends OptionsPanelController 
      *
      * @return  DOCUMENT ME!
      */
-    private LoggingPanel getPanel() {
+    private DomainserverPanel getPanel() {
         if (panel == null) {
-            panel = new LoggingPanel(this);
+            panel = new DomainserverPanel(this);
         }
 
         return panel;

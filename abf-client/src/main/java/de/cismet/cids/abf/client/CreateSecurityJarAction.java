@@ -47,6 +47,7 @@ import java.util.concurrent.Executor;
 import de.cismet.cids.abf.librarysupport.JarHandler;
 import de.cismet.cids.abf.librarysupport.project.customizer.PropertyProvider;
 import de.cismet.cids.abf.librarysupport.project.util.DeployInformation;
+import de.cismet.cids.abf.librarysupport.project.util.Utils;
 import de.cismet.cids.abf.utilities.ProgressIndicatingExecutor;
 
 import de.cismet.tools.PasswordEncrypter;
@@ -238,6 +239,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 secHref.append(fo.getName());
                 secHref.append("_security.jar");                                                                                     // NOI18N
 
+                final String secHrefString = secHref.toString();             // NOI18N
                 final Document d = reader.read(fo.getInputStream());
                 final List jarNodes = d.selectNodes("//jnlp/resources/jar"); // NOI18N
 
@@ -245,7 +247,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 for (final Iterator it = jarNodes.iterator(); it.hasNext();) {
                     final Element jarNode = (Element)it.next();
                     final String href = jarNode.valueOf("@href"); // NOI18N
-                    if ((secNode == null) && (href != null) && href.equals(secHref)) {
+                    if ((secNode == null) && (href != null) && href.equals(secHrefString)) {
                         secNode = jarNode;
                     }
 
@@ -259,7 +261,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                 if (secNode == null) {
                     final Element resources = (Element)d.selectSingleNode("//jnlp/resources"); // NOI18N
                     secNode = resources.addElement("jar");                                     // NOI18N
-                    secNode.addAttribute("href", secHref.toString());                          // NOI18N
+                    secNode.addAttribute("href", secHrefString);                               // NOI18N
                 }
 
                 secNode.addAttribute("main", "true"); // NOI18N
@@ -348,10 +350,11 @@ public final class CreateSecurityJarAction implements ActionListener {
                                     + File.separator
                                     + fo.getName()
                                     + "_security.jar");                                        // NOI18N
+                    final String ksPath = Utils.getPath(info.ksPath);
                     final DeployInformation di = new DeployInformation(
                             buildxml,
                             src,
-                            FileUtil.toFileObject(new File(info.ksPath)),
+                            FileUtil.toFileObject(new File(ksPath)),
                             src.getFileObject("META-INF").getFileObject("MANIFEST.MF"),        // NOI18N
                             outfile.getAbsolutePath(),
                             (info.alias == null) ? "cismet" : info.alias,                      // NOI18N
@@ -368,7 +371,7 @@ public final class CreateSecurityJarAction implements ActionListener {
                             CreateSecurityJarAction.class,
                             "CreateSecurityJarAction.buildSecurityJars(InputOutput,Map<DataObject,Info>).message.finished"), // NOI18N
                         true);
-                } catch (final IOException ex) {
+                } catch (final Exception ex) {
                     final String message = NbBundle.getMessage(
                             CreateSecurityJarAction.class,
                             "CreateSecurityJarAction.buildSecurityJars(InputOutput,Map<DataObject,Info>).message.buildError"); // NOI18N

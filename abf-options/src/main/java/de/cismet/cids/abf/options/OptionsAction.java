@@ -7,19 +7,23 @@
 ****************************************************/
 package de.cismet.cids.abf.options;
 
-import org.openide.modules.ModuleInstall;
+import org.netbeans.api.options.OptionsDisplayer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * DOCUMENT ME!
  *
+ * @author   martin.scholl@cismet.de
  * @version  $Revision$, $Date$
  */
-public class Installer extends ModuleInstall {
+public final class OptionsAction implements ActionListener {
 
     //~ Methods ----------------------------------------------------------------
 
     @Override
-    public void restored() {
-        GeneralOptionsPanelController.adjustLogLevel();
+    public void actionPerformed(final ActionEvent e) {
+        OptionsDisplayer.getDefault().open("ABF");
     }
 }

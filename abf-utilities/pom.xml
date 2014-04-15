@@ -5,18 +5,23 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.5</version>
+        <version>3.6</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-utilities</artifactId>
-    <version>3.5</version>
+    <version>3.6</version>
     <packaging>nbm</packaging>
 
     <name>ABF Utilities</name>
     <description>Utility module for cids ABF</description>
 
     <dependencies>
+        <dependency>
+            <groupId>de.cismet.cids.abf</groupId>
+            <artifactId>abf-options</artifactId>
+            <version>3.6</version>
+        </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-progress</artifactId>
@@ -170,11 +175,16 @@
                     <publicPackages>
                         <publicPackage>de.*</publicPackage>
                         <publicPackage>javax.*</publicPackage>
-                        <publicPackage>org.*</publicPackage>
                         <publicPackage>junit.*</publicPackage>
                         <publicPackage>Sirius.*</publicPackage>
                         <publicPackage>com.*</publicPackage>
                         <publicPackage>javassist.*</publicPackage>
+                        <publicPackage>org.jdesktop.*</publicPackage>
+                        <publicPackage>org.apache.commons.*</publicPackage>
+                        <publicPackage>org.hibernate.*</publicPackage>
+                        <publicPackage>org.postgresql.*</publicPackage>
+                        <publicPackage>org.postgis.*</publicPackage>
+                        <publicPackage>org.objectweb.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
