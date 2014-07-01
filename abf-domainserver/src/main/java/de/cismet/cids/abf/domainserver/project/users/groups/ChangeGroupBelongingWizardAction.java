@@ -23,7 +23,9 @@ import java.awt.Dialog;
 import java.text.MessageFormat;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JComponent;
 
@@ -145,13 +147,16 @@ public final class ChangeGroupBelongingWizardAction extends CookieAction {
         wizard.setTitle(NbBundle.getMessage(
                 ChangeGroupBelongingWizardAction.class,
                 "ChangeGroupBelongingWizardAction.performAction(Node[]).wizard.title")); // NOI18N
+        final Set<UserGroup> originalGroups = new HashSet<UserGroup>(user.getUserGroups());
         wizard.putProperty(USER_PROP, user);
         wizard.putProperty(PROJECT_PROP, project);
         final Dialog dialog = DialogDisplayer.getDefault().createDialog(wizard);
         dialog.setVisible(true);
         dialog.toFront();
         final boolean cancelled = wizard.getValue() != WizardDescriptor.FINISH_OPTION;
-        if (!cancelled) {
+        if (cancelled) {
+            user.setUserGroups(originalGroups);
+        } else {
             UserManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
                     @Override
