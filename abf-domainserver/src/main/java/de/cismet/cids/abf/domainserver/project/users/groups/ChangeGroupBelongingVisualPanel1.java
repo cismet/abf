@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 
 import org.jdesktop.swingx.JXList;
 
+import org.openide.util.NbBundle;
+
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
@@ -51,8 +53,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
 
     //~ Static fields/initializers ---------------------------------------------
 
-    private static final transient Logger LOG = Logger.getLogger(
-            ChangeGroupBelongingVisualPanel1.class);
+    private static final transient Logger LOG = Logger.getLogger(ChangeGroupBelongingVisualPanel1.class);
 
     //~ Instance fields --------------------------------------------------------
 
@@ -65,6 +66,8 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
     private final transient javax.swing.JScrollPane jScrollPane2 = new javax.swing.JScrollPane();
     private final transient javax.swing.JList lstAllGroups = new DragJList();
     private final transient javax.swing.JList lstGroupMembership = new DropJList();
+    private javax.swing.JPanel pnlAll;
+    private javax.swing.JPanel pnlMembership;
     // End of variables declaration//GEN-END:variables
 
     //~ Constructors -----------------------------------------------------------
@@ -74,11 +77,11 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
      *
      * @param  model  DOCUMENT ME!
      */
-    public ChangeGroupBelongingVisualPanel1(
-            final ChangeGroupBelongingWizardPanel1 model) {
+    public ChangeGroupBelongingVisualPanel1(final ChangeGroupBelongingWizardPanel1 model) {
         this.model = model;
         membership = new ArrayList<UserGroup>();
         touchedGroups = new ArrayList<UserGroup>();
+
         initComponents();
     }
 
@@ -114,7 +117,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
 
     @Override
     public String getName() {
-        return org.openide.util.NbBundle.getMessage(
+        return NbBundle.getMessage(
                 ChangeGroupBelongingVisualPanel1.class,
                 "ChangeGroupBelongingVisualPanel1.getName().returnvalue"); // NOI18N
     }
@@ -134,48 +137,54 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                org.openide.util.NbBundle.getMessage(
-                    ChangeGroupBelongingVisualPanel1.class,
-                    "ChangeGroupBelongingVisualPanel1.jScrollPane1.border.title"))); // NOI18N
-        jScrollPane1.setViewportView(lstAllGroups);
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(
-                org.openide.util.NbBundle.getMessage(
+        pnlMembership = new javax.swing.JPanel();
+        pnlAll = new javax.swing.JPanel();
+
+        setLayout(new java.awt.GridLayout(1, 2, 20, 0));
+
+        pnlMembership.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                NbBundle.getMessage(
                     ChangeGroupBelongingVisualPanel1.class,
-                    "ChangeGroupBelongingVisualPanel1.jScrollPane2.border.title"))); // NOI18N
+                    "ChangeGroupBelongingVisualPanel1.pnlMembership.border.title"))); // NOI18N
+        pnlMembership.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane2.setBorder(null);
         jScrollPane2.setViewportView(lstGroupMembership);
 
-        final org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                layout.createSequentialGroup().addContainerGap().add(
-                    jScrollPane2,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                    269,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
-                    org.jdesktop.layout.LayoutStyle.RELATED,
-                    21,
-                    Short.MAX_VALUE).add(
-                    jScrollPane1,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                    266,
-                    org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap()));
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                layout.createSequentialGroup().addContainerGap().add(
-                    layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                        org.jdesktop.layout.GroupLayout.TRAILING,
-                        jScrollPane1,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        313,
-                        Short.MAX_VALUE).add(
-                        org.jdesktop.layout.GroupLayout.TRAILING,
-                        jScrollPane2,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                        313,
-                        Short.MAX_VALUE)).addContainerGap()));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        pnlMembership.add(jScrollPane2, gridBagConstraints);
+
+        add(pnlMembership);
+
+        pnlAll.setBorder(javax.swing.BorderFactory.createTitledBorder(
+                NbBundle.getMessage(
+                    ChangeGroupBelongingVisualPanel1.class,
+                    "ChangeGroupBelongingVisualPanel1.pnlAll.border.title"))); // NOI18N
+        pnlAll.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setViewportView(lstAllGroups);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        pnlAll.add(jScrollPane1, gridBagConstraints);
+
+        add(pnlAll);
     } // </editor-fold>//GEN-END:initComponents
 
     //~ Inner Classes ----------------------------------------------------------
@@ -185,7 +194,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
      *
      * @version  $Revision$, $Date$
      */
-    class DragJList extends JXList implements DragGestureListener, DragSourceListener {
+    class DragJList extends JXList implements DropTargetListener, DragGestureListener, DragSourceListener {
 
         //~ Methods ------------------------------------------------------------
 
@@ -241,9 +250,31 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
 
         @Override
         public void dragGestureRecognized(final DragGestureEvent e) {
-            final Object o = this.getSelectedValue();
+            final int index = this.locationToIndex(e.getDragOrigin());
+            final Object o = this.getModel().getElementAt(this.convertIndexToModel(index));
             final Transferable trans = new CidsUserGroupTransferable(o);
             dragSource.startDrag(e, DragSource.DefaultCopyDrop, trans, this);
+        }
+
+        @Override
+        public void dragEnter(final DropTargetDragEvent dtde) {
+        }
+
+        @Override
+        public void dragOver(final DropTargetDragEvent dtde) {
+        }
+
+        @Override
+        public void dropActionChanged(final DropTargetDragEvent dtde) {
+        }
+
+        @Override
+        public void dragExit(final DropTargetEvent dte) {
+        }
+
+        @Override
+        public void drop(final DropTargetDropEvent dtde) {
+            dtde.dropComplete(false);
         }
     }
 
@@ -338,6 +369,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
                         user.getUserGroups().add(ug);
                         membership.add(ug);
                         lstGroupMembership.setListData(membership.toArray());
+                        ((JXList)lstGroupMembership).setSortOrder(SortOrder.ASCENDING);
                         if (!touchedGroups.contains(ug)) {
                             touchedGroups.add(ug);
                         }
@@ -352,7 +384,8 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
 
         @Override
         public void dragGestureRecognized(final DragGestureEvent dge) {
-            final Object o = this.getSelectedValue();
+            final int index = this.locationToIndex(dge.getDragOrigin());
+            final Object o = this.getModel().getElementAt(this.convertIndexToModel(index));
             final Transferable trans = new CidsUserGroupTransferable(o);
             dragSource.startDrag(dge, DragSource.DefaultCopyDrop, trans, this);
         }
@@ -372,6 +405,7 @@ public final class ChangeGroupBelongingVisualPanel1 extends JPanel {
                         user.getUserGroups().remove(ug);
                         membership.remove(ug);
                         lstGroupMembership.setListData(membership.toArray());
+                        ((JXList)lstGroupMembership).setSortOrder(SortOrder.ASCENDING);
                         if (!touchedGroups.contains(ug)) {
                             touchedGroups.add(ug);
                         }
