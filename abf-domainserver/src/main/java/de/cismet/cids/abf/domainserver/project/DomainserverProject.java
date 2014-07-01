@@ -59,9 +59,11 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import de.cismet.cids.abf.domainserver.ReadCacheBackend;
 import de.cismet.cids.abf.domainserver.project.catalog.CatalogNodeContextCookie;
 import de.cismet.cids.abf.domainserver.project.customizer.DomainserverProjectCustomizer;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.Connectable;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
@@ -566,7 +568,13 @@ public final class DomainserverProject implements Project, Connectable {
                                 LOG.debug("new Backend(runtimeProps)"); // NOI18N
                             }
 
-                            backend = BackendFactory.getInstance().getBackend(runtimeProps, true);
+                            if (DomainserverOptionsPanelController.isAutoRefresh()) {
+                                backend = new ReadCacheBackend(BackendFactory.getInstance().getBackend(
+                                            runtimeProps,
+                                            true));
+                            } else {
+                                backend = BackendFactory.getInstance().getBackend(runtimeProps, true);
+                            }
                             connectionInProgress = false;
                             diffAccessor = new DiffAccessor(runtimeProps, backend);
                             fireConnectionStatusChanged();
