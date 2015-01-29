@@ -10,7 +10,7 @@
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf</artifactId>
-    <version>3.6.2</version>
+    <version>3.6.3</version>
     <packaging>pom</packaging>
 
     <name>ABF</name>
@@ -44,7 +44,7 @@
         <connection>scm:git:https://github.com/cismet/abf.git</connection>
         <developerConnection>scm:git:git@github.com:cismet/abf.git</developerConnection>
         <url>https://github.com/cismet/abf</url>
-      <tag>abf-3.6.2</tag>
+      <tag>v3.6.3</tag>
   </scm>
 
     <properties>
@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>de.cismet.cids</groupId>
                 <artifactId>data-objects</artifactId>
-                <version>3.4</version>
+                <version>3.4.1</version>
             </dependency>
             <dependency>
                 <groupId>de.cismet.commons</groupId>

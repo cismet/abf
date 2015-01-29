@@ -1,4 +1,4 @@
-ABF - Administrator's Best Friend
+ABF - Administrator's Best Friend [![Build Status](http://ci.cismet.de/buildStatus/icon?job=abf)](https://ci.cismet.de/job/abf/)
 ===
 
 Administration tool for the cids System, based on the NetBeans RCP.
