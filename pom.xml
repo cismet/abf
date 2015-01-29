@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>de.cismet.cids</groupId>
                 <artifactId>data-objects</artifactId>
-                <version>3.4</version>
+                <version>3.4.1</version>
             </dependency>
             <dependency>
                 <groupId>de.cismet.commons</groupId>
