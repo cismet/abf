@@ -32,10 +32,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +41,6 @@ import javax.swing.JComponent;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
@@ -395,29 +391,16 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
 
         @Override
         protected void threadedNotify() throws IOException {
-            final List<ConfigAttrEntry> entries = project.getCidsDataObjectBackend().getEntries(type);
-            Collections.sort(entries, new Comparator<ConfigAttrEntry>() {
+            final List<String> groups = project.getCidsDataObjectBackend().getConfigAttrGroups(type);
+            Collections.sort(groups);
 
-                    @Override
-                    public int compare(final ConfigAttrEntry o1, final ConfigAttrEntry o2) {
-                        return o1.getKey().getKey().compareTo(o2.getKey().getKey());
-                    }
-                });
-
-            final Set<ConfigAttrKey> keys = new LinkedHashSet<ConfigAttrKey>(entries.size());
-            for (final ConfigAttrEntry entry : entries) {
-                keys.add(entry.getKey());
-            }
-
-            setKeysEDT(KeyContainer.convertCollection(ConfigAttrKey.class, keys));
+            setKeysEDT(groups);
         }
 
         @Override
         protected Node[] createUserNodes(final Object o) {
-            if ((o instanceof KeyContainer) && (((KeyContainer)o).getObject() instanceof ConfigAttrKey)) {
-                return new Node[] {
-                        new ConfigAttrKeyNode((ConfigAttrKey)((KeyContainer)o).getObject(), type, project)
-                    };
+            if (o instanceof String) {
+                return new Node[] { new ConfigAttrGroupNode((String)o, type, project) };
             } else {
                 return new Node[] {};
             }
