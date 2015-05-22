@@ -101,8 +101,9 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
 
     private static final transient Logger LOG = Logger.getLogger(CatalogNode.class);
 
-    private static final Image IMAGE_OPEN;
-    private static final Image IMAGE_CLOSED;
+    public static final Image NATIVE_FOLDER_ICON_OPEN;
+    public static final Image NATIVE_FOLDER_ICON_CLOSED;
+
     private static final Image BADGE_ORG;
     private static final Image BADGE_CLASS;
     private static final Image BADGE_DYN;
@@ -127,8 +128,8 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
             }
             closedIcon = MetalIconFactory.getTreeFolderIcon();
         }
-        IMAGE_OPEN = ImageUtilities.icon2Image(openIcon);
-        IMAGE_CLOSED = ImageUtilities.icon2Image(closedIcon);
+        NATIVE_FOLDER_ICON_OPEN = ImageUtilities.icon2Image(openIcon);
+        NATIVE_FOLDER_ICON_CLOSED = ImageUtilities.icon2Image(closedIcon);
         BADGE_ORG = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_org.png");     // NOI18N
         BADGE_OBJ = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_object.png");  // NOI18N
         BADGE_DYN = ImageUtilities.loadImage(DomainserverProject.IMAGE_FOLDER + "badge_dynamic.png"); // NOI18N
@@ -1081,42 +1082,42 @@ public class CatalogNode extends ProjectNode implements Refreshable, CatalogNode
     @Override
     public Image getIcon(final int i) {
         if (catNode.getDynamicChildren() != null) {
-            return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_DYN, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_CLOSED, BADGE_DYN, 0, 0);
         } else if ("N".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
-            return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_ORG, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_CLOSED, BADGE_ORG, 0, 0);
         } else if ("C".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
-            return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_CLASS, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_CLOSED, BADGE_CLASS, 0, 0);
         } else if ("O".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
-            return ImageUtilities.mergeImages(IMAGE_CLOSED, BADGE_OBJ, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_CLOSED, BADGE_OBJ, 0, 0);
         } else if ("none".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
         {
             return null;
         } else {
-            return IMAGE_CLOSED;
+            return NATIVE_FOLDER_ICON_CLOSED;
         }
     }
 
     @Override
     public Image getOpenedIcon(final int i) {
         if (catNode.getDynamicChildren() != null) {
-            return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_DYN, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_OPEN, BADGE_DYN, 0, 0);
         } else if ("N".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
-            return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_ORG, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_OPEN, BADGE_ORG, 0, 0);
         } else if ("C".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
-            return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_CLASS, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_OPEN, BADGE_CLASS, 0, 0);
         } else if ("O".equalsIgnoreCase(catNode.getNodeType()))    // NOI18N
         {
-            return ImageUtilities.mergeImages(IMAGE_OPEN, BADGE_OBJ, 0, 0);
+            return ImageUtilities.mergeImages(NATIVE_FOLDER_ICON_OPEN, BADGE_OBJ, 0, 0);
         } else if ("none".equalsIgnoreCase(catNode.getNodeType())) // NOI18N
         {
             return null;
         } else {
-            return IMAGE_OPEN;
+            return NATIVE_FOLDER_ICON_OPEN;
         }
     }
 

@@ -31,6 +31,12 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.cluster</groupId>
+            <artifactId>websvccommon</artifactId>
+            <version>${netbeans.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.cluster</groupId>
             <artifactId>ide</artifactId>
             <version>${netbeans.version}</version>
             <type>pom</type>

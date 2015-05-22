@@ -10,6 +10,7 @@ package de.cismet.cids.abf.domainserver.project.configattr;
 import org.apache.log4j.Logger;
 
 import org.openide.DialogDisplayer;
+import org.openide.ErrorManager;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.actions.DeleteAction;
@@ -31,9 +32,12 @@ import org.openide.util.datatransfer.NewType;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
 
 import java.text.MessageFormat;
 
@@ -49,6 +53,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.utilities.Refreshable;
 
@@ -74,9 +79,11 @@ public class ConfigAttrKeyNode extends ProjectNode {
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient ConfigAttrKey key;
     private final transient Types type;
     private final transient Image keyIcon;
+
+    private transient ConfigAttrKey key;
+    private transient boolean sheetInitialized;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -92,6 +99,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
         super.setName(key.getKey());
         this.key = key;
         this.type = type;
+        this.sheetInitialized = false;
 
         getCookieSet().add(new ConfigAttrKeyCookieImpl());
         getCookieSet().add(new RefreshableImpl());
@@ -172,6 +180,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
                     }
                 }
             }
+
             final Backend backend = project.getCidsDataObjectBackend();
             final List<CommonEntity> entities = (List)backend.getEntries(key);
             entities.add(key);
@@ -191,7 +200,18 @@ public class ConfigAttrKeyNode extends ProjectNode {
 
             fireNodeDestroyed();
 
-            project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+            ConfigAttrManagement.REFRESH_DISPATCHER.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        final ConfigAttrManagement cam = project.getLookup().lookup(ConfigAttrManagement.class);
+                        cam.refresh(type, false);
+                        cam.refreshGroups(type, key.getGroupName(), ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME);
+                        cam.refreshKey(type, key);
+
+                        project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+                    }
+                });
         } catch (final Exception e) {
             final String message = "cannot destroy key: " + key; // NOI18N
             LOG.error(message, e);
@@ -201,6 +221,8 @@ public class ConfigAttrKeyNode extends ProjectNode {
 
     @Override
     protected Sheet createSheet() {
+        sheetInitialized = true;
+
         final Sheet sheet = Sheet.createDefault();
 
         try {
@@ -211,6 +233,63 @@ public class ConfigAttrKeyNode extends ProjectNode {
                     ConfigAttrKeyNode.class,
                     "ConfigAttrKeyNode.createSheet().keyProp.name"));                                                    // NOI18N
 
+            final Property groupProp = new PropertySupport<String>(
+                    "group", // NOI18N
+                    String.class,
+                    NbBundle.getMessage(ConfigAttrKeyNode.class, "ConfigAttrKeyNode.createSheet().groupProp.name"),
+                    NbBundle.getMessage(
+                        ConfigAttrKeyNode.class,
+                        "ConfigAttrKeyNode.createSheet().groupProp.description"),
+                    true,
+                    true) {
+
+                    @Override
+                    public String getValue() throws IllegalAccessException, InvocationTargetException {
+                        if (ConfigAttrKey.NO_GROUP.equals(key.getGroupName())) {
+                            return ConfigAttrGroupNode.NO_GROUP_DISPLAYNAME;
+                        } else {
+                            return key.getGroupName();
+                        }
+                    }
+
+                    @Override
+                    public void setValue(final String t) throws IllegalAccessException,
+                        IllegalArgumentException,
+                        InvocationTargetException {
+                        final String old = key.getGroupName();
+
+                        if (t.isEmpty() || ConfigAttrGroupNode.NO_GROUP_DISPLAYNAME.equals(t)) {
+                            key.setGroupName(ConfigAttrKey.NO_GROUP);
+                        } else {
+                            key.setGroupName(t);
+                        }
+                        ConfigAttrManagement.ACTION_DISPATCHER.execute(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    try {
+                                        project.getCidsDataObjectBackend().store(key);
+                                        ConfigAttrManagement.REFRESH_DISPATCHER.execute(new Runnable() {
+
+                                                @Override
+                                                public void run() {
+                                                    final ConfigAttrManagement cam = project.getLookup()
+                                                                .lookup(ConfigAttrManagement.class);
+                                                    cam.refresh(type, false);
+                                                    cam.refreshGroups(type, old, key.getGroupName());
+                                                    cam.refreshKey(type, key);
+                                                }
+                                            });
+                                    } catch (final Exception ex) {
+                                        LOG.error("could not store config attr key", ex); // NOI18N
+                                        key.setGroupName(old);
+                                        ErrorManager.getDefault().notify(ex);
+                                    }
+                                }
+                            });
+                    }
+                };
+
             final Sheet.Set main = Sheet.createPropertiesSet();
             main.setName("keyProperties");                                   // NOI18N
             main.setDisplayName(NbBundle.getMessage(
@@ -218,6 +297,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
                     "ConfigAttrKeyNode.createSheet().mainSet.displayName")); // NOI18N
             main.put(idProp);
             main.put(keyProp);
+            main.put(groupProp);
             sheet.put(main);
         } catch (final Exception e) {
             LOG.error("cannot create property sheet", e);                    // NOI18N
@@ -233,7 +313,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
      *
      * @version  $Revision$, $Date$
      */
-    private final class RefreshableImpl implements Refreshable {
+    private final class RefreshableImpl implements Refreshable, KeyRefreshable {
 
         //~ Methods ------------------------------------------------------------
 
@@ -243,6 +323,28 @@ public class ConfigAttrKeyNode extends ProjectNode {
                 setChildren(new ConfigAttrKeyNodeChildren(key, type, project));
             } else {
                 ((ProjectChildren)getChildren()).refreshByNotify();
+            }
+        }
+
+        @Override
+        public void refreshKey(final ConfigAttrKey key) {
+            if (key.equals(ConfigAttrKeyNode.this.key)) {
+                ConfigAttrKeyNode.this.key = project.getCidsDataObjectBackend()
+                            .getEntity(ConfigAttrKey.class, key.getId());
+
+                if (sheetInitialized) {
+                    final Sheet sheet = createSheet();
+
+                    EventQueue.invokeLater(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                setSheet(sheet);
+                            }
+                        });
+                }
+
+                refresh();
             }
         }
     }

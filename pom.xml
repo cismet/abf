@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>de.cismet.cids</groupId>
                 <artifactId>data-objects</artifactId>
-                <version>3.4.1</version>
+                <version>3.5-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>de.cismet.commons</groupId>
@@ -356,7 +356,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>nbm-maven-plugin</artifactId>
-                    <version>3.9</version>
+                    <version>3.13.2</version>
                     <extensions>true</extensions>
                     <configuration>
                         <author>Martin Scholl @ cismet GmbH</author>
