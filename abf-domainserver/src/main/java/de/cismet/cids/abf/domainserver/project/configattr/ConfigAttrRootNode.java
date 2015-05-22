@@ -10,6 +10,7 @@ package de.cismet.cids.abf.domainserver.project.configattr;
 import org.apache.log4j.Logger;
 
 import org.openide.DialogDisplayer;
+import org.openide.ErrorManager;
 import org.openide.WizardDescriptor;
 import org.openide.actions.NewAction;
 import org.openide.cookies.EditCookie;
@@ -44,6 +45,7 @@ import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
@@ -86,6 +88,7 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
         connL = new ConnL();
         project.addConnectionListener(WeakListeners.create(ConnectionListener.class, connL, project));
         getCookieSet().add(new RefreshableImpl());
+        getCookieSet().add(new TypeCookieImpl());
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -109,6 +112,21 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class TypeCookieImpl implements TypeCookie {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public Types getType() {
+            return type;
+        }
+    }
 
     /**
      * DOCUMENT ME!
@@ -158,13 +176,40 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                 final List<ConfigAttrEntry> newEntries = (List)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRIES);
                 final Backend backend = project.getCidsDataObjectBackend();
 
-                for (final ConfigAttrEntry entry : newEntries) {
-                    backend.storeEntry(entry);
-                }
+                ConfigAttrManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
-                addNodeListener(nodeL);
-                getCookie(Refreshable.class).refresh();
-                project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+                        @Override
+                        public void run() {
+                            try {
+                                for (final ConfigAttrEntry entry : newEntries) {
+                                    backend.storeEntry(entry);
+                                }
+
+                                EventQueue.invokeLater(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            addNodeListener(nodeL);
+                                        }
+                                    });
+
+                                ConfigAttrManagement.REFRESH_DISPATCHER.execute(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            project.getLookup().lookup(ConfigAttrManagement.class).refresh(type, false);
+                                            project.getLookup()
+                                                    .lookup(ConfigAttrManagement.class)
+                                                    .refreshGroups(type, newEntries.get(0).getKey().getGroupName());
+                                            project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+                                        }
+                                    });
+                            } catch (final Exception ex) {
+                                LOG.error("could not store config attr key", ex); // NOI18N
+                                ErrorManager.getDefault().notify(ex);
+                            }
+                        }
+                    });
             }
         }
 
@@ -300,12 +345,12 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
      *
      * @version  $Revision$, $Date$
      */
-    private final class RefreshableImpl implements Refreshable {
+    private final class RefreshableImpl implements Refreshable, GroupRefreshable {
 
         //~ Methods ------------------------------------------------------------
 
         @Override
-        public void refresh() {
+        public void refresh(final boolean cascade) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("requesting refresh", new Throwable("trace")); // NOI18N
             }
@@ -317,29 +362,53 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
 
                 try {
                     refreshing.get(10, TimeUnit.SECONDS);
-                    final Runnable r = new Runnable() {
 
-                            @Override
-                            public void run() {
-                                final Node[] childNodes = getChildren().getNodes(false);
-                                for (final Node childNode : childNodes) {
-                                    final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
-                                    if (refreshableChild != null) {
-                                        refreshableChild.refresh();
+                    if (cascade) {
+                        final Runnable r = new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    final Node[] childNodes = getChildren().getNodes(false);
+                                    for (final Node childNode : childNodes) {
+                                        final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
+                                        if (refreshableChild != null) {
+                                            refreshableChild.refresh();
+                                        }
                                     }
                                 }
-                            }
-                        };
+                            };
 
-                    if (EventQueue.isDispatchThread()) {
-                        r.run();
-                    } else {
-                        EventQueue.invokeLater(r);
+                        if (EventQueue.isDispatchThread()) {
+                            r.run();
+                        } else {
+                            EventQueue.invokeLater(r);
+                        }
                     }
                 } catch (final Exception e) {
                     LOG.warn("cannot wait for finish of refresh of config attr root node children", e); // NOI18N
                 }
             }
+        }
+
+        @Override
+        public void refreshGroups(final String... groups) {
+            final Node[] childNodes = getChildren().getNodes(false);
+            for (final Node childNode : childNodes) {
+                final GroupCookie gc = childNode.getCookie(GroupCookie.class);
+                final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
+                if ((gc != null) && (refreshableChild != null)) {
+                    for (final String group : groups) {
+                        if (gc.getGroup().equals(group)) {
+                            refreshableChild.refresh();
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void refresh() {
+            refresh(true);
         }
     }
 

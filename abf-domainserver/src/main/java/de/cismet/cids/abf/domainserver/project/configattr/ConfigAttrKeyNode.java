@@ -239,15 +239,33 @@ public class ConfigAttrKeyNode extends ProjectNode {
                         IllegalArgumentException,
                         InvocationTargetException {
                         final String old = key.getGroupName();
-                        try {
-                            key.setGroupName((String)t);
-                            project.getCidsDataObjectBackend().store(key);
-                            project.getLookup().lookup(ConfigAttrManagement.class).refresh();
-                        } catch (final Exception ex) {
-                            LOG.error("could not store config attr key", ex); // NOI18N
-                            key.setGroupName(old);
-                            ErrorManager.getDefault().notify(ex);
-                        }
+                        key.setGroupName((String)t);
+                        // use action dispatcher if too slow
+                        ConfigAttrManagement.ACTION_DISPATCHER.execute(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    try {
+                                        project.getCidsDataObjectBackend().store(key);
+                                        ConfigAttrManagement.REFRESH_DISPATCHER.execute(new Runnable() {
+
+                                                @Override
+                                                public void run() {
+                                                    project.getLookup()
+                                                            .lookup(ConfigAttrManagement.class)
+                                                            .refresh(type, false);
+                                                    project.getLookup()
+                                                            .lookup(ConfigAttrManagement.class)
+                                                            .refreshGroups(type, old, (String)t);
+                                                }
+                                            });
+                                    } catch (final Exception ex) {
+                                        LOG.error("could not store config attr key", ex); // NOI18N
+                                        key.setGroupName(old);
+                                        ErrorManager.getDefault().notify(ex);
+                                    }
+                                }
+                            });
                     }
                 };
 

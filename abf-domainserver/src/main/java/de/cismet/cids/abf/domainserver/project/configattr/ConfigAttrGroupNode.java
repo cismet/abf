@@ -84,6 +84,7 @@ public class ConfigAttrGroupNode extends ProjectNode {
         }
 
         getCookieSet().add(new RefreshableImpl());
+        getCookieSet().add(new GroupCookieImpl());
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -99,6 +100,21 @@ public class ConfigAttrGroupNode extends ProjectNode {
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class GroupCookieImpl implements GroupCookie {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public String getGroup() {
+            return group;
+        }
+    }
 
     /**
      * DOCUMENT ME!
