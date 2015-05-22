@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.7</version>
+        <version>3.8-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-update-center</artifactId>
-    <version>3.7</version>
+    <version>3.8-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Update Center</name>
