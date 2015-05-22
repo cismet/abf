@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.7-SNAPSHOT</version>        
+        <version>3.7</version>        
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-client</artifactId>
-    <version>3.7-SNAPSHOT</version>
+    <version>3.7</version>
     <packaging>nbm</packaging>
 
     <name>ABF Client</name>
@@ -20,17 +20,17 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>3.7-SNAPSHOT</version>
+            <version>3.7</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.7-SNAPSHOT</version>
+            <version>3.7</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-library-support</artifactId>
-            <version>3.7-SNAPSHOT</version>
+            <version>3.7</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
