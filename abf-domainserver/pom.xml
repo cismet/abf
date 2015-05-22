@@ -5,13 +5,13 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.6.3</version>
+        <version>3.7</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf-domainserver</artifactId>
-    <version>3.6.3</version>
+    <version>3.7</version>
     <packaging>nbm</packaging>
 
     <name>ABF Domainserver</name>
@@ -21,12 +21,12 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>3.6.3</version>
+            <version>3.7</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.6.3</version>
+            <version>3.7</version>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>
@@ -36,6 +36,10 @@
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.swinglabs</groupId>
+            <artifactId>swingx</artifactId>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>

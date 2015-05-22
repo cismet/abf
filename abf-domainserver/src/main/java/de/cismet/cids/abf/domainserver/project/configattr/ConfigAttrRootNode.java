@@ -10,6 +10,7 @@ package de.cismet.cids.abf.domainserver.project.configattr;
 import org.apache.log4j.Logger;
 
 import org.openide.DialogDisplayer;
+import org.openide.ErrorManager;
 import org.openide.WizardDescriptor;
 import org.openide.actions.NewAction;
 import org.openide.cookies.EditCookie;
@@ -33,9 +34,7 @@ import java.text.MessageFormat;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -44,9 +43,9 @@ import javax.swing.JComponent;
 
 import de.cismet.cids.abf.domainserver.RefreshAction;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
-import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.nodes.ConfigAttrManagement;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
 import de.cismet.cids.abf.utilities.ConnectionEvent;
 import de.cismet.cids.abf.utilities.ConnectionListener;
@@ -89,6 +88,7 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
         connL = new ConnL();
         project.addConnectionListener(WeakListeners.create(ConnectionListener.class, connL, project));
         getCookieSet().add(new RefreshableImpl());
+        getCookieSet().add(new TypeCookieImpl());
     }
 
     //~ Methods ----------------------------------------------------------------
@@ -112,6 +112,21 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @version  $Revision$, $Date$
+     */
+    private final class TypeCookieImpl implements TypeCookie {
+
+        //~ Methods ------------------------------------------------------------
+
+        @Override
+        public Types getType() {
+            return type;
+        }
+    }
 
     /**
      * DOCUMENT ME!
@@ -161,13 +176,43 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                 final List<ConfigAttrEntry> newEntries = (List)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRIES);
                 final Backend backend = project.getCidsDataObjectBackend();
 
-                for (final ConfigAttrEntry entry : newEntries) {
-                    backend.storeEntry(entry);
-                }
+                ConfigAttrManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
-                addNodeListener(nodeL);
-                getCookie(Refreshable.class).refresh();
-                project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+                        @Override
+                        public void run() {
+                            try {
+                                for (final ConfigAttrEntry entry : newEntries) {
+                                    backend.storeEntry(entry);
+                                }
+
+                                EventQueue.invokeLater(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            addNodeListener(nodeL);
+                                        }
+                                    });
+
+                                ConfigAttrManagement.REFRESH_DISPATCHER.execute(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            project.getLookup().lookup(ConfigAttrManagement.class).refresh(type, false);
+                                            project.getLookup()
+                                                    .lookup(ConfigAttrManagement.class)
+                                                    .refreshGroups(
+                                                        type,
+                                                        newEntries.get(0).getKey().getGroupName(),
+                                                        ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME);
+                                            project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+                                        }
+                                    });
+                            } catch (final Exception ex) {
+                                LOG.error("could not store config attr key", ex); // NOI18N
+                                ErrorManager.getDefault().notify(ex);
+                            }
+                        }
+                    });
             }
         }
 
@@ -303,12 +348,12 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
      *
      * @version  $Revision$, $Date$
      */
-    private final class RefreshableImpl implements Refreshable {
+    private final class RefreshableImpl implements Refreshable, GroupRefreshable, KeyRefreshable {
 
         //~ Methods ------------------------------------------------------------
 
         @Override
-        public void refresh() {
+        public void refresh(final boolean cascade) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("requesting refresh", new Throwable("trace")); // NOI18N
             }
@@ -320,29 +365,52 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
 
                 try {
                     refreshing.get(10, TimeUnit.SECONDS);
-                    final Runnable r = new Runnable() {
 
-                            @Override
-                            public void run() {
-                                final Node[] childNodes = getChildren().getNodes(false);
-                                for (final Node childNode : childNodes) {
-                                    final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
-                                    if (refreshableChild != null) {
-                                        refreshableChild.refresh();
-                                    }
-                                }
-                            }
-                        };
-
-                    if (EventQueue.isDispatchThread()) {
-                        r.run();
-                    } else {
-                        EventQueue.invokeLater(r);
+                    final Node[] childNodes = getChildren().getNodes(false);
+                    for (final Node childNode : childNodes) {
+                        final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
+                        if ((refreshableChild != null) && cascade) {
+                            refreshableChild.refresh();
+                        }
                     }
                 } catch (final Exception e) {
                     LOG.warn("cannot wait for finish of refresh of config attr root node children", e); // NOI18N
                 }
             }
+        }
+
+        @Override
+        public void refreshGroups(final String... groups) {
+            final Node[] childNodes = getChildren().getNodes(false);
+            for (final Node childNode : childNodes) {
+                final GroupCookie gc = childNode.getCookie(GroupCookie.class);
+                final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
+                if ((gc != null) && (refreshableChild != null)) {
+                    for (final String group : groups) {
+                        if (gc.getGroup().equals(group)) {
+                            refreshableChild.refresh();
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void refreshKey(final ConfigAttrKey key) {
+            final Node[] childNodes = getChildren().getNodes(false);
+            for (final Node childNode : childNodes) {
+                final GroupCookie gc = childNode.getCookie(GroupCookie.class);
+                final KeyRefreshable refreshableChild = childNode.getCookie(KeyRefreshable.class);
+                if ((gc != null) && (refreshableChild != null)
+                            && ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME.equals(gc.getGroup())) {
+                    refreshableChild.refreshKey(key);
+                }
+            }
+        }
+
+        @Override
+        public void refresh() {
+            refresh(true);
         }
     }
 
@@ -395,29 +463,36 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
 
         @Override
         protected void threadedNotify() throws IOException {
-            final List<ConfigAttrEntry> entries = project.getCidsDataObjectBackend().getEntries(type);
-            Collections.sort(entries, new Comparator<ConfigAttrEntry>() {
+            final List<String> groups = project.getCidsDataObjectBackend().getConfigAttrGroups(type);
+            Collections.sort(groups, new Comparator<String>() {
 
                     @Override
-                    public int compare(final ConfigAttrEntry o1, final ConfigAttrEntry o2) {
-                        return o1.getKey().getKey().compareTo(o2.getKey().getKey());
+                    public int compare(final String o1, final String o2) {
+                        if (ConfigAttrKey.NO_GROUP.equals(o1)) {
+                            return -1;
+                        } else if (ConfigAttrKey.NO_GROUP.equals(o2)) {
+                            return 1;
+                        } else {
+                            return o1.compareTo(o2);
+                        }
                     }
                 });
 
-            final Set<ConfigAttrKey> keys = new LinkedHashSet<ConfigAttrKey>(entries.size());
-            for (final ConfigAttrEntry entry : entries) {
-                keys.add(entry.getKey());
+            if (!groups.isEmpty()) {
+                if (!ConfigAttrKey.NO_GROUP.equals(groups.get(0))) {
+                    groups.add(0, ConfigAttrKey.NO_GROUP);
+                }
+
+                groups.add(0, ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME);
             }
 
-            setKeysEDT(KeyContainer.convertCollection(ConfigAttrKey.class, keys));
+            setKeysEDT(groups);
         }
 
         @Override
         protected Node[] createUserNodes(final Object o) {
-            if ((o instanceof KeyContainer) && (((KeyContainer)o).getObject() instanceof ConfigAttrKey)) {
-                return new Node[] {
-                        new ConfigAttrKeyNode((ConfigAttrKey)((KeyContainer)o).getObject(), type, project)
-                    };
+            if (o instanceof String) {
+                return new Node[] { new ConfigAttrGroupNode((String)o, type, project) };
             } else {
                 return new Node[] {};
             }

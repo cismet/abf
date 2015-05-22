@@ -398,4 +398,14 @@ public final class ReadCacheBackend implements Backend {
     public void cancel() {
         delegate.cancel();
     }
+
+    @Override
+    public List<String> getConfigAttrGroups(final Types type) {
+        return delegate.getConfigAttrGroups(type);
+    }
+
+    @Override
+    public List<ConfigAttrEntry> getEntries(final Types type, final String group) {
+        return delegate.getEntries(type, group);
+    }
 }

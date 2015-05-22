@@ -20,6 +20,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.utilities.NameValidator;
 
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrKey;
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrType.Types;
 
 /**
  * DOCUMENT ME!
@@ -35,6 +36,7 @@ public class NewKeyWizardPanel1 implements WizardDescriptor.Panel {
     private final ChangeSupport changeSupport;
     private WizardDescriptor wizard;
     private DomainserverProject project;
+    private Types type;
     private final NameValidator validator;
 
     //~ Constructors -----------------------------------------------------------
@@ -56,6 +58,24 @@ public class NewKeyWizardPanel1 implements WizardDescriptor.Panel {
         }
 
         return component;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public Types getType() {
+        return type;
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public DomainserverProject getProject() {
+        return project;
     }
 
     @Override
@@ -114,6 +134,7 @@ public class NewKeyWizardPanel1 implements WizardDescriptor.Panel {
     public void readSettings(final Object settings) {
         wizard = (WizardDescriptor)settings;
         project = (DomainserverProject)wizard.getProperty(NewEntryWizardPanel1.PROP_PROJECT);
+        type = (Types)wizard.getProperty(NewEntryWizardPanel1.PROP_ENTRY_TYPE);
         component.init();
     }
 
