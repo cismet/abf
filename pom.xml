@@ -407,7 +407,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0-beta-4</version>
+                <version>1.0</version>
                 <configuration>
                     <serverId>updatecenter-upload</serverId>
                     <url>scp://boxy.cismet.de</url>
