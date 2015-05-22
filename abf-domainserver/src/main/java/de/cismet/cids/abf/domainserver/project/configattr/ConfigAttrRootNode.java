@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -392,7 +393,19 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
         @Override
         protected void threadedNotify() throws IOException {
             final List<String> groups = project.getCidsDataObjectBackend().getConfigAttrGroups(type);
-            Collections.sort(groups);
+            Collections.sort(groups, new Comparator<String>() {
+
+                    @Override
+                    public int compare(final String o1, final String o2) {
+                        if (ConfigAttrKey.NO_GROUP.equals(o1)) {
+                            return -1;
+                        } else if (ConfigAttrKey.NO_GROUP.equals(o2)) {
+                            return 1;
+                        } else {
+                            return o1.compareTo(o2);
+                        }
+                    }
+                });
 
             setKeysEDT(groups);
         }

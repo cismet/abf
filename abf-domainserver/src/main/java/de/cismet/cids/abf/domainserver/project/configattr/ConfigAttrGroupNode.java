@@ -18,6 +18,7 @@ import org.openide.nodes.Node;
 import org.openide.util.NbBundle;
 
 import java.awt.EventQueue;
+import java.awt.Image;
 
 import java.io.IOException;
 
@@ -33,6 +34,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.KeyContainer;
 import de.cismet.cids.abf.domainserver.project.ProjectChildren;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
+import de.cismet.cids.abf.domainserver.project.catalog.CatalogNode;
 import de.cismet.cids.abf.utilities.Refreshable;
 
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrEntry;
@@ -82,6 +84,18 @@ public class ConfigAttrGroupNode extends ProjectNode {
         }
 
         getCookieSet().add(new RefreshableImpl());
+    }
+
+    //~ Methods ----------------------------------------------------------------
+
+    @Override
+    public Image getIcon(final int type) {
+        return CatalogNode.NATIVE_FOLDER_ICON_CLOSED;
+    }
+
+    @Override
+    public Image getOpenedIcon(final int type) {
+        return CatalogNode.NATIVE_FOLDER_ICON_OPEN;
     }
 
     //~ Inner Classes ----------------------------------------------------------
