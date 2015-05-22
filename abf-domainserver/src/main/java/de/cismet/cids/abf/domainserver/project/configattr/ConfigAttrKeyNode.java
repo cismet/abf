@@ -180,6 +180,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
                     }
                 }
             }
+
             final Backend backend = project.getCidsDataObjectBackend();
             final List<CommonEntity> entities = (List)backend.getEntries(key);
             entities.add(key);
@@ -199,7 +200,18 @@ public class ConfigAttrKeyNode extends ProjectNode {
 
             fireNodeDestroyed();
 
-            project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+            ConfigAttrManagement.REFRESH_DISPATCHER.execute(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        final ConfigAttrManagement cam = project.getLookup().lookup(ConfigAttrManagement.class);
+                        cam.refresh(type, false);
+                        cam.refreshGroups(type, key.getGroupName(), ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME);
+                        cam.refreshKey(type, key);
+
+                        project.getLookup().lookup(UserManagement.class).refreshProperties(false);
+                    }
+                });
         } catch (final Exception e) {
             final String message = "cannot destroy key: " + key; // NOI18N
             LOG.error(message, e);
@@ -251,7 +263,6 @@ public class ConfigAttrKeyNode extends ProjectNode {
                         } else {
                             key.setGroupName(t);
                         }
-                        // use action dispatcher if too slow
                         ConfigAttrManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
                                 @Override
