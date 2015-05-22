@@ -23,6 +23,7 @@ import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.ProjectNode;
 import de.cismet.cids.abf.domainserver.project.configattr.ActionConfigAttrRootNode;
 import de.cismet.cids.abf.domainserver.project.configattr.GroupRefreshable;
+import de.cismet.cids.abf.domainserver.project.configattr.KeyRefreshable;
 import de.cismet.cids.abf.domainserver.project.configattr.StringConfigAttrRootNode;
 import de.cismet.cids.abf.domainserver.project.configattr.TypeCookie;
 import de.cismet.cids.abf.domainserver.project.configattr.XMLConfigAttrRootNode;
@@ -30,6 +31,7 @@ import de.cismet.cids.abf.options.DomainserverOptionsPanelController;
 import de.cismet.cids.abf.utilities.ProgressIndicatingExecutor;
 import de.cismet.cids.abf.utilities.Refreshable;
 
+import de.cismet.cids.jpa.entity.configattr.ConfigAttrKey;
 import de.cismet.cids.jpa.entity.configattr.ConfigAttrType.Types;
 
 /**
@@ -149,6 +151,23 @@ public final class ConfigAttrManagement extends ProjectNode implements Refreshab
             final GroupRefreshable refreshable = childNode.getCookie(GroupRefreshable.class);
             if ((tc != null) && (refreshable != null) && tc.getType().equals(type)) {
                 refreshable.refreshGroups(groups);
+            }
+        }
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param  type  DOCUMENT ME!
+     * @param  key   DOCUMENT ME!
+     */
+    public void refreshKey(final Types type, final ConfigAttrKey key) {
+        final Node[] children = getChildren().getNodes(false);
+        for (final Node childNode : children) {
+            final TypeCookie tc = childNode.getCookie(TypeCookie.class);
+            final KeyRefreshable refreshable = childNode.getCookie(KeyRefreshable.class);
+            if ((tc != null) && (refreshable != null) && tc.getType().equals(type)) {
+                refreshable.refreshKey(key);
             }
         }
     }

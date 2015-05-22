@@ -53,9 +53,17 @@ public class ConfigAttrGroupNode extends ProjectNode {
 
     private static final transient Logger LOG = Logger.getLogger(ConfigAttrGroupNode.class);
 
-    public static final String NO_GROUP_DISPLAYNAME = NbBundle.getMessage(
-            ConfigAttrGroupNode.class,
-            "ConfigAttrGroupNode.<init>.nogroup.name"); // NOI18N
+    public static final String NO_GROUP_DISPLAYNAME;
+    public static final String ALL_KEYS_GROUP_DISPLAY_NAME;
+
+    static {
+        NO_GROUP_DISPLAYNAME = NbBundle.getMessage(
+                ConfigAttrGroupNode.class,
+                "ConfigAttrGroupNode.<init>.nogroup.displayName");      // NOI18N
+        ALL_KEYS_GROUP_DISPLAY_NAME = NbBundle.getMessage(
+                ConfigAttrGroupNode.class,
+                "ConfigAttrGroupNode.<init>.allKeysGroup.displayName"); // NOI18N
+    }
 
     //~ Instance fields --------------------------------------------------------
 
@@ -121,7 +129,7 @@ public class ConfigAttrGroupNode extends ProjectNode {
      *
      * @version  $Revision$, $Date$
      */
-    private final class RefreshableImpl implements Refreshable {
+    private final class RefreshableImpl implements Refreshable, KeyRefreshable {
 
         //~ Methods ------------------------------------------------------------
 
@@ -158,10 +166,22 @@ public class ConfigAttrGroupNode extends ProjectNode {
                 LOG.warn("cannot wait for finish of refresh of config attr group node children", e); // NOI18N
             }
         }
+
+        @Override
+        public void refreshKey(final ConfigAttrKey key) {
+            final Node[] childNodes = getChildren().getNodes(false);
+            for (final Node childNode : childNodes) {
+                final ConfigAttrKeyCookie kc = childNode.getCookie(ConfigAttrKeyCookie.class);
+                final KeyRefreshable refreshableChild = childNode.getCookie(KeyRefreshable.class);
+                if ((kc != null) && (refreshableChild != null) && kc.getKey().equals(key)) {
+                    refreshableChild.refreshKey(key);
+                }
+            }
+        }
     }
 
     /**
-     * DOCUMENT ME!
+     * DOCUMENT ME!final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
      *
      * @version  $Revision$, $Date$
      */
@@ -193,7 +213,14 @@ public class ConfigAttrGroupNode extends ProjectNode {
 
         @Override
         protected void threadedNotify() throws IOException {
-            final List<ConfigAttrEntry> entries = project.getCidsDataObjectBackend().getEntries(type, group);
+            final List<ConfigAttrEntry> entries;
+
+            if (ALL_KEYS_GROUP_DISPLAY_NAME.equals(group)) {
+                entries = project.getCidsDataObjectBackend().getEntries(type);
+            } else {
+                entries = project.getCidsDataObjectBackend().getEntries(type, group);
+            }
+
             Collections.sort(entries, new Comparator<ConfigAttrEntry>() {
 
                     @Override

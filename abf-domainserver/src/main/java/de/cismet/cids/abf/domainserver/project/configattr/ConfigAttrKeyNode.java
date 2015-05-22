@@ -32,6 +32,7 @@ import org.openide.util.datatransfer.NewType;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.EventQueue;
 import java.awt.Image;
 
 import java.io.IOException;
@@ -78,9 +79,11 @@ public class ConfigAttrKeyNode extends ProjectNode {
 
     //~ Instance fields --------------------------------------------------------
 
-    private final transient ConfigAttrKey key;
     private final transient Types type;
     private final transient Image keyIcon;
+
+    private transient ConfigAttrKey key;
+    private transient boolean sheetInitialized;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -96,6 +99,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
         super.setName(key.getKey());
         this.key = key;
         this.type = type;
+        this.sheetInitialized = false;
 
         getCookieSet().add(new ConfigAttrKeyCookieImpl());
         getCookieSet().add(new RefreshableImpl());
@@ -205,6 +209,8 @@ public class ConfigAttrKeyNode extends ProjectNode {
 
     @Override
     protected Sheet createSheet() {
+        sheetInitialized = true;
+
         final Sheet sheet = Sheet.createDefault();
 
         try {
@@ -256,12 +262,11 @@ public class ConfigAttrKeyNode extends ProjectNode {
 
                                                 @Override
                                                 public void run() {
-                                                    project.getLookup()
-                                                            .lookup(ConfigAttrManagement.class)
-                                                            .refresh(type, false);
-                                                    project.getLookup()
-                                                            .lookup(ConfigAttrManagement.class)
-                                                            .refreshGroups(type, old, key.getGroupName());
+                                                    final ConfigAttrManagement cam = project.getLookup()
+                                                                .lookup(ConfigAttrManagement.class);
+                                                    cam.refresh(type, false);
+                                                    cam.refreshGroups(type, old, key.getGroupName());
+                                                    cam.refreshKey(type, key);
                                                 }
                                             });
                                     } catch (final Exception ex) {
@@ -297,7 +302,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
      *
      * @version  $Revision$, $Date$
      */
-    private final class RefreshableImpl implements Refreshable {
+    private final class RefreshableImpl implements Refreshable, KeyRefreshable {
 
         //~ Methods ------------------------------------------------------------
 
@@ -307,6 +312,28 @@ public class ConfigAttrKeyNode extends ProjectNode {
                 setChildren(new ConfigAttrKeyNodeChildren(key, type, project));
             } else {
                 ((ProjectChildren)getChildren()).refreshByNotify();
+            }
+        }
+
+        @Override
+        public void refreshKey(final ConfigAttrKey key) {
+            if (key.equals(ConfigAttrKeyNode.this.key)) {
+                ConfigAttrKeyNode.this.key = project.getCidsDataObjectBackend()
+                            .getEntity(ConfigAttrKey.class, key.getId());
+
+                if (sheetInitialized) {
+                    final Sheet sheet = createSheet();
+
+                    EventQueue.invokeLater(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                setSheet(sheet);
+                            }
+                        });
+                }
+
+                refresh();
             }
         }
     }

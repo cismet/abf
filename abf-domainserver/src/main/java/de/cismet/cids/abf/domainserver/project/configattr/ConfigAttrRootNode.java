@@ -200,7 +200,10 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                                             project.getLookup().lookup(ConfigAttrManagement.class).refresh(type, false);
                                             project.getLookup()
                                                     .lookup(ConfigAttrManagement.class)
-                                                    .refreshGroups(type, newEntries.get(0).getKey().getGroupName());
+                                                    .refreshGroups(
+                                                        type,
+                                                        newEntries.get(0).getKey().getGroupName(),
+                                                        ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME);
                                             project.getLookup().lookup(UserManagement.class).refreshProperties(false);
                                         }
                                     });
@@ -345,7 +348,7 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
      *
      * @version  $Revision$, $Date$
      */
-    private final class RefreshableImpl implements Refreshable, GroupRefreshable {
+    private final class RefreshableImpl implements Refreshable, GroupRefreshable, KeyRefreshable {
 
         //~ Methods ------------------------------------------------------------
 
@@ -363,25 +366,11 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                 try {
                     refreshing.get(10, TimeUnit.SECONDS);
 
-                    if (cascade) {
-                        final Runnable r = new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    final Node[] childNodes = getChildren().getNodes(false);
-                                    for (final Node childNode : childNodes) {
-                                        final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
-                                        if (refreshableChild != null) {
-                                            refreshableChild.refresh();
-                                        }
-                                    }
-                                }
-                            };
-
-                        if (EventQueue.isDispatchThread()) {
-                            r.run();
-                        } else {
-                            EventQueue.invokeLater(r);
+                    final Node[] childNodes = getChildren().getNodes(false);
+                    for (final Node childNode : childNodes) {
+                        final Refreshable refreshableChild = childNode.getCookie(Refreshable.class);
+                        if ((refreshableChild != null) && cascade) {
+                            refreshableChild.refresh();
                         }
                     }
                 } catch (final Exception e) {
@@ -402,6 +391,19 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                             refreshableChild.refresh();
                         }
                     }
+                }
+            }
+        }
+
+        @Override
+        public void refreshKey(final ConfigAttrKey key) {
+            final Node[] childNodes = getChildren().getNodes(false);
+            for (final Node childNode : childNodes) {
+                final GroupCookie gc = childNode.getCookie(GroupCookie.class);
+                final KeyRefreshable refreshableChild = childNode.getCookie(KeyRefreshable.class);
+                if ((gc != null) && (refreshableChild != null)
+                            && ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME.equals(gc.getGroup())) {
+                    refreshableChild.refreshKey(key);
                 }
             }
         }
@@ -476,8 +478,12 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                     }
                 });
 
-            if (!ConfigAttrKey.NO_GROUP.equals(groups.get(0))) {
-                groups.add(0, ConfigAttrKey.NO_GROUP);
+            if (!groups.isEmpty()) {
+                if (!ConfigAttrKey.NO_GROUP.equals(groups.get(0))) {
+                    groups.add(0, ConfigAttrKey.NO_GROUP);
+                }
+
+                groups.add(0, ConfigAttrGroupNode.ALL_KEYS_GROUP_DISPLAY_NAME);
             }
 
             setKeysEDT(groups);
