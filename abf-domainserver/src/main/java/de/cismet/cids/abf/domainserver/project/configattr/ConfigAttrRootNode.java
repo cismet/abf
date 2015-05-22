@@ -476,6 +476,10 @@ public abstract class ConfigAttrRootNode extends ProjectNode {
                     }
                 });
 
+            if (!ConfigAttrKey.NO_GROUP.equals(groups.get(0))) {
+                groups.add(0, ConfigAttrKey.NO_GROUP);
+            }
+
             setKeysEDT(groups);
         }
 

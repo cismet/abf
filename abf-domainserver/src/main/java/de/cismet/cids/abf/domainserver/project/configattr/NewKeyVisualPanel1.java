@@ -140,7 +140,10 @@ public final class NewKeyVisualPanel1 extends JPanel {
                                 }
                             }
                         });
-                    groups.remove(0);
+
+                    if (ConfigAttrKey.NO_GROUP.equals(groups.get(0))) {
+                        groups.remove(0);
+                    }
                     groups.add(0, ConfigAttrGroupNode.NO_GROUP_DISPLAYNAME);
 
                     return groups;
