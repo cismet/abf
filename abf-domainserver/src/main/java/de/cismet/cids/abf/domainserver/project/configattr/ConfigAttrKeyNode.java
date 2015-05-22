@@ -239,7 +239,12 @@ public class ConfigAttrKeyNode extends ProjectNode {
                         IllegalArgumentException,
                         InvocationTargetException {
                         final String old = key.getGroupName();
-                        key.setGroupName((String)t);
+
+                        if (t.isEmpty() || ConfigAttrGroupNode.NO_GROUP_DISPLAYNAME.equals(t)) {
+                            key.setGroupName(ConfigAttrKey.NO_GROUP);
+                        } else {
+                            key.setGroupName(t);
+                        }
                         // use action dispatcher if too slow
                         ConfigAttrManagement.ACTION_DISPATCHER.execute(new Runnable() {
 
@@ -256,7 +261,7 @@ public class ConfigAttrKeyNode extends ProjectNode {
                                                             .refresh(type, false);
                                                     project.getLookup()
                                                             .lookup(ConfigAttrManagement.class)
-                                                            .refreshGroups(type, old, (String)t);
+                                                            .refreshGroups(type, old, key.getGroupName());
                                                 }
                                             });
                                     } catch (final Exception ex) {
