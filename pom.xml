@@ -49,7 +49,7 @@
 
     <properties>
         <!-- !!! REMEBER TO UPDATE IMPLEMENTATION VERSION OF MAVEN API IN LIBRARY SUPPORT ON NB UPDATE !!! -->
-        <netbeans.version>RELEASE691</netbeans.version>
+        <netbeans.version>RELEASE802</netbeans.version>
         <branding.token>cidsabf</branding.token>
     </properties>
 

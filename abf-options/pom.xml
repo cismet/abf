@@ -84,7 +84,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <codeNameBase>de.cismet.cids.abf.options/3</codeNameBase>
+                    <codeNameBase>de.cismet.cids.abf.options/4</codeNameBase>
                     <publicPackages>
                         <publicPackage>de.cismet.cids.abf.options.*</publicPackage>
                         <publicPackage>org.apache.log4j.*</publicPackage>
