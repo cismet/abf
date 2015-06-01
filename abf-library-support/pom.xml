@@ -31,6 +31,32 @@
             <groupId>de.cismet.clerkster</groupId>
             <artifactId>clerkster-client</artifactId>
         </dependency>
+        <!-- 
+            directly declaring the dependencies of the clerkster client to ensure the libraries are really available,
+            see http://wiki.netbeans.org/Maven_NBM_comments and https://github.com/cismet/abf/issues/42
+        -->
+        <!-- BEGIN -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+        <!-- END -->
         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>

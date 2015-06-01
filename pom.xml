@@ -60,6 +60,37 @@
                 <artifactId>clerkster-client</artifactId>
                 <version>1.0</version>
             </dependency>
+            <!-- 
+                declaring the dependencies of the clerkster client to ensure the libraries are really available,
+                see http://wiki.netbeans.org/Maven_NBM_comments and https://github.com/cismet/abf/issues/42
+            -->
+            <!-- BEGIN -->
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.0.4</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <!-- END -->
             <dependency>
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant</artifactId>
@@ -85,16 +116,18 @@
                 <artifactId>commons-collections</artifactId>
                 <version>3.1</version>
             </dependency>
-            <dependency>
+            <!-- already declared for clerkster -->
+            <!--<dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.2</version>
-            </dependency>
-            <dependency>
+            </dependency>-->
+            <!-- already declared for clerkster -->
+            <!--<dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>1.2.17</version>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>dom4j</groupId>
                 <artifactId>dom4j</artifactId>
