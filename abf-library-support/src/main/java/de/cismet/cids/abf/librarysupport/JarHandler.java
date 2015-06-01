@@ -222,34 +222,15 @@ public final class JarHandler {
         // NOTE: this approach is not very nice as the dependecies have to be watched and the code adapted accordingly
         final InstalledFileLocator locator = InstalledFileLocator.getDefault();
         final Set<File> clerksterCP = new HashSet<File>(6);
-        clerksterCP.add(locator.locate(
-                "modules/ext/commons-codec/commons-codec-1.6.jar",
-                "de.cismet.cids.abf.librarysupport/3",
-                false));
-        clerksterCP.add(locator.locate(
-                "modules/ext/commons-logging/commons-logging-1.0.4.jar",
-                "de.cismet.cids.abf.librarysupport/3",
-                false));
-        clerksterCP.add(locator.locate(
-                "modules/ext/commons-io/commons-io-2.2.jar",
-                "de.cismet.cids.abf.librarysupport/3",
-                false));
-        clerksterCP.add(locator.locate(
-                "modules/ext/commons-httpclient/commons-httpclient-3.1.jar",
-                "de.cismet.cids.abf.librarysupport/3",
-                false));
-        clerksterCP.add(locator.locate(
-                "modules/ext/log4j/log4j-1.2.17.jar",
-                "de.cismet.cids.abf.librarysupport/3",
-                false));
-        clerksterCP.add(locator.locate(
-                "modules/ext/de.cismet.clerkster/clerkster-client-1.0.jar",
-                "de.cismet.cids.abf.librarysupport/3",
-                false));
-        clerksterCP.add(locator.locate(
-                "modules/de-cismet-cids-abf-librarysupport.jar",
-                "de.cismet.cids.abf.librarysupport/3",
-                false));
+        final String module = "de.cismet.cids.abf.librarysupport/3";                                            // NOI18N
+        final String basepath = "modules/ext/" + module + "/";                                                  // NOI18N
+        clerksterCP.add(locator.locate(basepath + "commons-codec/commons-codec.jar", module, false));           // NOI18N
+        clerksterCP.add(locator.locate(basepath + "commons-logging/commons-logging.jar", module, false));       // NOI18N
+        clerksterCP.add(locator.locate(basepath + "commons-io/commons-io.jar", module, false));                 // NOI18N
+        clerksterCP.add(locator.locate(basepath + "commons-httpclient/commons-httpclient.jar", module, false)); // NOI18N
+        clerksterCP.add(locator.locate(basepath + "log4j/log4j.jar", module, false));                           // NOI18N
+        clerksterCP.add(locator.locate(basepath + "de-cismet-clerkster/clerkster-client.jar", module, false));  // NOI18N
+        clerksterCP.add(locator.locate("modules/de-cismet-cids-abf-librarysupport.jar", module, false));        // NOI18N
         assert clerksterCP.size() == 7;
 
         final Element taskdef = buildDoc.createElement("taskdef");                                  // NOI18N
