@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.8-SNAPSHOT</version>
+        <version>4.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-branding</artifactId>
-    <version>3.8-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Branding</name>
