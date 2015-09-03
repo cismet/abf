@@ -319,7 +319,11 @@ public final class CidsAttributeNode extends ProjectNode implements CidsClassCon
                         InvocationTargetException {
                         final Attribute old = cidsAttribute;
                         try {
-                            cidsAttribute.setDefaultValue(object.toString());
+                            if ("<null>".equals(object)) {
+                                cidsAttribute.setDefaultValue(null);
+                            } else {
+                                cidsAttribute.setDefaultValue(object.toString());
+                            }
                             project.getCidsDataObjectBackend().store(
                                 cidsAttribute);
                             refreshInDiagram();
