@@ -281,7 +281,11 @@ public final class ClassTableModel extends AbstractTableModel {
                     break;
                 }
                 case DEFAULTVALUE: {
-                    attr.setDefaultValue((String)aValue);
+                    if ("<null>".equals(aValue)) {
+                        attr.setDefaultValue(null);
+                    } else {
+                        attr.setDefaultValue((String)aValue);
+                    }
                     break;
                 }
                 case INDEXED: {
