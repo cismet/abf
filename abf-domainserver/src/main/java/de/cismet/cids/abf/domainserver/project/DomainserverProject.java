@@ -43,15 +43,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-import java.text.MessageFormat;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -75,9 +69,9 @@ import de.cismet.cids.jpa.backend.service.Backend;
 import de.cismet.cids.jpa.backend.service.impl.BackendFactory;
 import de.cismet.cids.jpa.entity.cidsclass.Icon;
 
-import de.cismet.diff.DiffAccessor;
+import de.cismet.cids.meta.CsLocksConnection;
 
-import de.cismet.diff.db.DatabaseConnection;
+import de.cismet.diff.DiffAccessor;
 
 /**
  * DOCUMENT ME!
@@ -109,25 +103,6 @@ public final class DomainserverProject implements Project, Connectable {
     public static final String DEFAULT_POLICY_ORG_NODE = "SECURE";   // NOI18N
 
     public static final String LOCK_PREFIX = "ABF_EXCLUSIVE_LOCK_"; // NOI18N
-
-    private static final String STMT_BEGIN = "BEGIN WORK";                                              // NOI18N
-    private static final String STMT_COMMIT = "COMMIT WORK";                                            // NOI18N
-    private static final String STMT_ROLLBACK = "ROLLBACK WORK";                                        // NOI18N
-    private static final String STMT_LOCK_TABLE = "LOCK TABLE cs_locks IN ACCESS EXCLUSIVE MODE";       // NOI18N
-    public static final String STMT_READ_LOCKS = "SELECT * FROM cs_locks WHERE "                        // NOI18N
-                + "class_id IS NULL AND "                                                               // NOI18N
-                + "object_id IS NULL AND "                                                              // NOI18N
-                + "user_string LIKE '" + LOCK_PREFIX + "%'";                                            // NOI18N
-    private static final String STMT_ACQUIRE_LOCK = "INSERT INTO cs_locks ("                            // NOI18N
-                + "class_id, "                                                                          // NOI18N
-                + "object_id, "                                                                         // NOI18N
-                + "user_string, "                                                                       // NOI18N
-                + "additional_info) values ("                                                           // NOI18N
-                + "null, "                                                                              // NOI18N
-                + "null, "                                                                              // NOI18N
-                + "''{0}'', "                                                                           // NOI18N
-                + "''{1}'')";                                                                           // NOI18N
-    private static final String STMT_RELEASE_LOCK = "DELETE FROM cs_locks WHERE user_string = ''{0}''"; // NOI18N
 
     //~ Instance fields --------------------------------------------------------
 
@@ -544,13 +519,13 @@ public final class DomainserverProject implements Project, Connectable {
 
                     @Override
                     public void run() {
-                        initPolicies();
-                        if (!acquireLock()) {
-                            connectionInProgress = false;
-                            fireConnectionStatusChanged();
-                            return;
-                        }
                         try {
+                            initPolicies();
+                            if (!acquireLock()) {
+                                connectionInProgress = false;
+                                fireConnectionStatusChanged();
+                                return;
+                            }
                             final FileObject fob = getProjectDirectory().getFileObject(
                                     DomainserverProject.RUNTIME_PROPS);
                             runtimeProps = new Properties();
@@ -660,15 +635,15 @@ public final class DomainserverProject implements Project, Connectable {
                 e);                                         // NOI18N
             return false;
         }
-        final Connection con;
+        final CsLocksConnection con;
         try {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("receiving database connection"); // NOI18N
             }
-            con = DatabaseConnection.getConnection(runtimeProps);
-        } catch (final SQLException sqle) {
+            con = new CsLocksConnection(runtimeProps);
+        } catch (final Exception ex) {
             // <editor-fold defaultstate="collapsed" desc=" Errorhandling ">
-            LOG.error("could not acquire connection to database", sqle); // NOI18N
+            LOG.error("could not acquire connection to database", ex); // NOI18N
             EventQueue.invokeLater(new Runnable() {
 
                     @Override
@@ -689,14 +664,11 @@ public final class DomainserverProject implements Project, Connectable {
         if (con == null) {
             throw new IllegalStateException("connection must not be null");                    // NOI18N
         }
-        Statement stmt = null;
         try {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("locking cs_locks");                                                 // NOI18N
             }
-            stmt = con.createStatement();
-            stmt.execute(STMT_BEGIN);
-            stmt.execute(STMT_LOCK_TABLE);
+            con.lockTable();
         } catch (final SQLException sqle) {
             // <editor-fold defaultstate="collapsed" desc=" Errorhandling ">
             LOG.error("could not acquire lock on cs_locks", sqle); // NOI18N
@@ -716,34 +688,24 @@ public final class DomainserverProject implements Project, Connectable {
                     }
                 });
             try {
-                if (stmt != null) {
-                    stmt.execute(STMT_ROLLBACK);
-                }
+                con.rollback();
             } catch (final SQLException ex) {
                 LOG.warn("could not rollback statements", ex);                                   // NOI18N
             } finally {
-                DatabaseConnection.closeStatement(stmt);
-                DatabaseConnection.closeConnection(con);
+                con.close();
             }
             // </editor-fold>
             return false;
         }
-        if (stmt == null) {
-            throw new IllegalStateException("statement must not be null");                       // NOI18N
-        }
-        ResultSet set = null;
         try {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("reading abf locks");                                                  // NOI18N
             }
-            set = stmt.executeQuery(STMT_READ_LOCKS);
+            final CsLocksConnection.LockEntry lockEntry = con.getLock(LOCK_PREFIX);
             // if set.next() delivers a row a lock is already acquired
-            if (set.next()) {
-                final String when = set.getString("user_string").replace(LOCK_PREFIX, ""); // NOI18N
-                final Date date = new Date(Long.valueOf(when));
-                final String who = set.getString("additional_info");                       // NOI18N
+            if (lockEntry != null) {
                 if (LOG.isInfoEnabled()) {
-                    LOG.info("lock aquired by " + who + " on " + date);                    // NOI18N
+                    LOG.info("lock aquired by " + lockEntry.who + " on " + lockEntry.when); // NOI18N
                 }
                 EventQueue.invokeLater(new Runnable() {
 
@@ -754,15 +716,15 @@ public final class DomainserverProject implements Project, Connectable {
                                 org.openide.util.NbBundle.getMessage(
                                     DomainserverProject.class,
                                     "DomainserverProject.acquireLock().ErrorUtils.alreadyLocked", // NOI18N
-                                    who,
-                                    date.toString()),
+                                    lockEntry.who,
+                                    lockEntry.when.toString()),
                                 org.openide.util.NbBundle.getMessage(
                                     DomainserverProject.class,
                                     "DomainserverProject.acquireLock().ErrorUtils.lockPresent"), // NOI18N
                                 JOptionPane.WARNING_MESSAGE);
                         }
                     });
-                stmt.execute(STMT_COMMIT);
+                con.commit();
 
                 return false;
             } else {
@@ -779,10 +741,9 @@ public final class DomainserverProject implements Project, Connectable {
                     LOG.debug("writing lock"); // NOI18N
                 }
 
-                final String who = user + "@" + host; // NOI18N
-                final String update = MessageFormat.format(STMT_ACQUIRE_LOCK, generateNonce(), who);
-                stmt.executeUpdate(update);
-                stmt.execute(STMT_COMMIT);
+                final String who = user + "@" + host; // NOI18NSystem.currentTimeMillis()
+                lockNonce = con.setLock(LOCK_PREFIX, who);
+                con.commit();
 
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("successfully locked"); // NOI18N
@@ -809,26 +770,14 @@ public final class DomainserverProject implements Project, Connectable {
                     }
                 });
             try {
-                stmt.execute(STMT_ROLLBACK);
+                con.rollback();
             } catch (final SQLException ex) {
                 LOG.warn("could not rollback statements", ex);                              // NOI18N
             }                                                                               // </editor-fold>
             return false;
         } finally {
-            DatabaseConnection.closeResultSet(set);
-            DatabaseConnection.closeStatement(stmt);
-            DatabaseConnection.closeConnection(con);
+            con.close();
         }
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @return  DOCUMENT ME!
-     */
-    private String generateNonce() {
-        lockNonce = LOCK_PREFIX + System.currentTimeMillis();
-        return lockNonce;
     }
 
     /**
@@ -838,18 +787,12 @@ public final class DomainserverProject implements Project, Connectable {
         if (lockNonce == null) {
             return;
         }
-        Connection con = null;
-        Statement stmt = null;
+        CsLocksConnection con = null;
         try {
-            final String update = MessageFormat.format(
-                    STMT_RELEASE_LOCK,
-                    lockNonce);
-            con = DatabaseConnection.getConnection(runtimeProps);
-            stmt = con.createStatement();
-            stmt.execute(STMT_BEGIN);
-            stmt.execute(STMT_LOCK_TABLE);
-            stmt.executeUpdate(update);
-            stmt.execute(STMT_COMMIT);
+            con = new CsLocksConnection(runtimeProps);
+            con.lockTable();
+            con.releaseLock(lockNonce);
+            con.commit();
         } catch (final Exception ex) {
             // <editor-fold defaultstate="collapsed" desc=" Errorhandling ">
             LOG.error("could not release lock", ex); // NOI18N
@@ -870,24 +813,16 @@ public final class DomainserverProject implements Project, Connectable {
                     }
                 });
             try {
-                if (stmt != null) {
-                    stmt.execute(STMT_ROLLBACK);
+                if (con != null) {
+                    con.rollback();
                 }
             } catch (final SQLException e) {
                 LOG.warn("could not rollback statements", e); // NOI18N
             }                     // </editor-fold>
         } finally {
-            // <editor-fold defaultstate="collapsed" desc=" Cleanup ">
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (final SQLException ex) {
-                LOG.error("could not cleanup connection", ex); // NOI18N
-            }                                                  // </editor-fold>
+            if (con != null) {
+                con.close();
+            }
             lockNonce = null;
         }
     }

@@ -53,8 +53,7 @@ import de.cismet.cids.abf.utilities.ConnectionListener;
 import de.cismet.cids.abf.utilities.Refreshable;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
-import de.cismet.diff.container.PSQLStatement;
-import de.cismet.diff.container.PSQLStatementGroup;
+import de.cismet.diff.container.StatementGroup;
 
 import de.cismet.diff.db.DatabaseConnection;
 
@@ -95,8 +94,8 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
     private final transient Image changesNeeded;
     private final transient Image errorImage;
 
-    private transient PSQLStatementGroup[] statementGroupsNotPedantic;
-    private transient PSQLStatementGroup[] allStatementGroups;
+    private transient StatementGroup[] statementGroupsNotPedantic;
+    private transient StatementGroup[] allStatementGroups;
     private transient boolean inProgress;
     private transient boolean hasErrors;
     private transient boolean pedantic;
@@ -124,8 +123,8 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
         errorImage = ImageUtilities.loadImage(
                 DomainserverProject.IMAGE_FOLDER
                         + "db_error.png");  // NOI18N
-        statementGroupsNotPedantic = new PSQLStatementGroup[0];
-        allStatementGroups = new PSQLStatementGroup[0];
+        statementGroupsNotPedantic = new StatementGroup[0];
+        allStatementGroups = new StatementGroup[0];
         inProgress = false;
         hasErrors = false;
         pedantic = false;
@@ -148,7 +147,7 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
 
     @Override
     public Image getIcon(final int i) {
-        final PSQLStatementGroup[] statementGroups;
+        final StatementGroup[] statementGroups;
         if (pedantic) {
             statementGroups = allStatementGroups;
         } else {
@@ -178,7 +177,7 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
 
     @Override
     public String getDisplayName() {
-        final PSQLStatementGroup[] statementGroups;
+        final StatementGroup[] statementGroups;
         if (pedantic) {
             statementGroups = allStatementGroups;
         } else {
@@ -224,8 +223,8 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
             if (event.isConnected()) {
                 refresh();
             } else {
-                allStatementGroups = new PSQLStatementGroup[0];
-                statementGroupsNotPedantic = new PSQLStatementGroup[0];
+                allStatementGroups = new StatementGroup[0];
+                statementGroupsNotPedantic = new StatementGroup[0];
                 inProgress = false;
                 fireIconChange();
                 fireDisplayNameChange(null, getDisplayName());
@@ -307,11 +306,11 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
                                 inProgress = true;
                                 fireIconChange();
                                 allStatementGroups = project.getDiffAccessor().getStatementGroups();
-                                final List<PSQLStatementGroup> notpedantics = new ArrayList<PSQLStatementGroup>();
-                                for (final PSQLStatementGroup g : allStatementGroups) {
-                                    final PSQLStatement[] sa = g.getPSQLStatements();
+                                final List<StatementGroup> notpedantics = new ArrayList<StatementGroup>();
+                                for (final StatementGroup g : allStatementGroups) {
+                                    final de.cismet.diff.container.Statement[] sa = g.getStatements();
                                     boolean allPedantics = true;
-                                    for (final PSQLStatement s : sa) {
+                                    for (final de.cismet.diff.container.Statement s : sa) {
                                         if (!s.isPedantic()) {
                                             allPedantics = false;
                                             break;
@@ -322,7 +321,7 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
                                     }
                                 }
                                 statementGroupsNotPedantic = notpedantics.toArray(
-                                        new PSQLStatementGroup[notpedantics.size()]);
+                                        new StatementGroup[notpedantics.size()]);
                             } catch (final ScriptGeneratorException sge) {
                                 hasErrors = true;
                                 errorMessage = sge.getMessage()
@@ -386,7 +385,7 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
                         Connection connection = null;
                         final Properties runtime = project.getRuntimeProps();
                         try {
-                            final PSQLStatementGroup[] statementGroups;
+                            final StatementGroup[] statementGroups;
                             if (pedantic) {
                                 statementGroups = allStatementGroups;
                             } else {
@@ -403,16 +402,22 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
                                         org.openide.util.NbBundle.getMessage(
                                             SyncManagement.class,
                                             "SyncManagement.executeStatements().out.connectedToDB"));            // NOI18N
-                            for (final PSQLStatementGroup g : statementGroups) {
+                            for (final StatementGroup g : statementGroups) {
                                 connection.setAutoCommit(!g.isTransaction());
                                 io.getOut().println();
-                                final PSQLStatement[] sa = g.getPSQLStatements();
-                                for (final PSQLStatement p : sa) {
+                                final de.cismet.diff.container.Statement[] sa = g.getStatements();
+                                for (final de.cismet.diff.container.Statement p : sa) {
                                     String currentStatement = "";                                                // NOI18N
                                     Statement statement = null;
                                     try {
                                         statement = connection.createStatement();
                                         currentStatement = p.getStatement();
+                                        if (currentStatement.endsWith(";")) {
+                                            currentStatement = currentStatement.substring(
+                                                    0,
+                                                    currentStatement.length()
+                                                            - 1);
+                                        }
                                         if (LOG.isDebugEnabled()) {
                                             LOG.debug("current stmt: "                                           // NOI18N
                                                         + currentStatement);
@@ -485,7 +490,7 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
      * @return  DOCUMENT ME!
      */
     private String getSqlScriptFromGroups() {
-        final PSQLStatementGroup[] stmtGroups;
+        final StatementGroup[] stmtGroups;
         if (pedantic) {
             stmtGroups = allStatementGroups;
         } else {
@@ -496,8 +501,8 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
                 SyncManagement.class,
                 "SyncManagement.getSqlScriptFromGroups().stmtCount",
                 stmtGroups.length));
-        for (final PSQLStatementGroup g : stmtGroups) {
-            final PSQLStatement[] sa = g.getPSQLStatements();
+        for (final StatementGroup g : stmtGroups) {
+            final de.cismet.diff.container.Statement[] sa = g.getStatements();
             s.append('\n');                                                 // NOI18N
             if ((g.getWarning() != null) && (g.getWarning().trim().length() != 0)) {
                 s.append(org.openide.util.NbBundle.getMessage(
@@ -509,7 +514,7 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
                         && (g.getDescription().trim().length() != 0)) {
                 s.append("\n-- ").append(g.getDescription());               // NOI18N
             }
-            for (final PSQLStatement p : sa) {
+            for (final de.cismet.diff.container.Statement p : sa) {
                 if ((p.getWarning() != null)
                             && (p.getWarning().trim().length() != 0)) {
                     s.append(org.openide.util.NbBundle.getMessage(

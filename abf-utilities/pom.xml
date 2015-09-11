@@ -129,6 +129,12 @@
             up and thus includes them in the module classpath. It seems that the runtime dependencies of declared 
             dependencies are not considered!
          -->
+         <!-- pulling in manually -->
+        <dependency>
+            <groupId>oracle.jdbc</groupId>
+            <artifactId>ojdbc7_g</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -185,6 +191,7 @@
                         <publicPackage>org.postgresql.*</publicPackage>
                         <publicPackage>org.postgis.*</publicPackage>
                         <publicPackage>org.objectweb.*</publicPackage>
+                        <publicPackage>oracle.jdbc.*</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>
