@@ -78,6 +78,7 @@ public final class DeleteLockAction extends NodeAction {
         try {
             con = new CsLocksConnection(project.getRuntimeProps());
             con.releaseAllLocks(DomainserverProject.LOCK_PREFIX);
+            con.commit();
         } catch (final Exception e) {
             LOG.error("could not remove lock", e);                                       // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
