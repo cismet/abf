@@ -23,6 +23,8 @@ import de.cismet.cids.abf.utilities.NameValidator;
 import de.cismet.cids.jpa.entity.cidsclass.Attribute;
 import de.cismet.cids.jpa.entity.cidsclass.CidsClass;
 
+import de.cismet.diff.builder.DialectFactory;
+
 /**
  * DOCUMENT ME!
  *
@@ -151,6 +153,15 @@ public class NewCidsClassWizardPanel1 implements WizardDescriptor.Panel, WizardD
                 return false;
             }
             names.add(name);
+        }
+        if ((ctName != null) && (ctName.length() > project.getDialect().getMaxIdentifierChars())) {    // NOI18N
+            wizard.putProperty(
+                WizardDescriptor.PROP_ERROR_MESSAGE,
+                org.openide.util.NbBundle.getMessage(
+                    NewCidsClassWizardPanel1.class,
+                    "NewCidsClassWizardPanel1.isValid().wizard.PROP_ERROR_MESSAGE.tableNameTooLong")); // NOI18N
+
+            return false;
         }
         wizard.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, null);
 
