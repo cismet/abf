@@ -73,6 +73,9 @@ import de.cismet.cids.meta.CsLocksConnection;
 
 import de.cismet.diff.DiffAccessor;
 
+import de.cismet.diff.builder.DataObjectsDialect;
+import de.cismet.diff.builder.DialectFactory;
+
 /**
  * DOCUMENT ME!
  *
@@ -127,6 +130,7 @@ public final class DomainserverProject implements Project, Connectable {
     private transient String classNodePolicy;
     private transient String attrPolicy;
     private transient String orgNodePolicy;
+    private transient DataObjectsDialect dialect;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -189,6 +193,7 @@ public final class DomainserverProject implements Project, Connectable {
         runtimeProps = new Properties();
         try {
             runtimeProps.load(fob.getInputStream());
+            dialect = DialectFactory.getDataObjectsDialect(runtimeProps);
         } catch (final Exception e) {
             LOG.error("could not load runtime properties"); // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
@@ -293,6 +298,15 @@ public final class DomainserverProject implements Project, Connectable {
         }
 
         throw new IllegalStateException("cannot locate dist root"); // NOI18N
+    }
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public DataObjectsDialect getDialect() {
+        return dialect;
     }
 
     /**
