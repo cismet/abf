@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.7.4</version>
+        <version>3.8-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-utilities</artifactId>
-    <version>3.7.4</version>
+    <version>3.8-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Utilities</name>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>3.7.4</version>
+            <version>3.8-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
