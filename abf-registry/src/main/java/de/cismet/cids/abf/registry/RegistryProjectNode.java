@@ -148,7 +148,7 @@ public class RegistryProjectNode extends AbstractNode implements ConnectionListe
     @Override
     public Action[] getActions(final boolean b) {
         return new Action[] {
-                CallableSystemAction.get(ConnectAction.class),
+//                CallableSystemAction.get(ConnectAction.class),
                 CommonProjectActions.customizeProjectAction(),
                 SystemAction.get(FileSystemAction.class),
                 null,

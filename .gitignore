@@ -1,2 +1,5 @@
 target/
 /abf-client/nbproject/
+/abf-utilities/nbproject/
+/abf-registry/nbproject/
+/abf-app/nbproject/
