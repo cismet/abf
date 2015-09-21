@@ -659,6 +659,7 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         jLabel1 = new javax.swing.JLabel();
         scpDiagramPane = new javax.swing.JScrollPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -680,18 +681,17 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         add(scpDiagramPane, java.awt.BorderLayout.CENTER);
 
         chkSaveChanges.setSelected(true);
+        chkSaveChanges.setToolTipText(NbBundle.getMessage(ClassDiagramTopComponent.class, "ClassDiagramTopComponent.chkSaveChanges.tooltip")); // NOI18N
         chkSaveChanges.setMargin(new java.awt.Insets(0, 0, 0, 0));
         chkSaveChanges.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    chkSaveChangesActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkSaveChangesActionPerformed(evt);
+            }
+        });
         jToolBar1.add(chkSaveChanges);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/de/cismet/cids/abf/domainserver/images/filesave.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/filesave.png"))); // NOI18N
+        jLabel2.setToolTipText(NbBundle.getMessage(ClassDiagramTopComponent.class, "ClassDiagramTopComponent.jLabel2.tooltip")); // NOI18N
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 2));
         jToolBar1.add(jLabel2);
 
@@ -702,12 +702,10 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
 
         org.openide.awt.Mnemonics.setLocalizedText(cmdSetViewName, "Namen ändern");
         cmdSetViewName.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    cmdSetViewNameActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdSetViewNameActionPerformed(evt);
+            }
+        });
         jToolBar1.add(cmdSetViewName);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -715,83 +713,68 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         jSeparator2.setMaximumSize(new java.awt.Dimension(1, 32767));
         jToolBar1.add(jSeparator2);
 
-        cmdZoomOut.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_out.png"))); // NOI18N
+        cmdZoomOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_out.png"))); // NOI18N
         cmdZoomOut.setToolTipText("Zoom Out");
         cmdZoomOut.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    cmdZoomOutActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdZoomOutActionPerformed(evt);
+            }
+        });
         jToolBar1.add(cmdZoomOut);
 
-        cmdZoomIn.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_in.png"))); // NOI18N
+        cmdZoomIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_in.png"))); // NOI18N
         cmdZoomIn.setToolTipText("Zoom In");
         cmdZoomIn.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    cmdZoomInActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdZoomInActionPerformed(evt);
+            }
+        });
         jToolBar1.add(cmdZoomIn);
 
-        cmdResetZoom.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_home.png"))); // NOI18N
+        cmdResetZoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_home.png"))); // NOI18N
         cmdResetZoom.setToolTipText("Originalgröße");
         cmdResetZoom.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    cmdResetZoomActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdResetZoomActionPerformed(evt);
+            }
+        });
         jToolBar1.add(cmdResetZoom);
 
-        cmdZoomToAll.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_fit.png"))); // NOI18N
+        cmdZoomToAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/zoom_fit.png"))); // NOI18N
         cmdZoomToAll.setToolTipText("alle anzeigen");
         cmdZoomToAll.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    cmdZoomToAllActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdZoomToAllActionPerformed(evt);
+            }
+        });
         jToolBar1.add(cmdZoomToAll);
 
-        cmdDoLayout.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/de/cismet/cids/abf/domainserver/images/layout_orthogonal.png"))); // NOI18N
+        cmdDoLayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/cismet/cids/abf/domainserver/images/layout_orthogonal.png"))); // NOI18N
         cmdDoLayout.setToolTipText("Layout erneuern");
         cmdDoLayout.addActionListener(new java.awt.event.ActionListener() {
-
-                @Override
-                public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                    cmdDoLayoutActionPerformed(evt);
-                }
-            });
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdDoLayoutActionPerformed(evt);
+            }
+        });
         jToolBar1.add(cmdDoLayout);
 
         add(jToolBar1, java.awt.BorderLayout.NORTH);
-    } // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void chkSaveChangesActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_chkSaveChangesActionPerformed
-    }                                                                                  //GEN-LAST:event_chkSaveChangesActionPerformed
+    private void chkSaveChangesActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSaveChangesActionPerformed
+    }//GEN-LAST:event_chkSaveChangesActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdSetViewNameActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdSetViewNameActionPerformed
+    private void cmdSetViewNameActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSetViewNameActionPerformed
         if (LOG.isDebugEnabled()) {
             LOG.debug("asking for new view name");
         }
@@ -804,40 +787,40 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
             setViewName(newName);
         }
         ((ViewManagement)project.getLookup().lookup(ViewManagement.class)).refreshChildren();
-    }                                                                                  //GEN-LAST:event_cmdSetViewNameActionPerformed
+    }//GEN-LAST:event_cmdSetViewNameActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomOutActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdZoomOutActionPerformed
+    private void cmdZoomOutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomOutActionPerformed
         scene.setZoomFactor(scene.getZoomFactor() * 0.9);
         scene.revalidate();
         scene.validate();
-    }                                                                              //GEN-LAST:event_cmdZoomOutActionPerformed
+    }//GEN-LAST:event_cmdZoomOutActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomInActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdZoomInActionPerformed
+    private void cmdZoomInActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomInActionPerformed
         scene.setZoomFactor(scene.getZoomFactor() * 1.1);
         scene.revalidate();
         scene.validate();
-    }                                                                             //GEN-LAST:event_cmdZoomInActionPerformed
+    }//GEN-LAST:event_cmdZoomInActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdResetZoomActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdResetZoomActionPerformed
+    private void cmdResetZoomActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdResetZoomActionPerformed
         scene.setZoomFactor(1);
         scene.revalidate();
         scene.validate();
-    }                                                                                //GEN-LAST:event_cmdResetZoomActionPerformed
+    }//GEN-LAST:event_cmdResetZoomActionPerformed
 
     /**
      * DOCUMENT ME!
@@ -859,18 +842,18 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdZoomToAllActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdZoomToAllActionPerformed
+    private void cmdZoomToAllActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdZoomToAllActionPerformed
         zoomToFit();
-    }                                                                                //GEN-LAST:event_cmdZoomToAllActionPerformed
+    }//GEN-LAST:event_cmdZoomToAllActionPerformed
 
     /**
      * DOCUMENT ME!
      *
      * @param  evt  DOCUMENT ME!
      */
-    private void cmdDoLayoutActionPerformed(final java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cmdDoLayoutActionPerformed
+    private void cmdDoLayoutActionPerformed(final java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdDoLayoutActionPerformed
         scene.layoutScene();
-    }                                                                               //GEN-LAST:event_cmdDoLayoutActionPerformed
+    }//GEN-LAST:event_cmdDoLayoutActionPerformed
 
     /**
      * Gets default instance. Do not use directly: reserved for *.settings files only, i.e. deserialization routines;

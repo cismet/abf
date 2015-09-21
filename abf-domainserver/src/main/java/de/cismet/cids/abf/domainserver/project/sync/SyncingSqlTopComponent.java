@@ -8,6 +8,7 @@
 package de.cismet.cids.abf.domainserver.project.sync;
 
 import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 
 import java.io.Serializable;
@@ -144,6 +145,9 @@ public final class SyncingSqlTopComponent extends TopComponent {
 
         jToolBar1.setFloatable(false);
 
+        chkPedantic.setToolTipText(NbBundle.getMessage(
+                SyncingSqlTopComponent.class,
+                "SyncingSqlTopComponent.chkPedantic.tooltip")); // NOI18N
         chkPedantic.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         chkPedantic.setMargin(new java.awt.Insets(0, 0, 0, 0));
         chkPedantic.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +161,9 @@ public final class SyncingSqlTopComponent extends TopComponent {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(
                 getClass().getResource("/de/cismet/cids/abf/domainserver/images/pedantic.png"))); // NOI18N
+        jLabel1.setToolTipText(NbBundle.getMessage(
+                SyncingSqlTopComponent.class,
+                "SyncingSqlTopComponent.jLabel1.tooltip"));                                       // NOI18N
         jToolBar1.add(jLabel1);
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, "    ");
