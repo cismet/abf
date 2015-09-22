@@ -233,6 +233,15 @@ public class SyncManagement extends ProjectNode implements ConnectionListener, D
         }
     }
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return  DOCUMENT ME!
+     */
+    public boolean isDiffInProgress() {
+        return inProgress;
+    }
+
     @Override
     protected Sheet createSheet() {
         final Sheet sheet = Sheet.createDefault();
