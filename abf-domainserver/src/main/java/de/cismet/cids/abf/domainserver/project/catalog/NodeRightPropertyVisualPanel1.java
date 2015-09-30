@@ -341,7 +341,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
             }
         }
         for (final UserGroup ug : groups) {
-            ((DefaultListModel)((JXList)lstGroup).getWrappedModel()).addElement(ug);
+            ((DefaultListModel)((JXList)lstGroup).getModel()).addElement(ug);
         }
         btnAddAll.addActionListener(addAllL);
         btnAdd.addActionListener(addL);
@@ -369,7 +369,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
      * DOCUMENT ME!
      */
     private void addAllPushed() {
-        final DefaultListModel lModel = (DefaultListModel)((JXList)lstGroup).getWrappedModel();
+        final DefaultListModel lModel = (DefaultListModel)((JXList)lstGroup).getModel();
         for (int i = 0; i < lModel.size(); ++i) {
             addIndex(i);
         }
@@ -426,7 +426,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
      * @throws  IllegalStateException  DOCUMENT ME!
      */
     private void addIndex(final int index) {
-        final UserGroup ug = (UserGroup)((DefaultListModel)((JXList)lstGroup).getWrappedModel()).getElementAt(index);
+        final UserGroup ug = (UserGroup)((DefaultListModel)((JXList)lstGroup).getModel()).getElementAt(index);
         Permission permittedPerm = (Permission)cboRights.getSelectedItem();
         if (!addPermitted(ug, permittedPerm)) {
             permittedPerm = null;
@@ -468,7 +468,7 @@ public final class NodeRightPropertyVisualPanel1 extends JPanel implements Chang
      */
     private void updateGroupList() {
         final JXList list = (JXList)lstGroup;
-        final DefaultListModel lModel = (DefaultListModel)list.getWrappedModel();
+        final DefaultListModel lModel = (DefaultListModel)list.getModel();
         final Object[] selUgs = list.getSelectedValues();
         lModel.clear();
         final Set<UserGroup> ugs = getSelectedUGsWithMaxUsage();
