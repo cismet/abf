@@ -105,24 +105,12 @@
             <type>nbm</type>
             <version>4.0-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>
-            <groupId>de.cismet.cids.abf</groupId>
-            <artifactId>abf-cids-java-template</artifactId>
-            <type>nbm</type>
-            <version>3.1.8-SNAPSHOT</version>
-        </dependency>-->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-client</artifactId>
             <type>nbm</type>
             <version>4.0-SNAPSHOT</version>
         </dependency>
-        <!--dependency>
-            <groupId>de.cismet.cids.abf</groupId>
-            <artifactId>abf-distribution</artifactId>
-            <type>nbm</type>
-            <version>3.0-RC2-SNAPSHOT</version>
-        </dependency-->
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-domainserver</artifactId>
@@ -159,40 +147,6 @@
             <type>nbm</type>
             <version>4.0-SNAPSHOT</version>
         </dependency>
-<!--        <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-libs-swingx</artifactId>
-            <version>RELEASE802</version>
-            <type>nbm-file</type>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-modules-html-validation</artifactId>
-            <version>RELEASE802</version>
-            <type>nbm-file</type>
-        </dependency>-->
-<!--        <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-libs-swingx</artifactId>
-            <version>RELEASE802</version>
-            <type>nbm</type>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-modules-html-validation</artifactId>
-            <version>RELEASE802</version>
-            <type>nbm</type>
-        </dependency>-->
-<!--        <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-libs-swingx</artifactId>
-            <version>RELEASE802</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.modules</groupId>
-            <artifactId>org-netbeans-modules-html-validation</artifactId>
-            <version>RELEASE802</version>
-        </dependency>-->
     </dependencies>
 
     <repositories>
