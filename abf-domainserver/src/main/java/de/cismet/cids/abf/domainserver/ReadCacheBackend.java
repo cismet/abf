@@ -83,11 +83,13 @@ public final class ReadCacheBackend implements Backend {
 
     @Override
     public void delete(final CommonEntity ce) {
+        readCache.clear();
         delegate.delete(ce);
     }
 
     @Override
     public void delete(final List<CommonEntity> entities) {
+        readCache.clear();
         delegate.delete(entities);
     }
 
@@ -170,6 +172,7 @@ public final class ReadCacheBackend implements Backend {
 
     @Override
     public ConfigAttrEntry storeEntry(final ConfigAttrEntry entry) {
+        readCache.clear();
         return delegate.storeEntry(entry);
     }
 
@@ -230,11 +233,13 @@ public final class ReadCacheBackend implements Backend {
 
     @Override
     public boolean deleteNode(final CatNode parent, final CatNode node) {
+        readCache.clear();
         return delegate.deleteNode(parent, node);
     }
 
     @Override
     public void deleteRootNode(final CatNode node) {
+        readCache.clear();
         delegate.deleteRootNode(node);
     }
 
@@ -270,6 +275,7 @@ public final class ReadCacheBackend implements Backend {
 
     @Override
     public void deleteIcon(final Icon i) {
+        readCache.clear();
         delegate.deleteIcon(i);
     }
 
@@ -280,6 +286,7 @@ public final class ReadCacheBackend implements Backend {
 
     @Override
     public void deleteJavaClass(final JavaClass jc) {
+        readCache.clear();
         delegate.deleteJavaClass(jc);
     }
 
@@ -310,41 +317,49 @@ public final class ReadCacheBackend implements Backend {
 
     @Override
     public URL storeURL(final URL url) {
+        readCache.clear();
         return delegate.storeURL(url);
     }
 
     @Override
     public List<URL> storeURLs(final List<URL> urls) {
+        readCache.clear();
         return delegate.storeURLs(urls);
     }
 
     @Override
     public void deleteURL(final URL url) {
+        readCache.clear();
         delegate.deleteURL(url);
     }
 
     @Override
     public void deleteURLs(final List<URL> urls) {
+        readCache.clear();
         delegate.deleteURLs(urls);
     }
 
     @Override
     public void deleteURLBaseIfUnused(final URLBase urlbase) {
+        readCache.clear();
         delegate.deleteURLBaseIfUnused(urlbase);
     }
 
     @Override
     public void deleteURLBasesIfUnused(final List<URLBase> urlbases) {
+        readCache.clear();
         delegate.deleteURLBasesIfUnused(urlbases);
     }
 
     @Override
     public void delete(final UserGroup ug) {
+        readCache.clear();
         delegate.delete(ug);
     }
 
     @Override
     public void delete(final User user) {
+        readCache.clear();
         delegate.delete(user);
     }
 
