@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.8-SNAPSHOT</version>        
+        <version>4.0-SNAPSHOT</version>        
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-client</artifactId>
-    <version>3.8-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Client</name>
@@ -20,17 +20,17 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>3.8-SNAPSHOT</version>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.8-SNAPSHOT</version>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-library-support</artifactId>
-            <version>3.8-SNAPSHOT</version>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -44,6 +44,12 @@
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -89,6 +95,11 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-windows</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-html-validation</artifactId>
+            <version>RELEASE802</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -130,7 +141,14 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <codeNameBase>de.cismet.cids.abf.client/3</codeNameBase>
+                    <codeNameBase>de.cismet.cids.abf.client/4</codeNameBase>
+                    <moduleDependencies>
+                        <dependency>
+                            <id>org.netbeans.modules:org-netbeans-modules-html-validation</id>
+                            <type>impl</type>
+                            <explicitValue>org.netbeans.modules.html.validation/1 = 201411181905</explicitValue>
+                        </dependency>
+                    </moduleDependencies>
                 </configuration>
             </plugin>
         </plugins>

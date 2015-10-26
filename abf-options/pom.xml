@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.8-SNAPSHOT</version>
+        <version>4.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-options</artifactId>
-    <version>3.8-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
     <packaging>nbm</packaging>
 
     <name>ABF Options</name>
@@ -20,7 +20,6 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
-            <version>${netbeans.version}</version>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -35,13 +34,13 @@
             <artifactId>org-openide-awt</artifactId>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-modules</artifactId>
-            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-html-validation</artifactId>
+            <version>RELEASE802</version>
         </dependency>
     </dependencies>
 
@@ -84,11 +83,18 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <codeNameBase>de.cismet.cids.abf.options/3</codeNameBase>
+                    <codeNameBase>de.cismet.cids.abf.options/4</codeNameBase>
                     <publicPackages>
                         <publicPackage>de.cismet.cids.abf.options.*</publicPackage>
-                        <publicPackage>org.apache.log4j.*</publicPackage>
+                        <!--<publicPackage>org.apache.log4j.*</publicPackage>-->
                     </publicPackages>
+                    <moduleDependencies>
+                        <dependency>
+                            <id>org.netbeans.modules:org-netbeans-modules-html-validation</id>
+                            <type>impl</type>
+                            <explicitValue>org.netbeans.modules.html.validation/1 = 201411181905</explicitValue>
+                        </dependency>
+                    </moduleDependencies>
                 </configuration>
             </plugin>
         </plugins>
