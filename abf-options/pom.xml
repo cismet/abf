@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.0</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-options</artifactId>
-    <version>4.0-SNAPSHOT</version>
+    <version>4.0</version>
     <packaging>nbm</packaging>
 
     <name>ABF Options</name>
