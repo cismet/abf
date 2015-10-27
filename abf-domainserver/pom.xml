@@ -5,13 +5,13 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.7.4</version>
+        <version>4.0</version>
         <relativePath>..</relativePath>
     </parent>
 
     <groupId>de.cismet.cids.abf</groupId>
     <artifactId>abf-domainserver</artifactId>
-    <version>3.7.4</version>
+    <version>4.0</version>
     <packaging>nbm</packaging>
 
     <name>ABF Domainserver</name>
@@ -21,25 +21,27 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>3.7.4</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.7.4</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>
             <artifactId>jaxen</artifactId>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.swinglabs</groupId>
-            <artifactId>swingx</artifactId>
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
@@ -109,6 +111,15 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-modules</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-libs-swingx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-html-validation</artifactId>
+            <version>RELEASE802</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -150,7 +161,19 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <codeNameBase>de.cismet.cids.abf.domainserver/3</codeNameBase>
+                    <codeNameBase>de.cismet.cids.abf.domainserver/4</codeNameBase>
+                    <moduleDependencies>
+                        <dependency>
+                            <id>org.netbeans.modules:org-netbeans-libs-swingx</id>
+                            <type>impl</type>
+                            <explicitValue>org.netbeans.libs.swingx/1 = 201411181905</explicitValue>
+                        </dependency>
+                        <dependency>
+                            <id>org.netbeans.modules:org-netbeans-modules-html-validation</id>
+                            <type>impl</type>
+                            <explicitValue>org.netbeans.modules.html.validation/1 = 201411181905</explicitValue>
+                        </dependency>
+                    </moduleDependencies>
                 </configuration>
             </plugin>
         </plugins>

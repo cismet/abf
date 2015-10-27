@@ -13,9 +13,13 @@ import org.netbeans.api.project.Project;
 import org.netbeans.spi.project.ProjectFactory;
 import org.netbeans.spi.project.ProjectState;
 
+import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import java.util.Properties;
 
@@ -56,8 +60,28 @@ public final class DomainserverProjectFactory implements ProjectFactory {
     @Override
     public void saveProject(final Project project) throws IOException, ClassCastException {
         final Properties properties = project.getLookup().lookup(Properties.class);
-        final FileObject fob = project.getProjectDirectory().getFileObject(PROJECT_DIR + "/" + PROJECT_PROPFILE); // NOI18N
-        properties.store(fob.getOutputStream(), "Cids Domainserver Project Properties");                          // NOI18N
+        OutputStream fos = null;
+        FileLock lock = null;
+        try {
+            final File file = new File(
+                    PROJECT_DIR,
+                    PROJECT_PROPFILE);
+            final FileObject fo = FileUtil.createData(file);
+            lock = fo.lock();
+            fos = fo.getOutputStream(lock);
+            properties.store(fos, "Cids Domainserver Project Properties");
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException ex) {
+                    LOG.warn("cannot close FileOutputStream when writing project properties", ex); // NOI18N
+                }
+            }
+            if (lock != null) {
+                lock.releaseLock();
+            }
+        }
     }
 
     @Override

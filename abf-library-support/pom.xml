@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.7.4</version>
+        <version>4.0</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-library-support</artifactId>
-    <version>3.7.4</version>
+    <version>4.0</version>
     <packaging>nbm</packaging>
 
     <name>ABF cids Library Support</name>
@@ -20,16 +20,22 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>3.7.4</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>3.7.4</version>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.clerkster</groupId>
             <artifactId>clerkster-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- 
             directly declaring the dependencies of the clerkster client to ensure the libraries are really available,
@@ -39,10 +45,6 @@
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -129,6 +131,11 @@
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-modules</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.netbeans.modules</groupId>
+            <artifactId>org-netbeans-modules-html-validation</artifactId>
+            <version>RELEASE802</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -170,7 +177,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <codeNameBase>de.cismet.cids.abf.librarysupport/3</codeNameBase>
+                    <codeNameBase>de.cismet.cids.abf.librarysupport/4</codeNameBase>
                     <publicPackages>
                         <publicPackage>de.*</publicPackage>
                         <publicPackage>javax.*</publicPackage>
@@ -180,6 +187,13 @@
                         <publicPackage>com.*</publicPackage>
                         <publicPackage>javassist.*</publicPackage>
                     </publicPackages>
+                    <moduleDependencies>
+                        <dependency>
+                            <id>org.netbeans.modules:org-netbeans-modules-html-validation</id>
+                            <type>impl</type>
+                            <explicitValue>org.netbeans.modules.html.validation/1 = 201411181905</explicitValue>
+                        </dependency>
+                    </moduleDependencies>
                 </configuration>
             </plugin>
         </plugins>

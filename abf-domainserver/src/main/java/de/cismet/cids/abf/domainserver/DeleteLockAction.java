@@ -16,9 +16,6 @@ import org.openide.util.RequestProcessor;
 import org.openide.util.actions.NodeAction;
 import org.openide.windows.WindowManager;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +25,8 @@ import javax.swing.JOptionPane;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.utilities.windows.ErrorUtils;
 
-import de.cismet.diff.db.DatabaseConnection;
+import de.cismet.cids.meta.CsLocksConnection;
+import de.cismet.cids.meta.CsLocksConnection.LockEntry;
 
 /**
  * DOCUMENT ME!
@@ -76,15 +74,11 @@ public final class DeleteLockAction extends NodeAction {
         if (answer != JOptionPane.YES_OPTION) {
             return;
         }
-        Connection con = null;
-        ResultSet set = null;
+        CsLocksConnection con = null;
         try {
-            con = DatabaseConnection.getConnection(project.getRuntimeProps());
-            set = con.createStatement().executeQuery(DomainserverProject.STMT_READ_LOCKS);
-            while (set.next()) {
-                final Integer id = set.getInt("id");                                     // NOI18N
-                con.createStatement().executeUpdate(DELETE_LOCK_STMT + id);
-            }
+            con = new CsLocksConnection(project.getRuntimeProps());
+            con.releaseAllLocks(DomainserverProject.LOCK_PREFIX);
+            con.commit();
         } catch (final Exception e) {
             LOG.error("could not remove lock", e);                                       // NOI18N
             ErrorUtils.showErrorMessage(org.openide.util.NbBundle.getMessage(
@@ -95,8 +89,9 @@ public final class DeleteLockAction extends NodeAction {
                     "DeleteLockAction.performAction(Node[]).ErrorUtils.atLeastOneLockUndeleteableError.title"),
                 e);                                                                      // NOI18N
         } finally {
-            DatabaseConnection.closeResultSet(set);
-            DatabaseConnection.closeConnection(con);
+            if (con != null) {
+                con.close();
+            }
         }
     }
 
@@ -149,28 +144,28 @@ public final class DeleteLockAction extends NodeAction {
         if (LOG.isDebugEnabled()) {
             LOG.debug("checking for locks"); // NOI18N
         }
-        Connection con = null;
-        ResultSet set = null;
+        CsLocksConnection con = null;
         try {
-            final FutureTask<Connection> task = new FutureTask(new Callable<Connection>() {
+            final FutureTask<CsLocksConnection> task = new FutureTask(new Callable<CsLocksConnection>() {
 
                         @Override
-                        public Connection call() throws Exception {
-                            return DatabaseConnection.getConnection(project.getRuntimeProps(), 2);
+                        public CsLocksConnection call() throws Exception {
+                            return new CsLocksConnection(project.getRuntimeProps());
                         }
                     });
             proc.post(task);
             con = task.get(300, TimeUnit.MILLISECONDS);
-            set = con.createStatement().executeQuery(DomainserverProject.STMT_READ_LOCKS);
+            final LockEntry le = con.getLock(DomainserverProject.LOCK_PREFIX);
 
-            return set.next();
+            return le != null;
         } catch (final Exception e) {
             LOG.warn("could not check for locks", e); // NOI18N
             // possibly notify the user
             return false;
         } finally {
-            DatabaseConnection.closeResultSet(set);
-            DatabaseConnection.closeConnection(con);
+            if (con != null) {
+                con.close();
+            }
         }
     }
 }

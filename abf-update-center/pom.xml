@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>3.7.4</version>
+        <version>4.0</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-update-center</artifactId>
-    <version>3.7.4</version>
+    <version>4.0</version>
     <packaging>nbm</packaging>
 
     <name>ABF Update Center</name>
@@ -55,7 +55,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
-                    <codeNameBase>de.cismet.cids.abf.updatecenter/3</codeNameBase>
+                    <codeNameBase>de.cismet.cids.abf.updatecenter/4</codeNameBase>
                 </configuration>
             </plugin>
         </plugins>

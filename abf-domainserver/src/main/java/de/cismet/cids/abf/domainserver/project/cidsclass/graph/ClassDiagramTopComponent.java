@@ -680,6 +680,9 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
         add(scpDiagramPane, java.awt.BorderLayout.CENTER);
 
         chkSaveChanges.setSelected(true);
+        chkSaveChanges.setToolTipText(NbBundle.getMessage(
+                ClassDiagramTopComponent.class,
+                "ClassDiagramTopComponent.chkSaveChanges.tooltip")); // NOI18N
         chkSaveChanges.setMargin(new java.awt.Insets(0, 0, 0, 0));
         chkSaveChanges.addActionListener(new java.awt.event.ActionListener() {
 
@@ -692,6 +695,9 @@ public final class ClassDiagramTopComponent extends TopComponent implements Expl
 
         jLabel2.setIcon(new javax.swing.ImageIcon(
                 getClass().getResource("/de/cismet/cids/abf/domainserver/images/filesave.png"))); // NOI18N
+        jLabel2.setToolTipText(NbBundle.getMessage(
+                ClassDiagramTopComponent.class,
+                "ClassDiagramTopComponent.jLabel2.tooltip"));                                     // NOI18N
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 2));
         jToolBar1.add(jLabel2);
 

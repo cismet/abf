@@ -74,6 +74,6 @@ public final class SyncAction extends CallableSystemAction {
 
         final SyncManagement sync = na[0].getLookup().lookup(SyncManagement.class);
 
-        return (sync != null) && (sync.getSyncCount() > 0);
+        return (sync != null) && (sync.getSyncCount() > 0) && !sync.isDiffInProgress();
     }
 }
