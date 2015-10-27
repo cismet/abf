@@ -818,7 +818,7 @@ public final class DomainserverProject implements Project, Connectable {
                             WindowManager.getDefault().getMainWindow(),
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class,
-                                "DomainserverProject.releaseLock().ErrorUtils.lockNotDeletableHTMLL", // NOI18N
+                                "DomainserverProject.releaseLock().ErrorUtils.lockNotDeletableHTML", // NOI18N
                                 lockNonce),
                             org.openide.util.NbBundle.getMessage(
                                 DomainserverProject.class,
