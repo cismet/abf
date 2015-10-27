@@ -13,7 +13,10 @@ import org.netbeans.spi.project.ui.CustomizerProvider;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer;
 import org.netbeans.spi.project.ui.support.ProjectCustomizer.Category;
 
+import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.util.Exceptions;
 import org.openide.util.NbBundle;
 
 import java.awt.Dialog;
@@ -22,6 +25,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import java.util.Properties;
 
 import javax.swing.JComponent;
@@ -29,6 +36,9 @@ import javax.swing.JComponent;
 import de.cismet.cids.abf.domainserver.project.DomainserverProject;
 import de.cismet.cids.abf.domainserver.project.DomainserverProjectFactory;
 import de.cismet.cids.abf.domainserver.project.nodes.UserManagement;
+
+import static de.cismet.cids.abf.domainserver.project.DomainserverProjectFactory.PROJECT_DIR;
+import static de.cismet.cids.abf.domainserver.project.DomainserverProjectFactory.PROJECT_PROPFILE;
 
 /**
  * DOCUMENT ME!
@@ -136,15 +146,29 @@ public final class DomainserverProjectCustomizer implements CustomizerProvider,
             props.put(
                 PROP_USER_SHOW_LEGACY_CFGATTR_PROPS,
                 String.valueOf(userPropPanel.isShowLegacyCfgAttrProperties()));
-            final FileObject fob = project.getProjectDirectory()
-                        .getFileObject(
-                            DomainserverProjectFactory.PROJECT_DIR
-                            + "/" // NOI18N
-                            + DomainserverProjectFactory.PROJECT_PROPFILE);
+            OutputStream fos = null;
+            FileLock lock = null;
             try {
-                props.store(fob.getOutputStream(), "Cids Domainserver Project Properties"); // NOI18N
+                final File file = new File(
+                        DomainserverProjectFactory.PROJECT_DIR,
+                        DomainserverProjectFactory.PROJECT_PROPFILE);
+                final FileObject fo = FileUtil.createData(file);
+                lock = fo.lock();
+                fos = fo.getOutputStream(lock);
+                props.store(fos, "Cids Domainserver Project Properties");
             } catch (final Exception ex) {
-                LOG.warn("cannot write project properties", ex); // NOI18N
+                LOG.warn("cannot write project properties", ex);                                       // NOI18N
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException ex) {
+                        LOG.warn("cannot close FileOutputStream when writing project properties", ex); // NOI18N
+                    }
+                }
+                if (lock != null) {
+                    lock.releaseLock();
+                }
             }
 
             EventQueue.invokeLater(new Runnable() {
