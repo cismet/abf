@@ -314,7 +314,7 @@ public final class DomainserverProjectNode extends AbstractNode implements Conne
 
         @Override
         public boolean isEnabled() {
-            return delegate.isEnabled();
+            return true;
         }
 
         @Override
