@@ -241,7 +241,7 @@ public final class LibrarySupportProjectNode extends AbstractNode implements Ref
 
         @Override
         public boolean isEnabled() {
-            return true; 
+            return true;
         }
 
         @Override
