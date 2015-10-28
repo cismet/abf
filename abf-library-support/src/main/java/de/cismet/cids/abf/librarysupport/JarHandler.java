@@ -222,7 +222,7 @@ public final class JarHandler {
         // NOTE: this approach is not very nice as the dependecies have to be watched and the code adapted accordingly
         final InstalledFileLocator locator = InstalledFileLocator.getDefault();
         final Set<File> clerksterCP = new HashSet<File>(6);
-        final String module = "de.cismet.cids.abf.librarysupport/3";                                            // NOI18N
+        final String module = "de.cismet.cids.abf.librarysupport/4";                                            // NOI18N
         final String basepath = "modules/ext/" + module + "/";                                                  // NOI18N
         clerksterCP.add(locator.locate(basepath + "commons-codec/commons-codec.jar", module, false));           // NOI18N
         clerksterCP.add(locator.locate(basepath + "commons-logging/commons-logging.jar", module, false));       // NOI18N

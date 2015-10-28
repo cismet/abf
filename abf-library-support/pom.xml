@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.cismet.cids.abf</groupId>
         <artifactId>abf</artifactId>
-        <version>4.0</version>
+        <version>4.0.1</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>abf-library-support</artifactId>
-    <version>4.0</version>
+    <version>4.0.1</version>
     <packaging>nbm</packaging>
 
     <name>ABF cids Library Support</name>
@@ -20,22 +20,23 @@
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-options</artifactId>
-            <version>4.0</version>
+            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.cids.abf</groupId>
             <artifactId>abf-utilities</artifactId>
-            <version>4.0</version>
+            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>de.cismet.clerkster</groupId>
             <artifactId>clerkster-client</artifactId>
-            <exclusions>
+<!--            <exclusions> Log4J not excluded although a warning occurs in the logs (WARNING [org.netbeans.ProxyClassLoader]: Will not load class org.apache.log4j.net.SocketAppender arbitrarily from o ...)
+                            if it is excluded the JarHandler.createSignServiceTask() will not work
                 <exclusion>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
                 </exclusion>
-            </exclusions>
+            </exclusions>-->
         </dependency>
         <!-- 
             directly declaring the dependencies of the clerkster client to ensure the libraries are really available,
@@ -178,6 +179,7 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
                     <codeNameBase>de.cismet.cids.abf.librarysupport/4</codeNameBase>
+                    <!-- this string must also be changed in de.cismet.cids.abf.librarysupport.JarHandler.createSignServiceTask() -->
                     <publicPackages>
                         <publicPackage>de.*</publicPackage>
                         <publicPackage>javax.*</publicPackage>
